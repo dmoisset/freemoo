@@ -24,6 +24,8 @@ check: $(SOURCEFILES)
 	compile_to_c $(TARGET) $(EIFFLAGS)
 	compile_to_c $(TARGET2) $(EIFFLAGS)
 
+.PHONY: clean
+
 clean:
 	rm -f $(TARGET) $(TARGET2)
 	clean $(TARGET)

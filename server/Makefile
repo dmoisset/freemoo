@@ -11,6 +11,8 @@ $(TARGET): $(SOURCEFILES)
 check: $(SOURCEFILES)
 	compile_to_c $(TARGET) $(EIFFLAGS)
 
+.PHONY: clean
+
 clean:
 	rm -f $(TARGET)
 	clean $(TARGET)
