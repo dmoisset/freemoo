@@ -22,10 +22,15 @@ feature {ANY}
         view: GALAXY_VIEW
         c: MOUSE_POINTER
         i: INTEGER
+        font: FONT
     do
+        -- Setup Service Registry
         dsp_make
+
+        -- Setup package System
         pkg_system.make_with_config_file ("freemoo.conf")
 
+        -- Generate Galaxy
         !!options.make
         options.parse_add ("galaxysize = huge")
         options.parse_add ("galaxyage = average")
@@ -59,17 +64,28 @@ feature {ANY}
         !!sgalaxy.make
         mapgen.generate (sgalaxy, plist)
 
+        -- Setup Display
         !!d.make (640, 480, 16, False)
-        -- Set Pointer
         !!c.make (create {SDL_IMAGE}.make_from_file("../../data/client/gui/default_cursor.png"), 6, 4)
         d.root.set_pointer (c)
-        !!cgalaxy.make
+        !SDL_BITMAP_FONT!font.make("../../data/client/gui/default_font.png")
+        d.set_default_font(font)
 
+
+
+        -- Setup Services
+        !!cgalaxy.make
         register(sgalaxy, "galaxy")
         subscribe(cgalaxy, "galaxy")
-
         !!view.make(d.root, d.root.location, cgalaxy)
         sgalaxy.update_clients
+        from i := 1
+        until i > 40 loop
+            register (sgalaxy.stars @ i, "star" + i.to_string)
+            subscribe (cgalaxy.stars @ i, "star" + i.to_string)
+            sgalaxy.stars.item(i).update_clients
+            i := i + 1
+        end
 
         -- Main loop
         d.set_timer_interval (40)

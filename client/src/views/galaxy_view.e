@@ -19,7 +19,7 @@ feature {NONE} -- Creation
         a: FMA_FRAMESET
         i, j: INTEGER
     do
-        zoom := 3
+        zoom := 1
         set_model (new_model)
         window_make(w, where)
         !!a.make ("client/galaxy-view/background.fma")
@@ -47,10 +47,10 @@ feature -- Access, some will be moved to internal.
         --True while mouse cursor is inside my window
 
     star_window: WINDOW
-        -- Window used to display a system, Void if none is being shown
+        -- Window used to display a system
 
     fleet_window: WINDOW
-        -- Window used to display a fleet, Void if none is being shown
+        -- Window used to display a fleet
 
     pics: ARRAY2[ANIMATION_FMA_TRANSPARENT]
 
@@ -145,9 +145,15 @@ feature -- Redefined features
                     from i := model.stars.get_new_iterator
                     until i.is_off or found loop
                         projs.item(zoom).project(i.item)
-                        if (projs.item(zoom).x - b.x).abs < 4 + 2 * zoom and (projs.item(zoom).y - b.y).abs < 3 then
+                        if (projs.item(zoom).x - b.x).abs < 4 + 2 * (zoom + i.item.size - i.item.stsize_min)
+                        and (projs.item(zoom).y - b.y).abs < 4 + 2 * (zoom + i.item.size - i.item.stsize_min)
+                        and i.item.kind /= i.item.kind_blackhole then
                             r.set_with_size (40, 40, 347, 273)
+                            if star_window /= Void and then parent.children.fast_has(star_window) then
+                                parent.remove_child(star_window)
+                            end
                             !!s.make (parent, r, i.item)
+                            star_window := s
                             found := True
                         end
                         i.next

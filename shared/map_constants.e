@@ -25,12 +25,12 @@ feature -- Constants
     once
         !!Result.make
         Result.add (l("Black Hole"), kind_blackhole)
-        Result.add (l("Blue-White"), kind_bluewhite)
-        Result.add (l("Orange"), kind_orange)
-        Result.add (l("Red"), kind_red)
-        Result.add (l("White"), kind_white)
-        Result.add (l("Brown"), kind_brown)
-        Result.add (l("Yellow"), kind_yellow)
+        Result.add (l("Blue-White Star"), kind_bluewhite)
+        Result.add (l("Orange Star"), kind_orange)
+        Result.add (l("Red Star"), kind_red)
+        Result.add (l("White Star"), kind_white)
+        Result.add (l("Brown Star"), kind_brown)
+        Result.add (l("Yellow Star"), kind_yellow)
     end
 
     stspecial_nospecial, stspecial_wormhole, stspecial_debris,

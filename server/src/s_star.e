@@ -36,15 +36,18 @@ feature -- Redefined Features
             s_id := service_id
         end
         !!Result.make (0)
-        s.serialize ("si", <<name, planets.count>>)
+        s.serialize ("si", <<name, 5 - planets.fast_occurrences(Void)>>)
         Result.append (s.serialized_form)
         from
             i := planets.get_new_iterator
         until i.is_off loop
-            s.serialize ("iiiiii", <<i.item.size - i.item.plsize_min, i.item.climate - i.item.climate_min,
-                                     i.item.mineral - i.item.mnrl_min, i.item.gravity - i.item.grav_min,
-                                     i.item.special - i.item.plspecial_min, i.item.orbit>>)
-            Result.append (s.serialized_form)
+            if i.item /= Void then
+                s.serialize ("iiiiiii", <<i.item.size - i.item.plsize_min, i.item.climate - i.item.climate_min,
+                                         i.item.mineral - i.item.mnrl_min, i.item.gravity - i.item.grav_min,
+                                         i.item.type - i.item.type_min, i.item.special - i.item.plspecial_min,
+                                         i.item.orbit>>)
+                Result.append (s.serialized_form)
+            end
             i.next
         end
     end
