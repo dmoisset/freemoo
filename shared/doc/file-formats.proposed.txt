@@ -1,0 +1,131 @@
+PACKAGE FILES
+
+  Not implemented
+  
+IMAGE FILES
+
+  There are several variants of image files. All of them start with a
+  magic number indicating its format. Valid magic numbers are:
+  
+  38474d49   Plain image file (8-bit w/colorkey)
+  36474d49   Plain image file (16-bit+8-bit alpha)
+  38454c52   RLE-compressed image (8-bit w/colorkey)
+  36454c52   RLE-compressed image (16-bit+8 bit alpha)
+
+  After the magic number, there are two 16-bit integers representing
+  width and height. Information afterwards is format dependant.
+  
+  Note that the magic numbers allow detection of incorrect endianness.
+  
+  8-BIT IMAGES
+  
+    Some of the above formats have 8-bit pixel values. In that case, the
+    pixel values are indices into a palette included in the file. The
+    palette starts immediatly after the height an has the following
+    format
+    
+       Offset   type    Description
+        0       int8    non-zero for colorkey
+        1       int8    n = Last color index (i.e. Palette length-1)
+        2       pv16    16-bit color (5-6-5 R-G-B)
+        4       pv16    16-bit color (5-6-5 R-G-B)
+        ...
+        2*n     pv16    16-bit color (5-6-5 R-G-B)
+
+    Note that if the image uses colorkey, palette must be at most 255
+    colors long, describing colors 0x00 to 0xFE (that is, n <= 0xFE).
+    The pixel value 0xFF is special and means "transparent". 
+    
+    A pixel value referencing a color outside the palette will have an
+    undefined color.
+
+  PLAIN IMAGES
+  
+    Plain images are a sequence of pixel values for the image,
+    representing the pixels in reading order (left to right, then top to
+    bottom). The pixel-values for the 16-bit format are actually
+    24-bits, consisting of a 16-bit color (5-6-5 RGB) followed by an
+    8-bit alpha value.
+
+    The pixel count is width*height. The pixels come after the height or the
+    palette.
+
+  RLE IMAGES
+  
+    RLE images use a simple lossless compression algorithm to reduce
+    size. For 8-bit images, the encoded image is stored directly. For
+    16-bit images, the image compressed without the alpha channel is
+    stored first, and then the alpha channel is compressed and stored
+    separately (to improve compression)
+    
+    The following description of the encoding/decoding algorithms is in
+    Haskell for simplicity. The decoded image is represented as a [P]
+    (Pixel values, in reading order), and the encoded image can be seen
+    as a structure of type [(Integer, P, [P])]
+
+    The abstract decoding algorithm (written in Haskell for simplicity) is:
+    
+    decode :: [(Integer, P, [P])] -> [P]
+    decode [] = []
+    decode (n,p,ps):xs = replicate n p ++ ps ++ decode xs
+    
+    The encoding algorithm is:
+    
+    group :: Int -> P -> [P] -> [(Integer, P, [P])]
+    optimize :: [(Integer, P)] -> [(Integer, P, [P])]
+    encode :: [P] -> [(Integer, P, [P])]
+
+    minrun = 3 -- Minimum run length allowed
+
+    encode [] = []
+    encode (x:xs) = optimize (group 1 x xs)
+
+    group n r [] = [(n, r, [])]
+    group n r [x] = if x==r then [(n+1, r, [])] else [(n, r, []), (1, x, [])]
+    group n r (x:y:xs) = if x == r then group (n+1) r (y:xs)
+                                   else (n, r, []):(group 1 x (y:xs))
+
+    optimize (n, r, ps):(n2, r2, []):xs =
+        if n2 < minrun then optimize ((n, r, ps++replicate n2 r2):xs)
+                       else (n,r,ps):(optimize (n2,r2,[]):xs)
+    optimize xs = xs
+
+    Note that the above are reference implementations and may not be the
+    most efficient ones. Emphasis was put on clarity, not efficiency.
+    
+    The tuples above are represented as:
+       
+       Offset   type    Description
+        0       int8    n = repeat count
+        1       int8    #ps = uncompressed pixel count
+        2       pixel   p = repeated pixel (8-bit indexed or alpha, or 16-bit)
+        3 or 4  pixel   ps.0 = first element of ps
+        4 or 6  pixel   ps.1 = second element of ps
+        ...
+                pixel   ps.(#ps-1) = last element of ps
+    
+    The tuple list (i.e, the compressed image) is represented as:
+    
+       Offset   type    Description
+        0       int32    #xs = list length
+        4       tuple    xs.0 = first tuple
+        varies  tuple    xs.1 = second tuple
+        ...
+        varies  tuple    xs.(#xs-1) = last tuple
+    
+    So the complete file structure in this case would be:
+    
+       magic number (4 bytes)
+       width (2 bytes)
+       height (2 bytes)
+       palette (variable size, only present in 8-bit images)
+       encoded image (w/8-bit or 16-bit pixel values)
+       encoded alpha channel (w/8-bit alpha, only in 16-bit images)
+
+ANIMATIONS
+
+  Not implemented
+  
+SOUND
+
+  Not implemented       
