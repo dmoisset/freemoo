@@ -307,7 +307,7 @@ feature {MODEL} -- Effective features
 		select_none
 		update_toggles
 		if model.ship_count = 0 then close end
-	 end
+	end
 	 
 	 
 feature {NONE} -- Once features
@@ -318,8 +318,8 @@ feature {NONE} -- Once features
 	once
 		!!Result.make(1, 2)
 		!!a.make("client/fleet-view/cursor.fma")
-		Result.put(a.images @ 1, 2)
-		Result.put(create {SDL_IMAGE}.make_transparent((Result @ 2).width, (Result @ 2).height), 1)
+		Result.put(a.item, 2)
+		Result.put(create {SDL_IMAGE}.make_transparent(a.item.width, a.item.height), 1)
 	end
 	 
 	size_index: INTEGER
