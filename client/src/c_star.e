@@ -60,17 +60,17 @@ feature {SERVICE_PROVIDER} -- Redefined features
                 !!planet.make_standard(Current)
             end
             ir ?= s.unserialized_form @ 1
-            planet.set_size (ir.item)
+            planet.set_size (ir.item + plsize_min)
             ir ?= s.unserialized_form @ 2
-            planet.set_climate (ir.item)
+            planet.set_climate (ir.item + climate_min)
             ir ?= s.unserialized_form @ 3
-            planet.set_mineral (ir.item)
+            planet.set_mineral (ir.item + mnrl_min)
             ir ?= s.unserialized_form @ 4
-            planet.set_gravity (ir.item)
+            planet.set_gravity (ir.item + grav_min)
             ir ?= s.unserialized_form @ 5
-            planet.set_type (ir.item)
+            planet.set_type (ir.item + type_min)
             ir ?= s.unserialized_form @ 6
-            planet.set_special (ir.item)
+            planet.set_special (ir.item + plspecial_min)
             planet.set_orbit (orbit)
             new_planets.put(planet, orbit)
             pcount := pcount - 1

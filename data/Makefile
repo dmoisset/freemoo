@@ -82,7 +82,64 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/star-view/sun3.fma\
                 $(INSTALL_DIR)/client/star-view/sun4.fma\
                 $(INSTALL_DIR)/client/star-view/sun5.fma\
-                $(INSTALL_DIR)/client/star-view/sun6.fma
+                $(INSTALL_DIR)/client/star-view/sun6.fma\
+                $(INSTALL_DIR)/client/star-view/planet00.fma\
+                $(INSTALL_DIR)/client/star-view/planet01.fma\
+                $(INSTALL_DIR)/client/star-view/planet02.fma\
+                $(INSTALL_DIR)/client/star-view/planet03.fma\
+                $(INSTALL_DIR)/client/star-view/planet04.fma\
+                $(INSTALL_DIR)/client/star-view/planet10.fma\
+                $(INSTALL_DIR)/client/star-view/planet11.fma\
+                $(INSTALL_DIR)/client/star-view/planet12.fma\
+                $(INSTALL_DIR)/client/star-view/planet13.fma\
+                $(INSTALL_DIR)/client/star-view/planet14.fma\
+                $(INSTALL_DIR)/client/star-view/planet20.fma\
+                $(INSTALL_DIR)/client/star-view/planet21.fma\
+                $(INSTALL_DIR)/client/star-view/planet22.fma\
+                $(INSTALL_DIR)/client/star-view/planet23.fma\
+                $(INSTALL_DIR)/client/star-view/planet24.fma\
+                $(INSTALL_DIR)/client/star-view/planet30.fma\
+                $(INSTALL_DIR)/client/star-view/planet31.fma\
+                $(INSTALL_DIR)/client/star-view/planet32.fma\
+                $(INSTALL_DIR)/client/star-view/planet33.fma\
+                $(INSTALL_DIR)/client/star-view/planet34.fma\
+                $(INSTALL_DIR)/client/star-view/planet40.fma\
+                $(INSTALL_DIR)/client/star-view/planet41.fma\
+                $(INSTALL_DIR)/client/star-view/planet42.fma\
+                $(INSTALL_DIR)/client/star-view/planet43.fma\
+                $(INSTALL_DIR)/client/star-view/planet44.fma\
+                $(INSTALL_DIR)/client/star-view/planet50.fma\
+                $(INSTALL_DIR)/client/star-view/planet51.fma\
+                $(INSTALL_DIR)/client/star-view/planet52.fma\
+                $(INSTALL_DIR)/client/star-view/planet53.fma\
+                $(INSTALL_DIR)/client/star-view/planet54.fma\
+                $(INSTALL_DIR)/client/star-view/planet60.fma\
+                $(INSTALL_DIR)/client/star-view/planet61.fma\
+                $(INSTALL_DIR)/client/star-view/planet62.fma\
+                $(INSTALL_DIR)/client/star-view/planet63.fma\
+                $(INSTALL_DIR)/client/star-view/planet64.fma\
+                $(INSTALL_DIR)/client/star-view/planet70.fma\
+                $(INSTALL_DIR)/client/star-view/planet71.fma\
+                $(INSTALL_DIR)/client/star-view/planet72.fma\
+                $(INSTALL_DIR)/client/star-view/planet73.fma\
+                $(INSTALL_DIR)/client/star-view/planet74.fma\
+                $(INSTALL_DIR)/client/star-view/planet80.fma\
+                $(INSTALL_DIR)/client/star-view/planet80.fma\
+                $(INSTALL_DIR)/client/star-view/planet81.fma\
+                $(INSTALL_DIR)/client/star-view/planet82.fma\
+                $(INSTALL_DIR)/client/star-view/planet83.fma\
+                $(INSTALL_DIR)/client/star-view/planet84.fma\
+                $(INSTALL_DIR)/client/star-view/planet81.fma\
+                $(INSTALL_DIR)/client/star-view/planet82.fma\
+                $(INSTALL_DIR)/client/star-view/planet83.fma\
+                $(INSTALL_DIR)/client/star-view/planet84.fma\
+                $(INSTALL_DIR)/client/star-view/planet90.fma\
+                $(INSTALL_DIR)/client/star-view/planet91.fma\
+                $(INSTALL_DIR)/client/star-view/planet92.fma\
+                $(INSTALL_DIR)/client/star-view/planet93.fma\
+                $(INSTALL_DIR)/client/star-view/planet94.fma\
+                $(INSTALL_DIR)/client/star-view/asteroids.fma\
+                $(INSTALL_DIR)/client/star-view/gas-giant.fma
 
 
 all: $(SUBDIRS)
