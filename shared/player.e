@@ -9,6 +9,7 @@ feature {NONE} -- Creation
     do
         set_state (st_setup)
         set_color (min_color)
+        !!colonies.make
     ensure
         state = st_setup
     end
@@ -20,6 +21,9 @@ feature -- Access
 
     color_id: INTEGER
         -- a unique color_id
+        
+    colonies: DICTIONARY [COLONY, INTEGER]
+        -- Colonies owned by this player
 
 feature -- Access
 
@@ -57,6 +61,26 @@ feature {PLAYER_LIST} -- Operations
         color_id := new_color
     ensure
         color_id = new_color
+    end
+    
+feature {COLONY} -- Operations
+
+    add_colony (colony: COLONY) is
+    require
+        not colonies.has (colony.id)
+    do
+        colonies.add (colony, colony.id)
+    ensure
+        colonies.has (colony.id)
+    end
+
+    remove_colony (colony: COLONY) is
+    require
+        colonies.has (colony.id)
+    do
+        colonies.remove (colony.id)
+    ensure
+        not colonies.has (colony.id)
     end
 
 invariant

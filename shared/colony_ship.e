@@ -4,4 +4,7 @@ class COLONY_SHIP
 inherit
     SHIP
 
+creation
+    make
+
 end -- class COLONY_SHIP

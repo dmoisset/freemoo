@@ -1,5 +1,8 @@
 class COLONY
 
+inherit
+    UNIQUE_ID
+
 creation make
 
 feature {NONE} -- Creation
@@ -9,11 +12,15 @@ feature {NONE} -- Creation
     require
         p /= Void
     do
-        location := p
-        owner := o
+        make_unique_id
         producing := product_none
+        location := p
+        p.set_colony (Current)
+        owner := o
+        o.add_colony (Current)
     ensure
         location = p
+        p.colony = Current
         producing = product_none
     end
 
@@ -54,9 +61,9 @@ feature -- Operations
         when product_none then
             -- Nothing to do this turn
         when product_starship then
-            !STARSHIP!sh
+            !STARSHIP!sh.make
         when product_colony_ship then
-            !COLONY_SHIP!sh
+            !COLONY_SHIP!sh.make
         end
 -- This should add to the local fleet. Fix
 --        if sh /= Void then -- Ship produced

@@ -226,6 +226,7 @@ feature {NONE} -- Planet Generation
         done: INTEGER
         hmworld_system: STAR
         hmworld: PLANET
+        newcol: COLONY
     do
         hmworldnams := <<"Color 1 Homeworld", "Color 2 Homeworld",
         "Color 3 Homeworld", "Color 4 Homeworld", "Color 5 Homeworld"
@@ -250,6 +251,8 @@ feature {NONE} -- Planet Generation
             rand.next
             hmworld_system.set_planet (hmworld, rand.last_integer (5))
             hmworld_system.set_name (hmworldnams.item ((players @ (i.item)).color_id))
+-- should be create {COLONY}, but it doesn't work
+            !!newcol.make (hmworld_system.planets.item(rand.last_integer (5)), players @ (i.item))
             done := done + 1
             dont_touch.add (hmworld_system.id)
             i.next

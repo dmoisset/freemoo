@@ -4,4 +4,7 @@ class STARSHIP
 inherit
     SHIP
 
+creation
+    make
+
 end -- class STARSHIP

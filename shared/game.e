@@ -13,6 +13,7 @@ feature {NONE} -- Creation
         !!players.make
         !!galaxy.make
         make_mapgenerator
+        make_evolver
     end
 
     make_mapgenerator is
@@ -33,6 +34,29 @@ feature {NONE} -- Creation
         end
     ensure
         map_generator /= Void
+    end
+
+    make_evolver is
+    require
+        options /= Void
+        options.enum_options_names.has ("starttech")
+    local
+        evoname: STRING
+    do
+        evoname := options.enum_options_names @ "starttech"
+        if evoname.is_equal ("prewarp") then
+            !EVOLVER_PREWARP!evolver.make (options)
+--not implemented
+        elseif evoname.is_equal ("medium") then
+        --    !EVOLVER_MEDIUM!evolver.make (options)
+        elseif evoname.is_equal ("advanced") then
+        --    !EVOLVER_ADVANCED!evolver.make (options)
+        else
+-- see what to do here
+           check False end
+        end
+    ensure
+        evolver /= Void
     end
 
 feature -- Access
@@ -58,6 +82,7 @@ feature -- Operations
         if players.all_in_state (st_ready) and status.open_slots = 0 then
             -- Generate Galaxy
             map_generator.generate (galaxy, players)
+            evolver.evolve (players)
 --FIXME: Start what has to start
             print ("gogogo!!%N")
             init_game
@@ -103,6 +128,8 @@ feature -- Operations
 feature {NONE} -- Internal
 
     map_generator: MAP_GENERATOR
+    
+    evolver: EVOLVER
 
     options: SERVER_OPTIONS
 
