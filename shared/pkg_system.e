@@ -16,7 +16,7 @@ feature -- Creation and configuration
         -- Load path list from `filename'
         -- Empty path list if can not open
     local
-        f: TEXT_FILE_READ
+        f: TEXT_FILE_READ_EXPORTABLE
         p: STRING
     do
         !!path_list.make
@@ -37,7 +37,7 @@ feature -- Creation and configuration
 
 feature -- Access
 
-    last_file_open: TEXT_FILE_READ
+    last_file_open: TEXT_FILE_READ_EXPORTABLE
         -- Last file opened by `open_file'
 
 feature -- Operations
@@ -49,7 +49,7 @@ feature -- Operations
         path /= Void
     local
         i: ITERATOR [STRING]
-        f: TEXT_FILE_READ
+        f: TEXT_FILE_READ_EXPORTABLE
     do
         last_file_open := Void
         i := path_list.get_new_iterator

@@ -1,4 +1,4 @@
-EIFFLAGS=-case_insensitive -cc tcc
+EIFFLAGS=-case_insensitive
 TARGET=fm_client
 SmartEiffelDirectory=$(shell dirname $(shell dirname $(SmartEiffel)))
 LIBS=-lSDL_image `sdl-config --libs` src/C/net_thread.o \

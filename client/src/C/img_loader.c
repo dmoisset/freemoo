@@ -335,7 +335,7 @@ SDL_Surface *FMI_Load(FILE* fp)
     SDL_RWread (src, &width, sizeof (width), 1);
     SDL_RWread (src, &height, sizeof (height), 1);
 
-    surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 24, 0xf80000,
+    surface = SDL_CreateRGBSurface(SDL_SRCALPHA, width, height, 24, 0xf80000,
              0x07e000, 0x001f00, 0x0000ff);
     if (!surface)
         return 0;
@@ -416,7 +416,7 @@ FMA_t *load_anim (FILE *f)
     {
         SDL_RWread (src, delta_n_size, 2, 4);
 //        printf("Loading %dx%d image displaced %dx%d...\n", delta_n_size[2], delta_n_size[3], delta_n_size[0], delta_n_size[1]);
-        answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE, delta_n_size[2], delta_n_size[3], 24, 0xf80000, 0x07e000, 0x001f00, 0x0000ff);
+        answer->items[imgfing] = SDL_CreateRGBSurface(SDL_SRCALPHA, delta_n_size[2], delta_n_size[3], 24, 0xf80000, 0x07e000, 0x001f00, 0x0000ff);
         if (!answer->items[imgfing])
             return 0;
         answer->x[imgfing] = delta_n_size[0];

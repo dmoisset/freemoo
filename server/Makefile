@@ -1,6 +1,6 @@
 TARGET=server
 SOURCEFILES=src/*.e ../shared/*.e
-EIFFLAGS=-case_insensitive -high_memory_compiler -cc tcc
+EIFFLAGS=-case_insensitive -high_memory_compiler
 LIBS=-leifinet
 
 all: $(TARGET)
