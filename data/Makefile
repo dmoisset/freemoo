@@ -141,7 +141,15 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/star-view/planet94.fma\
                 $(INSTALL_DIR)/client/star-view/asteroids.fma\
                 $(INSTALL_DIR)/client/star-view/gas-giant.fma\
-                $(INSTALL_DIR)/client/star-view/bracket.fma
+                $(INSTALL_DIR)/client/star-view/bracket.fma\
+                $(INSTALL_DIR)/client/player-status/light0.fma\
+                $(INSTALL_DIR)/client/player-status/light1.fma\
+                $(INSTALL_DIR)/client/player-status/light2.fma\
+                $(INSTALL_DIR)/client/player-status/light3.fma\
+                $(INSTALL_DIR)/client/player-status/light4.fma\
+                $(INSTALL_DIR)/client/player-status/light5.fma\
+                $(INSTALL_DIR)/client/player-status/light6.fma\
+                $(INSTALL_DIR)/client/player-status/light7.fma
 
 
 all: $(SUBDIRS)
