@@ -33,51 +33,50 @@ feature {SERVICE_PROVIDER} -- Redefined features
         newmsg: STRING
         ir: reference INTEGER
         pcount: INTEGER
-        new_planets: ARRAY[PLANET]
-        planet: PLANET
         s: SERIALIZER
         orbit: INTEGER
+        todays_planets: SET[INTEGER]
     do
+        !!todays_planets.make
         newmsg := msg
-
         has_info := True
         s.unserialize ("si", newmsg)
         name ?= s.unserialized_form @ 1
         ir ?= s.unserialized_form @ 2
         pcount := ir
         newmsg.remove_first(s.used_serial_count)
-        !!new_planets.make (1, 5)
-        -- If I could be sure that planets come in ascending orbit, I'd edit
-        -- in place...  even better if i could be sure planets don't dissapear.
-        -- What happens to a colony if it's planet dissapears?
         from until pcount = 0 loop
             s.unserialize ("iiiiiii", newmsg)
             ir ?= s.unserialized_form @ 7
             orbit := ir
-            if (planets @ orbit) /= Void then
-                planet := planets@orbit
-            else
-                !!planet.make_standard(Current)
+            todays_planets.add(orbit)
+            if (planets @ orbit) = Void then
+                set_planet(create{PLANET}.make_standard (Current), orbit)
             end
             ir ?= s.unserialized_form @ 1
 -- Using .item below because of SE bug #152
-            planet.set_size (ir.item + plsize_min)
+            planets.item(orbit).set_size (ir.item + plsize_min)
             ir ?= s.unserialized_form @ 2
-            planet.set_climate (ir.item + climate_min)
+            planets.item(orbit).set_climate (ir.item + climate_min)
             ir ?= s.unserialized_form @ 3
-            planet.set_mineral (ir.item + mnrl_min)
+            planets.item(orbit).set_mineral (ir.item + mnrl_min)
             ir ?= s.unserialized_form @ 4
-            planet.set_gravity (ir.item + grav_min)
+            planets.item(orbit).set_gravity (ir.item + grav_min)
             ir ?= s.unserialized_form @ 5
-            planet.set_type (ir.item + type_min)
+            planets.item(orbit).set_type (ir.item + type_min)
             ir ?= s.unserialized_form @ 6
-            planet.set_special (ir.item + plspecial_min)
-            planet.set_orbit (orbit)
-            new_planets.put(planet, orbit)
+            planets.item(orbit).set_special (ir.item + plspecial_min)
             pcount := pcount - 1
             newmsg.remove_first(s.used_serial_count)
         end
-        planets := new_planets
+-- remove stale planets
+        from pcount := 1
+        until pcount > 5 loop
+            if planets.item(pcount) /= Void and not todays_planets.has(pcount) then
+                planets.remove(pcount)
+            end
+            pcount := pcount + 1
+        end
         notify_views
     end
 
