@@ -1,7 +1,8 @@
 EIFFLAGS=-case_insensitive -cc tcc
 TARGET=fm_client
+SmartEiffelDirectory=$(shell dirname $(shell dirname $(SmartEiffel)))
 LIBS=-lSDL_image `sdl-config --libs` src/C/net_thread.o \
-     $(SmartEiffel)/lib_ews/driver-sdl/C/driver-sdl.o -leifinet
+     $(SmartEiffelDirectory)/lib_ews/driver-sdl/C/driver-sdl.o -leifinet
 TARGET2=dumb_client
 LIBS2=-leifinet
 SOURCEFILES=src/*.e ../shared/*.e src/screens/*.e src/widgets/*.e \

@@ -1,5 +1,5 @@
 ./src
 ../shared/
-${SmartEiffel}/lib_netservices/
-${SmartEiffel}/lib_utils/
-${SmartEiffel}/lib_eifinet/
+${SmartEiffelDirectory}/lib_netservices/
+${SmartEiffelDirectory}/lib_utils/
+${SmartEiffelDirectory}/lib_eifinet/

@@ -29,9 +29,6 @@ feature -- Operations
 
 feature -- Access
 
-    network_wait: REAL is 0.05
-        -- Maximum blocking time when waiting network messages
-
     server: FM_CLIENT_CONNECTION is
         -- Connection to server, or Void if not connected
     do
