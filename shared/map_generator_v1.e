@@ -317,6 +317,7 @@ feature -- Operation
         newstar: STAR
         planets: ARRAY[PLANET]
     do
+        galaxy.set_limit(limit)
         !!planets.make(1,0)
         print("Generating Positions%N")
         starposs := make_positions

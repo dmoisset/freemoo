@@ -40,6 +40,7 @@ feature -- Redefined features
         if service_id.is_equal("galaxy") then
 -- Public "galaxy" service
             !!Result.make (0)
+            Result.append (limit.serial_form)
             s.serialize ("i", <<stars.count>>)
             Result.append (s.serialized_form)
             from

@@ -31,7 +31,7 @@ GALAXY
   Name: "galaxy"
   Provided: Before game_status.started is set
   Description: Global galaxy map (star positions and colors)
-  Format: "i" <<count>>, followed by sequence of
+  Format: "rri" <<limit.x, limit.y, count>>, followed by sequence of
           "oiirr" <<id, kind, size, x, y>>
 
 STAR

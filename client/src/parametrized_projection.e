@@ -4,7 +4,7 @@ class PARAMETRIZED_PROJECTION
 inherit PROJECTION
         redefine project
 
-creation make, make_identity
+creation make, make_identity, make_simple
 
 feature -- Access
 
@@ -24,6 +24,8 @@ feature -- Operations
         --    [B] is Current.matrix
         --    [C] is the column matrix [p.x p.y]
         --    [D] is the column matrix [dx dy]
+    require
+        p /= Void
     do
         x := matrix.item (1, 1) * p.x + matrix.item (1, 2) * p.y + dx
         y := matrix.item (2, 1) * p.x + matrix.item (2, 2) * p.y + dy
@@ -34,6 +36,19 @@ feature -- Operations
     do
         dx := dx + deltax
         dy := dy + deltay
+    ensure
+        dx = old dx + deltax
+        dy = old dy + deltay
+    end
+
+    set_translation (deltax, deltay: REAL) is
+        -- Set translation to [deltax deltay]
+    do
+        dx := deltax
+        dy := deltay
+    ensure
+        dx = deltax
+        dy = deltay
     end
 
     scale (sex, sey: REAL) is
@@ -78,6 +93,19 @@ feature {NONE} -- creation
         dy := deltay
     ensure
         matrix = m
+        dx = deltax
+        dy = deltay
+    end
+
+    make_simple (sex, sey, deltax, deltay: REAL) is
+        -- Initialize scaling by (sex, sey) and translated (deltax, deltay)
+    do
+        !!matrix.make (1, 2, 1, 2)
+        matrix.put (sex, 1, 1)
+        matrix.put (sey, 2, 2)
+        dx := deltax
+        dy := deltay
+    ensure
         dx = deltax
         dy = deltay
     end

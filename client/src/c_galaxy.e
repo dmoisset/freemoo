@@ -40,6 +40,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         ship: SHIP
     do
         if service.is_equal("galaxy") then
+            limit.unserialize_from(msg)
             s.unserialize("i", msg)
             ir ?= s.unserialized_form @ 1
             count := ir.item

@@ -6,6 +6,7 @@ feature {NONE} -- Creation
 
     make is
     do
+        !!limit.make_at(0, 0)
         !!stars.with_capacity (0, 1)
         !!fleets.with_capacity (0,1)
     end
@@ -17,6 +18,9 @@ feature -- Access
 
     fleets: ARRAY [FLEET]
         -- All fleets in space
+
+    limit: COORDS
+        -- Outermost corner of galaxy, opposite to (0, 0)
 
     scanner (player: PLAYER):ARRAY[FLEET] is
         -- All fleets detected by `player'
@@ -91,6 +95,17 @@ feature {MAP_GENERATOR} -- Generation
         starlist /= Void
     do
         stars := starlist
+    ensure
+        stars = starlist
+    end
+
+    set_limit (l: COORDS) is
+    require
+        l /= Void
+    do
+        limit := l
+    ensure
+        limit = l
     end
 
 invariant
