@@ -1,0 +1,50 @@
+0001-0008: Player 0 frigates
+0009-0016: Player 0 destroyers
+0017-0024: Player 0 cruisers
+0025-0032: Player 0 battleships
+0033-0040: Player 0 titans
+0041: Player 0 Star base
+0042: Player 0 Battle Station
+0043: Player 0 Star Fortress
+0044: Player 0 Death Star
+0045: Player 0 cloaked ship ?
+0046: Player 0 Colony Ship
+0047: Player 0 Outpost Ship
+0048: Player 0 Transport
+0049: Player 0 Freighter ?
+0050: Player 0 palette
+
+0051-00100: Player1, same structure.
+0101-00150: Player2, same structure.
+0151-00200: Player3, same structure.
+0201-00250: Player4, same structure.
+0251-00300: Player5, same structure.
+0301-00350: Player6, same structure.
+0351-00400: Player7, same structure.
+
+401: Antaran frigate
+402: Antaran destroyer
+403: Antaran Cruiser
+404: Antaran bttle-ship
+405: Antaran titan
+
+408: Cloaked ship of some sort
+409: Smudge
+410: Crystal glow
+411: Dragon
+412: Eel
+413: Amoeba
+
+414: Antaran Palette
+415: Dragon palette
+416: Eel palette
+417-419: more palettes
+
+421: Small Smudge
+422: Small crystal glow
+423: Small dragon
+424: Small eel
+425: Small amoeba
+
+426-449: Apparently empty.
+

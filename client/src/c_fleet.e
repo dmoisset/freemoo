@@ -51,7 +51,8 @@ feature {NONE} -- Creation
             i := ir
             enter_orbit (server.galaxy.stars @ i);
             if not (server.galaxy.stars @ i).fleets.has(id) then
-                (server.galaxy.stars @ i).fleets.add(Current, id)
+					(server.galaxy.stars @ i).fleets.add(Current, id)
+					(server.galaxy.stars @ i).notify_views
             end
         else
             set_destination (server.galaxy.stars @ ir)
@@ -62,7 +63,7 @@ feature {NONE} -- Creation
         ships.clear
         from shipcount := ir until shipcount = 0 loop
             s.unserialize("ii", msg)
-            !!ship.make
+            !!ship.make(owner)
             ir ?= s.unserialized_form @ 1
             ship.set_size(ir)
             ir ?= s.unserialized_form @ 2
@@ -71,6 +72,7 @@ feature {NONE} -- Creation
             shipcount := shipcount - 1
             add_ship(ship)
         end
+		  notify_views
     end
 
 end -- class C_FLEET

@@ -9,11 +9,14 @@ creation make
 
 feature {NONE} -- Creation
 
-    make is
-    do
-        size := 1
-        make_unique_id
-    end
+    make(p: PLAYER) is
+		do
+			creator := p
+			owner := p
+			size := 1
+			picture := 0
+			make_unique_id
+		end
 
 feature -- Access
 

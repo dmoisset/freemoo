@@ -61,7 +61,7 @@ feature -- Operations
         when product_none then
             -- Nothing to do this turn
         when product_starship then
-            !STARSHIP!sh.make
+			  !STARSHIP!sh.make(owner)
         when product_colony_ship then
             !COLONY_SHIP!sh.make
         end

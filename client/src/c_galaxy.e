@@ -118,7 +118,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 from it := server.player_list.get_new_iterator
                 until it.item.id = ir.item
                 loop
-                    it.next
+						 it.next
                 end
                 owner := it.item
                 fleet.set_owner(owner)
@@ -131,16 +131,17 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 --                    stars.item(ir.item).fleets.add(fleet, fleet.id)
 --                    (stars.item(ir.item)).fleets.add(fleet, fleet.id)
                     (stars @ ir.item).fleets.add(fleet, fleet.id)
+						  (stars @ ir.item).notify_views
                 else
                     fleet.set_destination (stars @ ir.item)
                 end
                 fleet.unserialize_from (newmsg)
                 new_fleets.add(fleet, fleet.id)
                 ir ?= s.unserialized_form @ 4
-	print("Recieved <<" + fleet.owner.id.to_string + ", " + fleet.eta.to_string + ", " + fleet.orbit_center.id.to_string + ", " + ir.item.to_string + ">>%N")
+--	print("Recieved <<" + fleet.owner.id.to_string + ", " + fleet.eta.to_string + ", " + fleet.orbit_center.id.to_string + ", " + ir.item.to_string + ">>%N")
                 from shipcount := ir.item until shipcount = 0 loop
                     s.unserialize("ii", newmsg)
-                    !!ship.make
+                    !!ship.make(fleet.owner)
                     ir ?= s.unserialized_form @ 1
                     ship.set_size(ir.item)
                     ir ?= s.unserialized_form @ 2
