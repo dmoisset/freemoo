@@ -45,6 +45,7 @@ feature {NONE} -- Creation
         if is_in_orbit then leave_orbit end
         if s.last_integer /= -1 then
             i := s.last_integer
+-- FIXME: More abstraction breach: star.fleets.xxx
             enter_orbit (server.galaxy.stars @ i);
             if not (server.galaxy.stars @ i).fleets.has(id) then
                 (server.galaxy.stars @ i).fleets.add(Current, id);
