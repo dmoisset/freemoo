@@ -1,9 +1,7 @@
 NAQ (Not Answered Questions)
 
 1. Los movimientos de flota se hacen antes o después de la producción de los
-   planetas? Hay casos donde los resultados son distintos (por ejemplo,
-   un planeta que terminaría de construir algo en condiciones normales pero
-   no si está bloqueado, con una nave enemiga a punto de llegar y bloquear).
+   planetas? Resuelto: producción antes.
 
 2. Cuan permanente es el efecto del Radiation Shield sobre planetas Radiated.
    En MOO2, cuando se construye un shield en un planeta rad., el planeta se

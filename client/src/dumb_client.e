@@ -38,11 +38,14 @@ feature
     end
 
     make is
+    local
+        f: CONNECTION_FACTORY
     do
         get_options
         -- Start connection
+        !FM_CLIENT_CONNECTION_FACTORY!f
         set_server (options.string_options @ "server",
-                    options.int_options @ "port")
+                    options.int_options @ "port", f)
         print ("Starting connection...%N")
         -- Wait for connection to complete (may lock up)
         server.wait_connection (-1)
@@ -95,6 +98,8 @@ feature
     setup is
         -- Last stage on connection. Setup of player parameters (color, race, 
         -- etc.) and start of game
+    require
+        must_be_joined: server.is_joined
     do
         print ("Starting game...%N")
         server.set_ready

@@ -90,11 +90,11 @@ feature -- Operations
         if subscribed_to (player_list, "players_list") then
             unsubscribe (player_list, "players_list")
         end
-        Precursor
         is_joining := False
         is_joined := False
         player := Void
         player_name := Void
+        Precursor
     end
 
 feature -- Access

@@ -40,8 +40,8 @@ STAR
   Format: "si" <<name, planets.count>>, followed by a sequence of
           "iiiiiii" <<size, climate, minerals, gravity, type, special, orbit>>
 
-SENSORS
-  Name: n+"sensor" (n is a digit sequence = color_id)
+SCANNER
+  Name: n+":scanner" (n is a digit sequence = color_id)
   Provided: Before game_status.started is set
   Descriptions: List of detected fleets for player n.
   Format: "i" <<count>>, followed by a sequence of

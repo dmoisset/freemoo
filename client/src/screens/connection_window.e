@@ -66,6 +66,7 @@ feature {NONE} -- Callbacks
         -- Connect button was clicked
     local
         port_num: INTEGER
+        f: CONNECTION_FACTORY
     do
         set_state (st_connecting)
         if not port_entry.text.is_integer then
@@ -77,7 +78,8 @@ feature {NONE} -- Callbacks
             -- So we'd better update the screen
             display.redraw
             port_num := port_entry.text.to_integer
-            set_server (host_entry.text, port_num)
+            !FM_SDL_CLIENT_CONNECTION_FACTORY!f.make (display)
+            set_server (host_entry.text, port_num, f)
             if server /= Void and then server.is_opening then
                 status_label.set_text (l("Connecting..."))
                 on_timer_enabled := True
@@ -167,7 +169,7 @@ feature {NONE} -- Internal
         -- Wait some short time for connection, return True if still connecting.
     do
         if not Result then
-            server.wait_connection (network_wait)
+            server.wait_connection (0)
         end
     rescue
         Result := True

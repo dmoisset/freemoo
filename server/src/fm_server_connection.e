@@ -47,11 +47,13 @@ feature -- Redefined features
             pass ?= s.unserialized_form @ 2
             rejoin (user, pass)
         when msgtype_start then
-            if player.state = st_setup then
-                server.game.set_player_ready (player)
-            else
+            if player = Void then
+                std_error.put_string (l("Client error. Player asked to start without login%N"))
+            elseif player.state /= st_setup then
                 std_error.put_string (format(l("Client error. Player ~1~ asked to start being in an invalid state.%N"),
                                   <<player.name>>))
+            else
+                server.game.set_player_ready (player)
             end
         else
             Precursor (ptype)

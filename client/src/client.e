@@ -3,19 +3,18 @@ class CLIENT
 
 feature -- Operations
 
-    set_server (host: STRING; port: INTEGER) is
+    set_server (host: STRING; port: INTEGER; f: CONNECTION_FACTORY) is
         -- Try to connect to `host':`port'; set `server' to new
         -- connection to server, or Void if failed.
     require
         host /= Void
+        f /= Void
     local
-        s: FM_CLIENT_CONNECTION
         tried: BOOLEAN
     do
         if not tried then
             if server = Void then
-                !!s.make (host, port)
-                server_ref.set_item (s)
+                server_ref.set_item (f.new_connection (host, port))
             else
                 server.make (host, port)
             end
