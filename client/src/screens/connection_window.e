@@ -7,7 +7,6 @@ inherit
         make,
         handle_event
     end
-    GETTEXT
     CLIENT
 
 creation
@@ -130,7 +129,11 @@ feature {NONE} -- Callbacks
             if server.game_status.started then
                 set_state (st_playing)
             end
-        else
+        when st_playing then
+            if server.game_status.finished then
+                set_state (st_finish)
+            end
+        when st_finish then
         end
         if server.is_closed then
             set_state (st_disconnected)
@@ -157,13 +160,14 @@ feature {NONE} -- Internal
     st_waiting_info,
     st_joining,
     st_preparing,
-    st_playing: INTEGER is unique
+    st_playing,
+    st_finish: INTEGER is unique
         -- Constants for `state'
 
     set_state (value: INTEGER) is
         -- Change `state'
     require
-        value.in_range (st_disconnected, st_playing)
+        value.in_range (st_disconnected, st_finish)
     do
         state := value
         inspect state
@@ -204,6 +208,10 @@ feature {NONE} -- Internal
                 !!main_window.make (Current, display.dimensions)
             end
             main_window.activate
+        when st_finish then
+            safe_hide (main_window)
+                check end_window = Void end
+            !!end_window.make (Current, display.dimensions)
         end
     end
 
@@ -226,6 +234,8 @@ feature {NONE} -- Dialogs
 
     main_window: MAIN_WINDOW
 
+    end_window: END_WINDOW
+    
     safe_hide (w: WINDOW) is
         -- Hide `w' if `w' is not Void
     do
@@ -241,6 +251,6 @@ feature {NONE} -- External
     end
 
 invariant
-    state.in_range (st_disconnected, st_playing)
+    state.in_range (st_disconnected, st_finish)
 
 end -- class CONNECTION_WINDOW

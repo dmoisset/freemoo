@@ -3,6 +3,7 @@ deferred class CONNECT_WINDOW_GUI
 inherit
     WINDOW
     redefine make end
+    GETTEXT
 
 feature {NONE} -- Creation
 

@@ -70,6 +70,21 @@ feature -- Access
     galaxy: GALAXY
         -- Galaxy where the game is played
 
+    end_condition: BOOLEAN is
+        -- has reached end condition?
+    do
+        -- Only one survivor or
+        -- Somebody was elected or
+        -- Somebody defeated the antarans
+    end
+
+    winner: PLAYER is
+    require
+        end_condition
+    do
+-- Not implemented
+    end
+
 feature -- Operations
 
     set_player_ready (player: PLAYER) is
@@ -121,7 +136,12 @@ feature -- Operations
         -- Colonization
         galaxy.generate_scans (players.get_new_iterator)
         status.next_date
-        players.set_all_state (st_playing_turn)
+        if not end_condition then
+            players.set_all_state (st_playing_turn)
+        else
+            players.set_all_state (st_end_game)
+            status.finish
+        end
     end
 
 feature {NONE} -- Internal
