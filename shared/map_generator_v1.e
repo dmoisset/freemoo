@@ -8,6 +8,34 @@ inherit
     MAP_PROBABILITIES
     PKG_USER
 
+feature{NONE} -- Creation
+
+    make (options: SERVER_OPTIONS) is
+    require
+        options /= Void
+    local
+    do
+        size := options.enum_options_names @ "galaxysize"
+        galage := options.enum_options_names @ "galaxyage"
+        !!dont_touch.make
+
+        if size.is_equal("small") then
+            !!limit.make_at (200, 147)
+            starcount := 20
+        elseif size.is_equal("medium") then
+            !!limit.make_at (270, 190)
+            starcount := 36
+        elseif size.is_equal("large") then
+            !!limit.make_at (330, 230)
+            starcount := 54
+        elseif size.is_equal("huge") then
+            !!limit.make_at (380, 270)
+            starcount := 71
+        end
+        -- Load constants for given galaxy age
+        load (galage)
+    end
+
 feature {NONE} -- Position Generation
 
     make_positions: ARRAY[COORDS] is
@@ -161,11 +189,11 @@ feature {NONE} -- Planet Generation
             i > 5
         loop
             rand.next
-            if rand.last_integer (100) <= planet_prob.at (star.kind) then
+            if rand.last_integer (100) <= planet_prob @ (star.kind) then
                 !!planet.make (star, planet_sizes.random_item,
-                planet_climates.at (star.kind).random_item,
-                planet_minerals.at (star.kind).random_item,
-                planet_gravs.at (star.kind).random_item,
+                planet_climates.item (star.kind).random_item,
+                planet_minerals.item (star.kind).random_item,
+                planet_gravs.item (star.kind).random_item,
                 planet_types.random_item, plspecial_nospecial)
                 star.set_planet (planet, i)
             end
@@ -317,42 +345,6 @@ feature -- Operation
         galaxy.set_stars (starlist)
     end
 
-
-feature{NONE} -- Creation
-    make (options: SERVER_OPTIONS) is
-    require
-        options /= Void
-    local
-    do
-        size := options.enum_options_names @ "galaxysize"
-        galage := options.enum_options_names @ "galaxyage"
-        !!dont_touch.make
-
-        if size.is_equal("small") then
-            !!limit.make_at (200, 147)
-            starcount := 20
-        elseif size.is_equal("medium") then
-            !!limit.make_at (270, 190)
-            starcount := 36
-        elseif size.is_equal("large") then
-            !!limit.make_at (330, 230)
-            starcount := 54
-        elseif size.is_equal("huge") then
-            !!limit.make_at (380, 270)
-            starcount := 71
-        end
-        if galage.is_equal("average") then
-            star_kinds := average_star_kinds
-            planet_climates := average_climates
-        elseif galage.is_equal("organicrich") then
-            star_kinds := orgrich_star_kinds
-            planet_climates := orgrich_climates
-        elseif galage.is_equal("mineralrich") then
-            star_kinds := minrich_star_kinds
-            planet_climates := minrich_climates
-        end
-    end
-
 feature {NONE} -- Implementation
 
     rand: STD_RAND is
@@ -375,15 +367,6 @@ feature {NONE} -- Implementation
 
     starcount: INTEGER
         -- Number of stars in galaxy, depends of size
-
-    star_kinds: FINITE_PTABLE [INTEGER]
-        -- Accumulative probability of a star being certain kind.
-        -- One of average_star_kinds, orgrich_star_kinds or minrich_star_kinds
-
-    planet_climates: DICTIONARY [FINITE_PTABLE [INTEGER], INTEGER]
-        -- Probability for a star having a certain climate, indexed by
-        -- star kind.  One of average_climates, orgrich_climates or
-        -- minrich_climates
 
     limit: COORDS
         -- The outermost posible point in galaxy

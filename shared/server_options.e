@@ -35,9 +35,9 @@ feature {NONE} -- Valid options and values
         Result.put (enum, "galaxysize")
             -- Galaxy ages
             !!enum.make
-            enum.put (-1, "organicrich")
+            enum.put (-1, "orgrich")
             enum.put ( 0, "average")
-            enum.put ( 1, "mineralrich")
+            enum.put ( 1, "minrich")
         Result.put (enum, "galaxyage")
             -- Tech levels
             !!enum.make
