@@ -10,14 +10,14 @@ feature {NONE} -- Creation
         -- Build GUI
     local
         r: RECTANGLE
-        b: WINDOW_ANIMATED
+        b: WINDOW_IMAGE
     do
         Precursor (w, where)
         !!background.make (Current, 0, 0, create {ANIMATION_FMA}.make (
             "client/connect-window/background.fma"))
-        !!b.make (background, 0, 0, create {ANIMATION_SEQUENTIAL}.make (
-            <<create {IMAGE_FMI}.make_from_file ("client/connect-window/background.fmi")>>
-        ))
+        !!b.make (background, 0, 0,
+            create {IMAGE_FMI}.make_from_file ("client/connect-window/background.fmi")
+        )
 
         -- Make entries
 -- take coordinates form data file

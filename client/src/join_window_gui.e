@@ -9,16 +9,17 @@ feature {NONE} -- Creation
     make (w: WINDOW; where: RECTANGLE) is
         -- Build GUI
     local
-        background: WINDOW_ANIMATED
+        bg: WINDOW_ANIMATED
+        background: WINDOW_IMAGE
         r: RECTANGLE
     do
         Precursor (w, where)
 
-        !!background.make (Current, 0, 0, create {ANIMATION_FMA}.make (
+        !!bg.make (Current, 0, 0, create {ANIMATION_FMA}.make (
             "client/connect-window/background.fma"))
-        !!background.make (Current, 0, 0, create {ANIMATION_SEQUENTIAL}.make (
-            <<create {IMAGE_FMI}.make_from_file ("client/join-window/background.fmi")>>
-        ))
+        !!background.make (Current, 0, 0,
+            create {IMAGE_FMI}.make_from_file ("client/join-window/background.fmi")
+        )
 
         r.set_with_size (75, 75, 150, 25)
         !!title_label.make (Current, r, "Connected to ~1~")
