@@ -2,7 +2,6 @@ class GALAXY_VIEW
     -- ews view for a GALAXY
 
 inherit
-    VIEW [C_GALAXY]
     WINDOW
         rename make as window_make
         redefine handle_event, redraw end
@@ -13,7 +12,10 @@ creation
 
 feature {NONE} -- Creation
 
-    make (w:WINDOW; where: RECTANGLE; new_model: C_GALAXY) is
+    galaxy: C_GALAXY
+        -- Model
+
+    make (w:WINDOW; where: RECTANGLE; new_galaxy: C_GALAXY) is
         -- build widget as view of `new_model'
     local
         a: FMA_FRAMESET
@@ -24,7 +26,11 @@ feature {NONE} -- Creation
         projs.put (create {PARAMETRIZED_PROJECTION}.make_identity, projs.lower)
         zoom := projs.lower
         -- Init view
-        set_model (new_model)
+        galaxy := new_galaxy
+        galaxy.fleets_change.connect (agent on_fleets_change)
+        galaxy.star_change.connect (agent on_star_change)
+        galaxy.map_change.connect (agent on_map_change)
+        
         window_make (w, where)
         -- Load images
         !!a.make ("client/galaxy-view/background.fma")
@@ -91,23 +97,36 @@ feature -- Operations
         end
     end
 
-feature -- Redefined features
+feature {NONE} -- Signal handlers
 
-    on_model_change is
-        -- Update gui
+    on_map_change (g: C_GALAXY) is
+    require
+        g = galaxy
     do
-        if model.changed_starlist then
-			if oldlimit = Void or else model.limit |-| oldlimit > 0 then
-				oldlimit := model.limit.twin
-				make_projs
-				get_limits
-			end
-            refresh
-        else
-            request_redraw_all
+        if oldlimit = Void or else galaxy.limit |-| oldlimit > 0 then
+            oldlimit := galaxy.limit.twin
+            make_projs
+            get_limits
         end
+        refresh
         dirty := True
     end
+
+    on_fleets_change (g: C_GALAXY) is
+        -- Update gui
+    do
+        request_redraw_all
+        dirty := True
+    end
+
+    on_star_change (s: C_STAR) is
+        -- Update gui
+    do
+        request_redraw_all
+        dirty := True
+    end
+
+feature -- Redefined features
 
     refresh is
         -- Regenerate cache, put blackhole animations
@@ -116,7 +135,7 @@ feature -- Redefined features
     do
         remove_blackholes
         -- Add blackholes
-        from i := model.get_new_iterator_on_stars
+        from i := galaxy.get_new_iterator_on_stars
         until i.is_off loop
             if i.item.kind = i.item.kind_blackhole then
                 draw_blackhole (i.item)
@@ -138,7 +157,7 @@ feature -- Redefined features
             -- Initialize hotspots
             background.show (cache, 0, 0)
             star_hotspots.clear
-            from star_it := model.get_new_iterator_on_stars
+            from star_it := galaxy.get_new_iterator_on_stars
             until star_it.is_off loop
                 if star_it.item.kind /= star_it.item.kind_blackhole then
                     draw_star (star_it.item)
@@ -146,7 +165,7 @@ feature -- Redefined features
                 star_it.next
             end
             fleet_hotspots.clear
-            from fleet_it := model.get_new_iterator_on_fleets
+            from fleet_it := galaxy.get_new_iterator_on_fleets
             until fleet_it.is_off loop
                 draw_fleet (fleet_it.item)
                 fleet_it.next
@@ -257,7 +276,7 @@ feature {NONE} -- Redrawing
 
 		if f.destination /= Void then
 			!!traj.with_projection(f, f.destination, current_projection)
-			if f.owner = model.server.player then
+			if f.owner = galaxy.server.player then
 				traj.set_type(traj.traj_type_normal)
 			else
 				traj.set_type(traj.traj_type_enemy)
@@ -321,7 +340,7 @@ feature {NONE} -- Event handlers
 		i := star_hotspots.item_at_xy(x, y)
 		if not i.is_off then
 			if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
-				fleet_window.send_selection_to(model.star_with_id (star_hotspots.fast_key_at(i.item)))
+				fleet_window.send_selection_to(galaxy.star_with_id (star_hotspots.fast_key_at(i.item)))
 			else
 				if star_window /= Void and then children.fast_has(star_window) then
 					r := star_window.location
@@ -334,13 +353,15 @@ feature {NONE} -- Event handlers
 					fleet_window.remove
 					cancel_trajectory_selection
 				end
-				!STAR_VIEW!star_window.make (Current, r, model.star_with_id (star_hotspots.fast_key_at(i.item)), model.server.game_status)
+				!STAR_VIEW!star_window.make (Current, r,
+					galaxy.star_with_id (star_hotspots.fast_key_at(i.item)),
+					galaxy.server.game_status)
 				star_window.set_fleet_click_handler(agent create_fleet_view)
 			end
 		else
 			i := fleet_hotspots.item_at_xy(x, y)
 			if not i.is_off then
-				create_fleet_view(model.fleet_with_id (fleet_hotspots.fast_key_at(i.item)))
+				create_fleet_view(galaxy.fleet_with_id (fleet_hotspots.fast_key_at(i.item)))
 			end
 		end
     end
@@ -373,7 +394,7 @@ feature {NONE} -- Event handlers
 			if trajectory_window /= Void then
 				trajectory_window.remove
 			end
-			!!traj.with_projection (model.star_with_id (star_hotspots.fast_key_at (i.item)), fleet_window.model_position, current_projection)
+			!!traj.with_projection (galaxy.star_with_id (star_hotspots.fast_key_at (i.item)), fleet_window.model_position, current_projection)
 			traj.set_type(traj.traj_type_select_ok)
 			!!trajectory_window.make(Current, traj.showx, traj.showy, traj)
 			trajectory_window.send_behind(fleet_window)
@@ -420,7 +441,7 @@ feature {NONE} -- Internal functions
     do
         p := current_projection.twin
         p.set_translation (0, 0)
-        p.project (model.limit)
+        p.project (galaxy.limit)
         limit_x := p.x
         limit_y := p.y
     end
@@ -605,7 +626,7 @@ feature {NONE} -- Internal configuration and constants
 -- Make this work right for non huge galaxies
         !!projs.make(0, 3)
         !!p.make_identity
-        p.project (model.limit)
+        p.project (galaxy.limit)
         !!p.make_simple ((width-2*gborder)/p.x, (height-2*gborder)/p.y, gborder, gborder)
         projs.put(p, 0)
         p := p.twin

@@ -7,8 +7,6 @@ inherit
     CLIENT
     GALAXY
         redefine last_star, last_fleet, make, add_fleet end
-    MODEL
-        redefine notify_views end
     SUBSCRIBER
 
 creation
@@ -19,7 +17,9 @@ feature {NONE} -- Creation
     make is
     do
         Precursor
-        make_model
+        create fleets_change.make
+        create star_change.make
+        create map_change.make
     end
 
 feature {SERVICE_PROVIDER} -- Subscriber callback
@@ -71,8 +71,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             count := count - 1
         end
         stars := new_stars
-        changed_starlist := True
-        notify_views
+        map_change.emit (Current)
     end
 
     unpack_scanner_message (msg: STRING) is
@@ -143,7 +142,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             count := count - 1
         end
         fleets := new_fleets
-        notify_views
+        fleets_change.emit (Current)
     end
 
     unpack_new_fleets_message (msg: STRING) is
@@ -177,31 +176,24 @@ feature -- Redefined features
         server.subscribe(new_fleet, "fleet" + new_fleet.id.to_string)
     end
 
+feature -- Signals
+
+    fleets_change: SIGNAL_1 [C_GALAXY]
+    
+    star_change: SIGNAL_1 [C_STAR]
+    
+    map_change: SIGNAL_1 [C_GALAXY]
+    
 feature -- Redefined features
 
     fleet_changed (fleet: C_FLEET) is
     do
-        changed_stardata := True
-        notify_views
+        fleets_change.emit (Current)
     end
     
     star_changed (star: C_STAR) is
     do
-        changed_stardata := True
-        notify_views
+        star_change.emit (star)
     end
     
-feature -- Notification
-
-    changed_starlist: BOOLEAN
-
-    changed_stardata: BOOLEAN
-
-    notify_views is
-    do
-        Precursor
-        changed_starlist := False
-        changed_stardata := False
-    end
-
 end -- class C_GALAXY
