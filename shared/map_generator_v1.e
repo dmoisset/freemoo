@@ -186,7 +186,7 @@ feature {NONE} -- Planet Generation
         from
             i := 1
         until
-            i > 5
+            i > star.Max_planets
         loop
             rand.next
             if rand.last_integer (100) <= planet_prob @ (star.kind) then
@@ -211,7 +211,7 @@ feature {NONE} -- Planet Generation
                       mnrl_ultrarich, grav_normalg, type_planet,
                       plspecial_nospecial)
         rand.next
-        orion_system.set_planet (orion, rand.last_integer (5))
+        orion_system.set_planet (orion, rand.last_integer (orion_system.Max_planets))
         orion_system.set_special (stspecial_orion)
         orion_system.set_name ("Orion")
         dont_touch.add (orion_system.id)
@@ -248,7 +248,7 @@ feature {NONE} -- Planet Generation
                             climate_terran, mnrl_abundant, grav_normalg,
                             type_planet, plspecial_nospecial)
             rand.next
-            hmworld_system.set_planet (hmworld, rand.last_integer (5))
+            hmworld_system.set_planet (hmworld, rand.last_integer (hmworld_system.Max_planets))
             hmworld_system.set_name (hmworldnams.item (i.item.color))
 -- should be create {COLONY}, but it doesn't work
             !!newcol.make (hmworld, i.item)

@@ -384,29 +384,29 @@ feature {NONE} -- Internal functions
     paint(r: RECTANGLE; star: STAR) is
         -- Colorizes `cache' within `r' according to colonies on `star'
     local
-        i, total, partial, fraction: INTEGER
+        total, partial, fraction: INTEGER
         partial_r: RECTANGLE
+        i: ITERATOR [PLANET]
     do
+        i := star.planets.get_new_iterator
         -- Count howmany Colonies there are
-        from i := 1
-        until i > 5 loop
-            if star.planets.item(i) /= Void and then star.planets.item(i).colony /= Void then
+        from i.start until i.is_off loop
+            if i.item /= Void and then i.item.colony /= Void then
                 total := total + 1
             end
-            i := i + 1
+            i.next
         end
         if total = 0 then
             cache.colorize (r, pals @ 8)
         else
             fraction := (r.width / total).ceiling
-            from i := 1
-            until i > 5 loop
-                if star.planets.item(i) /= Void and then star.planets.item(i).colony /= Void then
+            from i.start until i.is_off loop
+                if i.item /= Void and then i.item.colony /= Void then
                     partial_r.set_with_size(r.x + partial, r.y, fraction, r.height)
-                    cache.colorize (partial_r, pals@ (star.planets.item(i).colony.owner.color))
+                    cache.colorize (partial_r, pals @ (i.item.colony.owner.color))
                     partial := partial + fraction
                 end
-                i := i + 1
+                i.next
             end
         end
     end

@@ -105,6 +105,7 @@ feature -- Effective features
         ani: ANIMATION_FMA
         r: RECTANGLE
         tuple: TUPLE[INTEGER, INTEGER]
+        ip: ITERATOR[PLANET]
     do
         -- Redraw cache on next redraw
         dirty := True
@@ -132,9 +133,9 @@ feature -- Effective features
         if model.has_info then
         -- Show info for an known system
             name_label.set_text("Star System " + model.name)
-            from i := 1
-            until i > 5 loop
-                planet := model.planets.item(i)
+            from ip := model.planets.get_new_iterator
+            until ip.is_off loop
+                planet := ip.item
                 if planet /= Void and then planet.type /= type_asteroids then
                     if planet.type = type_gasgiant then
                         ani := gas_giant.twin
@@ -151,7 +152,7 @@ feature -- Effective features
                     button.set_click_handler(agent planet_click)
                     removable_children.add_last(button)
                 end
-                i := i + 1
+                ip.next
             end
         else
         --Show info for an unexplored system
@@ -171,6 +172,7 @@ feature -- Redefined features
         tuple: TUPLE[INTEGER, INTEGER]
         i: INTEGER
         fleet_it: ITERATOR[C_FLEET]
+        ip: ITERATOR[PLANET]
     do
         if dirty then
             dirty := False
@@ -181,35 +183,33 @@ feature -- Redefined features
     -- Sun
                 suns.item(model.kind - kind_min).blit(cache, 157, 120)
     -- Orbits / Asteroid Fields
-                from i := 1
-                until i > 5 loop
-                    if model.planets.item(i) /= Void then
-                        if model.planets.item(i).type = type_asteroids then
-									asteroids.images.item(i).blit(cache,
-											 29 + asteroids.positions.item(i).x,
-											 59 + asteroids.positions.item(i).y)
+                from ip := model.planets.get_new_iterator until ip.is_off loop
+                    if ip.item /= Void then
+                        i := ip.item.orbit
+                        if ip.item.type = type_asteroids then
+                            asteroids.images.item(i).blit(cache,
+                                29 + asteroids.positions.item(i).x,
+                                59 + asteroids.positions.item(i).y)
                         else
                             orbits.item(i).blit(cache, 29, 59)
                         end
                     end
-                    i := i + 1
+                    ip.next
                 end
     -- Planets
-                from i := 1
-                until i > 5 loop
-                    if model.planets.item(i) /= Void and then model.planets.item(i).colony /= Void then
-                        tuple := planet_pos(model.planets.item(i))
-                        colonies.item(model.planets.item(i).colony.owner.color).blit(cache, tuple.first - 15, tuple.second - 15)
+                from ip.start until ip.is_off loop
+                    if ip.item /= Void and then ip.item.colony /= Void then
+                        tuple := planet_pos (ip.item)
+                        colonies.item (ip.item.colony.owner.color).blit(cache, tuple.first - 15, tuple.second - 15)
                     end
-                    i := i + 1
+                    ip.next
                 end
             end
     -- Fleets
             from
                 fleet_it := model.fleets.get_new_iterator_on_items
                 i := fleet_pic_firstx
-            until fleet_it.is_off
-            loop
+            until fleet_it.is_off loop
                 fleets.item(fleet_it.item.owner.color).blit(cache, i, fleet_pic_y)
                 i := i + (fleets @ fleet_it.item.owner.color).width + fleet_pic_margin
                 fleet_it.next
@@ -223,11 +223,12 @@ feature -- Redefined features
     local
         b: EVENT_MOUSE_BUTTON
         m: EVENT_MOUSE_MOVE
-        tick: EVENT_TIMER
         i: INTEGER
+        tick: EVENT_TIMER
         x, y, angle: DOUBLE
         a: BOOLEAN
         it: ITERATOR[RECTANGLE]
+        ip: ITERATOR[PLANET]
     do
         if handle_ticks then
             tick ?= event
@@ -257,10 +258,11 @@ feature -- Redefined features
                 if m /= Void then
                     angle := ((m.y - 136.5) * 1.88).atan2(m.x - 173.5)
                     from
-                        i := 1
+                        ip := model.planets.get_new_iterator
                         a := False
-                    until i > 5 or a loop
-                        if model.planets @ i /= Void and then (model.planets @ i).type = type_asteroids then
+                        i := 0
+                    until ip.is_off or a loop
+                        if ip.item /= Void and then ip.item.type = type_asteroids then
                             y := br * (bi + i)
                             x := y * xm
                             y := cy + angle.sin * y
@@ -268,6 +270,7 @@ feature -- Redefined features
                             a := (x - m.x).abs < 4 and then (y - m.y).abs < 4
                         end
                         i := i + 1
+                        ip.next
                     end
                     if a /= in_asteroid_field then
                         in_asteroid_field := a
@@ -330,6 +333,7 @@ feature -- Once data
         i: INTEGER
         a: ANIMATION_FMA_TRANSPARENT
     once
+        -- Assuming STAR.Max_planets = 5
         !!Result.make(1, 5)
         from i := 1
         until i > 5 loop
@@ -474,7 +478,7 @@ feature {NONE} -- Internal
 
     orbit2planet_number(orbit:INTEGER):INTEGER is
     require
-        orbit.in_range(1, 5)
+        orbit.in_range(1, model.Max_planets)
     local
         i: INTEGER
     do
