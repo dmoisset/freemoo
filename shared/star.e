@@ -19,6 +19,7 @@ feature -- Access
 
     planets: ARRAY [PLANET]
         -- planets orbiting, from inner to outer orbit
+        -- has Void at empty orbits
 
     size: INTEGER
 

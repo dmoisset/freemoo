@@ -10,6 +10,7 @@ CLIENT MESSAGES
 34: Send setup info. Send a color, ruler name and race change request.
 35: Setup complete. Ready to begin game
 36: Chat. Say something to other(s) player.
+40: End of Turn. Report that player won't play anymore for this turn
     
   * Join
 
@@ -67,7 +68,19 @@ CLIENT MESSAGES
   8             destinations STRING   list of players who will receive message
   ...           message      STRING   message said
 
-  Chat state is update for receiving clients
+  Chat state is updated for receiving clients
+
+  * End of Turn
+
+  offset(bytes) name         type     Notes
+  0             msgtype      INTEGER  40
+  4             length       INTEGER  1
+  8             multiple     BOOLEAN  the player allows to pass several turns
+                                      until something interesting happens.
+
+  This produces a change of state in the player, to st_waiting_turn_end.
+  The client should wait until the player state gets again to
+  st_playing_turn.
 
 SERVER MESSAGES
 

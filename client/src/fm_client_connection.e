@@ -82,6 +82,16 @@ feature -- Operations
         subscribe (player_list, "players_list")
     end
 
+    end_turn (multiple: BOOLEAN) is
+        -- Notify server that player has finished_turn
+        -- if `multiple', player allows more than one turn to pass.
+    local
+        s: SERIALIZER
+    do
+        s.serialize ("b", <<multiple>>)
+        send_package (msgtype_turn, s.serialized_form)
+    end
+
     close is
     do
         if not remote_close then

@@ -1,5 +1,5 @@
 class DUMB_CLIENT
-    -- FreeMOO client for testing purposes (non-inteeractive)
+    -- FreeMOO client for testing purposes (non-interactive)
     -- Assumes that connections won't ail and things like that
 
 inherit
@@ -7,6 +7,7 @@ inherit
     PROTOCOL
     GETTEXT
     STRING_FORMATTER
+    PLAYER_CONSTANTS
 
 creation make
 
@@ -112,7 +113,13 @@ feature
     play is
     do
         print ("Playing now%N")
-        from until false loop server.get_data (-1) end
+        from until false loop
+            server.get_data (-1)
+            if server.player.state = st_playing_turn then
+                print ("Ending the turn%N")
+                server.end_turn (False)
+            end
+        end
     end
 
     cleanup is

@@ -32,6 +32,7 @@ feature -- Redefined features
     on_new_package (ptype: INTEGER) is
     local
         user, pass: STRING
+        multiple: reference BOOLEAN
         s: SERIALIZER
     do
         inspect
@@ -47,14 +48,11 @@ feature -- Redefined features
             pass ?= s.unserialized_form @ 2
             rejoin (user, pass)
         when msgtype_start then
-            if player = Void then
-                std_error.put_string (l("Client error. Player asked to start without login%N"))
-            elseif player.state /= st_setup then
-                std_error.put_string (format(l("Client error. Player ~1~ asked to start being in an invalid state.%N"),
-                                  <<player.name>>))
-            else
-                server.game.set_player_ready (player)
-            end
+            start
+        when msgtype_turn then
+            s.unserialize ("b", buffer)
+            multiple ?= s.unserialized_form @ 1
+            next_turn (multiple)
         else
             Precursor (ptype)
         end
@@ -134,6 +132,34 @@ feature {NONE} -- Operations: joining
             else
                 send_join_reject (reject_cause_alreadylog)
             end
+        end
+    end
+
+    start is
+        -- player ready to start game
+    do
+        if player = Void then
+            std_error.put_string (l("Client error. Player asked to start without login%N"))
+        elseif player.state /= st_setup then
+            std_error.put_string (format(l("Client error. Player ~1~ asked to start being in an invalid state.%N"),
+                              <<player.name>>))
+        else
+            server.game.set_player_ready (player)
+        end
+    end
+
+    next_turn (multiple: BOOLEAN) is
+        -- player finished turn. `multiple' iff player wants to let several
+        -- turns to pass
+    do
+        if player = Void then
+            std_error.put_string (l("Client error. Player asked to pass turn without login%N"))
+        elseif player.state /= st_playing_turn then
+            std_error.put_string (format(l("Client error. Player ~1~ asked to pass turn being in an invalid state.%N"),
+                              <<player.name>>))
+        else
+-- Use multiple somehow
+            server.game.end_turn (player)
         end
     end
 

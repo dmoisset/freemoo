@@ -60,14 +60,28 @@ feature -- Operations
 --FIXME: Start what has to start
             print ("gogogo!!%N")
             status.start
+            players.set_all_state (st_playing_turn)
         end
     end
 
-    add_player (p: PLAYER) is
-        -- Add `p' to player list
+    add_player (player: PLAYER) is
+        -- Add `player' to player list
     do
-        players.add (p)
+        players.add (player)
         status.fill_slot
+    end
+
+    end_turn (player: PLAYER) is
+    require
+        player /= Void
+        players.has (player.name)
+        not status.finished
+--        player.state = player.playing_turn
+    do
+        players.set_player_state (player, st_waiting_turn_end)
+        if players.all_in_state (st_waiting_turn_end) then
+            new_turn
+        end
     end
 
     new_turn is
@@ -79,6 +93,7 @@ feature -- Operations
         -- Bombardment/ground combat
         -- Colonization
         status.next_date
+        players.set_all_state (st_playing_turn)
     end
 
 feature {NONE} -- Internal
@@ -96,9 +111,9 @@ feature {NONE} -- Internal
     do
         from s := galaxy.stars.lower until s > galaxy.stars.upper loop
             star := galaxy.stars @ s
-            from p := star.planets.lower until s > star.planets.upper loop
+            from p := star.planets.lower until p > star.planets.upper loop
                 planet := star.planets @ p
-                if planet.colony /= Void then
+                if planet /= Void and then planet.colony /= Void then
                     planet.colony.new_turn
                 end
                 p := p + 1
@@ -110,9 +125,9 @@ feature {NONE} -- Internal
     move_fleets is
         -- Fleet movement
     local
-        i: ITERATOR [SHIP]
+        i: ITERATOR [FLEET]
     do
-        i := galaxy.ships.get_new_iterator_on_items
+        i := galaxy.fleets.get_new_iterator
         from i.start until i.is_off loop
             i.item.move
             i.next

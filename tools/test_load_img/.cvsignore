@@ -1,2 +1,4 @@
 .depend
 test_load_img
+test_load_anim
+*.fma

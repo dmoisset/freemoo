@@ -105,6 +105,22 @@ feature -- Operations
         p.state = new_state
     end
 
+    set_all_state (new_state: INTEGER) is
+        -- change state of all players to `new_state'
+    require
+        new_state.in_range (min_state, max_state)
+    local
+        i: ITERATOR [P]
+    do
+        i := items.get_new_iterator_on_items
+        from i.start until i.is_off loop
+            set_player_state (i.item, new_state)
+            i.next
+        end
+    ensure
+        all_in_state (new_state)
+    end
+
 feature {NONE} -- Representation
 
     items: DICTIONARY [P, STRING]

@@ -57,10 +57,11 @@ feature -- Operations
         when product_colony_ship then
             !COLONY_SHIP!sh
         end
-        if sh /= Void then -- Ship produced
-            location.add_ship (sh)
-            sh.enter_orbit (location.orbit_center)
-        end
+-- This should add to the local fleet. Fix
+--        if sh /= Void then -- Ship produced
+--            location.add_ship (sh)
+--            sh.enter_orbit (location.orbit_center)
+--        end
     end
 
 invariant
