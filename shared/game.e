@@ -140,7 +140,7 @@ feature {NONE} -- Internal
         f: ITERATOR [FLEET]
         fleet: FLEET
     do
-        s := galaxy.stars.get_new_iterator_on_items
+        s := galaxy.get_new_iterator_on_stars
         from s.start until s.is_off loop
             p := s.item.planets.get_new_iterator
             from p.start until p.is_off loop

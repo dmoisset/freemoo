@@ -48,7 +48,7 @@ feature {NONE} -- Internal
             i.next
         end
         -- Register stars
-        j := galaxy.stars.get_new_iterator_on_items
+        j := galaxy.get_new_iterator_on_stars
         from j.start until j.is_off loop
             server.register (j.item, "star"+j.item.id.to_string)
             j.next

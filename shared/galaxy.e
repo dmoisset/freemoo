@@ -77,13 +77,16 @@ feature -- Access
     scans: DICTIONARY [ARRAY [FLEET], INTEGER]
         -- Fleets scanned by each player
 
-    closest_star_to_or_within (c: COORDS; threshold: INTEGER; exclude: SET [STAR]): STAR is
+feature -- Access -- star list
+
+    closest_star_to_or_within (c: COORDS; threshold: INTEGER;
+                               exclude: SET [STAR]): like last_star is
         -- Star not in `exclude' within `threshold' of `c', or closest
         -- if not found.
     require
         c /= Void
     local
-        curs: ITERATOR[STAR]
+        curs: ITERATOR[like last_star]
         dist: REAL
     do
         dist := Maximum_real
@@ -103,12 +106,13 @@ feature -- Access
         -- Result |-| c < threshold or else Result is closest to c
     end
 
-    closest_star_to (c: COORDS; exclude: SET [STAR]): STAR is
+--reimplement with closest_star_or_within (...,0,...)
+    closest_star_to (c: COORDS; exclude: SET [STAR]): like last_star is
         -- Star closest to `c' not in `exclude'
     require
         c /= Void
     local
-        curs: ITERATOR[STAR]
+        curs: ITERATOR[like last_star]
         dist: REAL
     do
         dist := Maximum_real
@@ -127,7 +131,28 @@ feature -- Access
         -- Result is closest to c
     end
 
+    get_new_iterator_on_stars: ITERATOR [like last_star] is
+    do
+        Result := stars.get_new_iterator_on_items
+    end
+    
+    has_star (sid: INTEGER): BOOLEAN is
+        -- Is there a star with id `sid'?
+    do
+        Result := stars.has (sid)
+    end
+    
+    star_with_id (sid: INTEGER): like last_star is
+        -- Star with id `sid'
+    require
+        has_star (sid)
+    do
+        Result := stars @ sid
+    end
+
     last_star: STAR
+
+feature -- Access -- fleet list
 
     get_new_iterator_on_fleets: ITERATOR [FLEET] is
     do
@@ -191,7 +216,7 @@ feature -- Operations
         -- `destination'
     require
         fleet /= Void and destination /= Void and ships /= Void
-        stars.has (destination.id)
+        has_star (destination.id)
         has_fleet (fleet.id)
         not ships.is_empty
         -- ships.for_all (agent fleet.has_ship (?))
@@ -215,20 +240,18 @@ feature -- Operations
     join_fleets (s: STAR) is
         -- Join fleets at `s' sharing destination
     require
-        stars.has (s.id)
+        has_star (s.id)
     local
         fs: ARRAY [FLEET]
         sorter: COLLECTION_RELATION_SORTER [FLEET]
         i: INTEGER
         f, g: FLEET
     do
---        print ("Looking for fleets to join at "+s.name+"%N")
         -- Get and group fleets at s
         !!fs.with_capacity (s.fleets.count, 1)
         s.fleets.do_all (agent fs.add_last (?))
         sorter.set_order (agent fleet_ungrouping(?, ?))
         sorter.sort (fs)
---        print ("  Checking "+fs.count.to_string+" fleets %N")
         -- Join
         from i := fs.lower until i >= fs.upper loop -- >= instead of > because we compare each pair
             f := fs @ i
@@ -236,8 +259,6 @@ feature -- Operations
             if not fleet_ungrouping (f, g) then
                     check f.owner = g.owner end
                     check f.destination = g.destination end
---                print ("  Must join fleets "+f.id.to_string+
---                       " and "+g.id.to_string+"%N")
                 f.join (g)
                 fs.remove (i+1)
             else
@@ -302,7 +323,7 @@ feature -- Factory methods
 
 feature {MAP_GENERATOR} -- Generation
 
-    set_stars (starlist: DICTIONARY[STAR, INTEGER]) is
+    set_stars (starlist: like stars) is
     require
         starlist /= Void
     do
@@ -322,7 +343,7 @@ feature {MAP_GENERATOR} -- Generation
 
 feature {NONE} -- Representation
 
-    stars: DICTIONARY [STAR, INTEGER]
+    stars: DICTIONARY [like last_star, INTEGER]
         -- stars in the map, by id
 
     fleets: DICTIONARY [FLEET, INTEGER]

@@ -182,8 +182,8 @@ feature {NONE} -- Operations
             fleet := server.game.galaxy.fleet_with_id (u.last_integer)
         end
         u.get_integer
-        if server.game.galaxy.stars.has (u.last_integer) then
-            destination := server.game.galaxy.stars @ u.last_integer
+        if server.game.galaxy.has_star (u.last_integer) then
+            destination := server.game.galaxy.star_with_id (u.last_integer)
         end
         u.get_integer
         count := u.last_integer

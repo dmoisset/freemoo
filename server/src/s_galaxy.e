@@ -2,7 +2,7 @@ class S_GALAXY
 	
 inherit
     GALAXY
-	redefine stars, set_stars, make, last_star, create_fleet,
+	redefine set_stars, make, last_star, create_fleet,
 		add_fleet, generate_scans
 	end
 	SERVICE
@@ -32,7 +32,7 @@ feature -- Redefined features
     local
         s: SERIALIZER2
         id: INTEGER
-        star: ITERATOR [S_STAR]
+        star: ITERATOR [like last_star]
         reading: ARRAY [FLEET]
         fleet: ITERATOR [FLEET]
         ship: ITERATOR [SHIP]
@@ -132,7 +132,7 @@ feature -- Redefined features
 
 feature {MAP_GENERATOR} -- Generation
 
-    set_stars (starlist: DICTIONARY[S_STAR, INTEGER]) is
+    set_stars (starlist: like stars) is
     do
         stars := starlist
         update_clients
@@ -148,8 +148,6 @@ feature -- Redefined factory method
     end
 
 feature -- Access
-
-    stars: DICTIONARY[S_STAR, INTEGER]
 
     ids: SET[STRING]
 
