@@ -40,7 +40,7 @@ feature {NONE} -- Callbacks
         server.end_turn (False)
     end
 
-    game_menu, colonies, planets, fleets is
+    game_menu, colonies, planets, fleets, zoomin, zoomout, leaders, races, info is
     do
         print ("Not yet implemented%N")
     end

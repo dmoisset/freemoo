@@ -22,6 +22,11 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/main-window/colonies-button.fma \
                 $(INSTALL_DIR)/client/main-window/planets-button.fma \
                 $(INSTALL_DIR)/client/main-window/fleets-button.fma \
+                $(INSTALL_DIR)/client/main-window/zoomin-button.fma \
+                $(INSTALL_DIR)/client/main-window/zoomout-button.fma \
+                $(INSTALL_DIR)/client/main-window/leaders-button.fma \
+                $(INSTALL_DIR)/client/main-window/races-button.fma \
+                $(INSTALL_DIR)/client/main-window/info-button.fma \
                 $(INSTALL_DIR)/client/galaxy-view/star12.fma \
                 $(INSTALL_DIR)/client/galaxy-view/star11.fma \
                 $(INSTALL_DIR)/client/galaxy-view/star10.fma \
