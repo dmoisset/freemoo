@@ -82,6 +82,22 @@ feature -- Operations
         end
     end
 
+    zoom_in (x, y: INTEGER) is
+        -- zoom in, with (`x',`y') as fixed point
+    do
+        if zoom < projs.upper then
+            set_zoom (zoom+1, x, y)
+        end
+    end
+
+    zoom_out (x, y: INTEGER) is
+        -- zoom out, with (`x',`y') as fixed point
+    do
+        if zoom > projs.lower then
+            set_zoom (zoom-1, x, y)
+        end
+    end
+
 feature -- Redefined features
 
     on_model_change is
@@ -220,22 +236,6 @@ feature {NONE} -- Event handlers
         current_projection.set_translation (
             current_projection.dx.min (gborder).max (width - p.x - gborder),
             current_projection.dy.min (gborder).max (height - p.y - gborder))
-    end
-
-    zoom_in (x, y: INTEGER) is
-        -- zoom in, with (`x',`y') as fixed point
-    do
-        if zoom < projs.upper then
-            set_zoom (zoom+1, x, y)
-        end
-    end
-
-    zoom_out (x, y: INTEGER) is
-        -- zoom out, with (`x',`y') as fixed point
-    do
-        if zoom > projs.lower then
-            set_zoom (zoom-1, x, y)
-        end
     end
 
 feature {NONE} -- Internal

@@ -40,9 +40,18 @@ feature {NONE} -- Callbacks
         server.end_turn (False)
     end
 
-    game_menu, colonies, planets, fleets, zoomin, zoomout, leaders, races, info is
+    game_menu, colonies, planets, fleets, leaders, races, info is
     do
         print ("Not yet implemented%N")
     end
 
+    zoomin is
+    do
+        galaxy.zoom_in (galaxy.width//2, galaxy.height//2)
+    end
+
+    zoomout is
+    do
+        galaxy.zoom_out (galaxy.width//2, galaxy.height//2)
+    end
 end -- class MAIN_WINDOW
