@@ -41,6 +41,7 @@ feature {SERVICE_PROVIDER} -- Redefined features
     do
         newmsg := msg
 
+        has_been_visited := True
         s.unserialize ("si", newmsg)
         name ?= s.unserialized_form @ 1
         ir ?= s.unserialized_form @ 2
@@ -79,5 +80,9 @@ feature {SERVICE_PROVIDER} -- Redefined features
         planets := new_planets
         notify_views
     end
+
+feature -- Accounting
+
+    has_been_visited: BOOLEAN
 
 end -- class C_STAR

@@ -43,9 +43,8 @@ feature {NONE} -- Creation
 feature -- Access, some will be moved to internal.
     background: IMAGE
 
-
     is_inside: BOOLEAN
-        --True while mouse cursor is inside `my_window'
+        --True while mouse cursor is inside my window
 
     star_window: WINDOW
         -- Window used to display a system, Void if none is being shown
@@ -93,7 +92,6 @@ feature -- Redefined features
         request_redraw_all
     end
 
-
     redraw(r: RECTANGLE) is
     local
         i: ITERATOR[C_STAR]
@@ -122,6 +120,10 @@ feature -- Redefined features
         m: EVENT_MOUSE_MOVE
         b: EVENT_MOUSE_BUTTON
         p: PARAMETRIZED_PROJECTION
+        i: ITERATOR[C_STAR]
+        r: RECTANGLE
+        s: STAR_VIEW
+        found: BOOLEAN
     do
         Precursor (event)
         if not event.handled then
@@ -138,10 +140,18 @@ feature -- Redefined features
             end
             b ?= event
             if b /= Void then
-                if b.button = 1 and b.state then
+                if b.button = 1 and not b.state then
                     event.set_handled
-                elseif b.button = 1 and not b.state then
-                    event.set_handled
+                    from i := model.stars.get_new_iterator
+                    until i.is_off or found loop
+                        projs.item(zoom).project(i.item)
+                        if (projs.item(zoom).x - b.x).abs < 4 + 2 * zoom and (projs.item(zoom).y - b.y).abs < 3 then
+                            r.set_with_size (40, 40, 347, 273)
+                            !!s.make (parent, r, i.item)
+                            found := True
+                        end
+                        i.next
+                    end
                 elseif b.button = 3 and not b.state then
                     event.set_handled
                     p := projs.item(zoom).twin
