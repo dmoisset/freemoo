@@ -22,8 +22,4 @@ feature {NONE} -- Valid options and values
         !!Result.make
     end
 
-invariant
-    enum_options.count = enum_options_names.count
-    status.in_range (st_ok, st_last-1)
-
 end -- class CLIENT_OPTIONS
