@@ -32,8 +32,15 @@ feature -- Operations
 feature {NONE} -- Internal
 
     init_game is
+    local
+        i: ITERATOR [S_PLAYER]
     do
-        server.register_galaxy
+        server.register (galaxy, "galaxy")
+        i := players.get_new_iterator
+        from i.start until i.is_off loop
+            server.register (galaxy, i.item.id.to_string+":scanner")
+            i.next
+        end
     end
 
 end -- class S_GAME

@@ -220,7 +220,7 @@ feature {NONE} -- Planet Generation
     place_homeworlds(starlist: DICTIONARY[STAR, INTEGER]; players: PLAYER_LIST[PLAYER]) is
     local
         hmworldnams: ARRAY[STRING]
-        i: ITERATOR_ON_COLLECTION[STRING]
+        i: ITERATOR [PLAYER]
         hmworldpos: COORDS
         step, offset: REAL
         done: INTEGER
@@ -237,12 +237,11 @@ feature {NONE} -- Planet Generation
         step := perimeter / players.count
         rand.next
         offset := rand.last_real * step
+        i := players.get_new_iterator
         from
             done := 0
-            !!i.make (players.names)
-        until
-            i.is_off
-        loop
+            i.start
+        until i.is_off loop
             hmworldpos := walk_point (step * done + offset)
             hmworld_system := closest_star_to (hmworldpos, starlist)
             !!hmworld.make (hmworld_system, plsize_medium,
@@ -250,7 +249,7 @@ feature {NONE} -- Planet Generation
                             type_planet, plspecial_nospecial)
             rand.next
             hmworld_system.set_planet (hmworld, rand.last_integer (5))
-            hmworld_system.set_name (hmworldnams.item ((players @ (i.item)).color_id))
+            hmworld_system.set_name (hmworldnams.item (i.item.color_id))
 -- should be create {COLONY}, but it doesn't work
             !!newcol.make (hmworld_system.planets.item(rand.last_integer (5)), players @ (i.item))
             done := done + 1
