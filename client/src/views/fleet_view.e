@@ -1,12 +1,7 @@
 --TODO:
---Auto Shrink With small fleets
---color the scrollbar trough
---implement scrollbar
---implement selection
---implement the "all" button
 --show destination or orbit center in the title
 --handle special cases (monsters, guardian)
-
+--handle commands (colonize planet, download troops)
 
 class FLEET_VIEW
 	 --ews class view for a FLEET
@@ -87,9 +82,9 @@ feature {NONE} -- Creation
 		  !!scrollbar.make(Current, r, create {SDL_SOLID_IMAGE}.make(0, 0, 30, 30, 250))
 		  scrollbar.set_first_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 1, scrollbar_img @ 2)
 		  scrollbar.set_second_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 4, scrollbar_img @ 5)
-		  scrollbar.set_limits(0, model.ship_count, 0)
+		  scrollbar.set_limits(0, (model.ship_count - 1) // 3 + 1, 0)
 		  scrollbar.set_increments(1, 3)
-		  r.set_with_size(2, 28, 9, 110)
+		  r.set_with_size(2, 28, 9, 100)
 		  scrollbar.set_trough(r)
 		  scrollbar.set_value(0)
 		  scrollbar.set_change_handler(agent scrollbar_handler)
@@ -219,9 +214,15 @@ feature {NONE} -- Internal features
 		from i := 0
 		until i = 9
 		loop
-			if i + scrollbar.value <= ships.upper then
-				i1 := get_ship_pic(model.owner.color, ships.item(i).creator.color, ships.item(i).size, ships.item(i).picture, false)
-				i2 := get_ship_pic(model.owner.color, ships.item(i).creator.color, ships.item(i).size, ships.item(i).picture, true)
+			if i + scrollbar.value * 3 <= ships.upper then
+				i1 := get_ship_pic(model.owner.color,
+								   ships.item(i).creator.color,
+								   ships.item(i).size,
+								   ships.item(i).picture, false)
+				i2 := get_ship_pic(model.owner.color,
+								   ships.item(i).creator.color,
+								   ships.item(i).size,
+								   ships.item(i).picture, true)
 				toggles.item(i).set_normal_image(i1)
 				toggles.item(i).set_prelight_image(i1)
 				toggles.item(i).set_pressed_image(i2)
@@ -229,8 +230,8 @@ feature {NONE} -- Internal features
 				toggles.item(i).set_prelight_active_image(i2)
 				toggles.item(i).set_pressed_active_image(i1)
 				toggles.item(i).show
-				toggles.item(i).set_click_handler(agent toggle_ship_selection(ships@(i+scrollbar.value)))
-				toggles.item(i).set_active(fleet_selection.has(ships@(i+scrollbar.value)))
+				toggles.item(i).set_click_handler(agent toggle_ship_selection(ships@(i + 3 * scrollbar.value)))
+				toggles.item(i).set_active(fleet_selection.has(ships@(i + 3 * scrollbar.value)))
 			else
 				toggles.item(i).hide
 			end
@@ -287,7 +288,7 @@ feature {MODEL} -- Effective features
 		end
 		
 		scrollbar.set_value(0);
-		scrollbar.set_limits(0, ships.count, ships.count.min(9));
+		scrollbar.set_limits(0, (ships.count - 1) // 3 + 1, ((ships.count - 1) // 3 + 1).min(3));
 		
 		update_window_size
 		select_none
