@@ -57,6 +57,8 @@ feature -- redefined features
         planet: PLANET
         x, y: DOUBLE
         ani: ANIMATION_FMA
+        msg_label: MULTILINE_LABEL
+        r: RECTANGLE
     do
         from child := removable_children.get_new_iterator
         until child.is_off
@@ -94,6 +96,12 @@ feature -- redefined features
             end
         else
             name_label.set_text(model.kind_names @ model.kind)
+            r.set_with_size (58, 95, 240, 100)
+            !!msg_label.make (Current, r, starmsgs @ model.kind)
+            msg_label.set_justify(false)
+            msg_label.set_wordwrap(true)
+            msg_label.set_h_alignment (0.5)
+            removable_children.add_last(msg_label)
         end
     end
 
@@ -181,6 +189,27 @@ feature -- Once data
             Result.put(a.item, i)
             a.next
             i := i + 1
+        end
+    end
+
+    starmsgs: ARRAY[STRING] is
+    local
+        file: INPUT_STREAM
+        p: PKG_USER
+        i: INTEGER
+    once
+        p.pkg_system.open_file ("client/star-view/starmsgs.txt")
+        file := p.pkg_system.last_file_open
+        if file = Void then
+            print ("Error opening file client/star-view/starmsgs.txt%N")
+        else
+            !!Result.make(1, 6)
+            from i := 1
+            until i > 6 loop
+                file.read_line
+                Result.put(file.last_string.twin, i)
+                i := i + 1
+            end
         end
     end
 
