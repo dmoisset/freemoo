@@ -15,7 +15,7 @@ feature -- Operations
         -- Store homeworld for each player in `homeworlds'
     require
         galaxy /= Void
-        fresh_galaxy: galaxy.stars.count = 0
+--        fresh_galaxy: galaxy.stars.count = 0
         players /= Void
     deferred
     ensure

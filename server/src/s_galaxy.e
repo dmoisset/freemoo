@@ -2,7 +2,7 @@ class S_GALAXY
 	
 inherit
     GALAXY
-	redefine stars, set_stars, make, create_star, create_fleet,
+	redefine stars, set_stars, make, last_star, create_fleet,
 		add_fleet, generate_scans
 	end
 	SERVICE
@@ -138,12 +138,9 @@ feature {MAP_GENERATOR} -- Generation
         update_clients
     end
 
+    last_star: S_STAR
+    
 feature -- Redefined factory method
-
-    create_star:S_STAR is
-    do
-        !!Result.make_defaults
-    end
 
     create_fleet:S_FLEET is
     do

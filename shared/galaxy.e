@@ -15,9 +15,6 @@ feature {NONE} -- Creation
 
 feature -- Access
 
-    stars: DICTIONARY [STAR, INTEGER]
-        -- stars in the map, by id
-
     fleets: DICTIONARY [FLEET, INTEGER]
         -- All fleets in space
 
@@ -82,6 +79,58 @@ feature -- Access
 
     scans: DICTIONARY [ARRAY [FLEET], INTEGER]
         -- Fleets scanned by each player
+
+    closest_star_to_or_within (c: COORDS; threshold: INTEGER; exclude: SET [STAR]): STAR is
+        -- Star not in `exclude' within `threshold' of `c', or closest
+        -- if not found.
+    require
+        c /= Void
+    local
+        curs: ITERATOR[STAR]
+        dist: REAL
+    do
+        dist := Maximum_real
+        from
+            curs := stars.get_new_iterator_on_items
+        until
+            curs.is_off or dist < threshold
+        loop
+            if not exclude.has (curs.item) and (curs.item |-| c) <= dist then
+                dist := curs.item |-| c
+                Result := curs.item
+            end
+            curs.next
+        end
+    ensure
+        not exclude.has (Result)
+        -- Result |-| c < threshold or else Result is closest to c
+    end
+
+    closest_star_to (c: COORDS; exclude: SET [STAR]): STAR is
+        -- Star closest to `c' not in `exclude'
+    require
+        c /= Void
+    local
+        curs: ITERATOR[STAR]
+        dist: REAL
+    do
+        dist := Maximum_real
+        from
+            curs := stars.get_new_iterator_on_items
+        until
+            curs.is_off
+        loop
+            if not exclude.has (curs.item) and (curs.item |-| c) <= dist then
+                dist := curs.item |-| c
+                Result := curs.item
+            end
+            curs.next
+        end
+    ensure
+        -- Result is closest to c
+    end
+
+    last_star: STAR
 
 feature -- Operations
 
@@ -222,9 +271,12 @@ feature {NONE} -- Auxiliar
 
 feature -- Factory methods
 
-    create_star:STAR is
+    create_star is
+        -- Build a star with proper dynamic type, add it to galaxy and
+        -- Store it into last_star.
     do
-        !!Result.make_defaults
+        !!last_star.make_defaults
+        stars.add (last_star, last_star.id)
     end
 
     create_fleet:FLEET is
@@ -251,6 +303,11 @@ feature {MAP_GENERATOR} -- Generation
     ensure
         limit = l
     end
+
+feature {NONE} -- Representation
+
+    stars: DICTIONARY [STAR, INTEGER]
+        -- stars in the map, by id
 
 invariant
     stars /= Void

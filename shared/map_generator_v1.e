@@ -197,12 +197,12 @@ feature {NONE} -- Planet Generation
         end
     end
 
-    place_orion (starlist: DICTIONARY[STAR, INTEGER]) is
+    place_orion (galaxy: GALAXY) is
     local
         orion_system: STAR
         orion: PLANET
     do
-        orion_system := closest_star_to_or_within (center, 8, starlist)
+        orion_system := galaxy.closest_star_to_or_within (center, 8, dont_touch)
         !!orion.make (orion_system, plsize_huge, climate_gaia,
                       mnrl_ultrarich, grav_normalg, type_planet,
                       plspecial_nospecial)
@@ -215,10 +215,10 @@ feature {NONE} -- Planet Generation
 		loop orion_system.set_kind(star_kinds.random_item)
 		end
         orion_system.set_name ("Orion")
-        dont_touch.add (orion_system.id)
+        dont_touch.add (orion_system)
     end
 
-    place_homeworlds(starlist: DICTIONARY[STAR, INTEGER]; players: PLAYER_LIST[PLAYER]) is
+    place_homeworlds(galaxy: GALAXY; players: PLAYER_LIST[PLAYER]) is
     local
         hmworldnams: ARRAY[STRING]
         i: ITERATOR [PLAYER]
@@ -244,7 +244,7 @@ feature {NONE} -- Planet Generation
             i.start
         until i.is_off loop
             hmworldpos := walk_point (step * done + offset)
-            hmworld_system := closest_star_to (hmworldpos, starlist)
+            hmworld_system := galaxy.closest_star_to (hmworldpos, dont_touch)
             !!hmworld.make (hmworld_system, plsize_medium,
                             climate_terran, mnrl_abundant, grav_normalg,
                             type_planet, plspecial_nospecial)
@@ -260,54 +260,8 @@ feature {NONE} -- Planet Generation
             i.item.add_to_known_list (hmworld_system)
             i.item.add_to_visited_list (hmworld_system)
             done := done + 1
-            dont_touch.add (hmworld_system.id)
+            dont_touch.add (hmworld_system)
             i.next
-        end
-    end
-
-feature{NONE} -- Internal
-
-    closest_star_to (c: COORDS; starlist: DICTIONARY[STAR, INTEGER]): STAR is
-    require
-        c /= Void
-    local
-        curs: ITERATOR[STAR]
-        dist: REAL
-    do
-        dist := Maximum_real
-        from
-            curs := starlist.get_new_iterator_on_items
-        until
-            curs.is_off
-        loop
-            if curs.item /= Void and then
-            ((not dont_touch.has (curs.item.id)) and (curs.item |-| c) <= dist) then
-                dist := curs.item |-| c
-                Result := curs.item
-            end
-            curs.next
-        end
-    end
-
-    closest_star_to_or_within (c: COORDS; threshold: INTEGER; starlist: DICTIONARY[STAR, INTEGER]): STAR is
-    require
-        c /= Void
-    local
-        curs: ITERATOR[STAR]
-        dist: REAL
-    do
-        dist := Maximum_real
-        from
-            curs := starlist.get_new_iterator_on_items
-        until
-            curs.is_off or dist < threshold
-        loop
-            if curs.item /= Void and then
-            ((not dont_touch.has (curs.item.id)) and (curs.item |-| c) <= dist) then
-                dist := curs.item |-| c
-                Result := curs.item
-            end
-            curs.next
         end
     end
 
@@ -318,7 +272,6 @@ feature -- Operation
         starposs: ARRAY[COORDS]
         starnams: ARRAY[STRING]
         i: INTEGER
-        newstar: STAR
         planets: ARRAY[PLANET]
     do
         galaxy.set_limit(limit)
@@ -334,21 +287,20 @@ feature -- Operation
             i > starposs.upper
         loop
             rand.next
-            newstar := galaxy.create_star
-            newstar.move_to(starposs @ i)
-            newstar.set_name(starnams @ i)
-            newstar.set_kind(star_kinds.random_item)
-            newstar.set_size(star_sizes.random_item)
-            make_planets_on (newstar)
-            galaxy.stars.add(newstar, newstar.id)
+            galaxy.create_star
+            galaxy.last_star.move_to(starposs @ i)
+            galaxy.last_star.set_name(starnams @ i)
+            galaxy.last_star.set_kind(star_kinds.random_item)
+            galaxy.last_star.set_size(star_sizes.random_item)
+            make_planets_on (galaxy.last_star)
             i := i + 1
         end
         print ("Placing Orion%N")
-        place_orion (galaxy.stars)
+        place_orion (galaxy)
 
         print ("Placing HomeWorlds%N")
         !!homeworlds.make (1, players.count)
-        place_homeworlds (galaxy.stars, players)
+        place_homeworlds (galaxy, players)
     end
 
 feature {NONE} -- Implementation
@@ -410,7 +362,7 @@ feature {NONE} -- Implementation
         end
     end
 
-    dont_touch: SET[INTEGER]
+    dont_touch: SET [STAR]
         -- Stars that souldn't be modified any more, thank you.
 
 feature{NONE} -- Internal Constants
