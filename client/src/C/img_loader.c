@@ -424,6 +424,8 @@ FMA_t *load_anim (FILE *f)
 //        printf("RLE 16 bit images\n");
         loadpix = loadPixels_rle16;
         break;
+    default:
+        return 0;
     }
 
     for(imgfing = 0; imgfing < imgcount[0]; imgfing++)
