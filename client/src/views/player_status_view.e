@@ -82,7 +82,7 @@ feature {NONE} -- Implementation
         until
             i > Result.upper
         loop
-            Result.put (create {ANIMATION_FMA}.make ("client/player-status/light" + i.to_string + ".fma"), i)
+            Result.put (create {ANIMATION_FMA}.make ("client/player-status-view/light" + i.to_string + ".fma"), i)
             i := i + 1
         end
     end
