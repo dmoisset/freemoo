@@ -83,7 +83,7 @@ feature -- Operations
         subscribe (player_list, "players_list")
     end
 
-    suscribe_init is
+    subscribe_init is
         -- subscribe to services provided on beginning
     do
         subscribe (galaxy, "galaxy")

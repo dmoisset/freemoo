@@ -49,9 +49,9 @@ feature -- Redefined features
         ww: WINDOW
     do
         !!p.make_identity
-        p.translate(30, 350)
-        p.scale(15, 5)
-        p.rotate(.7)
+        p.scale(12, 12)
+        p.translate(20, 20)
+--        p.rotate(.7)
         from i := model.stars.get_new_iterator
         until i.is_off
         loop

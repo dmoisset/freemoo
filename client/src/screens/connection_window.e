@@ -117,7 +117,6 @@ feature {NONE} -- Callbacks
             if server.has ("game_status") and
                server.has ("players_list") then
                 set_state (st_joining)
-                server.subscribe_base
             end
         when st_joining then
             if server.is_joined then
@@ -172,9 +171,9 @@ feature {NONE} -- Internal
             background.show
             if server /= Void then
                 status_label.set_text (l("Connection to server lost."))
-                if setup_window /= Void then setup_window.hide end
-                if join_window /= Void then join_window.hide end
-                if main_window /= Void then main_window.hide end
+                safe_hide (setup_window)
+                safe_hide (join_window)
+                safe_hide (main_window)
             end
             connect_button.show
             status_bar.deactivate
@@ -186,22 +185,24 @@ feature {NONE} -- Internal
         when st_waiting_info then
             status_label.set_text (l("Waiting for server data..."))
         when st_joining then
+            server.subscribe_base
             if join_window=Void then
                 !!join_window.make (Current, display.dimensions)
             end
             background.hide
             join_window.activate
         when st_preparing then
+            safe_hide(join_window)
             if setup_window=Void then
                 !!setup_window.make (Current, display.dimensions)
             end
-            background.hide
             setup_window.activate
         when st_playing then
+            safe_hide (setup_window)
+            server.subscribe_init
             if main_window=Void then
                 !!main_window.make (Current, display.dimensions)
             end
-            background.hide
             main_window.activate
         end
     end
@@ -224,6 +225,14 @@ feature {NONE} -- Dialogs
     setup_window: SETUP_WINDOW
 
     main_window: MAIN_WINDOW
+
+    safe_hide (w: WINDOW) is
+        -- Hide `w' if `w' is not Void
+    do
+        if w /= Void then
+            w.hide
+        end
+    end
 
 feature {NONE} -- External
 
