@@ -46,13 +46,15 @@ static int loadPalette (SDL_RWops *src, Uint32 *palette)
 /* Used for loading 8bit plain images and animations */
 static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
-    Uint8 filebuffer [w * h];   /* Input file buffer */
+    Uint8 *filebuffer;          /* Input file buffer */
     Uint32 filefing,            /* Finger into file */
            scanline = 0,        /* Offset within s->pixels to previous beginning of scanline */
            offset = 0;          /* Absolute offset within s->pixels */
 
     /* Set Surface flags */
     SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
+
+    filebuffer = (Uint8*) malloc (sizeof(Uint8) * w * h);
 
 /* Load file into buffer */
     SDL_RWread(src, &filebuffer, 1, w * h);
@@ -72,13 +74,14 @@ static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, 
             scanline = offset;
         }
     }
+    free (filebuffer);
 }
 
 
 static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
     int initial_pos;           /* Initial Position in RWOps */
-    Uint8 filebuffer [w * h];  /* Input file buffer */
+    Uint8 *filebuffer;         /* Input file buffer */
     Uint32 tcount,             /* Tuple count */
            tlfing,             /* Tuple List Finger */
            filefing = 0,       /* Byte offset indicator within file */
@@ -91,6 +94,8 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
 
     /* Set Surface flags */
     SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
+
+    filebuffer = (Uint8*) malloc (sizeof(Uint8) * w * h);
 
     SDL_RWread(src, &tcount, 4, 1);
 
@@ -143,10 +148,12 @@ static void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette,
            size,              /* size = w * h; */
            offset = 0,        /* Absolute Offset within s->pixels */
            scanline = 0;      /* Offset within s->pixels to previous begining of scanline */
-    Uint8 filebuffer[3*w*h];  /* Input file buffer */
+    Uint8 *filebuffer;  /* Input file buffer */
 
 
     size=w*h;
+
+    filebuffer = (Uint8*) malloc (sizeof(Uint8) * 3 * size);
 
     SDL_RWread(src, &filebuffer, 3, w*h);
     SDL_LockSurface(s);
@@ -177,7 +184,7 @@ static void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette,
 static void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
     int initial_pos;                /* Initial Position in RWOps */
-    Uint8 filebuffer[w * h * 3];    /* Input file buffer */
+    Uint8 *filebuffer;              /* Input file buffer */
     Uint32 tlfing,                  /* Tuple List cursor */
            filefing = 4,            /* Finger to position inside Input file */
            imgfing = 0,             /* Pixel offset in image */
@@ -187,6 +194,8 @@ static void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, I
            tupfing;                 /* Finger to follow Tuple */
 
     initial_pos = SDL_RWtell(src);
+
+    filebuffer = (Uint8*) malloc (sizeof(Uint8) * 3 * w * h);
 
     SDL_RWread(src, &filebuffer, 1, 3*w*h);
 
@@ -403,25 +412,25 @@ FMA_t *load_anim (FILE *f)
     switch(magic)
     {
     case 0x38494e41:
-//        printf("Plain 8 bit images\n");
+/*        printf("Plain 8 bit images\n"); */
         loadpix = loadPixels_plain8;
         usecolorkey = 1 ;
         if (loadPalette(src, palette))
             return NULL;
         break;
     case 0x38414c52:
-//        printf("RLE 8 bit images\n");
+/*        printf("RLE 8 bit images\n"); */
         loadpix = loadPixels_rle8;
         usecolorkey = 1 ;
         if (loadPalette(src, palette))
             return NULL;
         break;
     case 0x36494e41:
-//        printf("Plain 16 bit images\n");
+/*        printf("Plain 16 bit images\n"); */
         loadpix = loadPixels_plain16;
         break;
     case 0x36414c52:
-//        printf("RLE 16 bit images\n");
+/*        printf("RLE 16 bit images\n"); */
         loadpix = loadPixels_rle16;
         break;
     default:
@@ -431,7 +440,7 @@ FMA_t *load_anim (FILE *f)
     for(imgfing = 0; imgfing < imgcount[0]; imgfing++)
     {
         SDL_RWread (src, delta_n_size, 2, 4);
-//        printf("Loading %dx%d image displaced %dx%d...\n", delta_n_size[2], delta_n_size[3], delta_n_size[0], delta_n_size[1]);
+/*        printf("Loading %dx%d image displaced %dx%d...\n", delta_n_size[2], delta_n_size[3], delta_n_size[0], delta_n_size[1]);*/
         if (usecolorkey)
             answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCCOLORKEY|SDL_RLEACCEL,
                                          delta_n_size[2], delta_n_size[3], 16, 0xf800, 0x07e0, 0x001f, 0);
