@@ -35,7 +35,9 @@ static int loadPalette (SDL_RWops *src, Uint32 *palette)
       usedcolor[color] = 1 ;
   }
   if (palcount[0]) { /* Transparent image */
+    /* Find a free color. They will be one by pigeon-hole theorem */
     for (i=0; usedcolor[i]; i++) ;
+    /* Set the color key to the free color */
     palette[0xff] = i ;
   }
   return 0;
@@ -86,10 +88,12 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
     scanline=0,        /* Offset within s->pixels to last beginning of scanline */
     pixel;             /* Current pixel value */
   Uint8 tupfing;       /* Tuple cursor */
+  int res = 0 ;
 
 
   /* Set Surface flags */
-  SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
+  res = SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
+  assert (res==0) ;
 
   SDL_RWread(src, &tcount, 4, 1);
     
