@@ -336,8 +336,13 @@ SDL_Surface *FMI_Load(FILE* fp)
   SDL_RWread (src, &width, sizeof (width), 1);
   SDL_RWread (src, &height, sizeof (height), 1);
 
-  surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 24, 0xf80000,
-				 0x07e000, 0x001f00, 0x0000ff);
+  if (magic>>24=='8')
+      surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCCOLORKEY|SDL_RLEACCEL,
+                                   width, height, 16, 0xf800, 0x07e0, 0x001f, 0);
+  else
+      surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCALPHA,
+                                   width, height, 24, 0xf80000, 0x07e000, 0x001f00, 0x0000ff);
+
   if (!surface)
     return 0;
 

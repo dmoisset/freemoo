@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     surface = FMI_Load(fp);
     assert (surface!=NULL) ;
 
-    /* Fill scren backgroiund with some solid color */
+    /* Fill scren background with some solid color */
     SDL_FillRect (screen, NULL, SDL_MapRGB (screen->format, 0,0,128) ) ;
 
     SDL_BlitSurface(surface, 0, screen, 0);
