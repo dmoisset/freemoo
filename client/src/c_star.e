@@ -4,18 +4,24 @@ class C_STAR
 
 inherit
     STAR
-        redefine make end
+        redefine make, make_defaults end
     MODEL
     SUBSCRIBER
 
 creation
-    make
+    make, make_defaults
 
 feature {NONE} -- Creation
 
     make (p:POSITIONAL; n:STRING; k:INTEGER; s:INTEGER) is
     do
         Precursor (p, n, k, s)
+        make_model
+    end
+
+    make_defaults is
+    do
+        Precursor
         make_model
     end
 

@@ -1,10 +1,20 @@
-deferred class SHIP
+class SHIP
     -- base class for SHIPs
 
 inherit
     SHIP_CONSTANTS
     UNIQUE_ID
     HASHABLE
+
+creation make
+
+feature {NONE} -- Creation
+
+    make is
+    do
+        size := 1
+        make_unique_id
+    end
 
 feature -- Hashing function
     hash_code: INTEGER is

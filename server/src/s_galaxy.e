@@ -2,9 +2,20 @@ class S_GALAXY
 
 inherit
     GALAXY
-        redefine stars, set_stars end
+        redefine stars, set_stars, make, create_star end
+    IDMAP_ACCESS
     SERVICE
         redefine subscription_message end
+
+creation make
+
+feature {NONE} -- Creation
+
+    make is
+    do
+        Precursor
+        !!ids.make
+    end
 
 feature -- Redefined features
     subscription_message (service_id: STRING):STRING is
@@ -17,39 +28,44 @@ feature -- Redefined features
     local
         s: SERIALIZER
         id: INTEGER
+        star: ITERATOR[S_STAR]
         reading: ARRAY[FLEET]
         fleet: ITERATOR[FLEET]
         ship: ITERATOR[SHIP]
+        player: PLAYER
     do
 -- If first subscription to `service_id', add to `ids'
         ids.add(service_id)
 
-        if service_id = "galaxy" then
+        if service_id.is_equal("galaxy") then
 -- Public "galaxy" service
             !!Result.make (0)
             s.serialize ("i", <<stars.count>>)
             Result.append (s.serialized_form)
             from
-                id := 0
+                star := stars.get_new_iterator
             until
-                id >= stars.count
+                star.is_off
             loop
-                s.serialize ("iii", <<id, (stars @ id).kind - (stars @ id).kind_min,
-                                      (stars @ id).size - (stars @ id).stsize_min>>)
-                Result.append ((stars @ id).serial_form)
-                id := id + 1
+                s.serialize ("iii", <<star.item.id, star.item.kind - star.item.kind_min,
+                                      star.item.size - star.item.stsize_min>>)
+                Result.append (s.serialized_form)
+                Result.append (star.item.serial_form)
+                star.next
             end
-        elseif (service_id.count = 9) and then service_id.has_suffix(":scanner") and then service_id.item(1).is_digit then
+        elseif service_id.has_suffix(":scanner") and then
+                service_id.substring(1, service_id.count - 8).is_integer then
 -- Per player "n:scanner" service
-            id := (service_id @ 1).to_integer
-            reading := scanner(id)
+            id := service_id.substring(1, service_id.count - 8).to_integer
+            player ?= idmap @ id
+            reading := scanner(player)
             !!Result.make (0)
             s.serialize ("i", <<reading.count>>)
             from
                 fleet := reading.get_new_iterator
             until fleet.is_off loop
                 s.serialize("iiii", <<fleet.item.owner.color_id, fleet.item.eta,
-                                    stars.fast_index_of(fleet.item.destination),
+                                    fleet.item.destination,
                                     fleet.item.ship_count>>)
                 Result.append (s.serialized_form)
                 Result.append (fleet.item.serial_form)
@@ -62,16 +78,27 @@ feature -- Redefined features
                 end
                 fleet.next
             end
+        else
+            check unexpected_service_id: False end
         end
     end
 
 feature {MAP_GENERATOR} -- Generation
     set_stars (starlist: ARRAY[S_STAR]) is
+    require starlist /= Void
     do
-        Precursor(starlist)
+        stars := starlist
         update_clients
+    ensure
+        stars = starlist
     end
 
+
+feature -- Redefined factory method
+    create_star:S_STAR is
+    do
+        !!Result.make_defaults
+    end
 
 feature -- Access
     stars: ARRAY[S_STAR]

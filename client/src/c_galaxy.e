@@ -5,7 +5,7 @@ class C_GALAXY
 
 inherit
     GALAXY
-        redefine make end
+        redefine make, stars, set_stars end
     MODEL
     SUBSCRIBER
     IDMAP_ACCESS
@@ -28,28 +28,29 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         -- Regenerates everything from scratch.  There must be a better way...
         -- Also, depend on stars not moving around in the array.
     local
-        new_stars: ARRAY[STAR]
+        new_stars: ARRAY[C_STAR]
         new_fleets: ARRAY[FLEET]
         newmsg: STRING
-        ir: reference INTEGER
+        ir: INTEGER_REF
         id, count, shipcount: INTEGER
         s: SERIALIZER
         owner: PLAYER
         fleet: FLEET
-        star: STAR
+        star: C_STAR
         ship: SHIP
     do
         if service.is_equal("galaxy") then
             s.unserialize("i", msg)
             ir ?= s.unserialized_form @ 1
-            count := ir
-            newmsg := msg.substring(s.used_serial_count + 1, newmsg.count)
+            count := ir.item
+            newmsg := msg
+            newmsg.remove_first(s.used_serial_count)
             !!new_stars.with_capacity (count,1)
             from until count = 0 loop
                 s.unserialize("iii", newmsg)
                 newmsg.remove_first(s.used_serial_count)
                 ir ?= s.unserialized_form @ 1
-                id := ir
+                id := ir.item
                 if idmap.has(id) then
                     star ?= idmap @ id
                 else
@@ -57,52 +58,66 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     idmap.put(star, id)
                 end
                 ir ?= s.unserialized_form @ 2
-                star.set_kind(ir)
+                star.set_kind(ir.item + star.kind_min)
                 ir ?= s.unserialized_form @ 3
-                star.set_size(ir)
+                star.set_size(ir.item + star.stsize_min)
                 star.unserialize_from (newmsg)
-                new_stars.force(star, id)
+                new_stars.force(star, count)
                 count := count - 1
             end
             stars := new_stars
+            notify_views
         elseif service.has_suffix(":scanner") then
             s.unserialize("i", msg)
             ir ?= s.unserialized_form @ 1
-            count := ir
+            count := ir.item
             newmsg := msg.substring(s.used_serial_count + 1, newmsg.count)
             !!new_fleets.with_capacity (count,1)
             from until count = 0 loop
+                !!fleet.make
                 s.unserialize("oioi", newmsg)
                 newmsg.remove_first(s.used_serial_count)
                 owner ?= s.unserialized_form @ 1
-                !!fleet.set_owner(owner)
+                fleet.set_owner(owner)
                 ir ?= s.unserialized_form @ 2
                 star ?= s.unserialized_form @ 3
-                if ir = 0 then
+                if ir.item = 0 then
                     fleet.set_orbit_center (star)
                 else
                     fleet.set_destination (star)
                 end
-                fleet.set_eta(ir)
+                fleet.set_eta(ir.item)
                 fleet.unserialize_from(newmsg)
                 new_fleets.put(fleet, count)
                 ir ?= s.unserialized_form @ 4
-                from shipcount := ir until shipcount = 0 loop
+                from shipcount := ir.item until shipcount = 0 loop
                     s.unserialize("ii", newmsg)
-                    !!ship
+                    !!ship.make
                     ir ?= s.unserialized_form @ 1
-                    ship.set_size(ir)
+                    ship.set_size(ir.item)
                     ir ?= s.unserialized_form @ 2
-                    ship.set_picture(ir)
+                    ship.set_picture(ir.item)
                     newmsg.remove_first(s.used_serial_count)
                     shipcount := shipcount - 1
                 end
                 count := count - 1
             end
+            notify_views
         else
             check unexpected_message: False end
         end
     end
 
+feature -- Redefinition to c_ feature
+
+    stars: ARRAY[C_STAR]
+
+    set_stars (starlist: ARRAY[C_STAR]) is
+    require
+        starlist /= Void
+    do
+        stars := starlist
+        notify_views
+    end
 
 end -- class C_GALAXY

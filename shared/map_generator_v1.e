@@ -308,16 +308,16 @@ feature{NONE} -- Internal
 
 feature -- Operation
     generate (galaxy: GALAXY; players: PLAYER_LIST [PLAYER]) is
+    require
+        fresh_galaxy: galaxy.stars.count = 0
     local
         starposs: ARRAY[COORDS]
         starnams: ARRAY[STRING]
-        starlist: ARRAY[STAR]
         i: INTEGER
         newstar: STAR
         planets: ARRAY[PLANET]
     do
         !!planets.make(1,0)
-        !!starlist.make(1,0)
         print("Generating Positions%N")
         starposs := make_positions
         print("Generating Names%N")
@@ -329,20 +329,21 @@ feature -- Operation
             i > starposs.upper
         loop
             rand.next
-            !!newstar.make(starposs @ i, starnams @ i,
-                           star_kinds.random_item, star_sizes.random_item)
+            newstar := galaxy.create_star
+            newstar.move_to(starposs @ i)
+            newstar.set_name(starnams @ i)
+            newstar.set_kind(star_kinds.random_item)
+            newstar.set_size(star_sizes.random_item)
             make_planets_on (newstar)
-            starlist.add_last(newstar)
+            galaxy.stars.add_last(newstar)
             i := i + 1
         end
         print ("Placing Orion%N")
-        place_orion (starlist)
+        place_orion (galaxy.stars)
 
         print ("Placing HomeWorlds%N")
         !!homeworlds.make (1, players.count)
-        place_homeworlds (starlist, players)
-
-        galaxy.set_stars (starlist)
+        place_homeworlds (galaxy.stars, players)
     end
 
 feature {NONE} -- Implementation

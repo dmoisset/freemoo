@@ -4,10 +4,26 @@ inherit
     UNIQUE_ID
     STAR
         redefine
-            set_planet, set_special, set_name
+            set_planet, set_special, set_name, make, make_defaults
         end
     SERVICE
         redefine subscription_message
+
+creation make, make_defaults
+
+feature {NONE} -- Creation
+
+    make_defaults is
+    do
+        Precursor
+        make_unique_id
+    end
+
+    make (p: POSITIONAL; n: STRING; k: INTEGER; s: INTEGER) is
+    do
+        Precursor(p, n, k, s)
+        make_unique_id
+    end
 
 feature -- Redefined Features
     subscription_message (service_id: STRING): STRING is
@@ -62,7 +78,9 @@ feature -- Operations
 
     update_clients is
     do
-        send_message (s_id, subscription_message (s_id))
+        if s_id /= Void then
+            send_message (s_id, subscription_message (s_id))
+        end
     end
 
 
