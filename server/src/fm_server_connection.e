@@ -171,25 +171,33 @@ feature {NONE} -- Operations
 
     move_fleet (u: UNSERIALIZER) is
     local
-        fleet_id: INTEGER
-        destination_id: INTEGER
-        ships: ARRAY [INTEGER]
+        fleet: FLEET
+        destination: STAR
+        ships: SET [SHIP]
         i: INTEGER
     do
-        u.get_integer; fleet_id := u.last_integer
-        u.get_integer; destination_id := u.last_integer
         u.get_integer
-        !!ships.make (1, u.last_integer)
-        from i := ships.lower until i > ships.upper loop
+        fleet := server.game.galaxy.fleets @ u.last_integer
+        u.get_integer
+        destination := server.game.galaxy.stars @ u.last_integer
+        u.get_integer
+        i := u.last_integer
+        !!ships.with_capacity (i)
+        from until i = 0 loop
             u.get_integer
-            ships.put (u.last_integer, i)
-            i:=i+1
+            ships.add (fleet.ship (u.last_integer))
+            i:=i-1
         end
-        print ("Got fleet move request%N")
-        print ("  id: "+fleet_id.to_string+"%N")
-        print ("  destination: "+destination_id.to_string+"%N")
-        print ("  ships: <<"); print (ships); print (">>%N")
-        print ("Not yet implemented%N")
+-- FIXME: Check message consistency
+-- FIXME: This shouldn't go in this class. Probably, GAME or GALAXY are better
+        if ships.count /= fleet.ship_count then
+            fleet.split (ships)
+            fleet := fleet.splitted_fleet
+            fleet.set_destination (destination)
+            server.game.galaxy.add_fleet (fleet)
+        else
+            fleet.set_destination (destination)
+        end
     end
     
 feature {NONE} -- Representation
