@@ -1,3 +1,4 @@
+#include <getopt.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -6,6 +7,8 @@
 #define MAXCLASSNAMELEN  256
 
 int showa = 0, showi = 0;
+
+extern char *strdup(char *);
 
 void
 strupr(char *str) {
@@ -35,14 +38,14 @@ parse (char *filename) {
         exit(1);
     }
     
-    fscanf(f, "%c:%s\n", &type, link);    
+    fscanf(f, "%c:%s", &type, link);    
     while (!feof(f)) {
         strupr(link);
         switch (type) {
             case 'A': if (showa) printf ("\t%s -> %s\n", classname, link); break;
             case 'I': if (showi) printf ("\t%s -> %s [color=\"red\"]\n", link, classname); break;
         }
-        fscanf(f, "%c:%s\n", &type, link);        
+        fscanf(f, "%c:%s", &type, link);        
     }
     
     fclose(f);

@@ -13,6 +13,8 @@
 char lista[MAXLINKS][MAXCLASSNAMELEN];
 int lc = 0;
 
+extern char *strdup (char *);
+
 void
 strlwr(char *str) {
 

@@ -4,9 +4,10 @@ then
     echo "usage: dograph [-i] [-a]"
     echo "      -i: show inheritance"
     echo "      -a: show associations"
+    echo
     echo "note: the classes shown will be those in the current directory"
     echo "      all classes are expanded by default (you can change this"
-    echo "      in the script")
+    echo "      in the script)"
     exit 1
 fi
 
