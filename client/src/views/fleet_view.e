@@ -209,20 +209,22 @@ feature {NONE} -- Internal features
 		-- accordingly
 	local
 		i: INTEGER
+		ship: SHIP
 		i1, i2: IMAGE
 	do
 		from i := 0
 		until i = 9
 		loop
 			if i + scrollbar.value * 3 <= ships.upper then
+				ship := ships @ (i+scrollbar.value*3)
 				i1 := get_ship_pic(model.owner.color,
-								   ships.item(i).creator.color,
-								   ships.item(i).size,
-								   ships.item(i).picture, false)
+								   ship.creator.color,
+								   ship.size,
+								   ship.picture, false)
 				i2 := get_ship_pic(model.owner.color,
-								   ships.item(i).creator.color,
-								   ships.item(i).size,
-								   ships.item(i).picture, true)
+								   ship.creator.color,
+								   ship.size,
+								   ship.picture, true)
 				toggles.item(i).set_normal_image(i1)
 				toggles.item(i).set_prelight_image(i1)
 				toggles.item(i).set_pressed_image(i2)
@@ -230,8 +232,8 @@ feature {NONE} -- Internal features
 				toggles.item(i).set_prelight_active_image(i2)
 				toggles.item(i).set_pressed_active_image(i1)
 				toggles.item(i).show
-				toggles.item(i).set_click_handler(agent toggle_ship_selection(ships@(i + 3 * scrollbar.value)))
-				toggles.item(i).set_active(fleet_selection.has(ships@(i + 3 * scrollbar.value)))
+				toggles.item(i).set_click_handler(agent toggle_ship_selection(ship))
+				toggles.item(i).set_active(fleet_selection.has(ship))
 			else
 				toggles.item(i).hide
 			end
