@@ -154,7 +154,7 @@ feature -- Incredibly smart AI
         ll: SET [SHIP]
     do
         from
-            i := server.galaxy.fleets.get_new_iterator_on_items
+            i := server.galaxy.get_new_iterator_on_fleets
         until i.is_off loop
             if i.item.owner = server.player and i.item.destination = Void then
                 !!ll.make

@@ -6,7 +6,7 @@ class C_GALAXY
 inherit
     CLIENT
     GALAXY
-        redefine last_star, make, fleets, add_fleet end
+        redefine last_star, last_fleet, make, add_fleet end
     MODEL
         redefine notify_views end
     VIEW [C_STAR]
@@ -176,9 +176,9 @@ feature -- Redefined features
 
     last_star: C_STAR
     
-    fleets: DICTIONARY [C_FLEET, INTEGER]
+    last_fleet: C_FLEET
 
-    add_fleet(new_fleet: C_FLEET) is
+    add_fleet(new_fleet: like last_fleet) is
     do
         fleets.add(new_fleet, new_fleet.id)
         server.subscribe(new_fleet, "fleet" + new_fleet.id.to_string)

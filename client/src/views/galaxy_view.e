@@ -146,7 +146,7 @@ feature -- Redefined features
                 star_it.next
             end
             fleet_hotspots.clear
-            from fleet_it := model.fleets.get_new_iterator_on_items
+            from fleet_it := model.get_new_iterator_on_fleets
             until fleet_it.is_off loop
                 draw_fleet (fleet_it.item)
                 fleet_it.next
@@ -340,7 +340,7 @@ feature {NONE} -- Event handlers
 		else
 			i := fleet_hotspots.item_at_xy(x, y)
 			if not i.is_off then
-				create_fleet_view(model.fleets @ (fleet_hotspots.fast_key_at(i.item)))
+				create_fleet_view(model.fleet_with_id (fleet_hotspots.fast_key_at(i.item)))
 			end
 		end
     end
