@@ -95,6 +95,7 @@ feature -- Operations
         -- Fleet combat
         -- Bombardment/ground combat
         -- Colonization
+        galaxy.generate_scanners(players)
         status.next_date
         players.set_all_state (st_playing_turn)
     end
@@ -111,7 +112,7 @@ feature {NONE} -- Internal
         s: ITERATOR [STAR]
         p: ITERATOR [PLANET]
     do
-        s := galaxy.stars.get_new_iterator
+        s := galaxy.stars.get_new_iterator_on_items
         from s.start until s.is_off loop
             p := s.item.planets.get_new_iterator
             from p.start until p.is_off loop
@@ -129,7 +130,7 @@ feature {NONE} -- Internal
     local
         i: ITERATOR [FLEET]
     do
-        i := galaxy.fleets.get_new_iterator
+        i := galaxy.fleets.get_new_iterator_on_items
         from i.start until i.is_off loop
             i.item.move
             i.next

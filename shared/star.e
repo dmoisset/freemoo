@@ -2,6 +2,7 @@ class STAR
     -- Star system
 
 inherit
+    UNIQUE_ID
     POSITIONAL
     MAP_CONSTANTS
 
@@ -85,6 +86,7 @@ feature {NONE} -- Creation
 
     make_defaults is
     do
+        make_unique_id
         kind := kind_min
         name := ""
         size := stsize_min
@@ -99,6 +101,7 @@ feature {NONE} -- Creation
         k.in_range(kind_min, kind_max)
         s.in_range(stsize_min, stsize_max)
     do
+        make_unique_id
         name := n
         move_to (p)
         kind := k

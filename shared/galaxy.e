@@ -7,16 +7,16 @@ feature {NONE} -- Creation
     make is
     do
         !!limit.make_at(0, 0)
-        !!stars.with_capacity (0, 1)
-        !!fleets.with_capacity (0,1)
+        !!stars.make
+        !!fleets.make
     end
 
 feature -- Access
 
-    stars: ARRAY [STAR]
+    stars: DICTIONARY [STAR, INTEGER]
         -- stars in the map, by id
 
-    fleets: ARRAY [FLEET]
+    fleets: DICTIONARY[FLEET, INTEGER]
         -- All fleets in space
 
     limit: COORDS
@@ -34,22 +34,30 @@ feature -- Access
         fleet: FLEET
     do
         if player.sees_all_ships then
-            Result := fleets
+            !!Result.make(1, 0)
+            from
+                alienfleet := fleets.get_new_iterator_on_items
+            until
+                alienfleet.is_off
+            loop
+                Result.add_last(alienfleet.item)
+                alienfleet.next
+            end
         else
             !!Result.with_capacity(0,1)
             from
-                alienfleet := fleets.get_new_iterator
+                alienfleet := fleets.get_new_iterator_on_items
             until alienfleet.is_off loop
                 if alienfleet.item.owner /= player then
             -- Find own closest asset, in parsecs.
             -- (Can be at negative distances, due to modifiers)
             -- (Currently doesn't consider any modifiers!)
-                    from ownfleet:=fleets.get_new_iterator
+                    from ownfleet:=fleets.get_new_iterator_on_items
                     until ownfleet.is_off loop
                         closest := closest.min((ownfleet.item |-| alienfleet.item).rounded)
                         ownfleet.next
                     end
-                    from star := stars.get_new_iterator
+                    from star := stars.get_new_iterator_on_items
                     until star.is_off loop
                         from planet := star.item.planets.get_new_iterator
                         until planet.is_off loop
@@ -90,7 +98,7 @@ feature -- Factory method for stars
     end
 
 feature {MAP_GENERATOR} -- Generation
-    set_stars (starlist: ARRAY[STAR]) is
+    set_stars (starlist: DICTIONARY[STAR, INTEGER]) is
     require
         starlist /= Void
     do

@@ -8,6 +8,7 @@ feature {NONE} -- Creation
     make is
     do
         !!items.make
+        !!items_by_id.make
     end
 
 feature -- Access
@@ -19,6 +20,13 @@ feature -- Access
         Result = items.has (name)
     end
 
+    has_by_id (cid: INTEGER): BOOLEAN is
+    do
+        Result := items_by_id.has (cid)
+    ensure
+        Result = items_by_id.has (cid)
+    end
+
     infix "@" (key: STRING): P is
     require
         has (key)
@@ -26,6 +34,15 @@ feature -- Access
         Result := items @ key
     ensure
         Result = items @ key
+    end
+
+    infix "#" (key: INTEGER): P is
+    require
+        has_by_id (key)
+    do
+        Result := items_by_id @ key
+    ensure
+        Result = items_by_id @ key
     end
 
     names: ARRAY [STRING] is
@@ -91,6 +108,7 @@ feature -- Operations
 
         -- Add to list
         items.add (item, item.name)
+        items_by_id.add (item, item.color_id)
     end
 
     set_player_state (p: PLAYER; new_state: INTEGER) is
@@ -124,5 +142,7 @@ feature -- Operations
 feature {NONE} -- Representation
 
     items: DICTIONARY [P, STRING]
+
+    items_by_id: DICTIONARY [P, INTEGER]
 
 end -- class PLAYER_LIST [P -> PLAYER]

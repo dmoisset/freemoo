@@ -201,30 +201,30 @@ feature {NONE} -- Planet Generation
         end
     end
 
-    place_orion (starlist: ARRAY[STAR]) is
+    place_orion (starlist: DICTIONARY[STAR, INTEGER]) is
     local
-        index: INTEGER
+        orion_system: STAR
         orion: PLANET
     do
-        index := closest_star_to_or_within (center, 8, starlist)
-        !!orion.make (starlist.item (index), plsize_huge, climate_gaia,
+        orion_system := closest_star_to_or_within (center, 8, starlist)
+        !!orion.make (orion_system, plsize_huge, climate_gaia,
                       mnrl_ultrarich, grav_normalg, type_planet,
                       plspecial_nospecial)
         rand.next
-        starlist.item (index).set_planet (orion, rand.last_integer (5))
-        starlist.item (index).set_special (stspecial_orion)
-        starlist.item (index).set_name ("Orion")
-        dont_touch.add (index)
+        orion_system.set_planet (orion, rand.last_integer (5))
+        orion_system.set_special (stspecial_orion)
+        orion_system.set_name ("Orion")
+        dont_touch.add (orion_system.id)
     end
 
-    place_homeworlds(starlist: ARRAY[STAR]; players: PLAYER_LIST[PLAYER]) is
+    place_homeworlds(starlist: DICTIONARY[STAR, INTEGER]; players: PLAYER_LIST[PLAYER]) is
     local
         hmworldnams: ARRAY[STRING]
         i: ITERATOR_ON_COLLECTION[STRING]
         hmworldpos: COORDS
         step, offset: REAL
         done: INTEGER
-        hmworldind: INTEGER
+        hmworld_system: STAR
         hmworld: PLANET
     do
         hmworldnams := <<"Color 1 Homeworld", "Color 2 Homeworld",
@@ -243,67 +243,63 @@ feature {NONE} -- Planet Generation
             i.is_off
         loop
             hmworldpos := walk_point (step * done + offset)
-            hmworldind := closest_star_to (hmworldpos, starlist)
-            !!hmworld.make (starlist.item (hmworldind), plsize_medium,
+            hmworld_system := closest_star_to (hmworldpos, starlist)
+            !!hmworld.make (hmworld_system, plsize_medium,
                             climate_terran, mnrl_abundant, grav_normalg,
                             type_planet, plspecial_nospecial)
             rand.next
-            starlist.item (hmworldind).set_planet (hmworld, rand.last_integer (5))
-            starlist.item (hmworldind).set_name (hmworldnams.item ((players @ (i.item)).color_id))
+            hmworld_system.set_planet (hmworld, rand.last_integer (5))
+            hmworld_system.set_name (hmworldnams.item ((players @ (i.item)).color_id))
             done := done + 1
-            dont_touch.add (hmworldind)
+            dont_touch.add (hmworld_system.id)
             i.next
         end
     end
 
 feature{NONE} -- Internal
 
-    closest_star_to (c: COORDS; starlist: ARRAY[STAR]): INTEGER is
+    closest_star_to (c: COORDS; starlist: DICTIONARY[STAR, INTEGER]): STAR is
     require
         c /= Void
     local
-        curs: INTEGER
+        curs: ITERATOR[STAR]
         dist: REAL
     do
         dist := Maximum_real
         from
-            curs := starlist.lower
+            curs := starlist.get_new_iterator_on_items
         until
-            curs > starlist.upper
+            curs.is_off
         loop
-            if starlist.item (curs) /= Void and then
-            ((not dont_touch.has (curs)) and (starlist.item (curs) |-| c) <= dist) then
-                dist := starlist.item (curs) |-| c
-                Result := curs
+            if curs.item /= Void and then
+            ((not dont_touch.has (curs.item.id)) and (curs.item |-| c) <= dist) then
+                dist := curs.item |-| c
+                Result := curs.item
             end
-            curs := curs + 1
+            curs.next
         end
-    ensure
-        Result.in_range (starlist.lower, starlist.upper)
     end
 
-    closest_star_to_or_within (c: COORDS; threshold: INTEGER; starlist: ARRAY[STAR]): INTEGER is
+    closest_star_to_or_within (c: COORDS; threshold: INTEGER; starlist: DICTIONARY[STAR, INTEGER]): STAR is
     require
         c /= Void
     local
-        curs: INTEGER
+        curs: ITERATOR[STAR]
         dist: REAL
     do
         dist := Maximum_real
         from
-            curs := starlist.lower
+            curs := starlist.get_new_iterator_on_items
         until
-            curs > starlist.upper or dist < threshold
+            curs.is_off or dist < threshold
         loop
-            if starlist.item (curs) /= Void and then
-            ((not dont_touch.has (curs)) and (starlist.item (curs) |-| c) <= dist) then
-                dist := starlist.item (curs) |-| c
-                Result := curs
+            if curs.item /= Void and then
+            ((not dont_touch.has (curs.item.id)) and (curs.item |-| c) <= dist) then
+                dist := curs.item |-| c
+                Result := curs.item
             end
-            curs := curs + 1
+            curs.next
         end
-    ensure
-        Result.in_range (starlist.lower, starlist.upper)
     end
 
 feature -- Operation
@@ -336,7 +332,7 @@ feature -- Operation
             newstar.set_kind(star_kinds.random_item)
             newstar.set_size(star_sizes.random_item)
             make_planets_on (newstar)
-            galaxy.stars.add_last(newstar)
+            galaxy.stars.add(newstar, newstar.id)
             i := i + 1
         end
         print ("Placing Orion%N")
@@ -405,9 +401,9 @@ feature {NONE} -- Implementation
             end
         end
     end
+
     dont_touch: SET[INTEGER]
         -- Stars that souldn't be modified any more, thank you.
-
 
 feature{NONE} -- Internal Constants
 

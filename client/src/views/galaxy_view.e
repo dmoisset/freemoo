@@ -129,7 +129,7 @@ feature -- Redefined features
         !!cache.make (width, height)
         background.image_data.blit_fast (cache.image_data, 0, 0)
         -- Add stars
-        from i := model.stars.get_new_iterator
+        from i := model.stars.get_new_iterator_on_items
         until i.is_off loop
             if i.item.kind /= i.item.kind_blackhole then
                 current_projection.project(i.item)
@@ -198,7 +198,7 @@ feature {NONE} -- Event handlers
         found: BOOLEAN
         r: RECTANGLE
     do
-        from i := model.stars.get_new_iterator
+        from i := model.stars.get_new_iterator_on_items
         until i.is_off or found loop
             current_projection.project(i.item)
             if (current_projection.x - x).abs < 4 + 2 * (zoom + i.item.size - i.item.stsize_min)

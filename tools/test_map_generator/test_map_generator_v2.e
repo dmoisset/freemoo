@@ -22,6 +22,8 @@ feature {ANY}
         view: GALAXY_VIEW
         c: MOUSE_POINTER
         i: INTEGER
+        it: ITERATOR[S_STAR]
+        cstar: C_STAR
         font: FONT
     do
         -- Setup Service Registry
@@ -79,13 +81,17 @@ feature {ANY}
         subscribe(cgalaxy, "galaxy")
         !!view.make(d.root, d.root.location, cgalaxy)
         sgalaxy.update_clients
-        from i := 1
+        from
+            i := 1
+            it := sgalaxy.stars.get_new_iterator_on_items
         until i > 40 loop
-            if (sgalaxy.stars @ i).kind /= kind_blackhole then
-                register (sgalaxy.stars @ i, "star" + i.to_string)
-                subscribe (cgalaxy.stars @ i, "star" + i.to_string)
-                sgalaxy.stars.item(i).update_clients
+            if it.item.kind /= kind_blackhole then
+                register (it.item, "star" + it.item.id.to_string)
+                cstar ?= cgalaxy.idmap @ it.item.id
+                subscribe (cstar, "star" + it.item.id.to_string)
+                it.item.update_clients
             end
+            it.next
             i := i + 1
         end
 

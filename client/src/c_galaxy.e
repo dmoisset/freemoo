@@ -28,8 +28,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         -- Regenerates everything from scratch.  There must be a better way...
         -- Also, depend on stars not moving around in the array.
     local
-        new_stars: ARRAY[C_STAR]
-        new_fleets: ARRAY[FLEET]
+        new_stars: DICTIONARY[C_STAR, INTEGER]
+        new_fleets: DICTIONARY[FLEET, INTEGER]
         newmsg: STRING
         ir: reference INTEGER
         id, count, shipcount: INTEGER
@@ -46,7 +46,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             count := ir
             newmsg := msg
             newmsg.remove_first(s.used_serial_count)
-            !!new_stars.with_capacity (count,1)
+            !!new_stars.make
             from until count = 0 loop
                 s.unserialize("iii", newmsg)
                 newmsg.remove_first(s.used_serial_count)
@@ -64,7 +64,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 ir ?= s.unserialized_form @ 3
                 star.set_size(ir.item + star.stsize_min)
                 star.unserialize_from (newmsg)
-                new_stars.force(star, count)
+                new_stars.add(star, id)
                 count := count - 1
             end
             stars := new_stars
@@ -74,7 +74,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             ir ?= s.unserialized_form @ 1
             count := ir
             newmsg := msg.substring(s.used_serial_count + 1, newmsg.count)
-            !!new_fleets.with_capacity (count,1)
+            !!new_fleets.make
             from until count = 0 loop
                 !!fleet.make
                 s.unserialize("oioi", newmsg)
@@ -90,7 +90,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 end
                 fleet.set_eta(ir)
                 fleet.unserialize_from(newmsg)
-                new_fleets.put(fleet, count)
+                new_fleets.add(fleet, count)
                 ir ?= s.unserialized_form @ 4
                 from shipcount := ir until shipcount = 0 loop
                     s.unserialize("ii", newmsg)
@@ -112,13 +112,13 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 
 feature -- Redefinition to c_ feature
 
-    stars: ARRAY[C_STAR]
+    stars: DICTIONARY[C_STAR, INTEGER]
 
-    set_stars (starlist: ARRAY[C_STAR]) is
+    set_stars (starlist: DICTIONARY[C_STAR, INTEGER]) is
     require
         starlist /= Void
     do
-        Precursor (starlist)
+        stars := starlist
         notify_views
     end
 

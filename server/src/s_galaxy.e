@@ -3,7 +3,6 @@ class S_GALAXY
 inherit
     GALAXY
         redefine stars, set_stars, make, create_star end
-    IDMAP_ACCESS
     SERVICE
         redefine subscription_message end
 
@@ -29,10 +28,6 @@ feature -- Redefined features
         s: SERIALIZER
         id: INTEGER
         star: ITERATOR[S_STAR]
-        reading: ARRAY[FLEET]
-        fleet: ITERATOR[FLEET]
-        ship: ITERATOR[SHIP]
-        player: PLAYER
     do
 -- If first subscription to `service_id', add to `ids'
         ids.add(service_id)
@@ -44,7 +39,7 @@ feature -- Redefined features
             s.serialize ("i", <<stars.count>>)
             Result.append (s.serialized_form)
             from
-                star := stars.get_new_iterator
+                star := stars.get_new_iterator_on_items
             until
                 star.is_off
             loop
@@ -58,34 +53,14 @@ feature -- Redefined features
                 service_id.substring(1, service_id.count - 8).is_integer then
 -- Per player "n:scanner" service
             id := service_id.substring(1, service_id.count - 8).to_integer
-            player ?= idmap @ id
-            reading := scanner(player)
-            s.serialize ("i", <<reading.count>>)
-            !!Result.copy (s.serialized_form)
-            from
-                fleet := reading.get_new_iterator
-            until fleet.is_off loop
-                s.serialize("oioi", <<fleet.item.owner, fleet.item.eta,
-                                    fleet.item.destination,
-                                    fleet.item.ship_count>>)
-                Result.append (s.serialized_form)
-                Result.append (fleet.item.serial_form)
-                from ship := fleet.item.get_new_iterator
-                until ship.is_off loop
-                    s.serialize("ii", <<ship.item.size, ship.item.picture>>)
-                    -- Not sure if picture should be unique value or number...
-                    Result.append (s.serialized_form)
-                    ship.next
-                end
-                fleet.next
-            end
+            !!Result.copy(scanner_msgs @ id)
         else
             check unexpected_service_id: False end
         end
     end
 
 feature {MAP_GENERATOR} -- Generation
-    set_stars (starlist: ARRAY[S_STAR]) is
+    set_stars (starlist: DICTIONARY[S_STAR, INTEGER]) is
     require starlist /= Void
     do
         stars := starlist
@@ -102,7 +77,9 @@ feature -- Redefined factory method
     end
 
 feature -- Access
-    stars: ARRAY[S_STAR]
+    stars: DICTIONARY[S_STAR, INTEGER]
+
+    scanner_msgs: DICTIONARY[STRING, INTEGER]
 
     ids: SET[STRING]
 
@@ -115,6 +92,45 @@ feature -- Operations
         until id.is_off loop
             send_message(id.item, subscription_message(id.item))
             id.next
+        end
+    end
+
+    generate_scanners(pl: PLAYER_LIST[S_PLAYER]) is
+    local
+        s: SERIALIZER
+        reading: ARRAY[FLEET]
+        fleet: ITERATOR[FLEET]
+        ship: ITERATOR[SHIP]
+        it: ITERATOR[STRING]
+        msg: STRING
+    do
+        !!scanner_msgs.with_capacity(pl.count)
+        from
+            it := pl.names.get_new_iterator
+        until
+            it.is_off
+        loop
+            reading := scanner(pl @ it.item)
+            s.serialize ("i", <<reading.count>>)
+            !!msg.copy (s.serialized_form)
+            from
+                fleet := reading.get_new_iterator
+            until fleet.is_off loop
+                s.serialize("oioi", <<fleet.item.owner, fleet.item.eta,
+                                    fleet.item.destination,
+                                    fleet.item.ship_count>>)
+                msg.append (s.serialized_form)
+                msg.append (fleet.item.serial_form)
+                from ship := fleet.item.get_new_iterator
+                until ship.is_off loop
+                    s.serialize("ii", <<ship.item.size, ship.item.picture>>)
+                    msg.append (s.serialized_form)
+                    ship.next
+                end
+                fleet.next
+            end
+            scanner_msgs.add(msg, (pl @ it.item).color_id)
+            it.next
         end
     end
 
