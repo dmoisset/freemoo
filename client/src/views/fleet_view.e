@@ -377,17 +377,23 @@ feature {NONE} -- Once features
 		pic.in_range(0, 7)
 	local
 		a: FMA_FRAMESET
+		imgs: ARRAY [IMAGE]
 	do
 		if ship_pics.item(owner, creator) = Void then
 			ship_pics.put(create {ARRAY2[ARRAY[IMAGE]]}.make(1, 6, 0, 7), owner, creator)
 		end
 		if ship_pics.item(owner, creator).item(size, pic) = Void then
-			ship_pics.item(owner, creator).put(create {ARRAY[IMAGE]}.make(1, 2), size, pic)
-			!!a.make("client/fleet-view/ships/ship" + (creator - model.owner.min_color).to_string + size.to_string + pic.to_string + (owner - model.owner.min_color).to_string + ".fma")
-			ship_pics.item(owner, creator).item(size, pic).put(create {IMAGE_OFFSET}.make(a.images @ 1, 15, 15), 1)
-			ship_pics.item(owner, creator).item(size, pic).put(create {SDL_IMAGE}.make(cursor.item(1).width, cursor.item(1).height), 2)
-			cursor.item(2).blit(ship_pics.item(owner, creator).item(size, pic).item(2), 0, 0)
-			a.images.item(1).blit(ship_pics.item(owner, creator).item(size, pic).item(2), 15, 15)
+			!!imgs.make (1, 2)
+			ship_pics.item(owner, creator).put(imgs, size, pic)
+			!!a.make("client/fleet-view/ships/ship" + 
+			         (creator - model.owner.min_color).to_string +
+			         size.to_string +
+			         pic.to_string +
+			         (owner - model.owner.min_color).to_string + ".fma")
+			imgs.put(create {IMAGE_OFFSET}.make(a.images @ 1, 15, 15), 1)
+			imgs.put(create {SDL_IMAGE}.make_transparent(cursor.item(1).width, cursor.item(1).height), 2)
+			cursor.item(2).blit(imgs @ 2, 0, 0)
+			a.images.item(1).blit(imgs @ 2, 15, 15)
 		end
 		if highlight then
 			result := ship_pics.item(owner, creator).item(size, pic).item(2)
