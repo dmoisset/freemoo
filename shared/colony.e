@@ -63,7 +63,7 @@ feature -- Operations
         when product_starship then
 			  !STARSHIP!sh.make(owner)
         when product_colony_ship then
-            !COLONY_SHIP!sh.make
+            !COLONY_SHIP!sh.make(owner)
         end
         if sh /= Void then -- Ship produced
             shipyard := sh

@@ -13,279 +13,247 @@
 /* Used for loading all kinds of 8bit images and animations */
 static int loadPalette (SDL_RWops *src, Uint32 *palette)
 {
-    Uint32 palfing;            /* Finger into palette */
-    Uint8 palcount[2];         /* transparent flag + palette count */
+  Uint32 palfing;            /* Finger into palette */
+  Uint8 palcount[2];         /* transparent flag + palette count */
 
-    Uint32 usedcolor[257];
-    Uint16 i ;
+  Uint32 usedcolor[257];
+  Uint16 i ;
 
-/* Load Palette Count */
-    if (SDL_RWread (src, palcount, 1, 2) != 2)
-    {
-        SDL_SetError("Error reading from file\n");
-        return 1;
-    }
+  /* Load Palette Count */
+  if (SDL_RWread (src, palcount, 1, 2) != 2){
+    SDL_SetError("Error reading from file\n");
+    return 1;
+  }
 
-    for (i = 0; i <= 256; i++) usedcolor[i] = 0 ;
-/* Load Palette */
-    for (palfing = 0; palfing <= palcount[1]; palfing++)
-    {
-        Uint16 color ;
-        SDL_RWread(src, &color, 1, 2);
-        palette[palfing] = color ;
-        if (color<257)
-            usedcolor[color] = 1 ;
-    }
-    if (palcount[0]) { /* Transparent image */
-        for (i=0; usedcolor[i]; i++) ;
-        palette[0xff] = i ;
-    }
-    return 0;
+  for (i = 0; i <= 256; i++) usedcolor[i] = 0 ;
+  /* Load Palette */
+  for (palfing = 0; palfing <= palcount[1]; palfing++){
+    Uint16 color ;
+    SDL_RWread(src, &color, 1, 2);
+    palette[palfing] = color ;
+    if (color<257)
+      usedcolor[color] = 1 ;
+  }
+  if (palcount[0]) { /* Transparent image */
+    for (i=0; usedcolor[i]; i++) ;
+    palette[0xff] = i ;
+  }
+  return 0;
 }
 
 /* Used for loading 8bit plain images and animations */
 static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
-    Uint8 *filebuffer = NULL;   /* Input file buffer */
-    Uint32 filefing = 0,        /* Finger into file */
-           scanline = 0,        /* Offset within s->pixels to previous beginning of scanline */
-           offset = 0;          /* Absolute offset within s->pixels */
-    int res = 0 ;
-
-    /* Set Surface flags */
-    SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
-
-    filebuffer = (Uint8*) calloc (w*h, sizeof(Uint8));
-    assert (filebuffer!=NULL) ;
-
-    /* Load file into buffer */
-    res = SDL_RWread(src, filebuffer, 1, w * h);
-    assert (res==w*h) ;
-
-    /* Move buffer into s->pixels, looking up in palette */
-    assert (s->pitch % 2 == 0) ;
-    for (filefing = 0; filefing < w * h;)
-    {
-        ((Uint16*)(s->pixels))[offset] = palette[filebuffer[filefing]] ;
-        filefing++;
-        if (filefing % w)
-            offset ++;
-        else
-        {
-            /*FIXME: this is broen if pitch is odd. This happens several times in
-              this module*/
-            offset = scanline + (s -> pitch >> 1);
-            scanline = offset;
-        }
+  Uint8 *filebuffer;          /* Input file buffer */
+  Uint32 filefing,            /* Finger into file */
+    scanline = 0,             /* Offset within s->pixels to previous beginning of scanline */
+    offset = 0;               /* Absolute offset within s->pixels */
+  
+  /* Set Surface flags */
+  SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
+  
+  filebuffer = (Uint8*) malloc (sizeof(Uint8) * w * h);
+  
+  /* Load file into buffer */
+  SDL_RWread(src, filebuffer, 1, w * h);
+  
+  /* Move buffer into s->pixels, looking up in palette */
+  for (filefing = 0; filefing < w * h;){
+    ((Uint16*)(s->pixels))[offset] = palette[filebuffer[filefing]] ;
+    filefing++;
+    if (filefing % w)
+      offset ++;
+    else {
+      /*FIXME: this is broen if pitch is odd. This happens several times in
+	this module*/
+      offset = scanline + (s -> pitch >> 1);
+      scanline = offset;
     }
-    free (filebuffer);
+  }
+  free (filebuffer);
 }
 
 static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
-    int initial_pos;           /* Initial Position in RWOps */
-    Uint8 *filebuffer = NULL;  /* Input file buffer */
-    Uint32 tcount,             /* Tuple count */
-           tlfing,             /* Tuple List Finger */
-           filefing = 0,       /* Byte offset indicator within file */
-           imgfing = 0,        /* Pixel finger within image */
-           offset=0,           /* Absolut Offset within s->pixels */
-           scanline=0,         /* Offset within s->pixels to last beginning of scanline */
-           pixel;              /* Current pixel value */
-    Uint8 tupfing;             /* Tuple cursor */
-    int res = 0 ;
+  int initial_pos;     /* Initial Position in RWOps */
+  Uint8 tplhdr[4],     /* Fixed header for each tuple */
+    tpllist[256];      /* Non-repeated pixels buffer */
+  Uint32 tcount,       /* Tuple count */
+    tlfing,            /* Tuple List Finger */
+    filefing = 0,      /* Byte offset indicator within file */
+    imgfing = 0,       /* Pixel finger within image */
+    offset=0,          /* Absolut Offset within s->pixels */
+    scanline=0,        /* Offset within s->pixels to last beginning of scanline */
+    pixel;             /* Current pixel value */
+  Uint8 tupfing;       /* Tuple cursor */
 
-    /* Set Surface flags */
-    SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
 
-    filebuffer = (Uint8*) calloc (w * h, sizeof(Uint8));
-    assert (filebuffer!=NULL) ;
+  /* Set Surface flags */
+  SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
 
-    res = SDL_RWread(src, &tcount, sizeof(tcount), 1);
-    assert (res == 1);
-
-    initial_pos = SDL_RWtell(src);
-    res = SDL_RWread(src, filebuffer, sizeof(*filebuffer), w * h);
-
-    /* filefing points to beginning of tuple */
-    assert (s->pitch % 2 == 0) ;
-    for (tlfing = 0; tlfing < tcount; tlfing++)
-    {
-        /* pixel holds repeated pixel */
-        pixel = palette[filebuffer[filefing + 2]];
-        /* Repeat the repeated pixel n times */
-        for (tupfing = filebuffer[filefing]; tupfing; tupfing--)
-        {
-            ((Uint16*)(s->pixels))[offset] = pixel ;
-            imgfing++;
-            if (imgfing % w)
-                offset ++;
-            else
-            {
-                offset = scanline + (s -> pitch >> 1);
-                scanline = offset;
-            }
-        }
-        /* filefing now points to beginning of non-repeat list */
-        filefing += 3;
-        /* Read in non-repeat list */
-        for (tupfing = filebuffer[filefing - 2]; tupfing; tupfing--)
-        {
-            ((Uint16*)(s->pixels))[offset] = palette[filebuffer[filefing]] ;
-            imgfing++;
-            filefing++;
-            if (imgfing % w)
-                offset ++;
-            else
-            {
-                offset = scanline + (s -> pitch >> 1);
-                scanline = offset;
-            }
-        }
-        /* filefing points to beginning of next tuple */
+  SDL_RWread(src, &tcount, 4, 1);
+    
+  initial_pos = SDL_RWtell(src);
+  /* filefing points to beginning of tuple */
+  for (tlfing = 0; tlfing < tcount; tlfing++){
+    SDL_RWread(src, tplhdr, 1, 3);
+    /* pixel holds repeated pixel */
+    pixel = palette[tplhdr[2]];
+    /* Repeat the repeated pixel n times */
+    for (tupfing = tplhdr[0]; tupfing; tupfing--){
+      ((Uint16*)(s->pixels))[offset] = pixel ;
+      imgfing++;
+      if (imgfing % w)
+	offset ++;
+      else{
+	offset = scanline + (s -> pitch >> 1);
+	scanline = offset;
+      }
     }
-    SDL_RWseek(src, initial_pos + filefing, SEEK_SET);
-    free (filebuffer);
+    /* filefing now points to beginning of non-repeat list */
+    SDL_RWread(src, tpllist, 1, tplhdr[1]);
+    /* Read in non-repeat list */
+    for (tupfing = tplhdr[1], filefing = 0; tupfing; tupfing--) {
+      ((Uint16*)(s->pixels))[offset] = palette[tpllist[filefing]] ;
+      imgfing++;
+      filefing++;
+      if (imgfing % w)
+	offset ++;
+      else {
+	offset = scanline + (s -> pitch >> 1);
+	scanline = offset;
+      }
+    }
+    /* filefing points to beginning of next tuple */
+  }
 }
 
 static void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
-    Uint32 filefing = 0,      /* Finger to position inside file*/
-           imgfing,           /* Image cursor */
-           size,              /* size = w * h; */
-           offset = 0,        /* Absolute Offset within s->pixels */
-           scanline = 0;      /* Offset within s->pixels to previous begining of scanline */
-    Uint8 *filebuffer;  /* Input file buffer */
+  Uint32 filefing = 0,      /* Finger to position inside file*/
+    imgfing,                /* Image cursor */
+    size,                   /* size = w * h; */
+    offset = 0,             /* Absolute Offset within s->pixels */
+    scanline = 0;           /* Offset within s->pixels to previous begining of scanline */
+  Uint8 *filebuffer;        /* Input file buffer */
+  
 
-
-    size=w*h;
-
-    filebuffer = (Uint8*) malloc (sizeof(Uint8) * 3 * size);
-
-    SDL_RWread(src, filebuffer, 3, w*h);
-    SDL_LockSurface(s);
-
-    for (imgfing = 0; imgfing < size;)
-    {
-/* This code is endian dependant */
-
-/* Store value in s->pixels */
-        ((Uint8*)(s->pixels))[offset] = filebuffer[filefing];
-        ((Uint8*)(s->pixels))[offset+1] = filebuffer[filefing + 1];
-        ((Uint8*)(s->pixels))[offset+2] = filebuffer[filefing + 2];
-
-/* Adjust filefing and offset */
-        filefing+=3;
-        imgfing++;
-        if (imgfing % w)
-            offset += 3;
-        else
-        {
-            offset = scanline + s -> pitch;
-            scanline = offset;
-        }
+  size=w*h;
+  
+  filebuffer = (Uint8*) malloc (sizeof(Uint8) * 3 * size);
+    
+  SDL_RWread(src, filebuffer, 3, w*h);
+  SDL_LockSurface(s);
+  
+  for (imgfing = 0; imgfing < size;) {
+    /* This code is endian dependant */
+    
+    /* Store value in s->pixels */
+    ((Uint8*)(s->pixels))[offset] = filebuffer[filefing];
+    ((Uint8*)(s->pixels))[offset+1] = filebuffer[filefing + 1];
+    ((Uint8*)(s->pixels))[offset+2] = filebuffer[filefing + 2];
+    
+    /* Adjust filefing and offset */
+    filefing+=3;
+    imgfing++;
+    if (imgfing % w)
+      offset += 3;
+    else {
+      offset = scanline + s -> pitch;
+      scanline = offset;
     }
-    SDL_UnlockSurface(s);
-    free (filebuffer);
+  }
+  SDL_UnlockSurface(s);
+  free (filebuffer);
 }
 
 static void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
-    int initial_pos;                /* Initial Position in RWOps */
-    Uint8 *filebuffer;              /* Input file buffer */
-    Uint32 tlfing,                  /* Tuple List cursor */
-           filefing = 4,            /* Finger to position inside Input file */
-           imgfing = 0,             /* Pixel offset in image */
-           offset = 0,              /* Offset within s->pixels */
-           scanline = 0,            /* Offset within s->pixels to previous beginning of scanline */
-           tcount,                  /* Tuple count */
-           tupfing;                 /* Finger to follow Tuple */
+  int initial_pos;                /* Initial Position in RWOps */
+  Uint8 *filebuffer;              /* Input file buffer */
+  Uint32 tlfing,                  /* Tuple List cursor */
+    filefing = 4,                 /* Finger to position inside Input file */
+    imgfing = 0,                  /* Pixel offset in image */
+    offset = 0,                   /* Offset within s->pixels */
+    scanline = 0,                 /* Offset within s->pixels to previous beginning of scanline */
+    tcount,                       /* Tuple count */
+    tupfing;                      /* Finger to follow Tuple */
+  
+  initial_pos = SDL_RWtell(src);
+  
+  filebuffer = (Uint8*) malloc (sizeof(Uint8) * 3 * w * h);
 
-    initial_pos = SDL_RWtell(src);
+  SDL_RWread(src, filebuffer, 1, 3*w*h);
 
-    filebuffer = (Uint8*) malloc (sizeof(Uint8) * 3 * w * h);
+  tcount = ((Uint32*)filebuffer)[0];
 
-    SDL_RWread(src, filebuffer, 1, 3*w*h);
-
-    tcount = ((Uint32*)filebuffer)[0];
-
-/* filefing points to beginning of ps */
-    for (tlfing = tcount; tlfing; tlfing--)
-    {
-/* Repeat n times */
-        for (tupfing = filebuffer[filefing]; tupfing; tupfing--)
-        {
-            ((Uint8*)s->pixels)[offset + 1] = filebuffer[filefing + 2];
-            ((Uint8*)s->pixels)[offset + 2] = filebuffer[filefing + 3];
-            imgfing++;
-            if (imgfing % w)
-                offset += 3;
-            else
-            {
-                offset = scanline + s -> pitch;
-                scanline = offset;
-            }
-        }
-/* filefing now points at beginning of xs */
-        filefing += 4;
-        for (tupfing = filebuffer[filefing - 3]; tupfing; tupfing--)
-        {
-            ((Uint8*)s->pixels)[offset + 1]= filebuffer[filefing];
-            ((Uint8*)s->pixels)[offset + 2] = filebuffer[filefing + 1];
-            imgfing++;
-            if (imgfing % w)
-                offset += 3;
-            else
-            {
-                offset = scanline + s -> pitch;
-                scanline = offset;
-            }
-            filefing+=2;
-        }
-/* filefing now points to beginning of next ps */
+  /* filefing points to beginning of ps */
+  for (tlfing = tcount; tlfing; tlfing--) {
+    /* Repeat n times */
+    for (tupfing = filebuffer[filefing]; tupfing; tupfing--) {
+      ((Uint8*)s->pixels)[offset + 1] = filebuffer[filefing + 2];
+      ((Uint8*)s->pixels)[offset + 2] = filebuffer[filefing + 3];
+      imgfing++;
+      if (imgfing % w)
+	offset += 3;
+      else {
+	offset = scanline + s -> pitch;
+	scanline = offset;
+      }
     }
-
-    tcount = ((Uint32*)(filebuffer + filefing))[0];
+    /* filefing now points at beginning of xs */
     filefing += 4;
-    imgfing = 0;
-    offset = 0;
-    scanline = 0;
-
-/* filefing points to beginning of alpha ps */
-    for (tlfing = tcount; tlfing; tlfing--)
-    {
-/* Repeat n times */
-        for (tupfing = filebuffer[filefing]; tupfing; tupfing--)
-        {
-            ((Uint8*)s->pixels)[offset] = filebuffer[filefing + 2];
-            imgfing++;
-            if (imgfing % w)
-                offset += 3;
-            else
-            {
-                offset = scanline + s -> pitch;
-                scanline = offset;
-            }
-        }
-/* filefing now points at beginning of xs */
-        filefing += 3;
-        for (tupfing = filebuffer[filefing - 2]; tupfing; tupfing--)
-        {
-            ((Uint8*)s->pixels)[offset] = filebuffer[filefing];
-            imgfing++;
-            if (imgfing % w)
-                offset += 3;
-            else
-            {
-                offset = scanline + s -> pitch;
-                scanline = offset;
-            }
-            filefing++;
-        }
-/* filefing now points to beginning of next ps */
+    for (tupfing = filebuffer[filefing - 3]; tupfing; tupfing--) {
+      ((Uint8*)s->pixels)[offset + 1]= filebuffer[filefing];
+      ((Uint8*)s->pixels)[offset + 2] = filebuffer[filefing + 1];
+      imgfing++;
+      if (imgfing % w)
+	offset += 3;
+      else {
+	offset = scanline + s -> pitch;
+	scanline = offset;
+      }
+      filefing+=2;
     }
-    SDL_RWseek(src, initial_pos + filefing, SEEK_SET);
-    free (filebuffer);
+    /* filefing now points to beginning of next ps */
+  }
+
+  tcount = ((Uint32*)(filebuffer + filefing))[0];
+  filefing += 4;
+  imgfing = 0;
+  offset = 0;
+  scanline = 0;
+
+  /* filefing points to beginning of alpha ps */
+  for (tlfing = tcount; tlfing; tlfing--) {
+    /* Repeat n times */
+    for (tupfing = filebuffer[filefing]; tupfing; tupfing--) {
+      ((Uint8*)s->pixels)[offset] = filebuffer[filefing + 2];
+      imgfing++;
+      if (imgfing % w)
+	offset += 3;
+      else {
+	offset = scanline + s -> pitch;
+	scanline = offset;
+      }
+    }
+    /* filefing now points at beginning of xs */
+    filefing += 3;
+    for (tupfing = filebuffer[filefing - 2]; tupfing; tupfing--) {
+      ((Uint8*)s->pixels)[offset] = filebuffer[filefing];
+      imgfing++;
+      if (imgfing % w)
+	offset += 3;
+      else {
+	offset = scanline + s -> pitch;
+	scanline = offset;
+      }
+      filefing++;
+    }
+    /* filefing now points to beginning of next ps */
+  }
+  SDL_RWseek(src, initial_pos + filefing, SEEK_SET);
+  free (filebuffer);
 
 }
 
@@ -293,101 +261,99 @@ static void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, I
 
 INTEGER load_img_plain8 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h)
 {
-    SDL_RWops *src;             /* Input File */
-    Uint32 palette[256] = {0};  /* Color palette */
+  SDL_RWops *src;             /* Input File */
+  Uint32 palette[256] = {0};  /* Color palette */
 
-    src = SDL_RWFromFP(f, 0);
+  src = SDL_RWFromFP(f, 0);
 
-    if (loadPalette(src, palette))
-        return 1;
+  if (loadPalette(src, palette))
+    return 1;
 
-    loadPixels_plain8 (src, s, palette, w, h);
+  loadPixels_plain8 (src, s, palette, w, h);
 
-    return 0;
+  return 0;
 }
 
 
 INTEGER load_img_rle8 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h)
 {
-    SDL_RWops *src;            /* Input file */
-    Uint32 palette[256] = {0}; /* Palette */
+  SDL_RWops *src;            /* Input file */
+  Uint32 palette[256] = {0}; /* Palette */
 
-    src = SDL_RWFromFP(f, 0);
+  src = SDL_RWFromFP(f, 0);
 
-    if (loadPalette(src, palette))
-        return 1;
+  if (loadPalette(src, palette))
+    return 1;
 
-    loadPixels_rle8 (src, s, palette, w, h);
+  loadPixels_rle8 (src, s, palette, w, h);
 
-    return 0;
+  return 0;
 }
 
 
 INTEGER load_img_plain16 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h)
 {
-    SDL_RWops *src;           /* Input file */
+  SDL_RWops *src;           /* Input file */
 
-    src = SDL_RWFromFP(f, 0);
+  src = SDL_RWFromFP(f, 0);
 
-    loadPixels_plain16 (src, s, NULL, w, h);
-    return 0;
+  loadPixels_plain16 (src, s, NULL, w, h);
+  return 0;
 }
 
 
 INTEGER load_img_rle16 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h)
 {
-    SDL_RWops *src;                 /* Input file */
+  SDL_RWops *src;                 /* Input file */
 
-    src = SDL_RWFromFP(f, 0);
-    loadPixels_rle16(src, s, NULL, w, h);
+  src = SDL_RWFromFP(f, 0);
+  loadPixels_rle16(src, s, NULL, w, h);
 
-    return 0;
+  return 0;
 }
 
 /* Autodetects type and size for FMI images */
 /* File isn't closed on exit */
 SDL_Surface *FMI_Load(FILE* fp)
 {
-    SDL_Surface *surface;
-    SDL_RWops *src;
-    Uint32 magic;
-    Uint16 width, height;
+  SDL_Surface *surface;
+  SDL_RWops *src;
+  Uint32 magic;
+  Uint16 width, height;
 
-/* Read type and size */
-    src = SDL_RWFromFP (fp, 0);
-    if (SDL_RWread (src, &magic, 4, 1) != 1)
-    {
-        SDL_SetError("Error Opening file\n");
-        return 0;
-    }
+  /* Read type and size */
+  src = SDL_RWFromFP (fp, 0);
+  if (SDL_RWread (src, &magic, 4, 1) != 1) {
+    SDL_SetError("Error Opening file\n");
+    return 0;
+  }
 
-/* Read width and height */
-    SDL_RWread (src, &width, sizeof (width), 1);
-    SDL_RWread (src, &height, sizeof (height), 1);
+  /* Read width and height */
+  SDL_RWread (src, &width, sizeof (width), 1);
+  SDL_RWread (src, &height, sizeof (height), 1);
 
-    surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 24, 0xf80000,
-             0x07e000, 0x001f00, 0x0000ff);
-    if (!surface)
-        return 0;
+  surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 24, 0xf80000,
+				 0x07e000, 0x001f00, 0x0000ff);
+  if (!surface)
+    return 0;
 
-    switch (magic)
-    {
-        case 0x38474d49:
-            load_img_plain8 (fp, surface, width, height);
-            break;
-        case 0x38454c52:
-            load_img_rle8 (fp, surface, width, height);
-            break;
-        case 0x36474d49:
-            load_img_plain16 (fp, surface, width, height);
-            break;
-        case 0x36454c52:
-            load_img_rle16 (fp, surface, width, height);
-            break;
-        default:
-            return 0;
-    }
-    return surface;
+  switch (magic) {
+  case 0x38474d49:
+    load_img_plain8 (fp, surface, width, height);
+    break;
+  case 0x38454c52:
+    load_img_rle8 (fp, surface, width, height);
+    break;
+  case 0x36474d49:
+    load_img_plain16 (fp, surface, width, height);
+    break;
+  case 0x36454c52:
+    load_img_rle16 (fp, surface, width, height);
+    break;
+  default:
+    return 0;
+  }
+  return surface;
 }
 
 
@@ -494,16 +460,21 @@ FMA_t *load_anim (FILE *f)
         fprintf (stderr, "load_anim: returning NULL.\n"); /* Should never happen */
     }
     return answer;
-
 }
 
 
 /* Frees x, y & items (_not_ *items) */
 void free_FMA (FMA_t *anim)
 {
-    free (anim->x);
-    free (anim->y);
-    free (anim->items);
-    free (anim);
-    return;
+  free (anim->x);
+  free (anim->y);
+  free (anim->items);
+  free (anim);
+  return;
 }
+
+
+
+
+
+
