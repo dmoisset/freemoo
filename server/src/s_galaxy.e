@@ -28,75 +28,67 @@ feature -- Redefined features
     require
         service_id /= Void
     local
-        s: SERIALIZER
+        s: SERIALIZER2
         id: INTEGER
         star: ITERATOR [S_STAR]
         reading: ARRAY [FLEET]
         fleet: ITERATOR [FLEET]
     do
--- If first subscription to `service_id', add to `ids'
+        -- If first subscription to `service_id', add to `ids'
         if not service_id.has_suffix(":new_fleets") then
             ids.add(service_id)
         end
         if service_id.is_equal("galaxy") then
--- Public "galaxy" service
-            !!Result.make (0)
-            Result.append (limit.serial_form)
-            s.serialize ("i", <<stars.count>>)
-            Result.append (s.serialized_form)
+        -- Public "galaxy" service
+            limit.serialize_on (s)
+            s.add_integer (stars.count)
             from
                 star := stars.get_new_iterator_on_items
             until
                 star.is_off
             loop
-                s.serialize ("iii", <<star.item.id, star.item.kind - star.item.kind_min,
-                                      star.item.size - star.item.stsize_min>>)
-                Result.append (s.serialized_form)
-                Result.append (star.item.serial_form)
+                s.add_tuple (<<star.item.id,
+                               star.item.kind - star.item.kind_min,
+                               star.item.size - star.item.stsize_min>>)
+                star.item.serialize_on (s)
                 star.next
             end
         elseif service_id.has_suffix(":scanner") and then
                 service_id.substring(1, service_id.count - 8).is_integer then
--- Per player "n:scanner" service
+            -- Per player "n:scanner" service
             id := service_id.substring(1, service_id.count - 8).to_integer
             reading := scans @ id
-            s.serialize ("i", <<reading.count>>)
-            !!Result.copy (s.serialized_form)
+            s.add_integer (reading.count)
             from
                 fleet := reading.get_new_iterator
             until fleet.is_off loop
-                Result.append (fleet.item.serialized_as_fleet)
+                fleet.item.serialize_on (s)
                 fleet.next
             end
         elseif service_id.has_suffix(":new_fleets") then
-            !!Result.make(0)
-            id := 0
-            s.serialize("i", <<id>>)
-            Result.append(s.serialized_form)
+            s.add_integer (0)
         else
             check unexpected_service_id: False end
         end
+        Result := s.serialized_form
     end
 
     new_fleet_message(new_fleets: ARRAY[FLEET]): STRING is
     -- Message sent for the <n>+":new_fleets" service
     local
-        s: SERIALIZER
+        s: SERIALIZER2
         it: ITERATOR[FLEET]
     do
-        !!s
-        !!Result.make(0)
-        s.serialize("i", <<new_fleets.count>>)
-        Result.append(s.serialized_form)
+        s.add_integer (new_fleets.count)
         from
             it := new_fleets.get_new_iterator
         until
             it.is_off
         loop
-            s.serialize("i", <<it.item.id>>)
-            Result.append(s.serialized_form)
+            s.add_integer (it.item.id)
             it.next
         end
+        Result := s.serialized_form
     end
 
     add_fleet(new_fleet: FLEET) is

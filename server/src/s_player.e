@@ -46,6 +46,11 @@ feature -- Operations
         end
     end
 
+    serialize_on (s: SERIALIZER2) is
+    do
+        s.add_tuple (<<id, name, state, color, connection/=Void>>)
+    end
+
 feature -- Access
 
     password: STRING
@@ -54,22 +59,12 @@ feature -- Access
     connection: SPP_SERVER_CONNECTION
         -- Conection to client
 
-    serial_form: STRING is
-    local
-        s: SERIALIZER
-    do
-        s.serialize ("isiib", <<id, name, state, color, connection/=Void>>)
-        Result := s.serialized_form
-    ensure
-        -- name is the first item serialized
-    end
-
 feature -- Redefined features
 
     subscription_message (service_id: STRING): STRING is
     local
         serv_id: STRING
-        s: SERIALIZER
+        s: SERIALIZER2
         i: ITERATOR [STAR]
     do
 -- Validate service_id
@@ -77,17 +72,15 @@ feature -- Redefined features
             !!serv_id.copy(service_id)
             serv_id.remove_prefix("player")
             if serv_id.is_integer and then serv_id.to_integer = id then
-                !!Result.make (0)
-                s.serialize ("i", <<knows_star.count>>)
-                Result.append (s.serialized_form)
+                s.add_integer (knows_star.count)
                 i := knows_star.get_new_iterator
                 from i.start until i.is_off loop
-                    s.serialize ("i", <<i.item.id>>)
-                    Result.append (s.serialized_form)
+                    s.add_integer (i.item.id)
                     i.next
                 end
             end
         end
+        Result := s.serialized_form
     end
 
     add_to_known_list (star: STAR) is

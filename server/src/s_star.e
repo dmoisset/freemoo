@@ -29,28 +29,30 @@ feature -- Redefined Features
 
     subscription_message (service_id: STRING): STRING is
     local
-        s: SERIALIZER
+        s: SERIALIZER2
         i: ITERATOR [PLANET]
     do
-    -- Setup id upon first subscription
+        -- Setup id upon first subscription
         if s_id = Void then
             s_id := service_id
         end
-        !!Result.make (0)
-        s.serialize ("si", <<name, 5 - planets.fast_occurrences(Void)>>)
-        Result.append (s.serialized_form)
+        s.add_string (name)
+        s.add_integer (5 - planets.fast_occurrences(Void))
         from
             i := planets.get_new_iterator
         until i.is_off loop
             if i.item /= Void then
-                s.serialize ("iiiiiii", <<i.item.size - i.item.plsize_min, i.item.climate - i.item.climate_min,
-                                         i.item.mineral - i.item.mnrl_min, i.item.gravity - i.item.grav_min,
-                                         i.item.type - i.item.type_min, i.item.special - i.item.plspecial_min,
-                                         i.item.orbit>>)
-                Result.append (s.serialized_form)
+                s.add_tuple (<<i.item.size - i.item.plsize_min,
+                               i.item.climate - i.item.climate_min,
+                               i.item.mineral - i.item.mnrl_min,
+                               i.item.gravity - i.item.grav_min,
+                               i.item.type - i.item.type_min,
+                               i.item.special - i.item.plspecial_min,
+                               i.item.orbit>>)
             end
             i.next
         end
+        Result := s.serialized_form
     end
 
 feature {MAP_GENERATOR} -- Redefined

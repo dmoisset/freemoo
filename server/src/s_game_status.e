@@ -16,9 +16,9 @@ feature -- Redefined features
 
     subscription_message (service_id: STRING): STRING is
     local
-        s: SERIALIZER
+        s: SERIALIZER2
     do
-        s.serialize ("ibbiiibbbi", <<open_slots, finished, started,
+        s.add_tuple (<<open_slots, finished, started,
                      galaxy_size, galaxy_age, start_tech_level,
                      tactical_combat, random_events, antaran_attacks,
                      date>>)

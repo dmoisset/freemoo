@@ -17,18 +17,17 @@ feature -- Redefined features
 
     subscription_message (service_id: STRING): STRING is
     local
-        s: SERIALIZER
+        s: SERIALIZER2
         i: ITERATOR [S_PLAYER]
     do
-        !!Result.make (0)
-        s.serialize ("i", <<items.count>>)
-        Result.append (s.serialized_form)
+        s.add_integer (items.count)
         from
             i := items.get_new_iterator_on_items
         until i.is_off loop
-            Result.append (i.item.serial_form)
+            i.item.serialize_on (s)
             i.next
         end
+        Result := s.serialized_form
     end
 
     add (item: S_PLAYER) is

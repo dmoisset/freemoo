@@ -32,27 +32,28 @@ feature -- Redefined features
     on_new_package (ptype: INTEGER) is
     local
         user, pass: STRING
-        multiple: reference BOOLEAN
-        s: SERIALIZER
+        u: UNSERIALIZER
     do
+        u.start (buffer)
         inspect
             ptype
         when msgtype_join then
-            s.unserialize ("ss", buffer)
-            user ?= s.unserialized_form @ 1
-            pass ?= s.unserialized_form @ 2
+            u.get_string
+            user := u.last_string
+            u.get_string
+            pass := u.last_string
             join (user, pass)
         when msgtype_rejoin then
-            s.unserialize ("ss", buffer)
-            user ?= s.unserialized_form @ 1
-            pass ?= s.unserialized_form @ 2
+            u.get_string
+            user := u.last_string
+            u.get_string
+            pass := u.last_string
             rejoin (user, pass)
         when msgtype_start then
             start
         when msgtype_turn then
-            s.unserialize ("b", buffer)
-            multiple ?= s.unserialized_form @ 1
-            next_turn (multiple)
+            u.get_boolean
+            next_turn (u.last_boolean)
         else
             Precursor (ptype)
         end
@@ -83,9 +84,9 @@ feature {NONE} -- Operations: joining
     send_join_reject (cause: INTEGER) is
         -- send Join-Reject package
     local
-        s: SERIALIZER
+        s: SERIALIZER2
     do
-        s.serialize ("i", <<cause>>)
+        s.add_integer (cause)
         send_package (msgtype_join_reject, s.serialized_form)
     end
 
