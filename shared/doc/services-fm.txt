@@ -17,7 +17,7 @@ PLAYERS LIST
             until connection close
   Description: list of players logged in, and basic status info on each.
   Format: "i" <<count>>, followed by sequence of
-          "isiib", <<id, name, state, color_id, connected>>
+          "siib", <<name, state, color_id, connected>>
 
 CHAT MESSAGES
   Name: "chatroom"
@@ -31,7 +31,7 @@ GALAXY
   Provided: Before game_status.started is set
   Description: Global galaxy map (star positions and colors)
   Format: "i" <<count>>, followed by sequence of
-          "iiirr" <<id, kind, size, x, y>>
+          "oiirr" <<id, kind, size, x, y>>
 
 STAR
   Name: "star"+id (id is a digit sequence = star_id) 
@@ -45,7 +45,7 @@ SCANNER
   Provided: Before game_status.started is set
   Descriptions: List of detected fleets for player n.
   Format: "i" <<count>>, followed by a sequence of
-          "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
+          "oioirr" <<owner, eta, destination, ships.count, x, y>>, and
             "ii" <<size, picture>> (for each ship of the fleet)
   when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
   the fleet is travelling to `destination'
