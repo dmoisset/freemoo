@@ -198,7 +198,7 @@ feature -- Operations
     require
         new_fleet /= Void
         not has_fleet (new_fleet.id)
-        new_fleet.orbit_center /= Void implies new_fleet.orbit_center.fleets.has (new_fleet.id)
+        new_fleet.orbit_center /= Void implies new_fleet.orbit_center.has_fleet (new_fleet)
     do
         fleets.add(new_fleet, new_fleet.id)
     ensure
@@ -250,8 +250,8 @@ feature -- Operations
         f, g: FLEET
     do
         -- Get and group fleets at s
-        !!fs.with_capacity (s.fleets.count, 1)
-        s.fleets.do_all (agent fs.add_last (?))
+        !!fs.with_capacity (s.fleet_count, 1)
+        s.store_fleets_in (fs)
         sorter.set_order (agent fleet_ungrouping(?, ?))
         sorter.sort (fs)
         -- Join

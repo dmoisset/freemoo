@@ -148,7 +148,7 @@ feature {NONE} -- Internal
                     p.item.colony.new_turn
                     if p.item.colony.shipyard /= Void then
                         from
-                            f := s.item.fleets.get_new_iterator_on_items
+                            f := s.item.get_new_iterator_on_fleets
                         until
                             f.is_off or else 
                             (f.item.owner = p.item.colony.owner and

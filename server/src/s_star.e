@@ -4,7 +4,8 @@ inherit
     UNIQUE_ID
     STAR
         redefine
-            set_planet, set_special, set_name, make, make_defaults, fleets
+            set_planet, set_special, set_name, make, make_defaults,
+            fleet_type
         end
     SERVICE
         redefine subscription_message end
@@ -56,8 +57,6 @@ feature -- Redefined Features
         Result := s.serialized_form
     end
 
-    fleets: DICTIONARY [S_FLEET, INTEGER]
-
 feature {MAP_GENERATOR} -- Redefined
 
     set_planet (newplanet: PLANET; orbit: INTEGER) is
@@ -92,4 +91,8 @@ feature -- Operations
         end
     end
 
+feature {NONE} -- Internal
+
+    fleet_type: S_FLEET
+    
 end -- class S_STAR

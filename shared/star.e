@@ -22,9 +22,6 @@ feature -- Access
 
     special: INTEGER
 
-    fleets: DICTIONARY[FLEET, INTEGER]
-        -- Subset of galaxy's `fleets', containing fleets that orbit this star.
-
     Max_planets: INTEGER is 5
 
     get_new_iterator_on_planets: ITERATOR [PLANET] is
@@ -37,14 +34,46 @@ feature -- Access
         Result := planets @ orbit
     end
 
+    has_fleet (f: like fleet_type): BOOLEAN is
+    do
+        Result := fleets.has (f.id)
+    end
+
+    fleet_count: INTEGER is
+    do
+        Result := fleets.count
+    end
+
+    get_new_iterator_on_fleets: ITERATOR [like fleet_type] is
+    do
+        Result := fleets.get_new_iterator_on_items
+    end
+    
 feature -- Operations on fleets
 
-    add_ship (item: SHIP) is
+    add_fleet (f: like fleet_type) is
+    require
+        f.orbit_center = Current
     do
---        galaxy.add_ship (item)
+        fleets.add (f, f.id)
+    end
+
+    remove_fleet (f: like fleet_type) is
+    require
+        has_fleet (f)
+    do
+        fleets.remove (f.id)
+    end
+
+    store_fleets_in (buffer: COLLECTION [like fleet_type]) is
+    require
+        buffer /= Void
+    do
+        fleets.item_map_in (buffer)
     end
 
 feature -- Operations on star system
+
     set_planet (newplanet: PLANET; orbit: INTEGER) is
     require
         newplanet /= Void
@@ -136,6 +165,14 @@ feature {NONE} -- Representation
         -- planets orbiting, from inner to outer orbit
         -- has Void at empty orbits
 
+    fleets: DICTIONARY [like fleet_type, INTEGER]
+        -- Subset of galaxy's `fleets', containing fleets that orbit this star.
+
+feature {NONE} -- Internal
+
+    fleet_type: FLEET
+        -- Anchor for type declarations.
+    
 invariant
     valid_kind: kind.in_range (kind_min, kind_max)
     valid_size: size.in_range (stsize_min, stsize_max)

@@ -149,7 +149,7 @@ feature -- Operations
         eta := 0
         current_speed := 0
         destination := Void
-        orbit_center.fleets.add (Current, id)
+        orbit_center.add_fleet (Current)
     ensure
         is_in_orbit and orbit_center = star
     end
@@ -159,8 +159,7 @@ feature -- Operations
     require
         is_in_orbit
     do
--- FIXME: DANGER! Abstraction breach -- code yellow
-        orbit_center.fleets.remove (id)
+        orbit_center.remove_fleet (Current)
         orbit_center := Void
     ensure
         not is_in_orbit
