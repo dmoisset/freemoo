@@ -45,6 +45,7 @@ var
    f: file;
 Begin
    Assign (f, ParamStr(1));
+   filemode := 2; 
    Rewrite (f, 1);
    BlockWrite (f, realpal, sizeof(realpal));
    Close(f)
@@ -54,6 +55,7 @@ Begin
    If ParamCount < 2 then ShowUsage ;
    {$I-}
    Assign (pal, ParamStr(1));
+   filemode := 0 ;
    Reset (pal, 1);
    if ioresult=0 then
    begin
@@ -62,6 +64,7 @@ Begin
    end;
    {$I+}
    Assign (inf, ParamStr (2));
+   filemode := 0 ;
    Reset (inf, 1);
    
    { Read Header }

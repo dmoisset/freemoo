@@ -36,6 +36,7 @@ Begin
    end;
 
    Assign (inf, ParamStr(1));
+   filemode := 0 ;
    Reset (inf, 1);
    
    { Get file count }
@@ -67,6 +68,7 @@ Begin
           fn := ParamStr (3) ;
       
       Assign (ouf, fn);
+      filemode := 2; 
       Rewrite (ouf, 1);
       { Dump data }
       Seek (inf, pos);

@@ -79,6 +79,7 @@ Begin
          'p':Begin
                 {$I-}
                 Assign (p, OptArg);
+                filemode := 0 ;
                 Reset (p, 1);
                 if ioresult=0 then
                 begin
@@ -112,6 +113,7 @@ Begin
    If savepalfile<>'' then
    Begin
       Assign (f, savepalfile);
+      filemode := 2 ;
       Rewrite (f, 1);
       BlockWrite (f, realpal, sizeof(realpal));
       Close(f)
@@ -126,6 +128,7 @@ Begin
       realpal[i] := (i shr 3)*$0801+(i shr 2) shl 5 ;
    ParseArgs;
    Assign (inf, inname);
+   filemode := 0 ;
    Reset (inf, 1);
    
    { Read Header }
