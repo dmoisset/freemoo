@@ -178,8 +178,8 @@ feature {NONE} -- Operations
     do
         -- Unserialize
         u.get_integer
-        if server.game.galaxy.fleets.has (u.last_integer) then
-            fleet := server.game.galaxy.fleets @ u.last_integer
+        if server.game.galaxy.has_fleet (u.last_integer) then
+            fleet := server.game.galaxy.fleet_with_id (u.last_integer)
         end
         u.get_integer
         if server.game.galaxy.stars.has (u.last_integer) then

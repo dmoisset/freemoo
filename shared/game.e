@@ -181,7 +181,7 @@ feature {NONE} -- Internal
         i: ITERATOR [FLEET]
         old_in_orbit: BOOLEAN
     do
-        i := galaxy.fleets.get_new_iterator_on_items
+        i := galaxy.get_new_iterator_on_fleets
         from i.start until i.is_off loop
             old_in_orbit := i.item.is_in_orbit
             i.item.move

@@ -15,9 +15,6 @@ feature {NONE} -- Creation
 
 feature -- Access
 
-    fleets: DICTIONARY [FLEET, INTEGER]
-        -- All fleets in space
-
     limit: COORDS
         -- Outermost corner of galaxy, opposite to (0, 0)
 
@@ -132,6 +129,25 @@ feature -- Access
 
     last_star: STAR
 
+    get_new_iterator_on_fleets: ITERATOR [FLEET] is
+    do
+        Result := fleets.get_new_iterator_on_items
+    end
+
+    has_fleet (fid: INTEGER): BOOLEAN is
+        -- Is there a fleet with id `fid'?
+    do
+        Result := fleets.has (fid)
+    end
+
+    fleet_with_id (fid: INTEGER): FLEET is
+        -- Fleet with id `fid'
+    require
+        has_fleet (fid)
+    do
+        Result := fleets @ fid
+    end
+
 feature -- Operations
 
     generate_scans (pl: PLAYER_LIST [PLAYER]) is
@@ -154,7 +170,7 @@ feature -- Operations
     add_fleet (new_fleet: FLEET) is
     require
         new_fleet /= Void
-        not fleets.has(new_fleet.id)
+        not has_fleet (new_fleet.id)
         new_fleet.orbit_center /= Void implies new_fleet.orbit_center.fleets.has (new_fleet.id)
     do
         fleets.add(new_fleet, new_fleet.id)
@@ -176,7 +192,7 @@ feature -- Operations
     require
         fleet /= Void and destination /= Void and ships /= Void
         stars.has (destination.id)
-        fleets.has (fleet.id)
+        has_fleet (fleet.id)
         not ships.is_empty
         -- ships.for_all (agent fleet.has_ship (?))
     local
@@ -308,6 +324,9 @@ feature {NONE} -- Representation
 
     stars: DICTIONARY [STAR, INTEGER]
         -- stars in the map, by id
+
+    fleets: DICTIONARY [FLEET, INTEGER]
+        -- All fleets in space
 
 invariant
     stars /= Void
