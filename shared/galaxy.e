@@ -115,6 +115,27 @@ feature -- Operations
         fleets.has(new_fleet.id)
     end
 
+    fleet_orders (fleet: FLEET; destination: STAR; ships: SET[SHIP]) is
+        -- Set fleet orders of `fleet', sending its `ships' toward 
+        -- `destination'
+    require
+        fleet /= Void and destination /= Void and ships /= Void
+        not ships.is_empty
+        -- ships.for_all (agent fleet.has_ship (?))
+    local
+        f: FLEET
+    do
+        f := fleet
+        if ships.count /= f.ship_count then
+            f.split (ships)
+            f := f.splitted_fleet
+            f.set_destination (destination)
+            add_fleet (f)
+        else
+            f.set_destination (destination)
+        end
+    end
+
 feature -- Factory methods
 
     create_star:STAR is

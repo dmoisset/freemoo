@@ -174,29 +174,41 @@ feature {NONE} -- Operations
         fleet: FLEET
         destination: STAR
         ships: SET [SHIP]
-        i: INTEGER
+        i, count: INTEGER
     do
+        -- Unserialize
         u.get_integer
-        fleet := server.game.galaxy.fleets @ u.last_integer
-        u.get_integer
-        destination := server.game.galaxy.stars @ u.last_integer
-        u.get_integer
-        i := u.last_integer
-        !!ships.with_capacity (i)
-        from until i = 0 loop
-            u.get_integer
-            ships.add (fleet.ship (u.last_integer))
-            i:=i-1
+        if server.game.galaxy.fleets.has (u.last_integer) then
+            fleet := server.game.galaxy.fleets @ u.last_integer
         end
--- FIXME: Check message consistency
--- FIXME: This shouldn't go in this class. Probably, GAME or GALAXY are better
-        if ships.count /= fleet.ship_count then
-            fleet.split (ships)
-            fleet := fleet.splitted_fleet
-            fleet.set_destination (destination)
-            server.game.galaxy.add_fleet (fleet)
+        u.get_integer
+        if server.game.galaxy.stars.has (u.last_integer) then
+            destination := server.game.galaxy.stars @ u.last_integer
+        end
+        u.get_integer
+        count := u.last_integer
+        !!ships.with_capacity (count)
+        from i := 1 until i > count loop
+            u.get_integer
+            if fleet /= Void and then fleet.has_ship (u.last_integer) then
+                ships.add (fleet.ship (u.last_integer))
+            end
+            i:=i+1
+        end
+        -- Check consistency
+        if fleet = Void then
+            print ("move_fleet: Invalid fleet id%N")
+        elseif fleet.owner /= player then
+            print ("move_fleet: fleet is owned by somebody else%N")
+        elseif destination = Void then
+            print ("move_fleet: Invalid destination id%N")
+        elseif ships.count = 0 then
+            print ("move_fleet: non-positive ship count%N")
+        elseif ships.count < count then
+            print ("move_fleet: ships repeated or not in fleet%N")
         else
-            fleet.set_destination (destination)
+            -- Send orders
+            server.game.galaxy.fleet_orders (fleet, destination, ships)
         end
     end
     
