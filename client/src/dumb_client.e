@@ -57,8 +57,8 @@ feature
             print ("Connection failed.%N")
         end
         cleanup
-    rescue
-        cleanup
+--    rescue
+--        cleanup
     end
 
     start is
