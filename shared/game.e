@@ -72,10 +72,30 @@ feature -- Access
 
     end_condition: BOOLEAN is
         -- has reached end condition?
+    local
+        ip: ITERATOR [PLAYER]
+        ist: ITERATOR [STAR]
+        count: INTEGER
     do
         -- Only one survivor or
         -- Somebody was elected or
         -- Somebody defeated the antarans
+
+        -- for now we use "some player explored everything"
+        -- Count stars that are not blackholes
+        from ist := galaxy.get_new_iterator_on_stars until
+           ist.is_off
+        loop
+           if ist.item.kind /= ist.item.kind_blackhole then
+               count := count + 1
+           end
+           ist.next
+        end
+        -- Check players
+        from ip := players.get_new_iterator until ip.is_off or Result loop
+            Result := ip.item.knows_star.count = count
+            ip.next
+        end
     end
 
     winner: PLAYER is
