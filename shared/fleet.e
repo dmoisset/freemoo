@@ -126,6 +126,8 @@ feature -- Operations
         -- Arrival
         if eta = 0 and not is_stopped then
             enter_orbit (destination)
+            owner.add_to_known_list (destination)
+            owner.add_to_visited_list (destination)
         end
     end
 

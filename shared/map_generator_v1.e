@@ -252,6 +252,8 @@ feature {NONE} -- Planet Generation
             hmworld_system.set_name (hmworldnams.item (i.item.color))
 -- should be create {COLONY}, but it doesn't work
             !!newcol.make (hmworld, i.item)
+            i.item.add_to_known_list (hmworld_system)
+            i.item.add_to_visited_list (hmworld_system)
             done := done + 1
             dont_touch.add (hmworld_system.id)
             i.next

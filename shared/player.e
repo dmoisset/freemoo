@@ -11,6 +11,8 @@ feature {NONE} -- Creation
         set_state (st_setup)
         set_color (min_color)
         !!colonies.make
+        !!knows_star.make
+        !!has_visited_star.make
     ensure
         state = st_setup
     end
@@ -25,6 +27,12 @@ feature -- Access
         
     colonies: DICTIONARY [COLONY, INTEGER]
         -- Colonies owned by this player
+        
+    knows_star: SET[STAR]
+        -- Stars known by this player
+    
+    has_visited_star: SET[STAR]
+        -- Stars visited by this player
 
 feature -- Access
 
@@ -82,6 +90,18 @@ feature {COLONY} -- Operations
         colonies.remove (colony.id)
     ensure
         not colonies.has (colony.id)
+    end
+
+feature {MAP_GENERATOR, FLEET} 
+
+    add_to_known_list (star: STAR) is
+    do
+        knows_star.add (star)
+    end
+    
+    add_to_visited_list (star: STAR) is
+    do
+        has_visited_star.add (star)
     end
 
 invariant
