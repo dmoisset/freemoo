@@ -40,28 +40,27 @@ feature {NONE} -- Creation
         on_model_change
     end
 
-feature -- Access
-
---    widget: GTK_DRAWING_AREA
-        -- widget reflecting model
-
 feature -- Redefined features
 
     on_model_change is
         -- Update gui
     local
         i: ITERATOR[C_STAR]
-        p: expanded PROJECTION
+        p: PARAMETRIZED_PROJECTION
         ww: WINDOW
     do
+        !!p.make_identity
+        p.translate(30, 350)
+        p.scale(15, 5)
+        p.rotate(.7)
         from i := model.stars.get_new_iterator
         until i.is_off
         loop
             p.project(i.item)
             if i.item.kind = i.item.kind_blackhole then -- zoom not implemented yet
-                !WINDOW_ANIMATED!ww.make (my_window, (p.x * 10.9).rounded, (p.y * 14.5).rounded, pics.item(i.item.kind, i.item.stsize_min))
+                !WINDOW_ANIMATED!ww.make (my_window, p.x.rounded, p.y.rounded, pics.item(i.item.kind, i.item.stsize_min))
             else
-                !WINDOW_ANIMATED!ww.make (my_window, (p.x * 10.9).rounded, (p.y * 14.5).rounded, pics.item(i.item.kind, i.item.size))
+                !WINDOW_ANIMATED!ww.make (my_window, p.x.rounded, p.y.rounded, pics.item(i.item.kind, i.item.size))
             end
             i.next
         end

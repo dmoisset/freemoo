@@ -57,7 +57,7 @@ static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, 
     filebuffer = (Uint8*) malloc (sizeof(Uint8) * w * h);
 
 /* Load file into buffer */
-    SDL_RWread(src, &filebuffer, 1, w * h);
+    SDL_RWread(src, filebuffer, 1, w * h);
 
 /* Move buffer into s->pixels, looking up in palette */
     for (filefing = 0; filefing < w * h;)
@@ -100,7 +100,7 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
     SDL_RWread(src, &tcount, 4, 1);
 
     initial_pos = SDL_RWtell(src);
-    SDL_RWread(src, &filebuffer, 1, w * h);
+    SDL_RWread(src, filebuffer, 1, w * h);
 
 /* filefing points to beginning of tuple */
     for (tlfing = 0; tlfing < tcount; tlfing++)
@@ -139,6 +139,7 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
 /* filefing points to beginning of next tuple */
     }
     SDL_RWseek(src, initial_pos + filefing, SEEK_SET);
+    free (filebuffer);
 }
 
 static void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
@@ -155,7 +156,7 @@ static void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette,
 
     filebuffer = (Uint8*) malloc (sizeof(Uint8) * 3 * size);
 
-    SDL_RWread(src, &filebuffer, 3, w*h);
+    SDL_RWread(src, filebuffer, 3, w*h);
     SDL_LockSurface(s);
 
     for (imgfing = 0; imgfing < size;)
@@ -179,6 +180,7 @@ static void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette,
         }
     }
     SDL_UnlockSurface(s);
+    free (filebuffer);
 }
 
 static void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
@@ -197,7 +199,7 @@ static void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, I
 
     filebuffer = (Uint8*) malloc (sizeof(Uint8) * 3 * w * h);
 
-    SDL_RWread(src, &filebuffer, 1, 3*w*h);
+    SDL_RWread(src, filebuffer, 1, 3*w*h);
 
     tcount = ((Uint32*)filebuffer)[0];
 
@@ -277,6 +279,7 @@ static void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, I
 /* filefing now points to beginning of next ps */
     }
     SDL_RWseek(src, initial_pos + filefing, SEEK_SET);
+    free (filebuffer);
 
 }
 
@@ -440,7 +443,7 @@ FMA_t *load_anim (FILE *f)
     for(imgfing = 0; imgfing < imgcount[0]; imgfing++)
     {
         SDL_RWread (src, delta_n_size, 2, 4);
-/*        printf("Loading %dx%d image displaced %dx%d...\n", delta_n_size[2], delta_n_size[3], delta_n_size[0], delta_n_size[1]);*/
+        /*printf("Loading %dx%d image displaced %dx%d...\n", delta_n_size[2], delta_n_size[3], delta_n_size[0], delta_n_size[1]);*/
         if (usecolorkey)
             answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCCOLORKEY|SDL_RLEACCEL,
                                          delta_n_size[2], delta_n_size[3], 16, 0xf800, 0x07e0, 0x001f, 0);
