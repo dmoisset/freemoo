@@ -1,0 +1,104 @@
+buffer0.lbx:
+main window:
+    0001: background
+    0002: button: game
+    0003: button: turn
+    0004: button: colonies
+    0005: button: planets
+    0006: button: fleets
+    0007: button: zoom in
+    0008: button: zoom out
+    0009: button: leaders
+    0010: button: races
+    0011: button: info
+    0012: indicador de flota seleccionada
+    0013: botón de turno (solamente en estado hundido) (?)
+    0020-0023: icon: dimensional portal (4 zoom levels)
+    0024-0027: icon: dimensional portal (4 zoom levels)
+    0028-0031: icon: dimensional portal (4 zoom levels)
+    0032-0035: icon: artemis system net (4 zoom levels)
+    0149-0154: icon: blue star (6 sizes)
+    0155-0160: icon: white star (6 sizes)
+    0161-0166: icon: yellow star (6 sizes)
+    0167-0172: icon: orange star (6 sizes)
+    0173-0178: icon: red star (6 sizes)
+    0179-0184: icon: brown star (6 sizes)
+    0185-0205: icon: blue star (6 sizes)
+    0206-0209: icon: red fleet (4 zoom levels)
+    0210-0213: icon: yellow fleet (4 zoom levels)
+    0218-0221: icon: white fleet (4 zoom levels)
+    0222-0225: icon: blue fleet (4 zoom levels)
+    0226-0229: icon: brown fleet (4 zoom levels)
+    0230-0233: icon: purple fleet (4 zoom levels)
+    0234-0237: icon: orange fleet (4 zoom levels)
+    0238-0241: icon: antaran fleet (4 zoom levels)
+    0242-0245: icon: guardian (4 zoom levels)
+    0246-0249: icon: space ameba (4 zoom levels)
+    0250-0253: icon: space crystal (4 zoom levels)
+    0254-0257: icon: space dragon (4 zoom levels)
+    0258-0261: icon: space eel (4 zoom levels)
+    0262-0265: icon: space hydra (4 zoom levels)
+    0266-0273: icon: player ended turn (8 colors)
+    
+system display window:
+    0036-0043: icon: colony indicator (8 colors)
+    0044-0051: icon: outpost indicator (8 colors)
+    0076: icon: bracket around selected colony
+    0078-0082: icon: planet orbit ellipse (5 orbits)
+    0083: button: close
+    0084-0090: icon: sun (7 star kinds)
+    0091: icon: planet orbit ellipse (1 frame for each of 5 orbits)
+    0092: icon: asteroid field (1 frame for each of 5 orbits)
+    0093-0097: icon: toxic planet (5 sizes)
+    0098-0102: icon: radiated planet (5 sizes)
+    0103-0107: icon: barren planet (5 sizes)
+    0108-0112: icon: desert planet (5 sizes)
+    0113-0117: icon: tundra planet (5 sizes)
+    0118-0122: icon: ocean planet (5 sizes)
+    0123-0127: icon: swamp planet (5 sizes)
+    0128-0132: icon: arid planet (5 sizes)
+    0133-0137: icon: terran planet (5 sizes)
+    0138-0142: icon: gaia planet (5 sizes)
+    0143: icon: gas-giant
+    0274-0281: icon: player fleet (8 colors)
+    0282: icon: antaran fleet
+    0283: icon: guardian
+    0284: icon: space ameba
+    0285: icon: space crystal
+    0286: icon: space dragon
+    0287: icon: space eel
+    0288: icon: space hydra
+
+fleet orders window:
+    0052: background (top, w/scrollbar)
+    0053: background (top, w/o scrollbar)
+    0054: background (middle, w/scrollbar)
+    0055: background (middle, w/o scrollbar)
+    0056: background (bottom, w/scrollbar)
+    0057: background (bottom, w/o scrollbar)
+    0058: scrollbar
+    0059: button: scrollbar up
+    0060: button: scrollbar down
+    0061: button: all
+    0062: button: attack antares
+    0063: button: colonize planet
+    0064: button: engage enemy forces
+    0065: button: unload troops
+    0066: button: build outpost
+    0067: button: close
+    0068-0073: repeats 0062-0067
+
+leader offer window:
+    0074: background    
+
+diplomacy request window:
+    0016: window: diplomacy request
+    0017: button: accept
+    0018: button: ignore
+    0019: button: wait
+
+0014: invalid 1x1 MPI
+0015: invalid 1x1 MPI
+0075: background frame for some window similar to the leader offer. never seen it.
+0077: unnown red bullet
+0144-0188: invalid MPIs

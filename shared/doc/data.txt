@@ -27,3 +27,11 @@ galaxy/planets: Probabilities for planets. File contains:
                 for tiny...huge
                 Probability for planetary kinds. Three ints for
                 asteriod...planet
+
+CLIENT DATA
+
+client/xxx-window/background.fma: original MOO2 background
+client/xxx-window/background.png: text over original background
+client/connect-window/connect-button-x.png: image for buttons (x=[upd], up, prelight, down)
+client/galaxy-view/background.fma: starry background for galaxy-view
+client/galaxy-view/starxx.fma: stars

@@ -1,0 +1,3 @@
+multigm.lbx:
+multiplayer window:
+    0001: background (used with all dialogs)
