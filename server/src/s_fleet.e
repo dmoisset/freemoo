@@ -75,9 +75,15 @@ feature -- Redefined features
     end
     
     move is
+    local
+        old_msg, new_msg: STRING
     do
+        old_msg := subscription_message("fleet" + id.to_string)
         Precursor
-        update_clients
+        new_msg := subscription_message("fleet" + id.to_string)
+        if not equal (old_msg, new_msg) and then registry /= Void then
+            send_message("fleet" + id.to_string, new_msg)
+        end
     end
     
 feature {NONE} -- Internal
