@@ -1,5 +1,6 @@
 BUG: Scanner debería delegar escaneado a elementos
 BUG: scanner debería usar lista de flotas y colonias del jugador
+BUG: No se debería asignar un agujero negro como homeworld
     - ?
 image bin
 DESIGN: ordenes a flotas
@@ -16,8 +17,6 @@ galaxy_view:
 indicador de espera de fin de turno
 selección de color, ruler_name (player setup)
 chat
-nueva interfaz para serializer
 updates incrementales
 Revision general de código
 teclas rápidas en la interfaz (en especial TAB, ENTER)
-revisar que un label en una posición fuera de ventana no se vea.

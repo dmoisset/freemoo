@@ -36,7 +36,7 @@ STAR
 
 FLEET
   Name: "fleet"+id (id is a digit sequence = fleet_id) 
-  Provided: Before reporting fleet on scanner.
+  Provided: Before reporting fleet on scanner or new_fleets.
   Description: Full fleet description
   Format: "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
             "ii" <<size, picture>> (for each ship of the fleet)
@@ -74,6 +74,7 @@ NEW FLEETS
   Name: n+":new_fleets" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
   Description: List of id's of new fleets to add.
+  Subscription message: full list of fleet ids, same format
   Format: "i" <<count>>, followed by a sequence of
           "i" <<id>>, id of fleet
 
@@ -88,5 +89,6 @@ SERVICE
   Name: "name"
   Provided: 
   Description:
+  Subscription message: (if different from update)
   Format:
 

@@ -25,7 +25,7 @@ feature -- Access
         -- Outermost corner of galaxy, opposite to (0, 0)
 
     scanner (player: PLAYER):ARRAY[FLEET] is
-        -- All fleets detected by `player'
+        -- All fleets detected by `player' (not including their own)
     local
         ship: ITERATOR[SHIP]
         alienfleet, ownfleet: ITERATOR[FLEET]
@@ -42,7 +42,9 @@ feature -- Access
             until
                 alienfleet.is_off
             loop
-                Result.add_last(alienfleet.item)
+                if alienfleet.item.owner /= player then
+                    Result.add_last(alienfleet.item)
+                end
                 alienfleet.next
             end
         else
@@ -90,7 +92,7 @@ feature -- Access
                     end
                     ship.next
                 end
-                if ships_detected then
+                if ships_detected and fleet.owner /= player then
                     Result.add_last(fleet)
                 end
                 alienfleet.next

@@ -79,20 +79,28 @@ feature -- Redefined features
                 fleet.next
             end
         elseif service_id.has_suffix(":new_fleets") then
-            s.add_integer (0)
+            !!reading.make (1, 0)
+            id := service_id.substring(1, service_id.count - 11).to_integer
+            from fleet := fleets.get_new_iterator_on_items until
+                fleet.is_off
+            loop
+                if fleet.item.owner.id = id then
+                    reading.add_last (fleet.item)
+                end
+                fleet.next
+            end
+            build_fleet_message (reading, s)
         else
             check unexpected_service_id: False end
         end
         Result := s.serialized_form
     end
 
-    new_fleet_message(new_fleets: ARRAY[FLEET]): STRING is
-    -- Message sent for the <n>+":new_fleets" service
+    build_fleet_message(new_fleets: ARRAY[FLEET]; s: SERIALIZER2) is
+        -- Serialize message sent for the ":new_fleets" in `s'
     local
-        s: SERIALIZER2
         it: ITERATOR[FLEET]
     do
-        !!s.make
         s.add_integer (new_fleets.count)
         from
             it := new_fleets.get_new_iterator
@@ -102,13 +110,13 @@ feature -- Redefined features
             s.add_integer (it.item.id)
             it.next
         end
-        Result := s.serialized_form
     end
 
     add_fleet(new_fleet: FLEET) is
     local
         s_new_fleet: S_FLEET
         farray: ARRAY[S_FLEET]
+        s: SERIALIZER2
     do
         s_new_fleet ?= new_fleet
         check s_new_fleet /= Void end
@@ -119,7 +127,8 @@ feature -- Redefined features
         !!farray.make(0, 0)
         farray.put(s_new_fleet, 0)
         server.register(s_new_fleet, "fleet" + s_new_fleet.id.to_string)
-        send_message(s_new_fleet.owner.id.to_string + ":new_fleets", new_fleet_message (farray))
+        !!s.make; build_fleet_message (farray, s)
+        send_message(s_new_fleet.owner.id.to_string + ":new_fleets", s.serialized_form)
     end
 
 feature {MAP_GENERATOR} -- Generation
