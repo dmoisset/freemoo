@@ -62,7 +62,6 @@ feature {ANY}
         !!cgalaxy.make
         !!sgalaxy.make
 
-        sgalaxy.set_registry(Current)
         register(sgalaxy, "galaxy")
         subscribe(cgalaxy, "galaxy")
 

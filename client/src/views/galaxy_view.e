@@ -22,7 +22,6 @@ feature {NONE} -- Creation
         set_model (new_model)
         window_make(w, where)
         my_window := w
-        !SDL_BITMAP_FONT!font.make ("small_font.png")
         !ANIMATION_FMA_TRANSPARENT!a.make ("client/galaxy-view/background.fma")
         !WINDOW_ANIMATED!w1.make (w, 0, 0, a)
         !!pics.make(kind_min, kind_max, stsize_min, stsize_max)
@@ -69,8 +68,6 @@ feature -- Redefined features
     background: ANIMATION
 
     my_window: WINDOW
-
-    font: FONT
 
     pics: ARRAY2[ANIMATION_FMA_TRANSPARENT]
 

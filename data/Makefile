@@ -8,18 +8,20 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/galaxy/minrich/stars \
                 $(INSTALL_DIR)/galaxy/planets \
                 $(INSTALL_DIR)/client/connect-window/background.fma \
-                $(INSTALL_DIR)/client/connect-window/background.png \
-                $(INSTALL_DIR)/client/connect-window/connect-button-u.png \
-                $(INSTALL_DIR)/client/connect-window/connect-button-p.png \
-                $(INSTALL_DIR)/client/connect-window/connect-button-d.png \
+                $(INSTALL_DIR)/client/connect-window/background.fmi \
+                $(INSTALL_DIR)/client/connect-window/connect-button-u.fmi \
+                $(INSTALL_DIR)/client/connect-window/connect-button-p.fmi \
+                $(INSTALL_DIR)/client/connect-window/connect-button-d.fmi \
                 $(INSTALL_DIR)/client/gui/default_font.png \
                 $(INSTALL_DIR)/client/gui/default_cursor.png \
-                $(INSTALL_DIR)/client/join-window/background.png \
-                $(INSTALL_DIR)/client/setup-window/background.png \
+                $(INSTALL_DIR)/client/join-window/background.fmi \
+                $(INSTALL_DIR)/client/setup-window/background.fmi \
                 $(INSTALL_DIR)/client/main-window/background.fma \
 
 
 all: $(SUBDIRS)
+
+.PHONY: $(SUBDIRS)
 
 $(SUBDIRS):
 	$(MAKE) -C $@

@@ -39,6 +39,11 @@ feature -- Operations
 --        close_all
     end
 
+    register_galaxy is
+    do
+        register (game.galaxy, "galaxy")
+    end
+
 feature -- Redefined features
 
     new_connection: FM_SERVER_CONNECTION is

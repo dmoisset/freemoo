@@ -2,7 +2,7 @@ deferred class JOIN_WINDOW_GUI
 
 inherit
     WINDOW
-    redefine make, focusable end
+    redefine make end
 
 feature {NONE} -- Creation
 
@@ -16,9 +16,8 @@ feature {NONE} -- Creation
 
         !!background.make (Current, 0, 0, create {ANIMATION_FMA}.make (
             "client/connect-window/background.fma"))
--- get image from the package
         !!background.make (Current, 0, 0, create {ANIMATION_SEQUENTIAL}.make (
-            <<create {SDL_IMAGE}.make_from_file ("../data/client/join-window/background.png")>>
+            <<create {IMAGE_FMI}.make_from_file ("client/join-window/background.fmi")>>
         ))
 
         r.set_with_size (75, 75, 150, 25)
@@ -42,25 +41,21 @@ feature {NONE} -- Creation
         !!status_label.make (Current, r, "Join as new player or rejoin as existing one.")
 
         !BUTTON_IMAGE!join_button.make (Current, 220, 375,
-            create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-u.png"),
-            create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-p.png"),
-            create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-d.png")
+            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-u.fmi"),
+            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-p.fmi"),
+            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-d.fmi")
             )
         join_button.set_click_handler (agent join)
 
         !BUTTON_IMAGE!disconnect_button.make (Current, 330, 375,
-            create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-u.png"),
-            create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-p.png"),
-            create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-d.png")
+            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-u.fmi"),
+            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-p.fmi"),
+            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-d.fmi")
             )
         disconnect_button.set_click_handler (agent disconnect)
 
         hide
     end
-
-feature -- Redefined features
-
-    focusable: BOOLEAN is True
 
 feature {NONE} -- Widgets
 

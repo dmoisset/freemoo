@@ -1,10 +1,14 @@
-TARGETS=background.fma background.png connect-button-u.png \
-        connect-button-p.png connect-button-d.png
+TARGETS=background.fma background.fmi connect-button-u.fmi \
+        connect-button-p.fmi connect-button-d.fmi
 X2P=../../../tools/xcf2png/xcf2png.pl
+P2F=../../../tools/png2fmi/png2fmi
 
 all: $(TARGETS)
 	killall -q gimp || true
 	rm -f gimp_active
+
+%.fmi: %.png
+	$(P2F) -r $< $@
 
 %.png: %.svg
 	sodipodi -z -f $< -e $@

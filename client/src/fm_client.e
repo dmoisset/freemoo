@@ -22,13 +22,11 @@ feature {NONE} -- Creation
         display.set_default_font (create {SDL_BITMAP_FONT}.make
             ("../data/client/gui/default_font.png"))
 
--- Load image from package
         display.root.set_pointer (create {MOUSE_POINTER}.make (
-            create {SDL_IMAGE}.make_from_file ("../data/client/gui/default_cursor.png"),
+            create {IMAGE_FMI}.make_from_file ("client/gui/default_cursor.fmi"),
             6, 4))
 
-        !!main_window.make (display.root, display.dimensions)
-        main_window.activate
+        !!connection_window.make (display.root, display.dimensions)
         -- Enter the event loop
         display.do_event_loop
         cleanup
@@ -50,6 +48,6 @@ feature {NONE} -- Windows
 
     display: SDL_DISPLAY
 
-    main_window: MAIN_WINDOW
+    connection_window: CONNECTION_WINDOW
 
 end -- class FM_CLIENT

@@ -3,8 +3,9 @@ class S_GAME
 inherit
     GAME
     redefine
-        status, players, add_player
+        status, players, galaxy, add_player, init_game
     end
+    SERVER_ACCESS
 
 creation
     make_with_options
@@ -17,6 +18,8 @@ feature -- Access
     players: S_PLAYER_LIST
         -- Players in the game
 
+    galaxy: S_GALAXY
+
 feature -- Operations
 
     add_player (p: S_PLAYER) is
@@ -26,5 +29,11 @@ feature -- Operations
         status.fill_slot
     end
 
+feature {NONE} -- Internal
+
+    init_game is
+    do
+        server.register_galaxy
+    end
 
 end -- class S_GAME

@@ -23,6 +23,7 @@ feature -- Creation
         Precursor (registry_host, registry_port)
         if game_status = Void then !!game_status.make end
         if player_list = Void then !!player_list.make end
+        if galaxy = Void then !!galaxy.make end
     rescue
         if is_opening or not is_closed then
             close
@@ -82,6 +83,12 @@ feature -- Operations
         subscribe (player_list, "players_list")
     end
 
+    suscribe_init is
+        -- subscribe to services provided on beginning
+    do
+        subscribe (galaxy, "galaxy")
+    end
+
     end_turn (multiple: BOOLEAN) is
         -- Notify server that player has finished_turn
         -- if `multiple', player allows more than one turn to pass.
@@ -127,6 +134,9 @@ feature -- Access (server attributes)
 
     player_list: C_PLAYER_LIST
         -- list of players.
+
+    galaxy: C_GALAXY
+        -- game map
 
     player: C_PLAYER
         -- Player at this client

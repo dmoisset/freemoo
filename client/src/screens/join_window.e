@@ -110,8 +110,7 @@ feature {NONE} -- Internal
     rejoin: BOOLEAN
         -- The last operation was a rejoin
 
-feature {NONE} -- Constants
-
+feature {NONE} -- Widgets
     new_player_list (where: RECTANGLE) is
     do
         !!player_list.make (Current, where, server.player_list)
@@ -121,6 +120,8 @@ feature {NONE} -- Constants
     do
         !!server_rules.make (Current, where, server.game_status)
     end
+
+feature {NONE} -- Constants
 
     join_reject_causes: ARRAY [STRING] is
     once

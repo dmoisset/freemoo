@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+   <TITLE>Mapa de diseño de FreeMOO</TITLE>
+</HEAD>
+<BODY>
+<H1>Mapa de diseño de FreeMOO</H1>
+
+<H2>Organización general</H2>
+
+<P>Los bloques principales de FreeMOO son:
+
+<UL>
+   <LI>"Shared": Las clases que están en este bloque son las que describen
+       las reglas y la lógica del juego, las estructuras de datos, etc. Todo
+       lo que hace al gameplay debría estar aquí adentro. A su vez, no debe
+       ir aqui nada relativo a la representación gráfica, o a como se
+       almacenan los datos en disco o por la red.
+   <LI>"Server": Este cluster contiene un sistema que corre una implementación
+       basada en red de FreeMOO. Esencialmente usa las clases de "Shared"
+       (redefiniendo varias por herencia), y es capaz de transmitir el estado
+       de instancias de estas a clientes que se conecten. El estado de los
+       clientes tienen una copia que pueden ser incompletas o desactualizadas.
+       De hecho siempre es incompleta, ya que el servidor solo transmite la
+       información que el jugador en cada cliente puede saber.
+   <LI>"Client": Este cluster contiene dos sistemas. FM_client es un cliente
+       gráfico para conectarse al servidor. Esencialmente, muestra una
+       representación de la información que el servidor envía, y permite al
+       usuario enviar ordenes al servidor con una interfaz gráfica. dumb_client
+       es un cliente que solo envía ordenes al servidor siguiendo un patrón
+       hardcodeado (es un bot).
+   <LI>"Data": Aqui hay archivos de datos, tanto tablas de datos para
+       las clases de shared, como imagenes, animaciones y sonidos para el
+       cliente.
+   <LI>"Tools": Este es un conjunto de herramientas, que no hacen falta para
+       correr el cliente o servidor, pero son necesarias para generar algunos
+       de los archivos de datos. También hay mini-sistemas para
+       component-testing
+</UL>
+
+<H2>Clases compartidas (shared)</H2>
+
+<P>COLONY, COLONY_SHIP, FLEET, GALAXY, PLANET, PLAYER, SHIP, STARSHIP, STAR:
+data model
+
+<H2>Arquitectura cliente/servidor</H2>
+
+<P>
+</BODY>
+</HTML>

@@ -59,6 +59,7 @@ feature -- Operations
             map_generator.generate (galaxy, players)
 --FIXME: Start what has to start
             print ("gogogo!!%N")
+            init_game
             status.start
             players.set_all_state (st_playing_turn)
         end
@@ -132,6 +133,12 @@ feature {NONE} -- Internal
             i.item.move
             i.next
         end
+    end
+
+    init_game is
+        -- Called just before setting players state to playing for the
+        -- first time
+    do
     end
 
 invariant
