@@ -205,8 +205,9 @@ feature -- Operations
     set_destination (d: STAR) is
     do
         destination := d
+        if destination = orbit_center then destination := Void end
     ensure
-        destination = d
+        d /= orbit_center implies destination = d
     end
 
     set_owner (o: PLAYER) is
