@@ -204,7 +204,7 @@ feature {NONE} -- Name Generation
         from until Result.count = starcount loop
             rand.next
             index := rand.last_integer (buffer.count-13) + 13
-            Result.add_last(buffer.item (index))
+            Result.add_last (buffer.item (index))
             -- Remove used starname
             buffer.swap (index, buffer.upper)
             buffer.remove_last
