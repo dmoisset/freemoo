@@ -20,4 +20,9 @@ INTEGER load_img_plain16 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h) ;
 INTEGER load_img_rle8 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h) ;
 INTEGER load_img_rle16 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h) ;
 
+/*  Load FMI Image.  Detects width, height and type.
+ *  Returns NULL upon failure
+ */
+SDL_Surface *FMI_Load(const char* filename);
+
 #endif

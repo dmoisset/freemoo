@@ -1,10 +1,10 @@
-SRC = test_load_img.c ../../client/src/C/misc.c ../../client/src/C/img_loader.c
+SRC = test_load_img.c ../../client/src/C/img_loader.c
 
-OBJ = test_load_img.o ../../client/src/C/misc.o ../../client/src/C/img_loader.o
+OBJ = test_load_img.o ../../client/src/C/img_loader.o
 
 PROG = test_load_img
 
-CFLAGS = -Wall -g -O2 -D_GNU_SOURCE -DDEBUG `sdl-config --cflags`
+CFLAGS = -Wall -g -O2 `sdl-config --cflags`
 LDFLAGS = `sdl-config --libs`
 
 all: .depend $(PROG)
