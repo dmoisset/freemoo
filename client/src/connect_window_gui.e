@@ -13,6 +13,8 @@ feature {NONE} -- Creation
         r: RECTANGLE
     do
         Precursor (w, where)
+        !!background.make (Current, 0, 0, create {ANIMATION_FMA}.make (
+            "client/connect-window/background.fma"))
 -- get image from the package
         !!background.make (Current, 0, 0, create {ANIMATION_SEQUENTIAL}.make (
             <<create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/background.png")>>

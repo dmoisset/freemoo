@@ -1,4 +1,4 @@
-SUBDIRS=connect-window join-window setup-window
+SUBDIRS=connect-window join-window setup-window main-window
 
 all: $(SUBDIRS)
 

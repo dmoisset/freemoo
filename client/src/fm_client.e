@@ -3,6 +3,7 @@ class FM_CLIENT
 
 inherit
     CLIENT
+    PKG_USER
 
 creation make
 
@@ -12,6 +13,7 @@ feature {NONE} -- Creation
     local
         sdl: SDL
     do
+        pkg_system.make_with_config_file ("freemoo.conf")
         -- Initialize display
         !!display.make (640, 480, 16, False)
         display.set_timer_interval (40)

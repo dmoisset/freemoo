@@ -43,7 +43,7 @@ feature -- Redefined features
         i: INTEGER
         s: STRING
     do
-        !!pic.make (width, height)
+        !!pic.make_transparent (width, height)
         a := model.names
         from i := a.lower until i > a.upper loop
             p := model @ (a @ i)

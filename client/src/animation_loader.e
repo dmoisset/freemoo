@@ -14,13 +14,15 @@ feature {NONE} -- Creation template
         imgs: NATIVE_ARRAY [POINTER]
         lx, ly: NATIVE_ARRAY [INTEGER]
         s: SDL_SURFACE
+
+        tried: BOOLEAN
     do
-        width := 0
-        height := 0
-        p.pkg_system.open_file (path)
-        if p.pkg_system.last_file_open /= Void then
-            fma := load_anim (p.pkg_system.last_file_open.to_external)
-            if not fma.is_null then
+        if not tried then
+            width := 0
+            height := 0
+            p.pkg_system.open_file (path)
+            if p.pkg_system.last_file_open /= Void then
+                fma := load_anim (p.pkg_system.last_file_open.to_external)
                 count := FMA_count (fma)
                 imgs := imgs.from_pointer (FMA_items (fma))
                 lx := lx.from_pointer (FMA_x (fma))
@@ -35,10 +37,24 @@ feature {NONE} -- Creation template
                 end
                 loop_frame := FMA_loopstart (fma)
                 free_FMA (fma)
+                p.pkg_system.last_file_open.disconnect
             end
-            p.pkg_system.last_file_open.disconnect
+        else
+            -- Fallback to dummy image
+            init_representation (1)
+            add_frame (0, create {SDL_SURFACE}.make (10, 10), 0, 0)
         end
         start
+    rescue
+        if not fma.is_null then
+            free_FMA (fma)
+            fma := default_pointer
+        end
+        if not tried then
+            print ("Error loading FMA: "+path+"%N")
+            tried := True
+            retry
+        end
     end
 
     init_representation (count: INTEGER) is
@@ -65,6 +81,8 @@ feature {NONE} -- External
     load_anim (f: POINTER): POINTER is
         -- Loads an animation from FILE* `f', returns an FMA_t *
     external "C use %"src/C/img_loader.h%""
+    ensure
+        not Result.is_null
     end
 
     free_FMA (a: POINTER) is

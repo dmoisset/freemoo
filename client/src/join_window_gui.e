@@ -14,17 +14,22 @@ feature {NONE} -- Creation
     do
         Precursor (w, where)
 
+        !!background.make (Current, 0, 0, create {ANIMATION_FMA}.make (
+            "client/connect-window/background.fma"))
 -- get image from the package
         !!background.make (Current, 0, 0, create {ANIMATION_SEQUENTIAL}.make (
             <<create {SDL_IMAGE}.make_from_file ("../data/client/join-window/background.png")>>
         ))
 
-        r.set_with_size (48, 48, 150, 25)
+        r.set_with_size (75, 75, 150, 25)
         !!title_label.make (Current, r, "Connected to ~1~")
         title_label.set_alignment (0, 0.5)
 
-        r.set_with_size (48, 73, 262, 202)
+        r.set_with_size (75, 100, 235, 175)
         new_player_list (r)
+
+        r.set_with_size (330, 100, 235, 175)
+        new_server_rules (r)
 
         r.set_with_size (297, 307, 125, 20)
         !!name.make (Current, r)
@@ -32,9 +37,6 @@ feature {NONE} -- Creation
         r.set_with_size (297, 332, 125, 20)
         !!password.make (Current, r)
         password.enable_text_hiding
-
-        r.set_with_size (330, 73, 262, 202)
-        new_server_rules (r)
 
         r.set_with_size (120, 350, 400, 25)
         !!status_label.make (Current, r, "Join as new player or rejoin as existing one.")

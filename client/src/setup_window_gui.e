@@ -14,25 +14,27 @@ feature {NONE} -- Creation
     do
         Precursor (w, where)
 
+        !!background.make (Current, 0, 0, create {ANIMATION_FMA}.make (
+            "client/connect-window/background.fma"))
 -- get image from the package
         !!background.make (Current, 0, 0, create {ANIMATION_SEQUENTIAL}.make (
             <<create {SDL_IMAGE}.make_from_file ("../data/client/setup-window/background.png")>>
         ))
 
-        r.set_with_size (48, 73, 262, 202)
+        r.set_with_size (75, 100, 235, 175)
         new_player_list (r)
 
 --        !!setup_window.make (GTK_WINDOW_DIALOG)
 --        setup_window.set_title ("Player setup for ~1~")
 
-        r.set_with_size (117, 307, 190, 20)
+        r.set_with_size (144, 307, 163, 20)
         !!ruler_name.make (Current, r)
 
 --        customize_button := new_button ("_Customize", $customize_race)
 --        flag_view := new_custom_flag_view
 --        chat := new_custom_chat
 
-        !BUTTON_IMAGE!start_button.make (Current, 48, 350,
+        !BUTTON_IMAGE!start_button.make (Current, 75, 350,
             create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-u.png"),
             create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-p.png"),
             create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-d.png")
@@ -41,7 +43,7 @@ feature {NONE} -- Creation
 
 --        retire_button := new_button ("_Retire", $retire_from_game)
 
-        !BUTTON_IMAGE!disconnect_button.make (Current, 268, 350,
+        !BUTTON_IMAGE!disconnect_button.make (Current, 295, 350,
             create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-u.png"),
             create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-p.png"),
             create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-d.png")
