@@ -11,7 +11,7 @@
  */
 
 /* Used for loading all kinds of 8bit images and animations */
-int loadPalette (SDL_RWops *src, Uint32 *palette)
+static int loadPalette (SDL_RWops *src, Uint32 *palette)
 {
     Uint32 palfing;            /* Finger into palette */
     Uint8 palcount[2];         /* dummy byte + palette count */
@@ -34,7 +34,7 @@ int loadPalette (SDL_RWops *src, Uint32 *palette)
 }
 
 /* Used for loading 8bit plain images and animations */
-void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
+static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
     Uint8 filebuffer [w * h];   /* Input file buffer */
     Uint32 filefing,            /* Finger into file */
@@ -62,7 +62,7 @@ void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER
 }
 
 
-void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
+static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
     int initial_pos;           /* Initial Position in RWOps */
     Uint8 filebuffer [w * h];  /* Input file buffer */
@@ -124,7 +124,7 @@ void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w
     SDL_RWseek(src, initial_pos + filefing, SEEK_SET);
 }
 
-void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
+static void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
     Uint32 filefing = 0,      /* Finger to position inside file*/
            imgfing,           /* Image cursor */
@@ -162,7 +162,7 @@ void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGE
     SDL_UnlockSurface(s);
 }
 
-void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
+static void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
     int initial_pos;                /* Initial Position in RWOps */
     Uint8 filebuffer[w * h * 3];    /* Input file buffer */
