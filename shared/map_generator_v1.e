@@ -207,8 +207,13 @@ feature {NONE} -- Planet Generation
                       mnrl_ultrarich, grav_normalg, type_planet,
                       plspecial_nospecial)
         rand.next
+		
         orion_system.set_planet (orion, rand.last_integer (orion_system.Max_planets))
         orion_system.set_special (stspecial_orion)
+		from
+		until orion_system.kind /= kind_blackhole
+		loop orion_system.set_kind(star_kinds.random_item)
+		end
         orion_system.set_name ("Orion")
         dont_touch.add (orion_system.id)
     end
@@ -246,6 +251,10 @@ feature {NONE} -- Planet Generation
             rand.next
             hmworld_system.set_planet (hmworld, rand.last_integer (hmworld_system.Max_planets))
             hmworld_system.set_name (hmworldnams.item (i.item.color))
+			from
+			until hmworld_system.kind /= kind_blackhole
+			loop hmworld_system.set_kind(star_kinds.random_item)
+			end
 -- should be create {COLONY}, but it doesn't work
             !!newcol.make (hmworld, i.item)
             i.item.add_to_known_list (hmworld_system)

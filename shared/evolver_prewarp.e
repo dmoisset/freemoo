@@ -27,7 +27,7 @@ feature -- Operations
             i.is_off
         loop
             p := i.item
-            p.colonies.item(p.colonies.lower).set_producing (p.colonies.item(p.colonies.lower).product_starship)
+            p.colonies.first.set_producing (p.colonies.first.product_starship)
             i.next
         end
     end

@@ -1,6 +1,5 @@
 BUG: Scanner debería delegar escaneado a elementos
 BUG: scanner debería usar lista de flotas y colonias del jugador
-BUG: No se debería asignar un agujero negro como homeworld
     - ?
 image bin
 DESIGN: ordenes a flotas
