@@ -118,7 +118,7 @@ feature -- Redefined features
     do
         -- Remove old blackholes
         from ic := bh_windows.get_new_iterator until ic.is_off loop
-            remove_child(ic.item)
+            ic.item.remove
             ic.next
         end
         bh_windows.clear
@@ -203,7 +203,7 @@ feature {NONE} -- Event handlers
             and i.item.kind /= i.item.kind_blackhole then
                 r.set_with_size (40, 40, 347, 273)
                 if star_window /= Void and then children.fast_has(star_window) then
-                    remove_child(star_window)
+                    star_window.remove
                 end
                 !STAR_VIEW!star_window.make (Current, r, i.item)
                 found := True

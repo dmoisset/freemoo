@@ -84,7 +84,7 @@ feature
         print ("Joining...%N")
         server.join (options.string_options @ "name",
                      options.string_options @ "password")
-        from until server.is_joined or not server.is_joining loop
+        from until server.has_joined or not server.is_joining loop
             server.get_data (-1)
         end
         if not server.has_joined then

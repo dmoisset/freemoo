@@ -56,7 +56,7 @@ feature {NONE} -- Callbacks
 
     close is
     do
-        parent.remove_child(Current)
+        remove
     end
 
 feature -- redefined features
@@ -78,7 +78,7 @@ feature -- redefined features
         from child := removable_children.get_new_iterator
         until child.is_off
         loop
-            remove_child(child.item)
+            child.item.remove
             child.next
         end
         if model.has_info then
