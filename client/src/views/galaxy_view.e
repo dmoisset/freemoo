@@ -58,6 +58,7 @@ feature -- Operations
     local
         posx, posy: REAL
     do
+		cancel_trajectory_selection
         get_limits
         -- Note: This assumes projections w/o rotations
         if limit_x > 0 and limit_y > 0 and projs.valid_index (zoom) then
@@ -318,6 +319,7 @@ feature {NONE} -- Event handlers
     center_on (x, y: INTEGER) is
         -- Scroll to set center on `x', `y'
     do
+		cancel_trajectory_selection
         current_projection.translate (width // 2 - x, height // 2 - y)
         normalize_position
         refresh

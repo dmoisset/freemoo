@@ -197,9 +197,20 @@ feature -- Redefined features
 	end
 	 
 	handle_event (event: EVENT) is
+	local
+		m: EVENT_MOUSE_MOVE
+		b: EVENT_MOUSE_BUTTON
+		n: EVENT_MOUSE_NOTIFY
 	do
 		Precursor (event)
-		event.set_handled
+		if not event.handled then
+			m ?= event
+			b ?= event
+			n ?= event
+			if m /= Void or b /= Void or n /= Void then
+				event.set_handled
+			end
+		end
 	end
 	 
 feature {NONE} -- Internal features
