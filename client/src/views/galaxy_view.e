@@ -16,13 +16,13 @@ feature {NONE} -- Creation
     make (w:WINDOW; where: RECTANGLE; new_model: C_GALAXY) is
         -- build widget as view of `new_model'
     local
-        a: ANIMATION
+        a: FMA_FRAMESET
         i, j: INTEGER
     do
         set_model (new_model)
         window_make(w, where)
-        !ANIMATION_FMA!a.make ("client/galaxy-view/background.fma")
-        background := a.item
+        !!a.make ("client/galaxy-view/background.fma")
+        background := a.images @ 1
         !!pics.make(kind_min, kind_max, stsize_min, stsize_max)
         from i := kind_min
         until i > kind_max loop

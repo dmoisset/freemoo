@@ -11,10 +11,11 @@ feature {NONE} -- Creation
     local
         r: RECTANGLE
         b: WINDOW_IMAGE
+        a: FMA_FRAMESET
     do
         Precursor (w, where)
-        !!background.make (Current, 0, 0, create {ANIMATION_FMA}.make (
-            "client/connect-window/background.fma"))
+        !!a.make ("client/connect-window/background.fma")
+        !!background.make (Current, 0, 0, a.images @ 1)
         !!b.make (background, 0, 0,
             create {IMAGE_FMI}.make_from_file ("client/connect-window/background.fmi")
         )
@@ -54,7 +55,7 @@ feature {NONE} -- Creation
 
 feature {NONE} -- Widgets
 
-    background: WINDOW_ANIMATED
+    background: WINDOW_IMAGE
     port_entry: TEXT_ENTRY
     host_entry: TEXT_ENTRY
     status_label: LABEL

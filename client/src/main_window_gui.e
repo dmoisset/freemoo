@@ -9,7 +9,8 @@ feature {NONE} -- Creation
     make (w: WINDOW; where: RECTANGLE) is
         -- Build GUI
     local
-        background: WINDOW_ANIMATED
+        a: FMA_FRAMESET
+        background: WINDOW_IMAGE
         r: RECTANGLE
     do
         Precursor (w, where)
@@ -17,8 +18,8 @@ feature {NONE} -- Creation
         r.set_with_size (0, 0, 640, 480)
         new_galaxy (r)
 
-        !!background.make (Current, 0, 0, create {ANIMATION_FMA}.make (
-            "client/main-window/background.fma"))
+        !!a.make ("client/main-window/background.fma")
+        !!background.make (Current, 0, 0, a.images @ 1)
     end
 
 feature {NONE} -- Widgets

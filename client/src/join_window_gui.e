@@ -9,14 +9,14 @@ feature {NONE} -- Creation
     make (w: WINDOW; where: RECTANGLE) is
         -- Build GUI
     local
-        bg: WINDOW_ANIMATED
+        a: FMA_FRAMESET
         background: WINDOW_IMAGE
         r: RECTANGLE
     do
         Precursor (w, where)
 
-        !!bg.make (Current, 0, 0, create {ANIMATION_FMA}.make (
-            "client/connect-window/background.fma"))
+        !!a.make ("client/connect-window/background.fma")
+        !!background.make (Current, 0, 0, a.images @ 1)
         !!background.make (Current, 0, 0,
             create {IMAGE_FMI}.make_from_file ("client/join-window/background.fmi")
         )
