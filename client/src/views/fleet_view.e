@@ -239,7 +239,6 @@ feature {MODEL} -- Effective features
 	on_model_change is
 		--Update gui
 	local
-		wi: ITERATOR[WINDOW]
 		si: ITERATOR[SHIP]
 	do
 		!!ships.make(0, -1);

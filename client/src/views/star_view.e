@@ -30,7 +30,7 @@ feature {NONE} -- Creation
         set_model(new_model)
         -- Register Secondary model
         status := new_status
-        new_status.add_view(Current)
+        status.add_view(Current)
         -- Drag Handle
         r.set_with_size(0, 0, 347, 45)
         !!d.make(Current, r)
@@ -65,11 +65,12 @@ feature {NONE} -- Widgets
 feature {NONE} -- Callbacks
 
     close is
-		do
-			model.remove_view(Current)
-			model := Void
-			remove
-		end
+    do
+        model.remove_view (Current)
+        status.remove_view (Current)
+        model := Void
+        remove
+    end
 
     enable_animations is
     do
@@ -94,6 +95,8 @@ feature -- Effective features
 
     on_model_change is
         -- Update gui
+    require
+        model /= Void
     local
         child: ITERATOR[WINDOW]
         fleet: ITERATOR[C_FLEET]
