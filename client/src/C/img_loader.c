@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL/SDL.h>
+#include <assert.h>
 #include "img_loader.h"
-
 
 
 /* Los *fing vienen a ser los 'int i, j, k;' contadores genericos.  Por amor a
@@ -46,20 +46,24 @@ static int loadPalette (SDL_RWops *src, Uint32 *palette)
 /* Used for loading 8bit plain images and animations */
 static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
-    Uint8 *filebuffer;          /* Input file buffer */
-    Uint32 filefing,            /* Finger into file */
+    Uint8 *filebuffer = NULL;   /* Input file buffer */
+    Uint32 filefing = 0,        /* Finger into file */
            scanline = 0,        /* Offset within s->pixels to previous beginning of scanline */
            offset = 0;          /* Absolute offset within s->pixels */
+    int res = 0 ;
 
     /* Set Surface flags */
     SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
 
-    filebuffer = (Uint8*) malloc (sizeof(Uint8) * w * h);
+    filebuffer = (Uint8*) calloc (w*h, sizeof(Uint8));
+    assert (filebuffer!=NULL) ;
 
-/* Load file into buffer */
-    SDL_RWread(src, filebuffer, 1, w * h);
+    /* Load file into buffer */
+    res = SDL_RWread(src, filebuffer, 1, w * h);
+    assert (res==w*h) ;
 
-/* Move buffer into s->pixels, looking up in palette */
+    /* Move buffer into s->pixels, looking up in palette */
+    assert (s->pitch % 2 == 0) ;
     for (filefing = 0; filefing < w * h;)
     {
         ((Uint16*)(s->pixels))[offset] = palette[filebuffer[filefing]] ;
@@ -68,8 +72,8 @@ static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, 
             offset ++;
         else
         {
-/*FIXME: this is broen if pitch is odd. This happens several times in
-  this module*/
+            /*FIXME: this is broen if pitch is odd. This happens several times in
+              this module*/
             offset = scanline + (s -> pitch >> 1);
             scanline = offset;
         }
@@ -77,11 +81,10 @@ static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, 
     free (filebuffer);
 }
 
-
 static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
     int initial_pos;           /* Initial Position in RWOps */
-    Uint8 *filebuffer;         /* Input file buffer */
+    Uint8 *filebuffer = NULL;  /* Input file buffer */
     Uint32 tcount,             /* Tuple count */
            tlfing,             /* Tuple List Finger */
            filefing = 0,       /* Byte offset indicator within file */
@@ -90,24 +93,27 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
            scanline=0,         /* Offset within s->pixels to last beginning of scanline */
            pixel;              /* Current pixel value */
     Uint8 tupfing;             /* Tuple cursor */
-
+    int res = 0 ;
 
     /* Set Surface flags */
     SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
 
-    filebuffer = (Uint8*) malloc (sizeof(Uint8) * w * h);
+    filebuffer = (Uint8*) calloc (w * h, sizeof(Uint8));
+    assert (filebuffer!=NULL) ;
 
-    SDL_RWread(src, &tcount, 4, 1);
+    res = SDL_RWread(src, &tcount, sizeof(tcount), 1);
+    assert (res == 1);
 
     initial_pos = SDL_RWtell(src);
-    SDL_RWread(src, filebuffer, 1, w * h);
+    res = SDL_RWread(src, filebuffer, sizeof(*filebuffer), w * h);
 
-/* filefing points to beginning of tuple */
+    /* filefing points to beginning of tuple */
+    assert (s->pitch % 2 == 0) ;
     for (tlfing = 0; tlfing < tcount; tlfing++)
     {
-/* pixel holds repeated pixel */
+        /* pixel holds repeated pixel */
         pixel = palette[filebuffer[filefing + 2]];
-/* Repeat the repeated pixel n times */
+        /* Repeat the repeated pixel n times */
         for (tupfing = filebuffer[filefing]; tupfing; tupfing--)
         {
             ((Uint16*)(s->pixels))[offset] = pixel ;
@@ -120,9 +126,9 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
                 scanline = offset;
             }
         }
-/* filefing now points to beginning of non-repeat list */
+        /* filefing now points to beginning of non-repeat list */
         filefing += 3;
-/* Read in non-repeat list */
+        /* Read in non-repeat list */
         for (tupfing = filebuffer[filefing - 2]; tupfing; tupfing--)
         {
             ((Uint16*)(s->pixels))[offset] = palette[filebuffer[filefing]] ;
@@ -136,7 +142,7 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
                 scanline = offset;
             }
         }
-/* filefing points to beginning of next tuple */
+        /* filefing points to beginning of next tuple */
     }
     SDL_RWseek(src, initial_pos + filefing, SEEK_SET);
     free (filebuffer);
@@ -398,30 +404,36 @@ FMA_t *load_anim (FILE *f)
          imgfing;              /* Finger into images */
     void (*loadpix)(SDL_RWops *, SDL_Surface*, Uint32*, INTEGER, INTEGER) = NULL;
     int usecolorkey = 0 ;
+    int res = 0 ;
 
     src = SDL_RWFromFP(f, 0);
-    answer = (FMA_t *)malloc(sizeof(FMA_t));
-    if (answer==NULL) {
-        fprintf (stderr, "load_anim: couldn't allocate FMA_t.\n");
-        return NULL;
-    }
+    assert (src!=NULL);
 
-/* Read type and size */
-    if (SDL_RWread (src, &magic, 4, 1) != 1)
+    answer = (FMA_t *)calloc(1, sizeof(FMA_t));
+    assert (answer!=NULL);
+
+    /* Read type and size */
+    if (SDL_RWread (src, &magic, sizeof(magic), 1) != 1)
     {
         SDL_SetError("Error Opening file\n");
         fprintf (stderr, "load_anim: File access error, apparently not open.\n");
         return NULL;
     }
 
-/* Read Image Count */
-    SDL_RWread (src, imgcount, 2, 2);
+    /* Read Image Count */
+    res = SDL_RWread (src, imgcount, 2, 2);
+    if (res != 2)
+    {
+        fprintf (stderr, "load_anim: Error reading imagge count.\n");
+        return NULL;
+    }
+
     answer->count = imgcount[0];
     answer->loopstart = imgcount[1];
-    answer->x = (int *) malloc(sizeof(int) * imgcount[0]);
-    answer->y = (int *) malloc(sizeof(int) * imgcount[0]);
-    answer->items = (SDL_Surface **) malloc(sizeof(SDL_Surface*) * imgcount[0]);
-
+    answer->x = (int *) calloc(imgcount[0], sizeof(int));
+    answer->y = (int *) calloc(imgcount[0], sizeof(int));
+    answer->items = (SDL_Surface **) calloc(imgcount[0], sizeof(SDL_Surface*));
+    assert (answer->x!=NULL && answer->y!=NULL && answer->items!=NULL) ;
 
     switch(magic)
     {
@@ -435,7 +447,6 @@ FMA_t *load_anim (FILE *f)
         }
         break;
     case 0x38414c52:
-/*        printf("RLE 8 bit images\n"); */
         loadpix = loadPixels_rle8;
         usecolorkey = 1 ;
         if (loadPalette(src, palette)) {
@@ -444,11 +455,9 @@ FMA_t *load_anim (FILE *f)
         }
         break;
     case 0x36494e41:
-/*        printf("Plain 16 bit images\n"); */
         loadpix = loadPixels_plain16;
         break;
     case 0x36414c52:
-/*        printf("RLE 16 bit images\n"); */
         loadpix = loadPixels_rle16;
         break;
     default:
@@ -458,7 +467,12 @@ FMA_t *load_anim (FILE *f)
 
     for(imgfing = 0; imgfing < imgcount[0]; imgfing++)
     {
-        SDL_RWread (src, delta_n_size, 2, 4);
+        res = SDL_RWread (src, delta_n_size, 2, 4);
+        if (res<4) {
+            fprintf (stderr, "load_anim: couldn't read frame dimensions.\n");
+            return NULL;
+        }
+
         /*printf("Loading %dx%d image displaced %dx%d...\n", delta_n_size[2], delta_n_size[3], delta_n_size[0], delta_n_size[1]);*/
         if (usecolorkey)
             answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCCOLORKEY|SDL_RLEACCEL,
@@ -466,7 +480,7 @@ FMA_t *load_anim (FILE *f)
         else
             answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCALPHA,
                                          delta_n_size[2], delta_n_size[3], 24, 0xf80000, 0x07e000, 0x001f00, 0x0000ff);
-        if (!answer->items[imgfing]) {
+        if (answer->items[imgfing]==NULL) {
             fprintf (stderr, "load_anim: CreateRGBSurface failed\n");
             fprintf (stderr, "  %dx%d %s\n", delta_n_size[2], delta_n_size[3], usecolorkey?"colorkey":"nocolorkey");
             return NULL;
@@ -476,6 +490,9 @@ FMA_t *load_anim (FILE *f)
         loadpix (src, answer->items[imgfing], palette, delta_n_size[2], delta_n_size[3]);
     }
 
+    if (answer==NULL) {
+        fprintf (stderr, "load_anim: returning NULL.\n"); /* Should never happen */
+    }
     return answer;
 
 }
