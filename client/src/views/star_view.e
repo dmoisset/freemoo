@@ -203,9 +203,9 @@ feature -- Once data
         if file = Void then
             print ("Error opening file client/star-view/starmsgs.txt%N")
         else
-            !!Result.make(1, 6)
-            from i := 1
-            until i > 6 loop
+            !!Result.make(model.kind_min, model.kind_max)
+            from i := model.kind_min
+            until i > model.kind_max loop
                 file.read_line
                 Result.put(file.last_string.twin, i)
                 i := i + 1
