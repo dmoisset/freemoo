@@ -122,10 +122,7 @@ feature -- Redefined features
     do
         s_new_fleet ?= new_fleet
         check s_new_fleet /= Void end
-        fleets.add(s_new_fleet, s_new_fleet.id)
-        if s_new_fleet.orbit_center /= Void then
-            s_new_fleet.orbit_center.fleets.add(s_new_fleet, s_new_fleet.id)
-        end
+        Precursor (s_new_fleet)
         !!farray.make(0, 0)
         farray.put(s_new_fleet, 0)
         server.register(s_new_fleet, "fleet" + s_new_fleet.id.to_string)

@@ -179,10 +179,15 @@ feature {NONE} -- Internal
         -- Fleet movement
     local
         i: ITERATOR [FLEET]
+        old_in_orbit: BOOLEAN
     do
         i := galaxy.fleets.get_new_iterator_on_items
         from i.start until i.is_off loop
+            old_in_orbit := i.item.is_in_orbit
             i.item.move
+            if not old_in_orbit and i.item.is_in_orbit then
+                galaxy.join_fleets (i.item.orbit_center)
+            end
             i.next
         end
     end

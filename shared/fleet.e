@@ -89,8 +89,9 @@ feature -- Operations
     require
         other /= Void
     do
-        ships.union(other.ships)
-		scanner_range := 0
+        other.ships.do_all (agent ships.put (?, ?))
+        other.ships.clear
+        scanner_range := 0
     ensure
         ship_count >= old ship_count
         ship_count <= old ship_count + other.ship_count
@@ -102,16 +103,18 @@ feature -- Operations
         -- `owner', `orbit_center', `destination' and `eta' as Current.
     require
         shs /= Void
---        shs.for_all (agent has_ship (?.id))
+        -- shs.for_all (agent has_ship (?.id))
     local
         sh: ITERATOR[SHIP]
     do
         !!splitted_fleet.make
         splitted_fleet.move_to (Current)
-        splitted_fleet.set_orbit_center(orbit_center)
         splitted_fleet.set_destination(destination)
         splitted_fleet.set_eta(eta)
         splitted_fleet.set_owner(owner)
+        if orbit_center /= Void then
+            splitted_fleet.enter_orbit (orbit_center)
+        end
         from sh := shs.get_new_iterator
         until sh.is_off
         loop
@@ -140,6 +143,7 @@ feature -- Operations
         eta := 0
         current_speed := 0
         destination := Void
+        orbit_center.fleets.add (Current, id)
     ensure
         is_in_orbit and orbit_center = star
     end

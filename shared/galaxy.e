@@ -106,11 +106,9 @@ feature -- Operations
     require
         new_fleet /= Void
         not fleets.has(new_fleet.id)
+        new_fleet.orbit_center /= Void implies new_fleet.orbit_center.fleets.has (new_fleet.id)
     do
         fleets.add(new_fleet, new_fleet.id)
-        if new_fleet.orbit_center /= Void then
-            new_fleet.orbit_center.fleets.add(new_fleet, new_fleet.id)
-        end
     ensure
         fleets.has(new_fleet.id)
     end
@@ -120,6 +118,8 @@ feature -- Operations
         -- `destination'
     require
         fleet /= Void and destination /= Void and ships /= Void
+        stars.has (destination.id)
+        fleets.has (fleet.id)
         not ships.is_empty
         -- ships.for_all (agent fleet.has_ship (?))
     local
@@ -133,6 +133,59 @@ feature -- Operations
             add_fleet (f)
         else
             f.set_destination (destination)
+        end
+        if f.orbit_center /= Void then
+            join_fleets (f.orbit_center)
+        end
+    end
+
+    join_fleets (s: STAR) is
+        -- Join fleets at `s' sharing destination
+    require
+        stars.has (s.id)
+    local
+        fs: ARRAY [FLEET]
+        sorter: COLLECTION_RELATION_SORTER [FLEET]
+        i: INTEGER
+        f, g: FLEET
+    do
+        print ("Looking for fleets to join at "+s.name+"%N")
+        -- Get and group fleets at s
+        !!fs.with_capacity (s.fleets.count, 1)
+        s.fleets.do_all (agent fs.add_last (?))
+        sorter.set_order (agent fleet_ungrouping(?, ?))
+        sorter.sort (fs)
+        print ("  Checking "+fs.count.to_string+" fleets %N")
+        -- Join
+        from i := fs.lower until i >= fs.upper loop -- >= instead of > because we compare each pair
+            f := fs @ i
+            g := fs @ (i+1)
+            if not fleet_ungrouping (f, g) then
+                    check f.owner = g.owner end
+                    check f.destination = g.destination end
+                print ("  Must join fleets "+f.id.to_string+
+                       " and "+g.id.to_string+"%N")
+                fs.remove (i+1)
+            else
+                i := i + 1
+            end
+        end
+    end
+
+feature {NONE} -- Auxiliar
+
+    fleet_ungrouping (f, g: FLEET): BOOLEAN is
+    do
+        if f.owner.id < g.owner.id then
+            Result := true
+        elseif f.owner.id = g.owner.id then
+            if f.destination = Void then
+                Result := g.destination /= Void
+            elseif g.destination = Void then
+                Result := False
+            else
+                Result := f.destination.id < g.destination.id
+            end
         end
     end
 

@@ -51,23 +51,20 @@ feature {NONE} -- Creation
 		end
         if s.last_integer /= -1 then
             i := s.last_integer
-            enter_orbit (server.galaxy.stars @ i);
+                check orbit_center = Void or orbit_center = server.galaxy.stars @ i end
+            if orbit_center = Void then
+                enter_orbit (server.galaxy.stars @ i) ;
+--FIXME: notification should be done when fleet is added
+                (server.galaxy.stars @ i).notify_views
+            end
         end
         s.get_integer
         if s.last_integer /= -1  then
             set_destination (server.galaxy.stars @ s.last_integer)
         end
-		-- FIXME: More abstraction breach: star.fleets.xxx
-		if orbit_center /= Void and destination = Void then
-			if not orbit_center.fleets.has(id) then
-                (server.galaxy.stars @ i).fleets.add(Current, id);
-                (server.galaxy.stars @ i).notify_views
-            end
-		end
         s.get_integer
         shipcount := s.last_integer
         unserialize_from (s) -- Position
---        print("Received <<" + owner.id.to_string + ", " + eta.to_string + ", " + orbit_center.id.to_string + ", " + s.last_integer.to_string + ">>%N")
         ships.clear
         from until shipcount = 0 loop
             !!sh.make(owner)

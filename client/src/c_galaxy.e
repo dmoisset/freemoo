@@ -128,11 +128,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             s.get_integer
             if fleet.eta = 0 then
                 fleet.enter_orbit (stars @ s.last_integer);
---These don't work >:G #!?!
---                    stars.item(ir.item).fleets.add(fleet, fleet.id)
---                    (stars.item(ir.item)).fleets.add(fleet, fleet.id)
--- FIXME: abstraction breach
-                (stars @ s.last_integer).fleets.add(fleet, fleet.id);
+-- FIXME: notify should be done by star when fleet is added
                 (stars @ s.last_integer).notify_views
             else
                 fleet.set_destination (stars @ s.last_integer)
@@ -141,7 +137,6 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             shipcount := s.last_integer
             fleet.unserialize_from (s)
             new_fleets.add(fleet, fleet.id)
---	print("Recieved <<" + fleet.owner.id.to_string + ", " + fleet.eta.to_string + ", " + fleet.orbit_center.id.to_string + ", " + ir.item.to_string + ">>%N")
             from until shipcount = 0 loop
                 !!ship.make (fleet.owner)
                 s.get_integer
@@ -194,9 +189,6 @@ feature -- Redefined features
     add_fleet(new_fleet: C_FLEET) is
     do
         fleets.add(new_fleet, new_fleet.id)
-        if new_fleet.orbit_center /= Void then
-            new_fleet.orbit_center.fleets.add(new_fleet, new_fleet.id)
-        end
         server.subscribe(new_fleet, "fleet" + new_fleet.id.to_string)
     end
 
