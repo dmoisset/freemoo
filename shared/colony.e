@@ -2,6 +2,13 @@ class COLONY
 
 inherit
     UNIQUE_ID
+	select id end
+	STORABLE
+	rename
+		hash_code as id
+	redefine
+		dependents
+	end
 
 creation make
 
@@ -131,6 +138,24 @@ feature -- Access
     shipyard: SHIP
         -- Placeholder for last built ship.  Game should come and fetch it.
 
+feature {STORAGE} -- Saving
+
+	get_class: STRING is "COLONY"
+	
+	fields: ITERATOR[TUPLE[STRING, ANY]] is
+	do
+		Result := (<<["id", id],
+					 ["producing", producing],
+					 ["owner", owner],
+					 ["location", location]
+					 >>).get_new_iterator
+	end
+
+	dependents: ITERATOR[STORABLE] is
+	do
+		Result := (<<owner, location>>).get_new_iterator
+	end
+					 
 invariant
     valid_producing: producing.in_range (product_min, product_max)
     location /= Void

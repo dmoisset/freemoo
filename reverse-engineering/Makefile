@@ -3,4 +3,4 @@ TARGETS=unlbx mpview mergepal palview
 all: $(TARGETS)
 
 %: %.pp
-	ppc386 $<
+	ppc386  -Fu/usr/lib/fpc/1.0.6/units/linux/SDL4Freepascal-1.2.0.0/ $<

@@ -2,6 +2,10 @@ class PLAYER_LIST [P -> PLAYER]
 
 inherit
     PLAYER_CONSTANTS
+	STORABLE
+	redefine
+		dependents
+	end
 
 feature {NONE} -- Creation
 
@@ -127,6 +131,31 @@ feature -- Operations
         all_in_state (new_state)
     end
 
+feature -- Saving
+
+	hash_code: INTEGER is
+	do
+		Result := Current.to_pointer.hash_code
+	end
+
+feature {STORAGE} -- Saving
+
+	get_class: STRING is "PLAYER_LIST"
+	
+	fields: ITERATOR[TUPLE[STRING, ANY]] is
+    local
+        a: ARRAY[TUPLE[STRING, ANY]]
+    do
+		create a.make (1,0)
+        add_to_fields(a, "player", items.get_new_iterator_on_items)
+		Result := a.get_new_iterator
+    end
+
+	dependents: ITERATOR[STORABLE] is
+	do
+		Result := items.get_new_iterator_on_items
+	end
+		
 feature {NONE} -- Representation
 
     items: DICTIONARY [P, STRING]

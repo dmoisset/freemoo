@@ -3,3 +3,5 @@
 ${SmartEiffelDirectory}/lib_netservices/
 ${SmartEiffelDirectory}/lib_utils/
 ${SmartEiffelDirectory}/lib_eifinet/
+${SmartEiffelDirectory}/lib_storage/
+${SmartEiffelDirectory}/lib_xml_parser/

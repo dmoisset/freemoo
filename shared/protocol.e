@@ -10,11 +10,11 @@ feature -- Constants
     msgtype_chat: INTEGER is 36
     msgtype_turn: INTEGER is 40
     msgtype_fleet: INTEGER is 41
-
+	
     msgtype_join_accept: INTEGER is 32
     msgtype_join_reject: INTEGER is 33
 
-    -- Join-Reject possible causes
+	-- Join-Reject possible causes
     reject_cause_duplicate: INTEGER is 0
     reject_cause_unknown: INTEGER is 0
     reject_cause_password: INTEGER is 1
@@ -23,7 +23,7 @@ feature -- Constants
     reject_cause_denied: INTEGER is 4
     reject_cause_relog: INTEGER is 5
     reject_cause_alreadylog: INTEGER is 6
-
+	
     max_reject_cause: INTEGER is do Result := reject_cause_alreadylog end
-
+	
 end -- class PROTOCOL

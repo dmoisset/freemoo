@@ -3,8 +3,15 @@ class STAR
 
 inherit
     UNIQUE_ID
+	select id end
     POSITIONAL
     MAP_CONSTANTS
+	STORABLE
+	rename
+		hash_code as id
+	redefine
+		dependents
+	end
 
 creation
     make, make_defaults
@@ -170,7 +177,38 @@ feature {NONE} -- Creation
         size = s
         no_planets: planets.occurrences (Void) = Max_planets
     end
+	
+feature {STORAGE} -- Saving
 
+	get_class: STRING is "STAR"
+
+	fields: ITERATOR[TUPLE[STRING, ANY]] is
+	local
+		a: ARRAY[TUPLE[STRING, ANY]]
+	do
+		create a.make(1, 0)
+		a.add_last(["name", name])
+		a.add_last(["kind", kind])
+		a.add_last(["size", size])
+		a.add_last(["special", special])
+		a.add_last(["x", x])
+		a.add_last(["y", y])
+		a.add_last(["id", id])
+		add_to_fields(a, "planet", planets.get_new_iterator)
+		add_to_fields(a, "fleet", fleets.get_new_iterator_on_items)
+		Result := a.get_new_iterator
+	end
+
+	dependents: ITERATOR[STORABLE] is
+	local
+		a: ARRAY[STORABLE]
+	do
+		create a.make(1, 0)
+		add_to_dependents(a, planets.get_new_iterator)
+		add_to_dependents(a, fleets.get_new_iterator_on_items)
+		Result := a.get_new_iterator
+	end
+		
 feature {NONE} -- Representation
 
     planets: ARRAY [PLANET]

@@ -1,5 +1,9 @@
 class GALAXY
 
+inherit
+	STORABLE
+	redefine dependents end
+	
 creation
     make
 
@@ -331,6 +335,39 @@ feature {MAP_GENERATOR} -- Generation
         limit = l
     end
 
+feature -- Saving
+
+	hash_code: INTEGER is
+	do
+		Result := Current.to_pointer.hash_code
+	end
+	
+feature {STORAGE} -- Saving
+
+	get_class: STRING is "GALAXY"
+
+	fields: ITERATOR[TUPLE[STRING, ANY]] is
+	local
+		a: ARRAY[TUPLE[STRING, ANY]]
+	do
+		create a.make(1, 0)
+		a.add_last(["limit", limit])
+		add_to_fields(a, "stars", stars.get_new_iterator_on_items)
+		add_to_fields(a, "fleets", fleets.get_new_iterator_on_items)
+		Result := a.get_new_iterator
+	end
+
+	dependents: ITERATOR[STORABLE] is
+	local
+		a: ARRAY[STORABLE]
+	do
+		create a.make(1, 0)
+		a.add_last(limit)
+		add_to_dependents(a, stars.get_new_iterator_on_items)
+		add_to_dependents(a, fleets.get_new_iterator_on_items)
+		Result := a.get_new_iterator
+	end
+	
 feature {NONE} -- Representation
 
     stars: DICTIONARY [like last_star, INTEGER]

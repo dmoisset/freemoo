@@ -3,6 +3,14 @@ class PLAYER
 inherit
     PLAYER_CONSTANTS
     UNIQUE_ID
+	select id end
+	STORABLE
+	rename
+		hash_code as id
+	redefine
+		dependents
+	end
+		
 
 feature {NONE} -- Creation
 
@@ -103,6 +111,37 @@ feature {MAP_GENERATOR, FLEET}
     do
         has_visited_star.add (star)
     end
+	
+feature {STORAGE} -- Saving
+
+	get_class: STRING is "PLAYER"
+
+	fields: ITERATOR[TUPLE[STRING, ANY]] is
+	local
+		a: ARRAY[TUPLE[STRING, ANY]]
+	do
+		create a.make(1, 0)
+		a.add_last(["name", name])
+		a.add_last(["color", color])
+		a.add_last(["state", state])
+		a.add_last(["sees_all_ships", sees_all_ships])
+		a.add_last(["id", id])
+		add_to_fields(a, "colony", colonies.get_new_iterator_on_items)
+		add_to_fields(a, "knows_star", knows_star.get_new_iterator)
+		add_to_fields(a, "has_visited_star", has_visited_star.get_new_iterator)
+		Result := a.get_new_iterator
+	end
+
+	dependents: ITERATOR[STORABLE] is
+	local
+		a: ARRAY[STORABLE]
+	do
+		create a.make(1, 0)
+		add_to_dependents(a, colonies.get_new_iterator_on_items)
+		add_to_dependents(a, knows_star.get_new_iterator)
+		add_to_dependents(a, has_visited_star.get_new_iterator)
+		Result := a.get_new_iterator
+	end
 
 invariant
     valid_state: state.in_range (min_state, max_state)

@@ -107,6 +107,16 @@ feature -- Operations -- Game commands
         player_list.set_player_state (player, st_waiting_turn_end)
     end
 
+
+    save_game  is
+        -- Ask server to save game
+    local
+        s: SERIALIZER2
+    do
+        !!s.make
+        send_package (msgtype_save, s.serialized_form)
+    end
+
     move_fleet (f: FLEET; dest: STAR; ships: SET [SHIP]) is
         -- Send server a request to move `ships' of `f' toward `dest'
     require

@@ -47,7 +47,12 @@ feature {NONE} -- Callbacks
         server.end_turn (False)
     end
 
-    game_menu, colonies, planets, fleets, leaders, races, info is
+	game_menu is
+	do
+		server.save_game
+	end
+	
+    colonies, planets, fleets, leaders, races, info is
     do
         print ("Not yet implemented%N")
     end

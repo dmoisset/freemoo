@@ -2,7 +2,10 @@ class GAME
     -- Main game class
 
 inherit
-    PLAYER_CONSTANTS
+	PLAYER_CONSTANTS
+	STORABLE
+	redefine dependents
+	end
 
 feature {NONE} -- Creation
 
@@ -158,6 +161,7 @@ feature -- Operations
         status.next_date
         if not end_condition then
             players.set_all_state (st_playing_turn)
+			save
         else
             players.set_all_state (st_end_game)
             status.finish
@@ -239,6 +243,50 @@ feature {NONE} -- Internal
     do
         galaxy.generate_scans (players.get_new_iterator)
     end
+
+feature -- Saving
+
+	hash_code: INTEGER is
+	do
+		Result := Current.to_pointer.hash_code
+	end
+		
+feature {STORAGE} -- Saving
+
+	get_class: STRING is "GAME"
+
+	fields: ITERATOR[TUPLE[STRING, ANY]] is
+	local
+		a: ARRAY[TUPLE[STRING, ANY]]
+    do
+		create a.make(1, 0)
+		a.add_last(["status", status])
+		a.add_last(["players", players])
+		a.add_last(["galaxy", galaxy])
+		Result := a.get_new_iterator
+	end
+
+	dependents: ITERATOR[STORABLE] is
+	local
+		a: ARRAY[STORABLE]
+	do
+		create a.make(1, 0)
+		a.add_last(status)
+		a.add_last(players)
+		a.add_last(galaxy)
+		Result := a.get_new_iterator
+	end
+
+feature {NONE} -- Saving
+
+	save is
+	local
+		st: STORAGE_XML
+	do
+		create st.make_with_filename("freeMOO_autosave_" + status.date.to_string
+									 + ".xml")
+		st.store(Current)
+	end
 
 feature {NONE} -- Internal
 

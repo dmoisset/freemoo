@@ -3,6 +3,10 @@ class PLANET
 inherit
     ORBITING
     MAP_CONSTANTS
+	STORABLE
+	redefine
+		dependents
+	end
 
 creation make, make_standard
 
@@ -157,6 +161,36 @@ feature {STAR} -- To keep consistent orbits
         orbit = neworbit
     end
 
+feature -- Saving
+
+	hash_code: INTEGER is
+	do
+		Result := Current.to_pointer.hash_code
+	end
+
+feature {STORAGE} -- Saving
+
+	get_class: STRING is "PLANET"
+	
+	fields: ITERATOR[TUPLE[STRING, ANY]] is
+	do
+		Result := (<<["colony", colony],
+					 ["climate", climate],
+					 ["mineral", mineral],
+					 ["size", size],
+					 ["gravity", gravity],
+					 ["type", type],
+					 ["special", special],
+					 ["orbit", orbit]
+					 ["orbit_center", orbit_center]
+					 >>).get_new_iterator
+	end
+
+	dependents: ITERATOR[STORABLE] is
+	do
+		Result := (<<colony, orbit_center>>).get_new_iterator
+	end
+	
 invariant
     orbit_center /= Void
     climate.in_range (climate_min, climate_max)

@@ -4,6 +4,14 @@ class SHIP
 inherit
     SHIP_CONSTANTS
     UNIQUE_ID
+	select id end
+	STORABLE
+	rename
+		hash_code as id
+	redefine
+		dependents
+	end
+
 
 creation make
 
@@ -53,6 +61,26 @@ feature -- Operations
 feature -- Modifiers
     is_stealthy: BOOLEAN
 
+feature {STORAGE} -- Saving
+
+	get_class: STRING is "SHIP"
+
+	fields: ITERATOR[TUPLE[STRING, ANY]] is
+	do
+		Result := (<<["id", id],
+					 ["creator", creator],
+					 ["owner", owner],
+					 ["size", size],
+					 ["picture", picture],
+					 ["is_stealthy", is_stealthy]
+					 >>).get_new_iterator
+	end
+
+	dependents: ITERATOR[STORABLE] is
+	do
+		Result := (<<creator, owner>>).get_new_iterator
+	end
+	
 invariant
     size.in_range(ship_size_min, ship_size_max)
 
