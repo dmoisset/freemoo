@@ -39,13 +39,13 @@ int main(int argc, char* argv[])
              0x0007e000, 0x00001f00, 0x000000ff);
     if (!surface)
         die ("Couldn't create surface:  width = %d\theight = %d\n", width, height);
-    if (magic[0] == 0x38)
-        if (magic[2] == 0x4d)
+    if (magic[3] == 0x38)
+        if (magic[1] == 0x4d)
             load_img_plain8 (fp, surface, width, height);
         else
             load_img_rle8 (fp, surface, width, height);
     else
-        if (magic[2] == 0x4d)
+        if (magic[1] == 0x4d)
             load_img_plain16 (fp, surface, width, height);
         else
             load_img_rle16 (fp, surface, width, height);
