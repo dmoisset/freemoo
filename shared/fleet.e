@@ -120,7 +120,9 @@ feature -- Operations
         -- Travel
         check not is_stopped = not is_in_orbit end
         eta := (eta - 1).max (0)
-        move_towards (destination, current_speed)
+        if destination /= Void then
+            move_towards (destination, current_speed)
+        end
         -- Arrival
         if eta = 0 and not is_stopped then
             enter_orbit (destination)
