@@ -52,6 +52,7 @@ feature -- Operations
         position := position + 1
         if position > images.upper then position := loop_frame end
         item := images @ position
+        unchanged := (old_position = position)
     end
 
 feature {NONE} -- Representations

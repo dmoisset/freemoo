@@ -3,7 +3,6 @@ class S_PLAYER
 inherit
     PLAYER
     rename make as player_make end
-    UNIQUE_ID
 
 creation
     make

@@ -1,7 +1,4 @@
 BUG: problema desconocido con net-thread
-Crear colonias iniciales
-    - Lo hace map generator
-    - Diseñar evolver
 Suscripciones de estrellas, scanner
 Servicio de exploración
 DESIGN: info de flotas propias
@@ -27,5 +24,6 @@ galaxy_view:
     drag para moverse
     star labels (coloreado, parentesis)
     modo zoom (en vez de los botones de ahora)
+indicador de espera de fin de turno
 selección de color, ruler_name (player setup)
 chat

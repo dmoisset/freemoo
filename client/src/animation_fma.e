@@ -38,9 +38,13 @@ feature -- Operations
 
     next is
         -- Go to next frame of the animation
+    local
+        old_pos: INTEGER
     do
+        old_pos := position
         position := position + 1
         if position > images.upper then position := loop_frame end
+        unchanged := (position = old_pos)
     end
 
 feature {NONE} -- Representations

@@ -4,7 +4,6 @@ class SHIP
 inherit
     SHIP_CONSTANTS
     UNIQUE_ID
-    HASHABLE
 
 creation make
 
@@ -14,12 +13,6 @@ feature {NONE} -- Creation
     do
         size := 1
         make_unique_id
-    end
-
-feature -- Hashing function
-    hash_code: INTEGER is
-    do
-        Result := id
     end
 
 feature -- Access

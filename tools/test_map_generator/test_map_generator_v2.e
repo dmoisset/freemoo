@@ -21,7 +21,7 @@ feature {ANY}
         plist: EASY_PLAYER_LIST
         view: GALAXY_VIEW
         c: MOUSE_POINTER
-        i, j: INTEGER
+        i: INTEGER
         it: ITERATOR[S_STAR]
         cstar: C_STAR
         font: FONT
@@ -90,9 +90,6 @@ feature {ANY}
                 cstar ?= cgalaxy.idmap @ it.item.id
                 subscribe (cstar, "star" + it.item.id.to_string)
                 it.item.update_clients
-                from j := 1 until j > 5 loop
-                    j := j + 1
-                end
             end
             it.next
             i := i + 1

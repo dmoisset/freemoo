@@ -25,6 +25,7 @@ NAQ (Not Answered Questions)
 7. Distribución de mapa: resuelto
 
 8. Implementación de concurrencia en el final del turno
+    - Que pasa si dos llegan a un sistema con un special a la vez?
 
 9. Cómo se utilizan los death-spores? Se pueden usar en combate táctico o
    sólo al bombardear un planeta?  Si se pueden usar en combate táctico,

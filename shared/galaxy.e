@@ -1,6 +1,7 @@
 class GALAXY
 
-creation make
+creation
+    make
 
 feature {NONE} -- Creation
 
@@ -9,6 +10,7 @@ feature {NONE} -- Creation
         !!limit.make_at(0, 0)
         !!stars.make
         !!fleets.make
+        !!scans.make
     end
 
 feature -- Access
@@ -16,7 +18,7 @@ feature -- Access
     stars: DICTIONARY [STAR, INTEGER]
         -- stars in the map, by id
 
-    fleets: DICTIONARY[FLEET, INTEGER]
+    fleets: DICTIONARY [FLEET, INTEGER]
         -- All fleets in space
 
     limit: COORDS
@@ -88,6 +90,28 @@ feature -- Access
                 end
                 alienfleet.next
             end
+        end
+    end
+
+    scans: DICTIONARY [ARRAY [FLEET], INTEGER]
+        -- Fleets scanned by each player
+
+feature -- Operations
+
+    generate_scans (pl: PLAYER_LIST [PLAYER]) is
+        -- Store in `scans' current scanner for all players in `pl'
+    require
+        pl /= Void
+    local
+        i: ITERATOR [PLAYER]
+    do
+        i := pl.get_new_iterator
+        from
+            i.start
+            scans.clear
+        until i.is_off loop
+            scans.put (scanner (i.item), i.item.id)
+            i.next
         end
     end
 

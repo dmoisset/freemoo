@@ -2,6 +2,7 @@ class PLAYER
 
 inherit
     PLAYER_CONSTANTS
+    UNIQUE_ID
 
 feature {NONE} -- Creation
 

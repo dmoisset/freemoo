@@ -29,6 +29,7 @@ feature -- Access
     end
 
     names: ARRAY [STRING] is
+    obsolete "If you want to iterate over a PLAYER_LIST, use get_new_iterator"
     local
         sort: COLLECTION_SORTER [STRING]
     do

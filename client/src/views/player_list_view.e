@@ -32,21 +32,19 @@ feature -- Redefined features
     on_model_change is
         -- Update gui
     local
-        i: ITERATOR [STRING]
+        i: ITERATOR [C_PLAYER]
         j: INTEGER
-        p: C_PLAYER
         s: STRING
         r: RECTANGLE
     do
-        i := model.names.get_new_iterator
+        i := model.get_new_iterator
         from
             i.start
             j := labels.lower
         until i.is_off loop
-            p := model @ i.item
-            s := p.name.twin
-            s.append (": "+ state_names @ p.state)
-            if p.connected then
+            s := i.item.name.twin
+            s.append (": "+ state_names @ i.item.state)
+            if i.item.connected then
                 s.add_first ('*')
             end
             if j > labels.upper then

@@ -120,7 +120,7 @@ feature -- Operations
         -- Fleet combat
         -- Bombardment/ground combat
         -- Colonization
-        galaxy.generate_scanners(players)
+        galaxy.generate_scans (players)
         status.next_date
         players.set_all_state (st_playing_turn)
     end
