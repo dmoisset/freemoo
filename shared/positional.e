@@ -11,27 +11,6 @@ feature -- Access
         Result >= 0
     end
 
-    serial_form: STRING is
-    local
-        s: SERIALIZER
-    do
-        s.serialize ("rr", <<x, y>>)
-        Result := s.serialized_form
-    end
-
-    unserialize_from (incoming: STRING) is
-    local
-        rr: reference REAL
-        s: SERIALIZER
-    do
-        s.unserialize ("rr", incoming)
-        rr ?= s.unserialized_form @ 1
-        x := rr
-        rr ?= s.unserialized_form @ 2
-        y := rr
-        incoming.remove_first (s.used_serial_count)
-    end
-
 feature -- Operations
 
     move_to (other: POSITIONAL) is
@@ -62,6 +41,24 @@ feature -- Operations
         if is_approx (distance_to (other), 0) then move_to (other) end
     ensure
         is_approx (distance_to (other), (old distance_to(other) - dist).max (0))
+    end
+
+    serialize_on (s: SERIALIZER2) is
+    do
+        s.add_tuple (<<x, y>>)
+    end
+
+    unserialize_from (incoming: STRING) is
+    local
+        rr: reference REAL
+        s: SERIALIZER
+    do
+        s.unserialize ("rr", incoming)
+        rr ?= s.unserialized_form @ 1
+        x := rr
+        rr ?= s.unserialized_form @ 2
+        y := rr
+        incoming.remove_first (s.used_serial_count)
     end
 
 feature {POSITIONAL, PROJECTION, MAP_GENERATOR} -- Position info

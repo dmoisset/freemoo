@@ -19,3 +19,5 @@ chat
 nueva interfaz para serializer
 updates incrementales
 Revision general de código
+teclas rápidas en la interfaz (en especial TAB, ENTER)
+revisar que un label en una posición fuera de ventana no se vea.

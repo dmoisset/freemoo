@@ -4,9 +4,6 @@ class FLEET
 inherit
     UNIQUE_ID
     POSITIONAL
-        rename serial_form as serialized_as_positional,
-            unserialize_from as unserialize_as_positional
-    end
     ORBITING
 
 creation
@@ -57,28 +54,6 @@ feature -- Access
         -- Returns an iterator on the fleet's ships
     do
         Result:= ships.get_new_iterator
-    end
-
-    serialized_as_fleet: STRING is
-    local
-        s: SERIALIZER
-        ship: ITERATOR[SHIP]
-    do
-        !!Result.make(0)
-        if destination /= Void then
-            s.serialize("iiii", <<owner.id, eta, destination.id, ship_count>>)
-        else
-            s.serialize("iiii", <<owner.id, eta, orbit_center.id, ship_count>>)
-        end
-	print("Sending <<" + owner.id.to_string + ", " + eta.to_string + ", " + orbit_center.id.to_string + ", " + ship_count.to_string + ">>%N")
-        Result.append (s.serialized_form)
-        Result.append (serialized_as_positional)
-        from ship := get_new_iterator
-        until ship.is_off loop
-            s.serialize("ii", <<ship.item.size, ship.item.picture>>)
-            Result.append (s.serialized_form)
-            ship.next
-        end
     end
 
 feature -- Operations
