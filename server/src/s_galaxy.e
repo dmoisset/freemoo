@@ -20,7 +20,7 @@ feature {NONE} -- Creation
 
 feature -- Redefined features
 
-    subscription_message (service_id: STRING):STRING is
+    subscription_message (service_id: STRING): STRING is
         -- `service_id' can be "galaxy" for getting public information
         -- about whereabouts of stars, or "<n>:scanner", where <n> is
         -- the `id' of a player, to get scaner information for
