@@ -12,11 +12,33 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/connect-window/connect-button-u.fmi \
                 $(INSTALL_DIR)/client/connect-window/connect-button-p.fmi \
                 $(INSTALL_DIR)/client/connect-window/connect-button-d.fmi \
-                $(INSTALL_DIR)/client/gui/default_font.png \
-                $(INSTALL_DIR)/client/gui/default_cursor.png \
+                $(INSTALL_DIR)/client/gui/default_font.fmi \
+                $(INSTALL_DIR)/client/gui/default_cursor.fmi \
                 $(INSTALL_DIR)/client/join-window/background.fmi \
                 $(INSTALL_DIR)/client/setup-window/background.fmi \
                 $(INSTALL_DIR)/client/main-window/background.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star12.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star11.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star10.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star22.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star21.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star20.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star32.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star31.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star30.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star42.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star41.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star40.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star52.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star51.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star50.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star62.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star61.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star60.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star02.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star01.fma \
+                $(INSTALL_DIR)/client/galaxy-view/star00.fma \
+                $(INSTALL_DIR)/client/galaxy-view/background.fma
 
 
 all: $(SUBDIRS)
