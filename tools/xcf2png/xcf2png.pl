@@ -12,9 +12,10 @@ sub xcf2png {
     my ($filein, $fileout) = @_;
     $img = gimp_xcf_load (1, $filein, $filein);
     my @l = $img->get_layers () ;
-    if ($#l>0) {
+    if ($#l==0) {
         # merge needs two layers, stupid gimp.
-        gimp_layer_new ($img, $img->width, $img->height, 0, "stupid_gimp", 0, 0);
+        $newlayer = gimp_layer_new ($img, $img->width, $img->height, $img->base_type, "stupid_gimp", 0, 0);
+        $img->add_layer ($newlayer, 0)
     }
     $img->merge_visible_layers (CLIP_TO_IMAGE);
     $layer = $img->get_active_layer();

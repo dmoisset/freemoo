@@ -1,9 +1,14 @@
 class PLAYER_LIST_VIEW
-    -- Gtk view for a PLAYER_LIST
+    -- View for a PLAYER_LIST
 
 inherit
     VIEW [C_PLAYER_LIST]
-    VEGTK_HELPER
+    WINDOW
+    rename
+        make as window_make
+    redefine
+        redraw
+    end
     GETTEXT
     PLAYER_CONSTANTS
     COLORS
@@ -13,32 +18,20 @@ creation
 
 feature {NONE} -- Creation
 
-    make (new_model: C_PLAYER_LIST) is
+    make (w: WINDOW; where: RECTANGLE; new_model: C_PLAYER_LIST) is
         -- build widget as view of `new_model'
     do
+        window_make (w, where)
         set_model (new_model)
-
-        !!list.make_with_titles (3, <<l("Name"), l("Status"), l("Connected")>>)
-        list.set_column_auto_resize (0, True)
-        list.set_column_auto_resize (1, True)
-        list.set_column_justification (2, Gtk_justify_center)
-        list.set_usize (300, 150)
-        list.set_border_width (border_width)
-        list.column_titles_show
-        widget := new_scrolled_window (list)
+        !!pic.make (width, height)
 
         -- Update gui
         on_model_change
     end
 
-feature -- Access
-
-    widget: GTK_WIDGET
-        -- widget reflecting model
-
 feature {NONE} -- Internal
 
-    list: GTK_CLIST
+    pic: SDL_IMAGE
 
 feature -- Redefined features
 
@@ -47,31 +40,39 @@ feature -- Redefined features
     local
         a: ARRAY [STRING]
         p: C_PLAYER
-        i, dummy: INTEGER
+        i: INTEGER
+        s: STRING
     do
-        list.freeze
-        list.clear
+        !!pic.make (width, height)
         a := model.names
         from i := a.lower until i > a.upper loop
             p := model @ (a @ i)
-            dummy := list.append (<<p.name, state_names @ p.state, " ">>)
+            s := p.name.twin
+            s.append (": "+ state_names @ p.state)
             if p.connected then
-                list.set_text (i-1, 2, "*")
+                s.add_first ('*')
             end
-            list.set_background (i-1, color_map @ p.color_id)
-            list.set_foreground (i-1, gdk_black)
-
+            if display.default_font /= Void then
+-- color adecuado
+                display.default_font.show_at (pic, 2, (i-1)*20+2, s)
+            end
             i := i + 1
         end
-        list.thaw
+
+        request_redraw_all
     end
+
+    redraw (area: RECTANGLE) is
+    local
+        w: RECTANGLE
+    do
+        w.set_with_size (0, 0, width, height)
+        show_image (pic, 0, 0, w)
+        Precursor (area)
+    end
+
 
 feature {NONE} -- Constants
-
-    gdk_black: GDK_COLOR is
-    once
-        !!Result.make_with_values (0, 0, 0)
-    end
 
     state_names: ARRAY [STRING] is
     do

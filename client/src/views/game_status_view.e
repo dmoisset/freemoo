@@ -1,9 +1,12 @@
 class GAME_STATUS_VIEW
-    -- Gtk view for a GAME_STATUS
+    -- View for a GAME_STATUS (game rules)
 
 inherit
     VIEW [C_GAME_STATUS]
-    VEGTK_HELPER
+    WINDOW
+    rename
+        make as window_make
+    end
     GETTEXT
 
 creation
@@ -11,91 +14,88 @@ creation
 
 feature {NONE} -- Creation
 
-    make (new_model: C_GAME_STATUS) is
+    make (w: WINDOW; where: RECTANGLE; new_model: C_GAME_STATUS) is
         -- build widget as view of `new_model'
     local
-        table: GTK_TABLE
+        a: ARRAY [STRING]
+        i: INTEGER
+        r: RECTANGLE
+        tag: LABEL
     do
         set_model (new_model)
+        window_make (w, where)
+        a := <<"Open player slots",
+               "Galaxy Size",
+               "Galaxy Age",
+               "Starting tech level",
+               "Tactical Combat",
+               "Random Events",
+               "Antaran Attacks">>
+        from
+            i := a.lower
+            r.set_with_size (2, 2, 100, 25)
+        until i > a.upper loop
+            !!tag.make (Current, r, a @ i)
+            tag.set_alignment (0, 0)
+            r.translate (0, 25)
+            i := i + 1
+        end
 
-        !!table.make (7, 2, False)
-        table.set_border_width (border_width)
-        table.set_row_spacings (border_width)
-        table.set_col_spacings (border_width)
+        r.set_with_size (110, 2, 100, 25)
+        !!open_slots.make (Current, r, "")
+        open_slots.set_alignment (0, 0)
 
-        table.attach (new_label (l("Open player slots")), 0, 1, 0, 1, Gtk_fill, Gtk_attach_normal, 0, 0)
-        last_label.set_padding (border_width, border_width)
-        last_label.set_alignment (0, 0.5)
-        table.attach (new_label (l("Galaxy Size")), 0, 1, 1, 2, Gtk_fill, Gtk_attach_normal, 0, 0)
-        last_label.set_padding (border_width, border_width)
-        last_label.set_alignment (0, 0.5)
-        table.attach (new_label (l("Galaxy Age")), 0, 1, 2, 3, Gtk_fill, Gtk_attach_normal, 0, 0)
-        last_label.set_padding (border_width, border_width)
-        last_label.set_alignment (0, 0.5)
-        table.attach (new_label (l("Starting Tech Level")), 0, 1, 3, 4, Gtk_fill, Gtk_attach_normal, 0, 0)
-        last_label.set_padding (border_width, border_width)
+        r.translate (0, 25)
+        !!size.make (Current, r, "")
+        size.set_alignment (0, 0)
 
-        open_slots_label := new_label ("?")
-        table.attach (last_label, 1, 2, 0, 1, Gtk_fill, Gtk_attach_normal, 0, 0)
-        last_label.set_padding (border_width, border_width)
-        last_label.set_alignment (0, 0.5)
-        size_label := new_label ("?")
-        table.attach (last_label, 1, 2, 1, 2, Gtk_fill, Gtk_attach_normal, 0, 0)
-        last_label.set_padding (border_width, border_width)
-        last_label.set_alignment (0, 0.5)
-        age_label := new_label ("?")
-        table.attach (last_label, 1, 2, 2, 3, Gtk_fill, Gtk_attach_normal, 0, 0)
-        last_label.set_padding (border_width, border_width)
-        last_label.set_alignment (0, 0.5)
-        tech_label := new_label ("?")
-        table.attach (last_label, 1, 2, 3, 4, Gtk_fill, Gtk_attach_normal, 0, 0)
-        last_label.set_padding (border_width, border_width)
-        last_label.set_alignment (0, 0.5)
+        r.translate (0, 25)
+        !!age.make (Current, r, "")
+        age.set_alignment (0, 0)
 
-        !!tactical_combat_box.make_with_label (l("Tactical Combat"))
-        tactical_combat_box.set_sensitive (False)
-        table.attach (tactical_combat_box, 0, 2, 4, 5, Gtk_fill, Gtk_attach_normal, 0, 0)
-        !!random_events_box.make_with_label (l("Random Events"))
-        random_events_box.set_sensitive (False)
-        table.attach (random_events_box, 0, 2, 5, 6, Gtk_fill, Gtk_attach_normal, 0, 0)
-        !!antarans_box.make_with_label (l("Antaran Attacks"))
-        antarans_box.set_sensitive (False)
-        table.attach (antarans_box, 0, 2, 6, 7, Gtk_fill, Gtk_attach_normal, 0, 0)
+        r.translate (0, 25)
+        !!tech.make (Current, r, "")
+        tech.set_alignment (0, 0)
 
-        widget := table
+        r.translate (0, 25)
+        !!tactical_combat.make (Current, r, "")
+        tactical_combat.set_alignment (0, 0)
+
+        r.translate (0, 25)
+        !!random_events.make (Current, r, "")
+        random_events.set_alignment (0, 0)
+
+        r.translate (0, 25)
+        !!antarans.make (Current, r, "")
+        antarans.set_alignment (0, 0)
+
         -- Update gui
         on_model_change
     end
 
-feature -- Access
-
-    widget: GTK_WIDGET
-        -- widget reflecting model
-
 feature {NONE} -- Internal
 
-    open_slots_label,
-    size_label,
-    age_label,
-    tech_label: GTK_LABEL
-
-    tactical_combat_box,
-    random_events_box,
-    antarans_box: GTK_CHECK_BUTTON
+    open_slots,
+    size,
+    age,
+    tech,
+    tactical_combat,
+    random_events,
+    antarans: LABEL
 
 feature -- Redefined features
 
     on_model_change is
         -- Update gui
     do
-        open_slots_label.set_text (model.open_slots.to_string)
-        size_label.set_text (sizes @ model.galaxy_size)
-        age_label.set_text (ages @ model.galaxy_age)
-        tech_label.set_text (techs @ model.start_tech_level)
+        open_slots.set_text (model.open_slots.to_string)
+        size.set_text (sizes @ model.galaxy_size)
+        age.set_text (ages @ model.galaxy_age)
+        tech.set_text (techs @ model.start_tech_level)
 
-        tactical_combat_box.set_active (model.tactical_combat)
-        random_events_box.set_active (model.random_events)
-        antarans_box.set_active (model.antaran_attacks)
+        tactical_combat.set_text (model.tactical_combat.to_string)
+        random_events.set_text (model.random_events.to_string)
+        antarans.set_text (model.antaran_attacks.to_string)
     end
 
 feature {NONE} -- Constants

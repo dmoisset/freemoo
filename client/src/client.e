@@ -21,7 +21,7 @@ feature -- Operations
             end
         end
     rescue
-        if not server.is_closed then server.close end
+        if server /= Void and then not server.is_closed then server.close end
         if not tried then
             tried := True
             retry

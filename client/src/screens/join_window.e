@@ -1,9 +1,9 @@
 class JOIN_WINDOW
-    -- Window for joining to te game
+    -- Window for joining to the game
 
 inherit
-    VEGTK_MAIN
     JOIN_WINDOW_GUI
+    redefine handle_event end
     GETTEXT
     CLIENT
     STRING_FORMATTER
@@ -11,6 +11,19 @@ inherit
 
 creation
     make
+
+feature -- Redefined features
+
+    handle_event (event:EVENT) is
+    local
+        t: EVENT_TIMER
+    do
+        Precursor (event)
+        t ?= event
+        if t/= Void and on_timer_enabled then
+            on_timer
+        end
+    end
 
 feature -- Operations
 
@@ -22,69 +35,60 @@ feature -- Operations
         not server.is_joining
         not server.is_joined
     do
-        join_window.set_title (format(l("Connected to ~1~:~2~"),
+        show
+        title_label.set_text (format(l("Connected to ~1~:~2~"),
                                      <<server.dq_address, server.port>>))
         status_label.set_text (
             l("Join as new player or rejoin as existing one."))
-        name.grab_focus
-        join_window.show_all
-        bjoin.set_sensitive (True)
+        name.grab
+        show
+        join_button.show
         joining := False
-        !!idle_network.make (Current, $on_idle_network, Void)
+        on_timer_enabled := True
     end
 
 feature {NONE} -- Callbacks
 
-    idle_network: GTK_IDLE
-        -- Idle function that gets data from network
-
-    delete_event (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
-        -- Called when the window is closed from the WM
-    do
-        -- This is to avoid window from getting destroyed
-        cb_data.set_return_value_boolean (True)
-        destroy
-    end
-
     destroy is
         -- Close and hide window
     do
-        join_window.hide
-        idle_network.remove
-        gtk_main_quit
+        hide
+        on_timer_enabled := False
+        display.add_event (create {EVENT_QUIT})
     end
 
-    join (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
+    join is
         -- Join button clicked
     do
-        rejoin := server.player_list.has (name.get_text)
+        rejoin := server.player_list.has (name.text)
         if rejoin then
-            server.rejoin (name.get_text, password.get_text)
+            server.rejoin (name.text, password.text)
         else
-            server.join (name.get_text, password.get_text)
+            server.join (name.text, password.text)
         end
         joining := True
-        bjoin.set_sensitive (False)
+        join_button.hide
     end
 
-    disconnect (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
+    disconnect is
         -- Disconnect button clicked
     do
         server.close
         destroy
     end
 
-    on_idle_network is
-        -- Get data from network, updating local info
+    on_timer_enabled: BOOLEAN
+
+    on_timer is
     do
         if not server.is_closed then
-            server.get_data (network_wait)
             if server.is_joined then
+                joining := False
                 destroy
             end
             if joining and not server.is_joining then
                 joining := False
-                bjoin.set_sensitive (True)
+                join_button.show
                 if rejoin then
                     status_label.set_text(
                         format (l("Can't rejoin: ~1~"), <<
@@ -113,20 +117,14 @@ feature {NONE} -- Internal
 
 feature {NONE} -- Constants
 
-    new_custom_player_list_widget: GTK_WIDGET is
-    local
-        player_list: PLAYER_LIST_VIEW
+    new_player_list (where: RECTANGLE) is
     do
-        !!player_list.make (server.player_list)
-        Result := player_list.widget
+        !!player_list.make (Current, where, server.player_list)
     end
 
-    new_custom_server_rules: GTK_WIDGET is
-    local
-        status: GAME_STATUS_VIEW
+    new_server_rules (where: RECTANGLE) is
     do
-        !!status.make (server.game_status)
-        Result := status.widget
+        !!server_rules.make (Current, where, server.game_status)
     end
 
     join_reject_causes: ARRAY [STRING] is

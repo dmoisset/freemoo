@@ -1,4 +1,3 @@
-cecil.h
 dumb_client
 dumb_client.h
 dumb_client.id
@@ -7,4 +6,3 @@ fm_client
 fm_client.h
 fm_client.id
 fm_client[0-9].c
-gtk_interface

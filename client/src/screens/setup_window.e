@@ -1,11 +1,11 @@
 class SETUP_WINDOW
 
 inherit
-    VEGTK_MAIN
+    SETUP_WINDOW_GUI
+    redefine handle_event end
     CLIENT
     GETTEXT
     STRING_FORMATTER
-    SETUP_WINDOW_GUI
     PLAYER_CONSTANTS
 
 creation
@@ -19,92 +19,69 @@ feature -- Operations
         server.player_name /= Void
         server.player /= Void
     do
-        setup_window.set_title (format(l("Player setup for ~1~"),
-                                     <<server.player_name>>))
-        options_frame.set_label (server.player_name)
-        color_menu.set_history (server.player.color_id)
-        setup_window.show_all
-        !!idle_network.make (Current, $on_idle_network, Void)
+--        setup_window.set_title (format(l("Player setup for ~1~"),
+--                                     <<server.player_name>>))
+        show
+        ruler_name.grab
     end
 
-feature -- Access
+feature -- Redefined features
 
-    flag_viewer: FLAG_VIEW
+    handle_event (event:EVENT) is
+    local
+        t: EVENT_TIMER
+    do
+        Precursor (event)
+        t ?= event
+        if t/= Void then on_timer end
+    end
 
 feature {NONE} -- Callbacks
 
-    idle_network: GTK_IDLE
-        -- Idle function that gets data from network
-
-    customize_race (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
-    do
-        print ("Not implemented%N")
-    end
-
-    start_game (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
+    start_game is
     do
         server.set_ready
     end
 
-    retire_from_game (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
-    do
-        print ("Not implemented%N")
-    end
-
-    disconnect (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
+    disconnect is
     do
         server.close
-        destroy
-    end
-
-    delete_event (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
-        -- When the window is closed from the WM
-    do
-        -- This is to avoid window from getting destroyed
-        cb_data.set_return_value_boolean (True)
         destroy
     end
 
     destroy is
         -- Close and hide window
     do
-        setup_window.hide
-        flag_viewer.widget.hide
-        idle_network.remove
-        gtk_main_quit
+        hide
+--        flag_viewer.widget.hide
+        display.add_event (create {EVENT_QUIT})
     end
 
-    on_idle_network is
-        -- Get data from network, updating local info
+    on_timer is
+        -- Check network
     do
-        if not server.is_closed and server.is_joined and
-           not server.game_status.started then
-            server.get_data (network_wait)
-        else -- Connection lost or player ready
+        if server.is_closed or not server.is_joined or server.game_status.started then
             destroy
         end
     end
 
 feature {NONE} -- Custom widgets
 
-    new_custom_flag_view: GTK_WIDGET is
+    new_player_list (where: RECTANGLE) is
     do
-        !!flag_viewer.make (server.player_list)
-        Result := flag_viewer.widget
+        !!player_list.make (Current, where, server.player_list)
     end
 
-    new_custom_player_list_widget: GTK_WIDGET is
-    local
-        player_list: PLAYER_LIST_VIEW
-    do
-        !!player_list.make (server.player_list)
-        Result := player_list.widget
-    end
-
-    new_custom_chat: GTK_WIDGET is
-    do
-        print ("Not implemented%N")
-        !GTK_LABEL!Result.make ("chat")
-    end
+--    new_custom_flag_view: GTK_WIDGET is
+--    do
+--        !!flag_viewer.make (server.player_list)
+--        Result := flag_viewer.widget
+--    end
+--
+--    new_custom_chat: GTK_WIDGET is
+--    do
+--        print ("Not implemented%N")
+--        !GTK_LABEL!Result.make ("chat")
+--    end
 
 end -- class SETUP_WINDOW

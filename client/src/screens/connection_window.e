@@ -2,9 +2,11 @@ class CONNECTION_WINDOW
     -- Window for connecting to a server
 
 inherit
-    VEGTK_MAIN
     CONNECT_WINDOW_GUI
-    redefine make end
+    redefine
+        make,
+        handle_event
+    end
     GETTEXT
     CLIENT
 
@@ -13,10 +15,24 @@ creation
 
 feature {NONE} -- Creation
 
-    make is
+    make (w: WINDOW; where: RECTANGLE) is
     do
-        Precursor
+        state := st_disconnected
+        Precursor (w, where)
         set_state (st_disconnected)
+    end
+
+feature -- Redefined features
+
+    handle_event (event:EVENT) is
+    local
+        t: EVENT_TIMER
+    do
+        Precursor (event)
+        t ?= event
+        if t/= Void and on_timer_enabled then
+            on_timer
+        end
     end
 
 feature -- Operations
@@ -26,58 +42,45 @@ feature -- Operations
     require
         server = Void or else server.is_closed
     do
+        show
         if server /= Void then
             status_label.set_text (l("Connection to server lost."))
         end
-        connect_button.grab_default
-        host_entry.grab_focus
-        connect_window.show_all
+        host_entry.grab
         set_state (st_disconnected)
     end
 
 feature {NONE} -- Callbacks
 
-    idle_network: GTK_IDLE
-        -- Idle function that gets data from network
-
-    delete_event (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
-        -- When the window is closed from the WM
-    do
-        -- This is to avoid window from getting destroyed
-        cb_data.set_return_value_boolean (True)
-        destroy (data, cb_data)
-    end
-
-    destroy (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
+    destroy is
         -- Close and hide window
     do
         if state=st_waiting_info then
             server.close
         end
-        connect_window.hide
-        gtk_main_quit
+        hide
+        display.add_event (create {EVENT_QUIT})
     end
 
-    connect (data: ANY; cb_data: VEGTK_CALLBACK_DATA) is
+    connect is
         -- Connect button was clicked
     local
         port_num: INTEGER
-        dummy: BOOLEAN
     do
         set_state (st_connecting)
-        if not port_entry.get_text.is_integer then
+        if not port_entry.text.is_integer then
             status_label.set_text (l("Invalid port number."))
             set_state (st_disconnected)
         else
             status_label.set_text (l("Looking up host..."))
-            from until gtk_events_pending=0 loop
-                dummy := gtk_main_iteration
-            end
-            port_num := port_entry.get_text.to_integer
-            set_server (host_entry.get_text, port_num)
-            if server.is_opening then
+            -- We're about to block for a while during name lookup
+            -- So we'd better update the screen
+            display.redraw
+            port_num := port_entry.text.to_integer
+            set_server (host_entry.text, port_num)
+            if server /= Void and then server.is_opening then
                 status_label.set_text (l("Connecting..."))
-                !!idle_network.make (Current, $on_idle_network, Void)
+                on_timer_enabled := True
             else
                 status_label.set_text (l("Can't connect."))
                 set_state (st_disconnected)
@@ -85,8 +88,12 @@ feature {NONE} -- Callbacks
         end
     end
 
-    on_idle_network is
+    on_timer_enabled: BOOLEAN
+
+    on_timer is
         -- wait for network data, update info and move progress indicator.
+    local
+        dummy: INTEGER
     do
         inspect
             state
@@ -95,16 +102,17 @@ feature {NONE} -- Callbacks
                 if tolerant_wait_connection then
                     do_nothing
                 end
-                status_bar.set_value (1-status_bar.get_value)
+                status_bar.activity
             elseif server.is_closed then
                 set_state (st_disconnected)
                 status_label.set_text (l("Connection failed."))
             else
                 set_state (st_waiting_info)
+                dummy := init_netevent_thread (server.socketfd)
             end
         when st_waiting_info then
-            server.get_data (network_wait)
-            status_bar.set_value (1-status_bar.get_value)
+            status_bar.activity
+-- This could be network-event driven
             if server.has ("game_status") and
                server.has ("players_list") then
                 set_state (st_connected)
@@ -115,11 +123,10 @@ feature {NONE} -- Callbacks
                 status_label.set_text (l("Connection failed."))
             end
         when st_disconnected then
-            idle_network.remove
-            idle_network := Void
+            dummy := stop_netevent_thread
+            on_timer_enabled := False
         when st_connected then
-            idle_network.remove
-            idle_network := Void
+            on_timer_enabled := False
         end
     end
 
@@ -142,18 +149,17 @@ feature {NONE} -- Internal
         state := value
         inspect state
         when st_disconnected then
-            connect_button.set_sensitive (True)
-            status_bar.hide
+            connect_button.show
+            status_bar.deactivate
         when st_connecting then
-            connect_button.set_sensitive (False)
-            status_bar.show
-            status_bar.set_value (0)
+            connect_button.hide
+            status_bar.activate
         when st_waiting_info then
             status_label.set_text (l("Waiting for server data..."))
         when st_connected then
-            connect_button.set_sensitive (False)
-            connect_window.hide
-            gtk_main_quit
+            connect_button.hide
+            status_bar.deactivate
+            destroy
         end
     end
 
@@ -166,6 +172,18 @@ feature {NONE} -- Internal
     rescue
         Result := True
         retry
+    end
+
+feature {NONE} -- External
+
+    init_netevent_thread (fd: INTEGER): INTEGER is
+    external "C"
+    ensure Result = 0
+    end
+
+    stop_netevent_thread: INTEGER is
+    external "C"
+    ensure Result = 0
     end
 
 invariant
