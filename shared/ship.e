@@ -3,6 +3,7 @@ deferred class SHIP
 
 inherit
     SHIP_CONSTANTS
+    UNIQUE_ID
     HASHABLE
 
 feature -- Hashing function
@@ -25,24 +26,26 @@ feature -- Access
     picture: INTEGER
         -- icon for ship
 
-    id: INTEGER
+feature -- Operations
 
-feature {NONE} -- Creation
-    make is
+    set_size (s:INTEGER) is
+    require
+        s.in_range(1, 6)
     do
-        id := counter.value
-        counter.increment
+        size := s
+    ensure
+        size = s
+    end
+
+    set_picture (p:INTEGER) is
+    do
+        picture := p
+    ensure
+        picture = p
     end
 
 feature -- Modifiers
     is_stealthy: BOOLEAN
-
-feature -- Implementarion
-    counter: COUNTER is
-    once
-        !!Result
-    end
-
 
 invariant
     size.in_range(1, 6)

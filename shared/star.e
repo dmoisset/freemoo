@@ -72,6 +72,15 @@ feature -- Operations
         name = new_name
     end
 
+    set_kind (new_kind: INTEGER) is
+    require
+        new_kind /= Void
+    do
+        kind := new_kind
+    ensure
+        kind = new_kind
+    end
+
 feature {NONE} -- Creation
 
     make_defaults is

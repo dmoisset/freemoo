@@ -1,6 +1,7 @@
 class S_STAR
 
 inherit
+    UNIQUE_ID
     STAR
         redefine
             set_planet, set_special, set_name
@@ -15,8 +16,8 @@ feature -- Redefined Features
         i: ITERATOR [PLANET]
     do
     -- Setup id upon first subscription
-        if id = Void then
-            id := service_id
+        if s_id = Void then
+            s_id := service_id
         end
         !!Result.make (0)
         s.serialize ("si", <<name, planets.count>>)
@@ -26,7 +27,7 @@ feature -- Redefined Features
         until i.is_off loop
             s.serialize ("iiiiii", <<i.item.size - i.item.plsize_min, i.item.climate - i.item.climate_min,
                                      i.item.mineral - i.item.mnrl_min, i.item.gravity - i.item.grav_min,
-                                     i.item.special - i.item.pl_special_min, i.item.orbit>>)
+                                     i.item.special - i.item.plspecial_min, i.item.orbit>>)
             Result.append (s.serialized_form)
             i.next
         end
@@ -45,7 +46,7 @@ feature {MAP_GENERATOR} -- Redefined
         update_clients
     end
 
-    set_name (new_name: INTEGER) is
+    set_name (new_name: STRING) is
     do
         Precursor(new_name)
         update_clients
@@ -53,7 +54,7 @@ feature {MAP_GENERATOR} -- Redefined
 
 feature -- Access
 
-    id: STRING
+    s_id: STRING
         -- Name of the service we provide
 
 
@@ -61,7 +62,7 @@ feature -- Operations
 
     update_clients is
     do
-        send_message (id, subscription_message (id))
+        send_message (s_id, subscription_message (s_id))
     end
 
 

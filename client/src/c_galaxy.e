@@ -5,10 +5,10 @@ class C_GALAXY
 
 inherit
     GALAXY
-        redefine
-            make
+        redefine make end
     MODEL
     SUBSCRIBER
+    IDMAP_ACCESS
 
 creation
     make
@@ -30,45 +30,79 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
     local
         new_stars: ARRAY[STAR]
         new_fleets: ARRAY[FLEET]
-        new_msg: STRING
-        ir: INTEGER_REF
-        count: INTEGER
+        newmsg: STRING
+        ir: reference INTEGER
+        id, count, shipcount: INTEGER
         s: SERIALIZER
+        owner: PLAYER
+        fleet: FLEET
+        star: STAR
+        ship: SHIP
     do
-        if service_id = "galaxy" then
+        if service.is_equal("galaxy") then
             s.unserialize("i", msg)
             ir ?= s.unserialized_form @ 1
-            count := ir.item
+            count := ir
             newmsg := msg.substring(s.used_serial_count + 1, newmsg.count)
-            !!newstars.with_capacity (count,1)
+            !!new_stars.with_capacity (count,1)
             from until count = 0 loop
                 s.unserialize("iii", newmsg)
-                newmsg.remove_first(s.serial_used_count)
+                newmsg.remove_first(s.used_serial_count)
                 ir ?= s.unserialized_form @ 1
-                id := ir.item
-                if stars.valid_index(id) and then (stars @ id) /= Void then
-                    star := stars @ id
+                id := ir
+                if idmap.has(id) then
+                    star ?= idmap @ id
                 else
                     !!star.make_defaults
+                    idmap.put(star, id)
                 end
                 ir ?= s.unserialized_form @ 2
-                star.set_kind(ir.item)
+                star.set_kind(ir)
                 ir ?= s.unserialized_form @ 3
-                star.set_size(ir.item)
+                star.set_size(ir)
                 star.unserialize_from (newmsg)
-                newstars.force(star, id)
+                new_stars.force(star, id)
                 count := count - 1
             end
-            stars := newstars
-        elseif service_id.has_suffix(":scanner") then
+            stars := new_stars
+        elseif service.has_suffix(":scanner") then
             s.unserialize("i", msg)
             ir ?= s.unserialized_form @ 1
-            count := ir.item
+            count := ir
             newmsg := msg.substring(s.used_serial_count + 1, newmsg.count)
-            !!newfleets.with_capacity (count,1)
+            !!new_fleets.with_capacity (count,1)
             from until count = 0 loop
-                s.unserialize("iiii", newmsg)
-                -- d'oh!
+                s.unserialize("oioi", newmsg)
+                newmsg.remove_first(s.used_serial_count)
+                owner ?= s.unserialized_form @ 1
+                !!fleet.set_owner(owner)
+                ir ?= s.unserialized_form @ 2
+                star ?= s.unserialized_form @ 3
+                if ir = 0 then
+                    fleet.set_orbit_center (star)
+                else
+                    fleet.set_destination (star)
+                end
+                fleet.set_eta(ir)
+                fleet.unserialize_from(newmsg)
+                new_fleets.put(fleet, count)
+                ir ?= s.unserialized_form @ 4
+                from shipcount := ir until shipcount = 0 loop
+                    s.unserialize("ii", newmsg)
+                    !!ship
+                    ir ?= s.unserialized_form @ 1
+                    ship.set_size(ir)
+                    ir ?= s.unserialized_form @ 2
+                    ship.set_picture(ir)
+                    newmsg.remove_first(s.used_serial_count)
+                    shipcount := shipcount - 1
+                end
+                count := count - 1
+            end
+        else
+            check unexpected_message: False end
+        end
+    end
 
 
 end -- class C_GALAXY
