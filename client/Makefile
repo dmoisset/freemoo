@@ -8,7 +8,7 @@ LIBS=-lSDL_image `sdl-config --libs` $(CLIBS)\
 TARGET2=dumb_client
 LIBS2=-leifinet
 SOURCEFILES=src/*.e ../shared/*.e src/screens/*.e src/widgets/*.e \
-            src/views/*.e src/C/*.c ../../ews/driver-sdl/*.e
+            src/views/*.e src/C/*.c
 
 all: $(TARGET) $(TARGET2)
 
