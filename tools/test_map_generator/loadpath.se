@@ -2,6 +2,7 @@
 ../../shared/
 ../../server/src
 ../../client/src/views
+../../client/src/widgets
 ../../client/src
 ${JEGL}
 ${SmartEiffelDirectory}/lib_utils

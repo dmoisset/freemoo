@@ -206,7 +206,7 @@ feature {NONE} -- Planet Generation
         index: INTEGER
         orion: PLANET
     do
-        index := closest_star_to_or_within (center, 80, starlist)
+        index := closest_star_to_or_within (center, 8, starlist)
         !!orion.make (starlist.item (index), plsize_huge, climate_gaia,
                       mnrl_ultrarich, grav_normalg, type_planet,
                       plspecial_nospecial)

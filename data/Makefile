@@ -139,7 +139,8 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/star-view/planet93.fma\
                 $(INSTALL_DIR)/client/star-view/planet94.fma\
                 $(INSTALL_DIR)/client/star-view/asteroids.fma\
-                $(INSTALL_DIR)/client/star-view/gas-giant.fma
+                $(INSTALL_DIR)/client/star-view/gas-giant.fma\
+                $(INSTALL_DIR)/client/star-view/bracket.fma
 
 
 all: $(SUBDIRS)
