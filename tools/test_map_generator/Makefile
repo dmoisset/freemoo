@@ -1,12 +1,17 @@
 TARGET=test_map_generator
 SOURCEFILES=*.e
-
 EIFFLAGS=-case_insensitive -high_memory_compiler
-LIBS=-L$(JEGL)/C -ljegl -lSDL_image `sdl-config --libs` -L/usr/X11R6/lib
+LIBS=-L$(JEGL)/C -ljegl -lSDL_image `sdl-config --libs`
+# Building commands: BUILD1; BUILD2 should build the system
+BUILD1=compile -O0
+BUILD2=true
+
+# Adapt to host environment. Resistance is futile
+-include Makefile.$(HOSTNAME)
 
 all: $(TARGET)
-	compile_to_c $(TARGET) $(EIFFLAGS)
-	tcc -o $(TARGET) $(TARGET)*.c $(LIBS)
+	$(BUILD1) -o $(TARGET) $(TARGET) $(EIFFLAGS) $(LIBS)
+	$(BUILD2) -o $(TARGET) $(TARGET).c $(LIBS)
 
 $(TARGET): $(SOURCEFILES)
 
