@@ -19,6 +19,7 @@ feature {NONE} -- Creation
     local
         a: FMA_FRAMESET
         i, j: INTEGER
+        r: RECTANGLE
     do
         -- To keep invariant while being added
         !!projs.make (0, 0)
@@ -31,6 +32,8 @@ feature {NONE} -- Creation
         !!a.make ("client/galaxy-view/background.fma")
         background ?= a.images @ 1
         !!pics.make (kind_min, kind_max, stsize_min, stsize_max + 3)
+        r.set_with_size (0, 0, width, height)
+        !!blackholes_window.make (Current, r)
         !!bh_windows.make (1, 0)
         !!bh_anims.make (stsize_min, stsize_max + 3)
         from j := stsize_min
@@ -147,7 +150,7 @@ feature -- Redefined features
                 current_projection.project(i.item)
                 if (current_projection.x >= 0) and (current_projection.y >= 0) then
                     a := clone (bh_anims @ (i.item.size + zoom))
-                    !WINDOW_ANIMATED!ww.make (Current,
+                    !WINDOW_ANIMATED!ww.make (blackholes_window,
                         (current_projection.x - a.width / 2).rounded,
                         (current_projection.y - a.height / 2).rounded,
                         a)
@@ -266,11 +269,14 @@ feature {NONE} -- Internal
     fleet_window: WINDOW
         -- Window used to display a fleet
 
-    bh_anims: ARRAY [ANIMATION_FMA_TRANSPARENT]
-        -- Animations for the blackholes
+    blackholes_window: WINDOW
+        -- Window for the blackholes
 
     bh_windows: ARRAY [WINDOW]
-        -- Windows for the blackholes
+        -- List of blackhole windows
+
+    bh_anims: ARRAY [ANIMATION_FMA_TRANSPARENT]
+        -- Animations for the blackholes
 
     pics: ARRAY2[IMAGE]
         -- Pictures for the stars

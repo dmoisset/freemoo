@@ -9,13 +9,16 @@ inherit
 creation make
 
 feature {NONE}  -- Creation
-    make (w: WINDOW; x, y: INTEGER; i1, i2, i3: IMAGE; p: PLANET) is
+
+    make (w: STAR_VIEW; x, y: INTEGER; i1, i2, i3: IMAGE; p: PLANET) is
     do
         planet := p
+        sv_parent := w
         butimage_make(w, x, y, i1, i2, i3)
     end
 
 feature {NONE} -- Implementation
+
     planet: PLANET
 
 feature -- Redefined Features
@@ -23,37 +26,26 @@ feature -- Redefined Features
     handle_event (event: EVENT) is
     local
         e: EVENT_MOUSE_NOTIFY
-        sview: STAR_VIEW
+        m: EVENT_MOUSE_MOVE
     do
         Precursor (event)
         if not event.handled then
             e ?= event
-            sview ?= parent
-            if e /= Void and then sview /= Void then
+            if e /= Void then
                 if e.is_enter then
-                    if planet.type = type_gasgiant then
-                        sview.set_planet_text ("Gas Giant (Uninhabitable)")
-                    else
-                        sview.set_planet_text (sview.model.name + " " +
-                                 roman @ planet.orbit + "%N" +
-                                 plsize_names @ planet.size + ", " +
-                                 climate_names @ planet.climate + "%N" +
-                                 mineral_names @ planet.mineral + "  " +
-                                 gravity_names @ planet.gravity)
-                    end
+                    sv_parent.enter_planet (planet)
                 else
-                    sview.set_planet_text ("")
+                    sv_parent.leave_planet (planet)
                 end
                 event.set_handled
             end
+            m ?= event
+            if m /= Void then m.set_handled end
         end
     end
 
 feature {NONE} -- Internal
 
-    roman: ARRAY[STRING] is
-    once
-        Result := << "I", "II", "III", "IV", "V" >>
-    end
+    sv_parent: STAR_VIEW
 
 end -- class BUTTON_PLANET

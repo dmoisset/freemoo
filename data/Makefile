@@ -71,6 +71,7 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/galaxy-view/star00.fma \
                 $(INSTALL_DIR)/client/galaxy-view/background.fma \
                 $(INSTALL_DIR)/client/star-view/background.fma \
+                $(INSTALL_DIR)/client/star-view/starmsgs.txt \
                 $(INSTALL_DIR)/client/star-view/close-button.fma \
                 $(INSTALL_DIR)/client/star-view/orbit1.fma\
                 $(INSTALL_DIR)/client/star-view/orbit2.fma\

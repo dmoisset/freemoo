@@ -66,7 +66,7 @@ feature {ANY}
 
         -- Setup Display
         !!d.make (640, 480, 16, False)
-        !!c.make (create {SDL_IMAGE}.make_from_file("../../data/client/gui/default_cursor.png"), 6, 4)
+        !!c.make (create {IMAGE_FMI}.make_from_file("client/gui/default_cursor.fmi"), 6, 4)
         d.root.set_pointer (c)
         !SDL_BITMAP_FONT!font.make("../../data/client/gui/default_font.png")
         d.set_default_font(font)
