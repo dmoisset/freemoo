@@ -36,8 +36,7 @@ feature -- Redefined features
             loop
                 s.serialize ("iii", <<id, (stars @ id).kind - (stars @ id).kind_min,
                                       (stars @ id).size - (stars @ id).stsize_min>>)
-                Result.append (s.serialized_form)
-                Result.append (stars.item(id).serial_form)
+                Result.append ((stars @ id).serial_form)
                 id := id + 1
             end
         elseif (service_id.count = 9) and then service_id.has_suffix(":scanner") and then service_id.item(1).is_digit then
@@ -49,8 +48,9 @@ feature -- Redefined features
             from
                 fleet := reading.get_new_iterator
             until fleet.is_off loop
-                s.serialize("iiii", <<fleet.item.owner, fleet.item.eta,
-                                 fleet.item.destination, fleet.item.ship_count>>)
+                s.serialize("iiii", <<fleet.item.owner.color_id, fleet.item.eta,
+                                    stars.fast_index_of(fleet.item.destination),
+                                    fleet.item.ship_count>>)
                 Result.append (s.serialized_form)
                 Result.append (fleet.item.serial_form)
                 from ship := fleet.item.get_new_iterator

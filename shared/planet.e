@@ -4,13 +4,29 @@ inherit
     ORBITING
     MAP_CONSTANTS
 
-creation make
+creation make, make_standard
 
 feature {NONE} -- Creation
 
-    make (star: STAR; newsize: INTEGER; newclimate: INTEGER;
-          newmnrl:INTEGER; newgrav: INTEGER; newtype: INTEGER;
-          newspecial: INTEGER) is
+    make_standard (star: STAR) is
+        -- New planet orbiting `s'
+    require
+        star /= Void
+    do
+        orbit_center := star
+        size := plsize_min
+        climate := climate_min
+        mineral := mnrl_min
+        gravity := grav_min
+        type := type_min
+        special := plspecial_nospecial
+        orbit := 1
+    ensure
+        orbit_center = star
+    end
+
+
+    make (star: STAR; newsize, newclimate, newmnrl, newgrav, newtype, newspecial: INTEGER) is
         -- New planet orbiting `s'
     require
         star /= Void
@@ -20,6 +36,7 @@ feature {NONE} -- Creation
         newgrav.in_range (grav_min, grav_max)
         newtype.in_range (type_min, type_max)
         newspecial.in_range (plspecial_min, plspecial_max)
+
     do
         orbit_center := star
         size := newsize
@@ -36,6 +53,62 @@ feature {NONE} -- Creation
         mineral = newmnrl
         gravity = newgrav
         type = newtype
+        special = newspecial
+    end
+
+feature -- Operations
+
+    set_size (newsize: INTEGER) is
+    require
+        newsize.in_range (plsize_min, plsize_max)
+    do
+        size := newsize
+    ensure
+        size = newsize
+    end
+
+    set_climate (newclimate: INTEGER) is
+    require
+        newclimate.in_range (climate_min, climate_max)
+    do
+        climate := newclimate
+    ensure
+        climate = newclimate
+    end
+
+    set_mineral (newmnrl:INTEGER) is
+    require
+        newmnrl.in_range (mnrl_min, mnrl_max)
+    do
+        mineral := newmnrl
+    ensure
+        mineral = newmnrl
+    end
+
+    set_gravity (newgrav: INTEGER) is
+    require
+        newgrav.in_range (grav_min, grav_max)
+    do
+        gravity := newgrav
+    ensure
+        gravity = newgrav
+    end
+
+    set_type (newtype: INTEGER) is
+    require
+        newtype.in_range (type_min, type_max)
+    do
+        type := newtype
+    ensure
+        type = newtype
+    end
+
+    set_special (newspecial: INTEGER) is
+    require
+        newspecial.in_range (plspecial_min, plspecial_max)
+    do
+        special := newspecial
+    ensure
         special = newspecial
     end
 

@@ -54,6 +54,8 @@ feature {MAP_GENERATOR} -- Redefined
 feature -- Access
 
     id: STRING
+        -- Name of the service we provide
+
 
 feature -- Operations
 

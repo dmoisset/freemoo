@@ -6,7 +6,7 @@ inherit
     MAP_CONSTANTS
 
 creation
-    make
+    make, make_defaults
 
 feature -- Access
 
@@ -32,7 +32,7 @@ feature -- Operations
 --        galaxy.add_ship (item)
     end
 
-feature {MAP_GENERATOR} -- Setup and Configuration, only for God's hands.
+feature -- Operations
     set_planet (newplanet: PLANET; orbit: INTEGER) is
     require
         newplanet /= Void
@@ -54,6 +54,15 @@ feature {MAP_GENERATOR} -- Setup and Configuration, only for God's hands.
         special = new_special
     end
 
+    set_size (new_size: INTEGER) is
+    require
+        new_size.in_range (stsize_min, stsize_max)
+    do
+        size := new_size
+    ensure
+        size = new_size
+    end
+
     set_name (new_name: STRING) is
     require
         new_name /= Void
@@ -64,6 +73,15 @@ feature {MAP_GENERATOR} -- Setup and Configuration, only for God's hands.
     end
 
 feature {NONE} -- Creation
+
+    make_defaults is
+    do
+        kind := kind_min
+        name := ""
+        size := stsize_min
+        !!planets.make (1, 5)
+        special := stspecial_nospecial
+    end
 
     make (p:POSITIONAL; n:STRING; k:INTEGER; s:INTEGER) is
     require
@@ -88,6 +106,7 @@ feature {NONE} -- Creation
 
 invariant
     valid_kind: kind.in_range (kind_min, kind_max)
+    valid_size: size.in_range (stsize_min, stsize_max)
     not_nnx: name /= Void
     planets /= Void
     planets.count = 5

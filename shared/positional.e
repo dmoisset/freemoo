@@ -21,11 +21,15 @@ feature -- Access
 
     unserialize_from (incoming: STRING) is
     local
+        rr: REAL_REF
         s: SERIALIZER
     do
         s.unserialize ("rr", incoming)
-        x := s.unserialized_form @ 1
-        y := s.unserialized_form @ 2
+        rr ?= s.unserialized_form @ 1
+        x := rr.item
+        rr ?= s.unserialized_form @ 2
+        y := rr.item
+        incoming.remove_first (s.used_serial_count)
     end
 
 feature -- Operations

@@ -1,6 +1,8 @@
 class MAP_CONSTANTS
     -- galactic enumerations and constants
 
+inherit GETTEXT
+
 feature -- Constants
 
     kind_blackhole, kind_bluewhite, kind_white, kind_yellow,
@@ -22,13 +24,13 @@ feature -- Constants
     kind_names: DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
-        Result.add ("Black Hole", kind_blackhole)
-        Result.add ("Blue-White", kind_bluewhite)
-        Result.add ("Orange", kind_orange)
-        Result.add ("Red", kind_red)
-        Result.add ("White", kind_white)
-        Result.add ("Brown", kind_brown)
-        Result.add ("Yellow", kind_yellow)
+        Result.add (l("Black Hole"), kind_blackhole)
+        Result.add (l("Blue-White"), kind_bluewhite)
+        Result.add (l("Orange"), kind_orange)
+        Result.add (l("Red"), kind_red)
+        Result.add (l("White"), kind_white)
+        Result.add (l("Brown"), kind_brown)
+        Result.add (l("Yellow"), kind_yellow)
     end
 
     stspecial_nospecial, stspecial_wormhole, stspecial_debris,
@@ -66,9 +68,9 @@ feature -- Constants
     stsize_names: DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
-        Result.add ("Big", stsize_big)
-        Result.add ("Medium", stsize_medium)
-        Result.add ("Small", stsize_small)
+        Result.add (l("Big"), stsize_big)
+        Result.add (l("Medium"), stsize_medium)
+        Result.add (l("Small"), stsize_small)
     end
 
     plsize_tiny, plsize_small, plsize_medium, plsize_large,
@@ -90,11 +92,11 @@ feature -- Constants
     plsize_names: DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
-        Result.add ("Tiny", plsize_tiny)
-        Result.add ("Small", plsize_small)
-        Result.add ("Medium", plsize_medium)
-        Result.add ("Large", plsize_large)
-        Result.add ("Huge", plsize_huge)
+        Result.add (l("Tiny"), plsize_tiny)
+        Result.add (l("Small"), plsize_small)
+        Result.add (l("Medium"), plsize_medium)
+        Result.add (l("Large"), plsize_large)
+        Result.add (l("Huge"), plsize_huge)
     end
 
     climate_toxic, climate_radiated, climate_barren, climate_desert,
@@ -117,16 +119,16 @@ feature -- Constants
     climate_names: DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
-        Result.add ("Toxic", climate_toxic)
-        Result.add ("Radiated", climate_radiated)
-        Result.add ("Barren", climate_barren)
-        Result.add ("Desert", climate_desert)
-        Result.add ("Tundra", climate_tundra)
-        Result.add ("Ocean", climate_ocean)
-        Result.add ("Swamp", climate_swamp)
-        Result.add ("Arid", climate_arid)
-        Result.add ("Terran", climate_terran)
-        Result.add ("Gaia", climate_gaia)
+        Result.add (l("Toxic"), climate_toxic)
+        Result.add (l("Radiated"), climate_radiated)
+        Result.add (l("Barren"), climate_barren)
+        Result.add (l("Desert"), climate_desert)
+        Result.add (l("Tundra"), climate_tundra)
+        Result.add (l("Ocean"), climate_ocean)
+        Result.add (l("Swamp"), climate_swamp)
+        Result.add (l("Arid"), climate_arid)
+        Result.add (l("Terran"), climate_terran)
+        Result.add (l("Gaia"), climate_gaia)
     end
 
     mnrl_ultrapoor, mnrl_poor, mnrl_abundant,
@@ -148,11 +150,11 @@ feature -- Constants
     mineral_names: DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
-        Result.add ("Ultra Poor", mnrl_ultrapoor)
-        Result.add ("Poor", mnrl_poor)
-        Result.add ("Abundant", mnrl_abundant)
-        Result.add ("Rich", mnrl_rich)
-        Result.add ("Ultra Rich", mnrl_ultrarich)
+        Result.add (l("Ultra Poor"), mnrl_ultrapoor)
+        Result.add (l("Poor"), mnrl_poor)
+        Result.add (l("Abundant"), mnrl_abundant)
+        Result.add (l("Rich"), mnrl_rich)
+        Result.add (l("Ultra Rich"), mnrl_ultrarich)
     end
 
 
@@ -174,9 +176,9 @@ feature -- Constants
     type_names: DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
-        Result.add ("Planet", type_planet)
-        Result.add ("Gas Giant", type_gasgiant)
-        Result.add ("Asteroid Field", type_asteroids)
+        Result.add (l("Planet"), type_planet)
+        Result.add (l("Gas Giant"), type_gasgiant)
+        Result.add (l("Asteroid Field"), type_asteroids)
     end
 
 
@@ -198,9 +200,9 @@ feature -- Constants
     gravity_names: DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
-        Result.add ("LG", grav_lowg)
-        Result.add ("", grav_normalg)
-        Result.add ("HG", grav_highg)
+        Result.add (l("LG"), grav_lowg)
+        Result.add (l(""), grav_normalg)
+        Result.add (l("HG"), grav_highg)
     end
 
 
@@ -220,4 +222,4 @@ feature -- Constants
         Result := plspecial_artifacts
     end
 
-end
+end -- class MAP_CONSTANTS
