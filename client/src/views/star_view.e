@@ -18,9 +18,13 @@ feature {NONE} -- Creation
     local
         a: FMA_FRAMESET
         r: RECTANGLE
+        d: DRAG_HANDLE
     do
         window_make(w, where)
         set_model(new_model)
+        -- Drag Handle
+        r.set_with_size(0, 0, 347, 45)
+        !!d.make(Current, r)
         -- Close Button
         !!a.make ("client/star-view/close-button.fma")
         !BUTTON_IMAGE!close_button.make (Current, 262, 235,

@@ -246,9 +246,23 @@ feature {NONE} -- Event handlers
             if (current_projection.x - x).abs < 4 + 2 * (zoom + i.item.size - i.item.stsize_min)
             and (current_projection.y - y).abs < 4 + 2 * (zoom + i.item.size - i.item.stsize_min)
             and i.item.kind /= i.item.kind_blackhole then
-                r.set_with_size (40, 40, 347, 273)
                 if star_window /= Void and then children.fast_has(star_window) then
+                    r := star_window.location
                     star_window.remove
+                else
+                    if x > width / 2 then
+                        if y > height / 2 then
+                            r.set_with_size (10, 10, 347, 273)
+                        else
+                            r.set_with_size (10, (height - 283).max(10), 347, 273)
+                        end
+                    else
+                        if y > height / 2 then
+                            r.set_with_size ((width - 357).max(10), 10, 347, 273)
+                        else
+                            r.set_with_size ((width - 357).max(10), (height - 283).max(10), 347, 273)
+                        end
+                    end
                 end
                 !STAR_VIEW!star_window.make (Current, r, i.item)
                 found := True
