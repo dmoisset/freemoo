@@ -96,6 +96,18 @@ feature -- Operations
         items.add (item, item.name)
     end
 
+    set_player_state (p: PLAYER; new_state: INTEGER) is
+        -- change `p' state to `new_state'
+    require
+        new_state.in_range (min_state, max_state)
+        p /= Void
+        has (p.name)
+    do
+        p.set_state (new_state)
+    ensure
+        p.state = new_state
+    end
+
 feature {NONE} -- Representation
 
     items: DICTIONARY [P, STRING]

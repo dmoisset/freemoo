@@ -3,7 +3,7 @@ class S_PLAYER_LIST
 inherit
     PLAYER_LIST [S_PLAYER]
     redefine
-        add
+        add, set_player_state
     end
     SERVICE
     redefine
@@ -34,6 +34,12 @@ feature -- Redefined features
     add (item: S_PLAYER) is
     do
         Precursor (item)
+        update_clients
+    end
+
+    set_player_state (p: PLAYER; new_state: INTEGER) is
+    do
+        Precursor (p, new_state)
         update_clients
     end
 

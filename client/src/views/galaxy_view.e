@@ -3,6 +3,7 @@ class GALAXY_VIEW
 
 inherit
     VIEW [C_GALAXY]
+    VEGTK_CALLBACK_HANDLER
 
 creation
     make

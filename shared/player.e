@@ -35,7 +35,7 @@ feature -- Access
     state: INTEGER
         -- State on the game
 
-feature -- Operations
+feature {PLAYER_LIST} -- Operations
 
     set_state (new_state: INTEGER) is
     require

@@ -31,10 +31,13 @@ feature -- Constants
     product_colony_ship: INTEGER is unique
         -- Possible production_items
 
-    product_min: INTEGER is product_none
+    product_min: INTEGER is
         -- Minimum valid for `producing'
-    product_max: INTEGER is product_colony_ship
+    do Result := product_none end
+
+    product_max: INTEGER is
         -- Minimum valid for `producing'
+    do Result := product_colony_ship end
 
 feature -- Operations
 

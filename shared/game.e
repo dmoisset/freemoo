@@ -37,8 +37,7 @@ feature -- Operations
         players.has (player.name)
         not status.finished
     do
-        player.set_state (st_ready)
-        players.update_clients
+        players.set_player_state (player, st_ready)
         if players.all_in_state (st_ready) and status.open_slots = 0 then
             -- Generate Galaxy
             map_generator.generate (galaxy, players)

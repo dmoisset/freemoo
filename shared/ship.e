@@ -91,8 +91,8 @@ feature {NONE} -- Internal
     eta: INTEGER
         -- Estimated time of arrival when traveling, 0 when not
 
-    speed (origin, destination: STAR): REAL is
-        -- Travel speed from `origin' to `destination'
+    speed (origin, dest: STAR): REAL is
+        -- Travel speed from `origin' to `dest'
     do
         Result := 1.0
     ensure
