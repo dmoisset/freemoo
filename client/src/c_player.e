@@ -3,6 +3,7 @@ class C_PLAYER
 inherit
     PLAYER
     rename make as player_make end
+    UNIQUE_ID
 
 creation
     make
@@ -11,6 +12,7 @@ feature {NONE} -- Creation
 
     make (new_name: STRING) is
     do
+        make_unique_id
         name := clone (new_name)
         player_make
     ensure
@@ -28,7 +30,7 @@ feature -- Operations
         br: reference BOOLEAN
     do
         s.unserialize ("isiib", serial)
-        -- Ignore ID
+        ir ?= s.unserialized_form @ 1; set_id (ir)
         name ?= s.unserialized_form @ 2
         ir ?= s.unserialized_form @ 3; set_state (ir)
         ir ?= s.unserialized_form @ 4; set_color (ir)

@@ -16,7 +16,7 @@ feature {NONE} -- Creation
     do
         make
         name := n
-        color_id := c
+        color := c
         make_unique_id
     end
 

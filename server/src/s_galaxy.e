@@ -20,7 +20,7 @@ feature -- Redefined features
     subscription_message (service_id: STRING):STRING is
         -- `service_id' can be "galaxy" for getting public information
         -- about whereabouts of stars, or "<n>:scanner", where <n> is
-        -- the `color_id' of a player, to get scaner information for
+        -- the `id' of a player, to get scaner information for
         -- that player.
     require
         service_id /= Void
@@ -129,7 +129,7 @@ feature -- Operations
                 end
                 fleet.next
             end
-            scanner_msgs.add(msg, (pl @ it.item).color_id)
+            scanner_msgs.add(msg, (pl @ it.item).color)
             it.next
         end
     end

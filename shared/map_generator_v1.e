@@ -249,7 +249,7 @@ feature {NONE} -- Planet Generation
                             type_planet, plspecial_nospecial)
             rand.next
             hmworld_system.set_planet (hmworld, rand.last_integer (5))
-            hmworld_system.set_name (hmworldnams.item (i.item.color_id))
+            hmworld_system.set_name (hmworldnams.item (i.item.color))
 -- should be create {COLONY}, but it doesn't work
             !!newcol.make (hmworld_system.planets.item(rand.last_integer (5)), i.item)
             done := done + 1

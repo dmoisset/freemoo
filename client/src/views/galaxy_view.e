@@ -363,7 +363,7 @@ feature {NONE} -- Internal
             until i > 5 loop
                 if star.planets.item(i) /= Void and then star.planets.item(i).colony /= Void then
                     partial_r.set_with_size(r.x + partial, r.y, fraction, r.height)
-                    cache.colorize (partial_r, pals@ (star.planets.item(i).colony.owner.color_id))
+                    cache.colorize (partial_r, pals@ (star.planets.item(i).colony.owner.color))
                     partial := partial + fraction
                 end
                 i := i + 1

@@ -17,8 +17,8 @@ feature -- Constants
         -- Maximum possible `state'
 
     min_color: INTEGER is 0
-        -- Minimum possible `color_id'
+        -- Minimum possible `color'
     max_color: INTEGER is 7
-        -- Maximum possible `color_id'
+        -- Maximum possible `color'
 
 end -- class PLAYER_CONSTANTS

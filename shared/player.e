@@ -19,8 +19,8 @@ feature -- Access
     name: STRING
         -- Player name
 
-    color_id: INTEGER
-        -- a unique color_id
+    color: INTEGER
+        -- a unique color
         
     colonies: DICTIONARY [COLONY, INTEGER]
         -- Colonies owned by this player
@@ -58,9 +58,9 @@ feature {PLAYER_LIST} -- Operations
     require
         new_color.in_range (min_color, max_color)
     do
-        color_id := new_color
+        color := new_color
     ensure
-        color_id = new_color
+        color = new_color
     end
     
 feature {COLONY} -- Operations
@@ -85,6 +85,6 @@ feature {COLONY} -- Operations
 
 invariant
     valid_state: state.in_range (min_state, max_state)
-    valid_color: color_id.in_range (min_color, max_color)
+    valid_color: color.in_range (min_color, max_color)
 
 end -- class PLAYER

@@ -37,10 +37,10 @@ feature -- Redefined features
         until
             i.is_off
         loop
-            cid := (model @ i.item).color_id - min_color
+            cid := (model @ i.item).color - min_color
             if (model @ i.item).state = st_waiting_turn_end then
                 r.set_with_size (dx, 0, 11, 14)
-                (window_light @ cid).move (r)
+                window_light.item(cid).move (r)
                 if not (window_light @ cid).visible then
                     (window_light @ cid).show
                 end
@@ -67,7 +67,7 @@ feature {NONE} -- Implementation
             i > Result.upper
         loop
             Result.put (create {WINDOW_ANIMATED}.make (Current, 0, 0, waiting_light @ i), i)
-            (Result @ i).hide
+            Result.item(i).hide
             i := i + 1
         end
     end

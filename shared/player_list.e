@@ -85,7 +85,7 @@ feature -- Operations
         -- List available colors
         i := items.get_new_iterator_on_items
         from i.start until i.is_off loop
-            available_colors.put_0 (i.item.color_id-min_color+1)
+            available_colors.put_0 (i.item.color-min_color+1)
             i.next
         end
         -- Get first free color

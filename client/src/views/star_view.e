@@ -132,7 +132,7 @@ feature -- Redefined features
             until i > 5 loop
                 if model.planets.item(i) /= Void and then model.planets.item(i).colony /= Void then
                     tuple := planet_pos(model.planets.item(i))
-                    show_image(colonies @ model.planets.item(i).colony.owner.color_id, tuple.first - 15, tuple.second - 15, r)
+                    show_image(colonies @ model.planets.item(i).colony.owner.color, tuple.first - 15, tuple.second - 15, r)
                 end
                 i := i + 1
             end
@@ -358,8 +358,8 @@ feature {NONE} -- Internal
 --        y := 24.5 * (.49 + p.orbit * 0.51))
         y := br * (bi + p.orbit)
         x := y * xm
-        y := cy - (Pi / 3 * p.orbit).sin * y
-        x := cx + (Pi / 3 * p.orbit).cos * x
+        y := cy - p.orbit.to_real.sin * y
+        x := cx + p.orbit.to_real.cos * x
         Result := [x.rounded, y.rounded]
     end
 

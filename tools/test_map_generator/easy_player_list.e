@@ -16,7 +16,6 @@ feature
     add (p:EASY_PLAYER) is
     do
         items.add (p, p.name)
-        items_by_id.add (p, p.id)
         idmap.put (p, p.id)
     end
 

@@ -43,7 +43,7 @@ feature -- Access
     local
         s: SERIALIZER
     do
-        s.serialize ("isiib", <<id, name, state, color_id, connection/=Void>>)
+        s.serialize ("isiib", <<id, name, state, color, connection/=Void>>)
         Result := s.serialized_form
     ensure
         -- name is the first item serialized
