@@ -1,0 +1,5 @@
+read from many paths
+use icons instead of edges for commonly linked classes
+DONE do not expand fringe classes (only expand those given as argument)
+DONE filter classes (remove or rename unwanted classes from current directory)
+DONE generate inheritance and associations separately 

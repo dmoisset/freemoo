@@ -1,0 +1,18 @@
+#!/bin/bash
+if [ $# -lt 1 ] 
+then
+    echo "usage: dograph [-i] [-a]"
+    echo "      -i: show inheritance"
+    echo "      -a: show associations"
+    echo "note: the classes shown will be those in the current directory"
+    echo "      all classes are expanded by default (you can change this"
+    echo "      in the script")
+    exit 1
+fi
+
+# the arguments given to graph & graph2 are the classes to be expanded
+# i.e. parsed for links with other classes
+./graph *.e
+./graph2 $1 *.g > result
+dot -Tps result > result.ps
+dot result > result.dotty
