@@ -1,0 +1,39 @@
+system
+    "server"
+
+root
+    SERVER
+
+default
+    assertion            (debug)
+    case_insensitive     (yes)
+    high_memory_compiler (yes)
+
+cluster
+
+    -- Base library
+    "${SmartEiffelDirectory}lib/kernel"
+    "${SmartEiffelDirectory}lib/base"
+    "${SmartEiffelDirectory}lib/io"
+    "${SmartEiffelDirectory}lib/iterator"
+    "${SmartEiffelDirectory}lib/sorting"
+    "${SmartEiffelDirectory}lib/random"
+    "${SmartEiffelDirectory}lib/time"
+
+    -- Main program
+    MAIN: "src"
+    -- FreeMOO classes
+    FREEMOO_SHARED: "../shared"
+
+    -- Networking and utilities libs
+    EIFINET: "${SmartEiffelDirectory}lib_eifinet/"
+    NETSERVICES: "${SmartEiffelDirectory}lib_netservices/"
+    UTILS: "${SmartEiffelDirectory}lib_utils/"
+
+external
+    external_lib:       "eifinet"
+
+generate
+    cc:                 "tcc"
+    c_compiler_options: "-Dummy_argument"
+end
