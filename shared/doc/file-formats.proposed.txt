@@ -138,7 +138,7 @@ ANIMATIONS (.FMA)
   represents the total number of images in the animation. The second one
   indicates the index of the frame where the animation loop starts
   (counting from 0). If this index is equal to the last frame of the
-  animation, then the animation is for all practical purposess a
+  animation, then the animation is for all practical purposes a
   sequential animation.
   
   Afther the loop start indicator, and only if the format indicates 8-bit
