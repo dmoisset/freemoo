@@ -32,7 +32,7 @@ IMAGE FILES
         ...
         2*n     pv16    16-bit color (5-6-5 R-G-B)
 
-    Note that palette must be only 255 colors long, describing colors
+    Note that palette must be at most 255 colors long, describing colors
     0x00 to 0xFE. The pixel value 0xFF is special and means
     "transparent". The extra byte is there just for alignment reasons.
     

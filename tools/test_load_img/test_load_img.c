@@ -3,6 +3,10 @@
 #include "../../client/src/C/img_loader.h"
 #include "../../client/src/C/misc.h"
 
+#define SCR_WIDTH 640
+#define SCR_HEIGHT 480
+
+
 int main(int argc, char* argv[])
 {
     FILE *fp;
@@ -16,7 +20,7 @@ int main(int argc, char* argv[])
 
     fp = fopen (argv[1], "r");
     SDL_Init(SDL_INIT_VIDEO);
-    screen = SDL_SetVideoMode (640, 480, 0, SDL_HWSURFACE);
+    screen = SDL_SetVideoMode (SCR_WIDTH, SCR_HEIGHT, 0, SDL_HWSURFACE);
 
 
 /* Read type and size */
@@ -46,6 +50,9 @@ int main(int argc, char* argv[])
         else
             load_img_rle16 (fp, surface, width, height);
 
+
+    /* Fill scren backgroiund with some solid color */
+    SDL_FillRect (screen, NULL, SDL_MapRGB (screen->format, 0,0,200) ) ;
 
     SDL_BlitSurface(surface, 0, screen, 0);
     SDL_Flip (screen);
