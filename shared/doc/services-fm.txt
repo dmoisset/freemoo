@@ -17,7 +17,7 @@ PLAYERS LIST
             until connection close
   Description: list of players logged in, and basic status info on each.
   Format: "i" <<count>>, followed by sequence of
-          "siib", <<name, state, color_id, connected>>
+          "isiib", <<id, name, state, color_id, connected>>
 
 CHAT MESSAGES
   Name: "chatroom"
