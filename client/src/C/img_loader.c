@@ -444,3 +444,13 @@ FMA_t *load_anim (FILE *f)
     return answer;
 
 }
+
+/* Frees x, y & items (_not_ *items) */
+void free_FMA (FMA_t *anim)
+{
+    free (anim->x);
+    free (anim->y);
+    free (anim->items);
+    free (anim);
+    return;
+}

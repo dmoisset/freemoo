@@ -6,7 +6,7 @@ inherit
         redefine subscription_message
 
 feature
-    subscription_message: STRING is
+    subscription_message(service_id:STRING): STRING is
     local
         s: SERIALIZER
         i: ITERATOR [PLANET]
