@@ -1,5 +1,5 @@
 TARGET=server
-SOURCEFILES=*.e ../shared/*.e
+SOURCEFILES=src/*.e ../shared/*.e
 
 EIFFLAGS=-case_insensitive -high_memory_compiler -cc tcc
 LIBS=-leifinet

@@ -1,5 +1,4 @@
-./
-../
+./src
 ../shared/
-../netservices/
-/home/dmoisset/prog/eiffel/utils/
+${SmartEiffel}/lib_netservices/
+${SmartEiffel}/lib_utils/
