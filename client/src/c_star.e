@@ -4,7 +4,7 @@ class C_STAR
 
 inherit
     STAR
-        redefine make, make_defaults, fleets end
+        redefine make, make_defaults, fleets, fleet_type end
     MODEL
     SUBSCRIBER
 
@@ -80,4 +80,7 @@ feature -- Accounting
     has_info: BOOLEAN
         -- Player has planet info
 
+feature {NONE} -- Internal
+
+    fleet_type: C_FLEET
 end -- class C_STAR

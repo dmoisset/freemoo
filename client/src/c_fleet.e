@@ -44,7 +44,7 @@ feature {NONE} -- Creation
         s.get_integer
         if is_in_orbit then
 			if destination = Void then
-				orbit_center.fleets.remove(id)
+				orbit_center.remove_fleet (Current)
                 server.galaxy.star_with_id (orbit_center.id).notify_views
 			end
 			leave_orbit

@@ -95,7 +95,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         from star_it := stars.get_new_iterator_on_items
         until star_it.is_off
         loop
-            star_it.item.fleets.clear
+            star_it.item.clear_fleets
             star_it.next
         end
         s.get_integer
@@ -106,9 +106,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 		loop
 			if fleet_it.item.owner = server.player then
 				new_fleets.add(fleet_it.item, fleet_it.item.id)
--- FIXME: more abstraction breach
 				if fleet_it.item.orbit_center /= Void and then fleet_it.item.destination = Void then
-					fleet_it.item.orbit_center.fleets.add (fleet_it.item, fleet_it.item.id)
+					fleet_it.item.orbit_center.add_fleet (fleet_it.item)
 				end
 			end
 			fleet_it.next

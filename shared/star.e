@@ -72,6 +72,11 @@ feature -- Operations on fleets
         fleets.item_map_in (buffer)
     end
 
+    clear_fleets is
+    do
+        fleets.clear
+    end
+    
 feature -- Operations on star system
 
     set_planet (newplanet: PLANET; orbit: INTEGER) is
