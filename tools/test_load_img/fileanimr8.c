@@ -26,7 +26,7 @@ int main()
 
 /* Four color palette */
     fputc (0, fp);
-    fputc (4, fp);
+    fputc (3, fp);
 /* Red */
     fputc (0, fp);
     fputc (0xf8, fp);

@@ -33,4 +33,4 @@ distclean: clean
 
 .PHONY: clean distclean
 
--include: .depend
+-include .depend

@@ -248,8 +248,8 @@ int main()
 
 /* Fifth Image */
 /* Delta x = 320, Delta y = 120 (Intel Endian)*/
-    fputc (0x00, fp);
-    fputc (0x02, fp);
+    fputc (0x40, fp);
+    fputc (0x01, fp);
     fputc (0x78, fp);
     fputc (0x00, fp);
 
