@@ -2,7 +2,7 @@ class PARAMETRIZED_PROJECTION
     -- Projection with scaling, rotation and translation capabilities
 
 inherit PROJECTION
-        redefine project
+        redefine project, copy, is_equal end
 
 creation make, make_identity, make_simple
 
@@ -73,7 +73,19 @@ feature -- Operations
         matrix := tmpm
     end
 
+feature -- Redefined features
 
+    copy (other: like Current) is
+    do
+        dx := other.dx
+        dy := other.dy
+        matrix := clone (other.matrix)
+    end
+
+    is_equal(other: like Current): BOOLEAN is
+    do
+        Result := dx=other.dx and dy=other.dy and matrix.is_equal (other.matrix)
+    end
 feature {NONE} -- creation
 
     make_identity is
