@@ -220,21 +220,29 @@ feature {NONE} -- Redrawing
             end
         end
     end
-
+	
     draw_fleet (f: FLEET) is
     local
         img: IMAGE -- fleet image
-        px, py: REAL -- projected fleet
+        px, py: INTEGER -- projected fleet
         r: RECTANGLE
     do
         current_projection.project(f)
-        px := current_projection.x
-        py := current_projection.y
         img := fleet_pics.item(f.owner.color, zoom)
-        r.set_with_size ((px - img.width / 2 - 10).rounded,
-                    (py - img.height / 2 - 10).rounded, img.width, img.height)
+		px := (current_projection.x - img.width / 2).rounded
+		py := (current_projection.y - img.height / 2).rounded
+        if f.orbit_center /= Void then
+			if f.destination = Void then
+				px := px + 10
+				py := py - 10
+			else
+				px := px - 10
+				py := py - 10
+			end
+		end
+        r.set_with_size (px, py, img.width, img.height)
         fleet_hotspots.add (r, f.id)
-        img.blit(cache, r.x, r.y)
+        img.blit(cache, px, py)
     end
 
     draw_blackhole (s: STAR) is
@@ -289,7 +297,7 @@ feature {NONE} -- Event handlers
         i: ITERATOR[RECTANGLE]
         r: RECTANGLE
     do
-		i := xy_search(star_hotspots, x, y)
+		i := star_hotspots.item_at_xy(x, y)
 		if not i.is_off then
 			if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
 				fleet_window.send_selection_to(model.stars @ (star_hotspots.fast_key_at(i.item)))
@@ -309,7 +317,7 @@ feature {NONE} -- Event handlers
 				star_window.set_fleet_click_handler(agent create_fleet_view)
 			end
 		else
-			i := xy_search(fleet_hotspots, x, y)
+			i := fleet_hotspots.item_at_xy(x, y)
 			if not i.is_off then
 				create_fleet_view(model.fleets @ (fleet_hotspots.fast_key_at(i.item)))
 			end
@@ -340,7 +348,7 @@ feature {NONE} -- Event handlers
 		x1, y1, x2, y2, x3, y3: INTEGER
 		traj: SDL_LINE_IMAGE
 	do
-		i := xy_search(star_hotspots, x, y)
+		i := star_hotspots.item_at_xy(x, y)
 		if not i.is_off then
 			if trajectory_window /= Void then
 				trajectory_window.remove
@@ -377,22 +385,6 @@ feature {NONE} -- Event handlers
 	
 feature {NONE} -- Internal functions
 
-	xy_search(d: DICTIONARY[RECTANGLE, INTEGER]; x, y: INTEGER): ITERATOR[RECTANGLE] is
-		-- This function can be optimized with a new class with fast 
-		-- two-dimension search.  `fleet_hotspots' and 
-		-- `star_hotspots' and several other hotspot lists would be 
-		-- of this class.
-	do
-		from
-			Result := d.get_new_iterator_on_items
-		until
-			Result.is_off or else Result.item.has(x, y)
-		loop
-			Result.next
-		end
-	end
-	
-	
 	
     leave_visible(r: RECTANGLE): RECTANGLE is
         -- Return a rectangle with the same width and height of `r',
@@ -477,10 +469,10 @@ feature {NONE} -- Internal functions
 
 feature {NONE} -- Internal data
 
-    star_hotspots: DICTIONARY[RECTANGLE, INTEGER]
+    star_hotspots: HOTSPOT_LIST
         -- Stars' hotspots, generated in redraw
 
-    fleet_hotspots: DICTIONARY[RECTANGLE, INTEGER]
+    fleet_hotspots: HOTSPOT_LIST
         -- Fleets' hotspots, generated in redraw
 
     projs: ARRAY [PARAMETRIZED_PROJECTION]
