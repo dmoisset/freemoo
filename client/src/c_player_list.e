@@ -43,8 +43,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             s.get_integer; pid := s.last_integer
             s.get_string; name := s.last_string
             if has (name) then
-                p ?= Current @ name
-                    check p /= Void and then p.id = pid end
+                p := Current @ name
+                    check p.id = pid end
             else
                 !!p.make (name)
                 p.set_id(pid)
