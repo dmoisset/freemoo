@@ -113,12 +113,9 @@ feature -- Redefined features
 feature {MAP_GENERATOR} -- Generation
 
     set_stars (starlist: DICTIONARY[S_STAR, INTEGER]) is
-    require starlist /= Void
     do
         stars := starlist
         update_clients
-    ensure
-        stars = starlist
     end
 
 feature -- Redefined factory method

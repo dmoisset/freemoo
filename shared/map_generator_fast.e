@@ -55,8 +55,6 @@ feature {NONE} -- Position Generation
 
         -- Top up (carefully) and serve cold
         fill_carefully(Result)
-    ensure
-        Result.count = starcount
     end
 
 end -- MAP_GENERATOR_FAST

@@ -2,8 +2,7 @@ deferred class MAP_GENERATOR_V1
 
 inherit
     MAP_GENERATOR
-        redefine
-            make;
+    redefine make end
     MAP_CONSTANTS
     MAP_PROBABILITIES
     PKG_USER
@@ -11,9 +10,6 @@ inherit
 feature{NONE} -- Creation
 
     make (options: SERVER_OPTIONS) is
-    require
-        options /= Void
-    local
     do
         size := options.enum_options_names @ "galaxysize"
         galage := options.enum_options_names @ "galaxyage"
@@ -307,9 +303,8 @@ feature{NONE} -- Internal
     end
 
 feature -- Operation
+
     generate (galaxy: GALAXY; players: PLAYER_LIST [PLAYER]) is
-    require
-        fresh_galaxy: galaxy.stars.count = 0
     local
         starposs: ARRAY[COORDS]
         starnams: ARRAY[STRING]
@@ -358,7 +353,7 @@ feature {NONE} -- Implementation
         today.update
         valid := epoch.set (1970, 1, 1, 0, 0, 0)
             check valid end -- Because 1/1/1970 IS a valid date
-        !!Result.with_seed (epoch.elapsed_seconds (today))
+        !!Result.with_seed (epoch.elapsed_seconds (today).rounded)
     end
 
     size: STRING

@@ -7,7 +7,7 @@ inherit
             set_planet, set_special, set_name, make, make_defaults
         end
     SERVICE
-        redefine subscription_message
+        redefine subscription_message end
 
 creation make, make_defaults
 

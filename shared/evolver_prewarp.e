@@ -9,8 +9,6 @@ creation
 feature {NONE} -- Creation
 
     make (options: SERVER_OPTIONS) is
-    require
-        options /= Void
     do
     end
 
@@ -18,11 +16,9 @@ feature -- Operations
 
     evolve (players: PLAYER_LIST [PLAYER]) is
         -- Configure `players' to initial state.
-    require
-        players /= Void
     local
         i: ITERATOR[PLAYER]
-	p: PLAYER
+        p: PLAYER
     do
         from
             i := players.get_new_iterator

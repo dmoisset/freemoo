@@ -34,7 +34,7 @@ feature {NONE}
         today.update
         valid := epoch.set (1970, 1, 1, 0, 0, 0)
             check valid end -- Because 1/1/1970 IS a valid date
-        !!Result.with_seed (epoch.elapsed_seconds (today))
+        !!Result.with_seed (epoch.elapsed_seconds (today).rounded)
     end
 
 end -- deferred class PROBABILITY_TABLE

@@ -12,8 +12,6 @@ feature {NONE} -- Position Generation
     do
         !!Result.make (1, 0)
         fill_carefully (Result)
-    ensure
-        Result.count = starcount
     end
 
 end -- class MAP_GENERATOR_SLOW

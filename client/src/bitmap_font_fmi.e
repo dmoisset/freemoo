@@ -10,8 +10,6 @@ creation
 feature {NONE} -- Creation
 
     make (filename: STRING) is
-    require
-        filename_not_void: filename /= Void
     local
         p: PKG_USER
     do

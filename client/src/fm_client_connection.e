@@ -18,8 +18,6 @@ feature -- Creation
 
     make (registry_host: STRING; registry_port: INTEGER) is
         -- New connection to server at `registry_host':`registry_port'
-    require
-        registry_host /= Void
     do
         Precursor (registry_host, registry_port)
         if game_status = Void then !!game_status.make end

@@ -168,8 +168,6 @@ feature -- Redefined features
     fleets: DICTIONARY [C_FLEET, INTEGER]
 
     set_stars (starlist: DICTIONARY [C_STAR, INTEGER]) is
-    require
-        starlist /= Void
     do
         stars := starlist
         changed_starlist := True

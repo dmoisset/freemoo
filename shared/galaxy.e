@@ -145,6 +145,7 @@ feature -- Factory methods
     end
 
 feature {MAP_GENERATOR} -- Generation
+
     set_stars (starlist: DICTIONARY[STAR, INTEGER]) is
     require
         starlist /= Void
