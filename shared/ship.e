@@ -7,6 +7,15 @@ inherit
 
 feature -- Access
 
+    creator: PLAYER
+        -- Player that built Current
+
+    owner: PLAYER is
+        -- Player to whom Current responds
+    do
+        Result := creator
+    end
+
     orbiting: STAR
         -- Star being orbited, Void iff none
 
