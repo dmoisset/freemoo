@@ -24,12 +24,8 @@ feature {ANY}
         i: INTEGER
     do
         dsp_make
-
-        !!d.make (640, 480, 16, False)
         pkg_system.make_with_config_file ("freemoo.conf")
-        -- Set Pointer
-        !!c.make (create {SDL_IMAGE}.make_from_file("../../data/client/gui/default_cursor.png"), 6, 4)
-        d.root.set_pointer (c)
+
         !!options.make
         options.parse_add ("galaxysize = huge")
         options.parse_add ("galaxyage = average")
@@ -59,18 +55,24 @@ feature {ANY}
         plist.add (player)
         !!player.with_name ("Totote", 7)
         plist.add (player)
-        !!cgalaxy.make
+
         !!sgalaxy.make
+        mapgen.generate (sgalaxy, plist)
+
+        !!d.make (640, 480, 16, False)
+        -- Set Pointer
+        !!c.make (create {SDL_IMAGE}.make_from_file("../../data/client/gui/default_cursor.png"), 6, 4)
+        d.root.set_pointer (c)
+        !!cgalaxy.make
 
         register(sgalaxy, "galaxy")
         subscribe(cgalaxy, "galaxy")
 
-        mapgen.generate (sgalaxy, plist)
         !!view.make(d.root, d.root.location, cgalaxy)
         sgalaxy.update_clients
 
         -- Main loop
-        d.set_timer_interval (100)
+        d.set_timer_interval (40)
         d.do_event_loop
         d.close
     end -- make

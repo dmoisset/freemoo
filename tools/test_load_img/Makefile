@@ -10,7 +10,7 @@ PROG1 = test_load_img
 
 PROG2 = test_load_anim
 
-CFLAGS = -Wall -g -O2 `sdl-config --cflags`
+CFLAGS = -ansi -pedantic -Wall -g -O2 `sdl-config --cflags`
 LDFLAGS = `sdl-config --libs`
 
 all: .depend $(PROG1) $(PROG2)

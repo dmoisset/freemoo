@@ -30,9 +30,9 @@ feature {NONE} -- Creation template
                 init_representation (count)
                 from i := 0 until i = count loop
                     !!s.make_from_surface (imgs.item (i))
-                    add_frame (i, s, lx.item (i), ly.item (i))
                     width := width.max (s.width+lx.item (i))
                     height := height.max (s.height+ly.item (i))
+                    add_frame (i, s, lx.item (i), ly.item (i))
                     i := i + 1
                 end
                 loop_frame := FMA_loopstart (fma)
@@ -64,6 +64,9 @@ feature {NONE} -- Creation template
 
     add_frame (index: INTEGER; s: SDL_SURFACE; ox, oy: INTEGER) is
         -- Add `s' as frame at `index' with offset vector (`ox',`oy')
+    require
+        s /= Void
+        width >= ox+s.width and height >= oy+s.height
     deferred
     end
 

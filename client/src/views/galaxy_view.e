@@ -21,7 +21,6 @@ feature {NONE} -- Creation
     do
         set_model (new_model)
         window_make(w, where)
-        my_window := w
         !ANIMATION_FMA!a.make ("client/galaxy-view/background.fma")
         background := a.item
         !!pics.make(kind_min, kind_max, stsize_min, stsize_max)
@@ -47,10 +46,6 @@ feature -- Access, some will be moved to internal.
 
     p: PARAMETRIZED_PROJECTION
 
-    my_window: WINDOW
-        -- Parent window, where we're shown
-
-
     is_inside: BOOLEAN
         --True while mouse cursor is inside `my_window'
 
@@ -71,19 +66,12 @@ feature -- Redefined features
         i: ITERATOR[C_STAR]
         ic: ITERATOR[WINDOW]
         ww: WINDOW
-        r: RECTANGLE
     do
-        r.set_with_size(0, 0, my_window.width, my_window.height)
-        show_image(background, 0, 0, r)
-        from ic := children.get_new_iterator
-        until ic.is_off
-        loop
+        from ic := children.get_new_iterator until ic.is_off loop
             remove_child(ic.item)
         end
-        check children.is_empty end
-        from i := model.stars.get_new_iterator
-        until i.is_off
-        loop
+            check children.is_empty end
+        from i := model.stars.get_new_iterator until i.is_off loop
             if i.item.kind = i.item.kind_blackhole then -- zoom not implemented yet
                 p.project(i.item)
                 if (p.x >= 0) and (p.y >= 0) then
@@ -93,8 +81,7 @@ feature -- Redefined features
             end
             i.next
         end
-        r.set_with_size(0, 0, my_window.width, my_window.height)
-        request_redraw(r)
+        request_redraw_all
     end
 
 
@@ -102,6 +89,9 @@ feature -- Redefined features
     local
         i: ITERATOR[C_STAR]
     do
+        show_image (create {SDL_SOLID_IMAGE}.make (r.width, r.height, 0, 0, 0),
+                    r.x, r.y, r)
+        show_image(background, 0, 0, r)
         Precursor (r)
         from i := model.stars.get_new_iterator
         until i.is_off loop
