@@ -32,6 +32,13 @@ feature {NONE} -- Widgets
     do
         !!v.make (Current, where, server.game_status)
     end
+    
+    new_player_status (where: RECTANGLE) is
+    local
+        p: PLAYER_STATUS_VIEW
+    do
+        !!p.make (Current, where, server.player_list)
+    end
 
 feature {NONE} -- Callbacks
 
