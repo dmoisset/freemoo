@@ -142,7 +142,6 @@ feature -- Redefined features
                 star_it.next
             end
             fleet_hotspots.clear
-            print("Here! " + model.fleets.count.to_string + "%N")
             from fleet_it := model.fleets.get_new_iterator_on_items
             until fleet_it.is_off loop
                 draw_fleet (fleet_it.item)

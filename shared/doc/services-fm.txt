@@ -38,7 +38,10 @@ FLEET
   Name: "fleet"+id (id is a digit sequence = fleet_id) 
   Provided: Before reporting fleet on scanner.
   Description: Full fleet description
-  Format: ""
+  Format: "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
+            "ii" <<size, picture>> (for each ship of the fleet)
+  when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
+  the fleet is travelling to `destination'
 
 PLAYER
   Name: "player"+id (id is a digit sequence = player_id) 
@@ -50,9 +53,10 @@ PLAYER
 SCANNER
   Name: n+":scanner" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
-  Descriptions: List of detected fleets for player n.
+  Descriptions: List of detected fleets for player n, not including fleets
+                owned by n.
   Format: "i" <<count>>, followed by a sequence of
-          "oioirr" <<owner, eta, destination, ships.count, x, y>>, and
+          "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
             "ii" <<size, picture>> (for each ship of the fleet)
   when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
   the fleet is travelling to `destination'
@@ -65,6 +69,13 @@ TURN SUMMARY
           "i" <<kind>>, followed by a kind-dependent format per event:
           event_explored: "i" <<id>>, id of explored star.
           event_finished_production: "iis" <<id, kind, name>>, id of colony; product kind; name when it is a ship.
+
+OWN FLEETS
+  Name: n":own_fleets"
+  Provided: Before game_status.started is set
+  Description: List of id's of new fleets to add.
+  Format: "i" <<count>>, followed by a sequence of
+          "i" <<id>>, id of fleet
 
 CHAT MESSAGES
   Name: "chatroom"
