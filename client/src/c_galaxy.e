@@ -46,10 +46,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 
     unpack_galaxy_message (msg: STRING) is
     local
-        new_stars: DICTIONARY[C_STAR, INTEGER]
+        new_stars: like stars
         id, count: INTEGER
         s: UNSERIALIZER
-        star: C_STAR
+        star: like last_star
     do
         !!s.start (msg)
         limit.unserialize_from (s)
@@ -89,7 +89,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         ship: SHIP
         it: ITERATOR[PLAYER]
         star_it: ITERATOR[STAR]
-		fleet_it: ITERATOR[C_FLEET]
+        fleet_it: ITERATOR[C_FLEET]
     do
         !!s.start (msg)
         from star_it := stars.get_new_iterator_on_items
