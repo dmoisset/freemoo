@@ -39,7 +39,7 @@ static void *put_net_event (void *arg) {
         if (result<=0)
             pthread_exit (NULL);
         else { /* Put event */
-            while (0 >= SDL_PushEvent (&event))
+            while (SDL_PushEvent (&event) < 0)
                 SDL_Delay (10) ;
         }
         pthread_testcancel() ;
