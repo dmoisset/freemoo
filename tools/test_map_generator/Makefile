@@ -5,7 +5,8 @@ SOURCEFILES=*.e ../../shared/*.e
 SOURCEFILES2=*.e ../../shared/*.e ../../client/src/views/*.e ../../client/src/widgets/*.e
 EIFFLAGS=-case_insensitive -high_memory_compiler
 LIBS=-L$(JEGL)/C -ljegl -lSDL_image `sdl-config --libs` -I../../client \
-     $(SmartEiffelDirectory)/lib_ews/driver-sdl/C/driver-sdl.o ../../client/src/C/img_loader.o
+     $(SmartEiffelDirectory)/lib_ews/driver-sdl/C/driver-sdl.o \
+     $(SmartEiffelDirectory)/lib_ews/driver-sdl/C/colorize.o ../../client/src/C/img_loader.o 
 
 all: $(TARGET) $(TARGET2)
 

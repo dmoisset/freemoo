@@ -21,10 +21,11 @@ feature {ANY}
         plist: EASY_PLAYER_LIST
         view: GALAXY_VIEW
         c: MOUSE_POINTER
-        i: INTEGER
+        i, j: INTEGER
         it: ITERATOR[S_STAR]
         cstar: C_STAR
         font: FONT
+        colony: COLONY
     do
         -- Setup Service Registry
         dsp_make
@@ -90,6 +91,15 @@ feature {ANY}
                 cstar ?= cgalaxy.idmap @ it.item.id
                 subscribe (cstar, "star" + it.item.id.to_string)
                 it.item.update_clients
+                from j := 1 until j > 5 loop
+                    if cstar.planets.item(j) /= Void and then
+                       cstar.planets.item(j).type = type_planet and then
+                       plist.has_by_id((j + it.item.id) \\ 8) then
+                        !!colony.make(cstar.planets.item(j), plist # ((j + it.item.id) \\ 8))
+                        cstar.planets.item(j).set_colony(colony)
+                    end
+                    j := j + 1
+                end
             end
             it.next
             i := i + 1

@@ -36,6 +36,8 @@ feature {NONE} -- Creation
         !!blackholes_window.make (Current, r)
         !!bh_windows.make (1, 0)
         !!bh_anims.make (stsize_min, stsize_max + 3)
+        font := create {BITMAP_FONT_FMI}.make ("client/galaxy-view/font2.fmi")
+
         from j := stsize_min
         until j > stsize_max + 3 loop
             from i := kind_min
@@ -118,6 +120,7 @@ feature -- Redefined features
         img: SDL_IMAGE -- star image
         lwidth: INTEGER -- star label width
         lx, ly: INTEGER -- star label position
+        r: RECTANGLE
     do
         -- Remove old blackholes
         from ic := bh_windows.get_new_iterator until ic.is_off loop
@@ -139,12 +142,15 @@ feature -- Redefined features
                 img.image_data.blit_fast (cache.image_data,
                                           (px - img.width / 2).rounded,
                                           (py - img.height / 2).rounded)
-                lwidth := display.default_font.width_of (i.item.name)
-                lx := (px - lwidth / 2).rounded
-                ly := label_offset+(py - display.default_font.height / 2).rounded
-                if i.item.has_info and lx < width and ly < height then
--- Should have a font here
-                    display.default_font.show_at (cache, lx, ly, i.item.name)
+                if i.item.has_info then
+                    lwidth := font.width_of (i.item.name)
+                    lx := (px - lwidth / 2).rounded
+                    ly := label_offset+(py - font.height / 2).rounded
+                    if lx < width and ly < height then
+                        font.show_at(cache, lx, ly, i.item.name)
+                        r.set_with_size(lx - 1, ly, lwidth, font.height)
+                        paint(r, i.item)
+                    end
                 end
             else -- Blackhole animation here
                 current_projection.project(i.item)
@@ -280,6 +286,52 @@ feature {NONE} -- Internal
 
     pics: ARRAY2[IMAGE]
         -- Pictures for the stars
+
+    font: SDL_BITMAP_FONT
+
+    pals: ARRAY[ARRAY[INTEGER]] is
+    do
+        !!Result.make(0, 8)
+        Result.put(<<63488, 63488, 63488, 63488, 63488, 63488, 63488>>, 0)
+        Result.put(<<50624, 50624, 50624, 50624, 50624, 50624, 50624>>, 1)
+        Result.put(<<2881, 2881, 2881, 2881, 59196, 2881, 2881>>, 2)
+        Result.put(<<59196, 59196, 59196, 59196, 59196, 59196, 59196>>, 3)
+        Result.put(<<20827, 20827, 20827, 20827, 59196, 20827, 20827>>, 4)
+        Result.put(<<43946, 43946, 43946, 43946, 43946, 43946, 43946>>, 5)
+        Result.put(<<35503, 35503, 35503, 35503, 35503, 35503, 35503>>, 6)
+        Result.put(<<64576, 64576, 64576, 64576, 64576, 64576, 64576>>, 7)
+        Result.put(<<33808, 33808, 33808, 33808, 33808, 33808, 33808>>, 8)
+    end
+
+    paint(r: RECTANGLE; star: C_STAR) is
+        -- Colorizes `cache' within `r' according to colonies on `star'
+    local
+        i, total, partial, fraction: INTEGER
+        partial_r: RECTANGLE
+    do
+        -- Count howmany Colonies there are
+        from i := 1
+        until i > 5 loop
+            if star.planets.item(i) /= Void and then star.planets.item(i).colony /= Void then
+                total := total + 1
+            end
+            i := i + 1
+        end
+        if total = 0 then
+            cache.colorize (r, pals @ 8)
+        else
+            fraction := (r.width / total).ceiling
+            from i := 1
+            until i > 5 loop
+                if star.planets.item(i) /= Void and then star.planets.item(i).colony /= Void then
+                    partial_r.set_with_size(r.x + partial, r.y, fraction, r.height)
+                    cache.colorize (partial_r, pals@ (star.planets.item(i).colony.owner.color_id))
+                    partial := partial + fraction
+                end
+                i := i + 1
+            end
+        end
+    end
 
 feature {NONE} -- Internal configuration and constants
 

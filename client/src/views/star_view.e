@@ -111,6 +111,7 @@ feature -- Redefined features
 
     redraw(r: RECTANGLE) is
     local
+        tuple: TUPLE[INTEGER, INTEGER]
         i: INTEGER
     do
         show_image(background, 0, 0, r)
@@ -124,6 +125,14 @@ feature -- Redefined features
                     else
                         show_image(orbits.item(i), 29, 59, r)
                     end
+                end
+                i := i + 1
+            end
+            from i := 1
+            until i > 5 loop
+                if model.planets.item(i) /= Void and then model.planets.item(i).colony /= Void then
+                    tuple := planet_pos(model.planets.item(i))
+                    show_image(colonies @ model.planets.item(i).colony.owner.color_id, tuple.first - 15, tuple.second - 15, r)
                 end
                 i := i + 1
             end
@@ -237,6 +246,20 @@ feature -- Once data
         from i := 1
         until i > 6 loop
             !!a.make("client/star-view/sun" + i.to_string + ".fma")
+            Result.put(a.images @ 1, i)
+            i := i + 1
+        end
+    end
+
+    colonies: ARRAY[IMAGE] is
+    local
+        i: INTEGER
+        a: FMA_FRAMESET
+    once
+        !!Result.make(0, 7)
+        from i := 0
+        until i > 7 loop
+            !!a.make("client/star-view/colony" + i.to_string + ".fma")
             Result.put(a.images @ 1, i)
             i := i + 1
         end
