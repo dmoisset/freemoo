@@ -18,14 +18,14 @@ feature -- Access
     limit: COORDS
         -- Outermost corner of galaxy, opposite to (0, 0)
 
-    scanner (player: PLAYER):ARRAY[FLEET] is
+    scanner (player: PLAYER): ARRAY [like last_fleet] is
         -- All fleets detected by `player' (not including their own)
     local
         alienship: ITERATOR[SHIP]
-        alienfleet, ownfleet: ITERATOR[FLEET]
+        alienfleet, ownfleet: ITERATOR [like last_fleet]
         owncolony: ITERATOR[COLONY]
         ships_detected, detected: BOOLEAN
-        fleet: FLEET
+        fleet: like last_fleet
     do
 --		print("Scanner for player " + player.id.to_string)
 		!!Result.with_capacity(0,1)
@@ -74,7 +74,7 @@ feature -- Access
 --		print(" picks up " + Result.count.to_string + " alien fleets%N")
     end
 
-    scans: DICTIONARY [ARRAY [FLEET], INTEGER]
+    scans: DICTIONARY [ARRAY [like last_fleet], INTEGER]
         -- Fleets scanned by each player
 
 feature -- Access -- star list
@@ -154,7 +154,7 @@ feature -- Access -- star list
 
 feature -- Access -- fleet list
 
-    get_new_iterator_on_fleets: ITERATOR [FLEET] is
+    get_new_iterator_on_fleets: ITERATOR [like last_fleet] is
     do
         Result := fleets.get_new_iterator_on_items
     end
@@ -165,13 +165,15 @@ feature -- Access -- fleet list
         Result := fleets.has (fid)
     end
 
-    fleet_with_id (fid: INTEGER): FLEET is
+    fleet_with_id (fid: INTEGER): like last_fleet is
         -- Fleet with id `fid'
     require
         has_fleet (fid)
     do
         Result := fleets @ fid
     end
+
+    last_fleet: FLEET
 
 feature -- Operations
 
@@ -192,7 +194,7 @@ feature -- Operations
         end
     end
 
-    add_fleet (new_fleet: FLEET) is
+    add_fleet (new_fleet: like last_fleet) is
     require
         new_fleet /= Void
         not has_fleet (new_fleet.id)
@@ -203,7 +205,7 @@ feature -- Operations
         fleets.has(new_fleet.id)
     end
 
-    remove_fleet (f: FLEET) is
+    remove_fleet (f: like last_fleet) is
     require
         f /= Void
     do
@@ -211,7 +213,7 @@ feature -- Operations
         fleets.remove (f.id)
     end
 
-    fleet_orders (fleet: FLEET; destination: STAR; ships: SET[SHIP]) is
+    fleet_orders (fleet: like last_fleet; destination: like last_star; ships: SET[SHIP]) is
         -- Set fleet orders of `fleet', sending its `ships' toward 
         -- `destination'
     require
@@ -221,7 +223,7 @@ feature -- Operations
         not ships.is_empty
         -- ships.for_all (agent fleet.has_ship (?))
     local
-        f: FLEET
+        f: like last_fleet
     do
         f := fleet
         if ships.count /= f.ship_count then
@@ -237,13 +239,13 @@ feature -- Operations
         end
     end
 
-    join_fleets (s: STAR) is
+    join_fleets (s: like last_star) is
         -- Join fleets at `s' sharing destination
     require
         has_star (s.id)
     local
-        fs: ARRAY [FLEET]
-        sorter: COLLECTION_RELATION_SORTER [FLEET]
+        fs: ARRAY [like last_fleet]
+        sorter: COLLECTION_RELATION_SORTER [like last_fleet]
         i: INTEGER
         f, g: FLEET
     do
@@ -270,8 +272,8 @@ feature -- Operations
     fleet_cleanup is
         -- Remove all 0-sized (i.e. dead) fleets
     local
-        i: ITERATOR [FLEET]
-        dead: SET [FLEET]
+        i: ITERATOR [like last_fleet]
+        dead: SET [like last_fleet]
     do
         !!dead.make
         from i := fleets.get_new_iterator_on_items until i.is_off loop
@@ -316,9 +318,10 @@ feature -- Factory methods
         stars.add (last_star, last_star.id)
     end
 
-    create_fleet:FLEET is
+    create_fleet: like last_fleet is
     do
         !!Result.make
+        last_fleet := Result
     end
 
 feature {MAP_GENERATOR} -- Generation
@@ -337,7 +340,7 @@ feature {NONE} -- Representation
     stars: DICTIONARY [like last_star, INTEGER]
         -- stars in the map, by id
 
-    fleets: DICTIONARY [FLEET, INTEGER]
+    fleets: DICTIONARY [like last_fleet, INTEGER]
         -- All fleets in space
 
 invariant

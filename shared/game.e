@@ -135,10 +135,10 @@ feature {NONE} -- Internal
     colony_new_turn is
         -- Advance turn for colonies
     local
-        s: ITERATOR [STAR]
+        s: ITERATOR [like star_type]
         p: ITERATOR [PLANET]
-        f: ITERATOR [FLEET]
-        fleet: FLEET
+        f: ITERATOR [like fleet_type]
+        fleet: like fleet_type
     do
         s := galaxy.get_new_iterator_on_stars
         from s.start until s.is_off loop
@@ -162,7 +162,7 @@ feature {NONE} -- Internal
                         else
                             fleet := galaxy.create_fleet
                             fleet.set_owner(p.item.colony.owner)
-                            fleet.enter_orbit(p.item.orbit_center)
+                            fleet.enter_orbit(s.item)
                             fleet.add_ship(p.item.colony.shipyard)
                             galaxy.add_fleet(fleet)
                         end
@@ -178,7 +178,7 @@ feature {NONE} -- Internal
     move_fleets is
         -- Fleet movement
     local
-        i: ITERATOR [FLEET]
+        i: ITERATOR [like fleet_type]
         old_in_orbit: BOOLEAN
     do
         i := galaxy.get_new_iterator_on_fleets
@@ -199,6 +199,14 @@ feature {NONE} -- Internal
     do
         galaxy.generate_scans (players)
     end
+
+feature {NONE} -- Internal
+
+    fleet_type: FLEET
+        -- Just an anchor for typing of fleets
+
+    star_type: STAR
+        -- Just an anchor for typing of stars
 
 invariant
     map_generator /= Void

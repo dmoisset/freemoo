@@ -171,8 +171,8 @@ feature {NONE} -- Operations
 
     move_fleet (u: UNSERIALIZER) is
     local
-        fleet: FLEET
-        destination: STAR
+        fleet: S_FLEET
+        destination: S_STAR
         ships: SET [SHIP]
         i, count: INTEGER
     do

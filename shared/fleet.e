@@ -22,7 +22,7 @@ feature -- Access
         Result = (orbit_center /= Void)
     end
 
-    destination: STAR
+    destination: like orbit_center
         -- Star where to which the fleet is traveling, or Void if none
 
     eta: INTEGER
@@ -138,7 +138,7 @@ feature -- Operations
         splitted_fleet.ship_count = shs.count
     end
 
-    enter_orbit (star: STAR) is
+    enter_orbit (star: like orbit_center) is
         -- Put fleet in orbit around `star'
     require
         star /= Void
@@ -190,7 +190,7 @@ feature -- Operations
 
 feature -- Operations
 
-	copy_from (f: FLEET) is
+	copy_from (f: like Current) is
 		-- Copies all information from `f', except ship list
 	do
 		owner := f.owner
@@ -212,7 +212,7 @@ feature -- Operations
         eta = e
     end
 
-    set_destination (d: STAR) is
+    set_destination (d: like destination) is
     do
         destination := d
         if destination = orbit_center then destination := Void end

@@ -3,7 +3,8 @@ class S_GAME
 inherit
     GAME
     redefine
-        status, players, galaxy, add_player, init_game
+        status, players, galaxy, add_player, init_game,
+        fleet_type, star_type
     end
     SERVER_ACCESS
 
@@ -34,7 +35,7 @@ feature {NONE} -- Internal
     init_game is
     local
         i: ITERATOR [S_PLAYER]
-        j: ITERATOR [S_STAR]
+        j: ITERATOR [like star_type]
     do
         Precursor
         -- Register galaxy
@@ -55,4 +56,7 @@ feature {NONE} -- Internal
         end
     end
 
+    fleet_type: S_FLEET
+
+    star_type: S_STAR
 end -- class S_GAME

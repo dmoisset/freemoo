@@ -2,7 +2,7 @@ class S_GALAXY
 	
 inherit
     GALAXY
-	redefine make, last_star, create_fleet,
+	redefine make, last_star, last_fleet,
 		add_fleet, generate_scans
 	end
 	SERVICE
@@ -33,8 +33,8 @@ feature -- Redefined features
         s: SERIALIZER2
         id: INTEGER
         star: ITERATOR [like last_star]
-        reading: ARRAY [FLEET]
-        fleet: ITERATOR [FLEET]
+        reading: like scanner
+        fleet: ITERATOR [like last_fleet]
         ship: ITERATOR [SHIP]
     do
         !!s.make
@@ -98,7 +98,7 @@ feature -- Redefined features
         Result := s.serialized_form
     end
 
-    build_fleet_message(new_fleets: ARRAY[FLEET]; s: SERIALIZER2) is
+    build_fleet_message(new_fleets: like scanner; s: SERIALIZER2) is
         -- Serialize message sent for the ":new_fleets" in `s'
     local
         it: ITERATOR[FLEET]
@@ -114,32 +114,24 @@ feature -- Redefined features
         end
     end
 
-    add_fleet(new_fleet: FLEET) is
+    add_fleet (new_fleet: like last_fleet) is
     local
-        s_new_fleet: S_FLEET
-        farray: ARRAY[S_FLEET]
+        farray: ARRAY [like last_fleet]
         s: SERIALIZER2
     do
-        s_new_fleet ?= new_fleet
-        check s_new_fleet /= Void end
-        Precursor (s_new_fleet)
+        Precursor (new_fleet)
         !!farray.make(0, 0)
-        farray.put(s_new_fleet, 0)
-        server.register(s_new_fleet, "fleet" + s_new_fleet.id.to_string)
+        farray.put (new_fleet, 0)
+        server.register (new_fleet, "fleet" + new_fleet.id.to_string)
         !!s.make; build_fleet_message (farray, s)
-        send_message(s_new_fleet.owner.id.to_string + ":new_fleets", s.serialized_form)
+        send_message (new_fleet.owner.id.to_string + ":new_fleets", s.serialized_form)
     end
 
 feature {MAP_GENERATOR} -- Generation
 
     last_star: S_STAR
-    
-feature -- Redefined factory method
 
-    create_fleet:S_FLEET is
-    do
-        !!Result.make
-    end
+    last_fleet: S_FLEET    
 
 feature -- Access
 

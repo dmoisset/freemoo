@@ -6,7 +6,7 @@ inherit
     FLEET
         redefine
             set_destination, add_ship, split, move,
-            splitted_fleet, join, clear_ships
+            splitted_fleet, join, clear_ships, orbit_center
         end
 
 creation make
@@ -14,6 +14,8 @@ creation make
 feature -- Redefined features
 
     splitted_fleet: S_FLEET
+
+    orbit_center: S_STAR
 
     subscription_message (service_id: STRING): STRING is
         -- Complete information of fleet, with info about ships and
@@ -44,7 +46,7 @@ feature -- Redefined features
         Result := s.serialized_form
     end
 
-    set_destination (dest: STAR) is
+    set_destination (dest: like destination) is
     do
         Precursor (dest)
         update_clients

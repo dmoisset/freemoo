@@ -4,7 +4,7 @@ inherit
     UNIQUE_ID
     STAR
         redefine
-            set_planet, set_special, set_name, make, make_defaults
+            set_planet, set_special, set_name, make, make_defaults, fleets
         end
     SERVICE
         redefine subscription_message end
@@ -55,6 +55,8 @@ feature -- Redefined Features
         end
         Result := s.serialized_form
     end
+
+    fleets: DICTIONARY [S_FLEET, INTEGER]
 
 feature {MAP_GENERATOR} -- Redefined
 
