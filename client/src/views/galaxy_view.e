@@ -284,7 +284,7 @@ feature {NONE} -- Event handlers
                 if fleet_window /= Void and then children.fast_has(fleet_window) then
                     fleet_window.remove
                 end
-                !STAR_VIEW!star_window.make (Current, r, model.stars @ (star_hotspots.fast_key_at(i.item)))
+                !STAR_VIEW!star_window.make (Current, r, model.stars @ (star_hotspots.fast_key_at(i.item)), model.server.game_status)
                 star_window.set_fleet_click_handler(agent create_fleet_view)
                 found := True
             end

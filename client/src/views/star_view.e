@@ -3,6 +3,7 @@ class STAR_VIEW
 
 inherit
     VIEW[C_STAR]
+    VIEW[C_GAME_STATUS]
     MAP_CONSTANTS
     WINDOW
         rename make as window_make
@@ -13,15 +14,23 @@ creation
 
 feature {NONE} -- Creation
 
-    make (w: WINDOW; where: RECTANGLE; new_model: C_STAR) is
+    make (w: WINDOW; where: RECTANGLE; new_model: C_STAR; new_status: C_GAME_STATUS) is
         -- build widget as view of `new_model'
+    require
+        w /= Void
+        new_model /= Void
+        new_status /= Void
     local
         a: FMA_FRAMESET
         r: RECTANGLE
         d: DRAG_HANDLE
     do
         window_make(w, where)
+        -- Register Primary model
         set_model(new_model)
+        -- Register Secondary model
+        status := new_status
+        new_status.add_view(Current)
         -- Drag Handle
         r.set_with_size(0, 0, 347, 45)
         !!d.make(Current, r)
@@ -101,7 +110,9 @@ feature -- Effective features
         from child := removable_children.get_new_iterator
         until child.is_off
         loop
-            child.item.remove
+            if children.fast_has(child.item) then
+                child.item.remove
+            end
             child.next
         end
         -- Generate hotspots
@@ -438,6 +449,8 @@ feature -- Once data
 
 feature {NONE} -- Internal
 
+    status: C_GAME_STATUS
+
     dirty: BOOLEAN
     cache: SDL_IMAGE
 
@@ -461,8 +474,8 @@ feature {NONE} -- Internal
     do
         y := br * (bi + p.orbit)
         x := y * xm
-        y := cy - p.orbit.to_real.sin * y
-        x := cx + p.orbit.to_real.cos * x
+        y := cy - (p.orbit + di * status.date).sin * y
+        x := cx + (p.orbit + di * status.date).cos * x
         Result := [x.rounded, y.rounded]
     end
 
@@ -486,6 +499,9 @@ feature {NONE} -- Internal constants
     xm: REAL is 1.88  -- x multiplier, x-y ratio for ellipse
     cx: REAL is 173.5 -- center x, x coordinate for center of view
     cy: REAL is 136.5 -- center y, y coordinate for center of view
+
+    di: REAL is .2    -- date increment, amount to increase orbit position
+                      -- each turn, in radians
 
     fleet_pic_firstx: INTEGER is 20
     fleet_pic_margin: INTEGER is 5
