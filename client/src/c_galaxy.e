@@ -59,9 +59,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     idmap.put(star, id)
                 end
                 ir ?= s.unserialized_form @ 2
-                star.set_kind(ir + star.kind_min)
+-- Using .item below because of SE bug #152
+                star.set_kind(ir.item + star.kind_min)
                 ir ?= s.unserialized_form @ 3
-                star.set_size(ir + star.stsize_min)
+                star.set_size(ir.item + star.stsize_min)
                 star.unserialize_from (newmsg)
                 new_stars.force(star, count)
                 count := count - 1
