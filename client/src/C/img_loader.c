@@ -344,12 +344,12 @@ SDL_Surface *FMI_Load(FILE* fp)
 {
     SDL_Surface *surface;
     SDL_RWops *src;
-    Uint8 magic[4];
+    Uint32 magic;
     Uint16 width, height;
 
 /* Read type and size */
     src = SDL_RWFromFP (fp, 0);
-    if (SDL_RWread (src, magic, 1, 4) != 4)
+    if (SDL_RWread (src, &magic, 4, 1) != 1)
     {
         SDL_SetError("Error Opening file\n");
         return 0;
@@ -364,17 +364,23 @@ SDL_Surface *FMI_Load(FILE* fp)
     if (!surface)
         return 0;
 
-    if (magic[3] == 0x38)
-        if (magic[1] == 0x4d)
+    switch (magic)
+    {
+        case 0x38474d49:
             load_img_plain8 (fp, surface, width, height);
-        else
+            break;
+        case 0x38454c52:
             load_img_rle8 (fp, surface, width, height);
-    else
-        if (magic[1] == 0x4d)
+            break;
+        case 0x36474d49:
             load_img_plain16 (fp, surface, width, height);
-        else
+            break;
+        case 0x36454c52:
             load_img_rle16 (fp, surface, width, height);
-
+            break;
+        default:
+            return 0;
+    }
     return surface;
 }
 
