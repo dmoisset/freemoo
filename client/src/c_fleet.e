@@ -42,20 +42,28 @@ feature {NONE} -- Creation
         s.get_integer
         set_eta (s.last_integer)
         s.get_integer
-        if is_in_orbit then leave_orbit end
+        if is_in_orbit then
+			if destination = Void then
+				orbit_center.fleets.remove(id)
+                server.galaxy.stars.at(orbit_center.id).notify_views
+			end
+			leave_orbit
+		end
         if s.last_integer /= -1 then
             i := s.last_integer
--- FIXME: More abstraction breach: star.fleets.xxx
             enter_orbit (server.galaxy.stars @ i);
-            if not (server.galaxy.stars @ i).fleets.has(id) then
-                (server.galaxy.stars @ i).fleets.add(Current, id);
-                (server.galaxy.stars @ i).notify_views
-            end
         end
         s.get_integer
         if s.last_integer /= -1  then
             set_destination (server.galaxy.stars @ s.last_integer)
         end
+		-- FIXME: More abstraction breach: star.fleets.xxx
+		if orbit_center /= Void and destination = Void then
+			if not orbit_center.fleets.has(id) then
+                (server.galaxy.stars @ i).fleets.add(Current, id);
+                (server.galaxy.stars @ i).notify_views
+            end
+		end
         s.get_integer
         shipcount := s.last_integer
         unserialize_from (s) -- Position

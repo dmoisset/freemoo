@@ -97,8 +97,11 @@ feature -- Redefined features
         -- Update gui
     do
         if model.changed_starlist then
-            make_projs
-            get_limits
+			if oldlimit = Void or else model.limit |-| oldlimit > 0 then
+				oldlimit := model.limit.twin
+				make_projs
+				get_limits
+			end
             refresh
         else
             request_redraw_all
@@ -225,6 +228,7 @@ feature {NONE} -- Redrawing
     local
         img: IMAGE -- fleet image
         px, py: INTEGER -- projected fleet
+		dx, pos: INTEGER -- offsetting
         r: RECTANGLE
 		traj: TRAJECTORY
     do
@@ -233,14 +237,24 @@ feature {NONE} -- Redrawing
 		px := (current_projection.x - img.width / 2).rounded
 		py := (current_projection.y - img.height / 2).rounded
         if f.orbit_center /= Void then
-			if f.destination = Void then
-				px := px + 10
-				py := py - 10
-			else
-				px := px - 10
-				py := py - 10
+			if f.destination = Void then dx := 1 else dx := -1 end
+			from
+				pos := fleet_offsets_x.lower
+				r.set_with_size(px + dx * fleet_offset_size@zoom * fleet_offsets_x@pos, py - fleet_offset_size@zoom * fleet_offsets_y@pos, img.width, img.height)
+			until
+				pos = fleet_offsets_x.upper or fleet_hotspots.fast_occurrences(r) = 0
+			loop
+				pos := pos + 1
+				r.set_with_size(px + dx * fleet_offset_size@zoom * fleet_offsets_x@pos, py - fleet_offset_size@zoom * fleet_offsets_y@pos, img.width, img.height)
 			end
+		else
+			r.set_with_size (px, py, img.width, img.height)
 		end
+        fleet_hotspots.add (r, f.id)
+        img.blit(cache, r.x, r.y)
+
+
+
 		if f.destination /= Void then
 			!!traj.with_projection(f, f.destination, current_projection)
 			if f.owner = model.server.player then
@@ -250,10 +264,6 @@ feature {NONE} -- Redrawing
 			end
 			traj.blit(cache, traj.showx, traj.showy)
 		end
-        r.set_with_size (px, py, img.width, img.height)
-        fleet_hotspots.add (r, f.id)
-		r.set_with_size(0, 0, cache.width, cache.height)
-        img.blit_region(cache, r, px, py)
     end
 
     draw_blackhole (s: STAR) is
@@ -366,7 +376,7 @@ feature {NONE} -- Event handlers
 			!!traj.with_projection(model.stars@(star_hotspots.fast_key_at(i.item)), fleet_window.model_position, current_projection)
 			traj.set_type(traj.traj_type_select_ok)
 			!!trajectory_window.make(Current, traj.showx, traj.showy, traj)
-			trajectory_window.send_behind(fleet_window)
+--			trajectory_window.send_behind(fleet_window)
 		end
 	end
 	
@@ -473,6 +483,10 @@ feature {NONE} -- Internal data
     limit_x, limit_y: REAL
         -- Projected galaxy limit
 
+	oldlimit: POSITIONAL
+		-- Memorizes model's last limit, to not regenerate 
+		-- projections unless necessary
+	
     background: SDL_IMAGE
         -- View background
 
@@ -559,6 +573,29 @@ feature {NONE} -- Internal configuration and constants
     label_offset: INTEGER is 20
         -- pixels between star center and star name label center
 
+	fleet_offset_size: ARRAY[INTEGER] is
+		-- pixels fleets are offset from star center and one from 
+		-- another
+	once
+		Result := <<2, 3, 4, 6>>
+		Result.reindex(0)
+	end
+
+	fleet_offsets_x: ARRAY[INTEGER] is
+	once
+		Result := << 3,  5,  6,  7,  7,  7,  6,  5,  3,  1,
+					 2,  4, 6, 7, 8, 9, 9, 9, 9, 9, 9, 9,
+					 9, 8, 7, 6, 4, 2>>
+	end
+
+	fleet_offsets_y: ARRAY[INTEGER] is
+	once
+		Result := << 5,  4,  3,  2,  0, -2, -3, -4, -5, -5,
+					 7, 7, 6, 5, 4,  3,  2,  1,  0,  -1, -2, -3, -4,
+					 -4, -5, -6, -7, -7>>
+	end
+		
+	
     make_projs is
         -- Make diferent zoom.
         -- Zoom levels in progression 6 4 3 2

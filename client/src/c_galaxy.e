@@ -106,7 +106,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 			if fleet_it.item.owner = server.player then
 				new_fleets.add(fleet_it.item, fleet_it.item.id)
 -- FIXME: more abstraction breach
-			if fleet_it.item.orbit_center /= Void then
+				if fleet_it.item.orbit_center /= Void and then fleet_it.item.destination = Void then
 					fleet_it.item.orbit_center.fleets.add (fleet_it.item, fleet_it.item.id)
 				end
 			end
