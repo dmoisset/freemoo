@@ -48,17 +48,12 @@ feature -- Operations
         s.add_tuple (<<x, y>>)
     end
 
-    unserialize_from (incoming: STRING) is
-    local
-        rr: reference REAL
-        s: SERIALIZER
+    unserialize_from (s: UNSERIALIZER) is
     do
-        s.unserialize ("rr", incoming)
-        rr ?= s.unserialized_form @ 1
-        x := rr
-        rr ?= s.unserialized_form @ 2
-        y := rr
-        incoming.remove_first (s.used_serial_count)
+        s.get_real
+        x := s.last_real
+        s.get_real
+        y := s.last_real
     end
 
 feature {POSITIONAL, PROJECTION, MAP_GENERATOR} -- Position info

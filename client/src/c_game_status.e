@@ -27,21 +27,19 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
     on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
         -- Action when `msg' arrives from `provider''s `service'
     local
-        s: SERIALIZER
-        ir: reference INTEGER
-        br: reference BOOLEAN
+        s: UNSERIALIZER
     do
-        s.unserialize ("ibbiiibbbi", msg)
-        ir ?= s.unserialized_form @ 1; open_slots := ir
-        br ?= s.unserialized_form @ 2; finished := br
-        br ?= s.unserialized_form @ 3; started := br
-        ir ?= s.unserialized_form @ 4; galaxy_size := ir
-        ir ?= s.unserialized_form @ 5; galaxy_age := ir
-        ir ?= s.unserialized_form @ 6; start_tech_level := ir
-        br ?= s.unserialized_form @ 7; tactical_combat := br
-        br ?= s.unserialized_form @ 8; random_events := br
-        br ?= s.unserialized_form @ 9; antaran_attacks := br
-        ir ?= s.unserialized_form @ 10; date := ir
+        !!s.start (msg)
+        s.get_integer; open_slots := s.last_integer
+        s.get_boolean; finished := s.last_boolean
+        s.get_boolean; started := s.last_boolean
+        s.get_integer; galaxy_size := s.last_integer
+        s.get_integer; galaxy_age := s.last_integer
+        s.get_integer; start_tech_level := s.last_integer
+        s.get_boolean; tactical_combat := s.last_boolean
+        s.get_boolean; random_events := s.last_boolean
+        s.get_boolean; antaran_attacks := s.last_boolean
+        s.get_integer; date := s.last_integer
         notify_views
     end
 

@@ -150,7 +150,7 @@ feature -- Operations
 feature {STAR} -- To keep consistent orbits
     set_orbit (neworbit: INTEGER) is
     require
-        neworbit.in_range (1, 5)
+        neworbit.in_range (1, orbit_center.Max_planets)
     do
         orbit := neworbit
     ensure
@@ -165,6 +165,6 @@ invariant
     gravity.in_range (grav_min, grav_max)
     type.in_range (type_min, type_max)
     special.in_range (plspecial_min, plspecial_max)
-    orbit.in_range (1, 5)
+    orbit.in_range (1, orbit_center.Max_planets)
 
 end -- class PLANET

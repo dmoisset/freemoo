@@ -25,54 +25,51 @@ feature {NONE} -- Creation
         -- Only `service' expected is "fleet"+id
     local
         i: INTEGER
-        s: SERIALIZER
-        ir: reference INTEGER
+        s: UNSERIALIZER
         it: ITERATOR[PLAYER]
         shipcount: INTEGER
         ship: SHIP
     do
-        s.unserialize("iiii", msg)
-        msg.remove_first(s.used_serial_count)
-        ir ?= s.unserialized_form @ 1
-        from it := server.player_list.get_new_iterator
-        until it.item.id = ir
+        !!s.start (msg)
+        s.get_integer
+        from it := server.player_list.get_new_iterator until
+            it.item.id = s.last_integer
         loop
             it.next
         end
         owner := it.item
-        set_owner(owner)
-        ir ?= s.unserialized_form @ 2
-        set_eta(ir.item)
-        ir ?= s.unserialized_form @ 3
+        set_owner (owner)
+        s.get_integer
+        set_eta (s.last_integer)
+        s.get_integer
         if eta = 0 then
             if (is_in_orbit) then
                 leave_orbit
             end
-            i := ir
+            i := s.last_integer
             enter_orbit (server.galaxy.stars @ i);
             if not (server.galaxy.stars @ i).fleets.has(id) then
-					(server.galaxy.stars @ i).fleets.add(Current, id)
-					(server.galaxy.stars @ i).notify_views
+                (server.galaxy.stars @ i).fleets.add(Current, id);
+                (server.galaxy.stars @ i).notify_views
             end
         else
-            set_destination (server.galaxy.stars @ ir)
+            set_destination (server.galaxy.stars @ s.last_integer)
         end
-        ir ?= s.unserialized_form @ 4
-        unserialize_from (msg)
-	print("Recieved <<" + owner.id.to_string + ", " + eta.to_string + ", " + orbit_center.id.to_string + ", " + ir.to_string + ">>%N")
+        s.get_integer
+        shipcount := s.last_integer
+        unserialize_from (s) -- Position
+        print("Received <<" + owner.id.to_string + ", " + eta.to_string + ", " + orbit_center.id.to_string + ", " + s.last_integer.to_string + ">>%N")
         ships.clear
-        from shipcount := ir until shipcount = 0 loop
-            s.unserialize("ii", msg)
+        from until shipcount = 0 loop
             !!ship.make(owner)
-            ir ?= s.unserialized_form @ 1
-            ship.set_size(ir)
-            ir ?= s.unserialized_form @ 2
-            ship.set_picture(ir)
-            msg.remove_first(s.used_serial_count)
+            s.get_integer
+            ship.set_size(s.last_integer)
+            s.get_integer
+            ship.set_picture(s.last_integer)
             shipcount := shipcount - 1
             add_ship(ship)
         end
-		  notify_views
+        notify_views
     end
 
 end -- class C_FLEET

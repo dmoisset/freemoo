@@ -20,6 +20,7 @@ feature -- Redefined features
         s: SERIALIZER2
         i: ITERATOR [S_PLAYER]
     do
+        !!s.make
         s.add_integer (items.count)
         from
             i := items.get_new_iterator_on_items

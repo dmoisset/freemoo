@@ -40,9 +40,10 @@ feature -- Operations
         not is_closed
         not is_joining and not has_joined
     local
-        s: SERIALIZER
+        s: SERIALIZER2
     do
-        s.serialize ("ss", <<name, password>>)
+        !!s.make
+        s.add_tuple (<<name, password>>)
         send_package (msgtype_join, s.serialized_form)
         player_name := name
         is_joining := True
@@ -57,9 +58,10 @@ feature -- Operations
         not is_closed
         not is_joining and not has_joined
     local
-        s: SERIALIZER
+        s: SERIALIZER2
     do
-        s.serialize ("ss", <<name, password>>)
+        !!s.make
+        s.add_tuple (<<name, password>>)
         send_package (msgtype_rejoin, s.serialized_form)
         player_name := name
         is_joining := True
@@ -97,9 +99,10 @@ feature -- Operations
         -- Notify server that player has finished_turn
         -- if `multiple', player allows more than one turn to pass.
     local
-        s: SERIALIZER
+        s: SERIALIZER2
     do
-        s.serialize ("b", <<multiple>>)
+        !!s.make
+        s.add_tuple (<<multiple>>)
         send_package (msgtype_turn, s.serialized_form)
         player_list.set_player_state (player, st_waiting_turn_end)
     end
@@ -157,9 +160,9 @@ feature -- Redefined features
     on_new_package (ptype: INTEGER) is
         -- Handle incoming packages
     local
-        ir: reference INTEGER
-        s: SERIALIZER
+        s: UNSERIALIZER
     do
+        !!s.start (buffer)
         inspect
             ptype
         when msgtype_join_accept then
@@ -173,9 +176,8 @@ feature -- Redefined features
         when msgtype_join_reject then
             if is_joining then
                 is_joining := False
-                s.unserialize ("i", buffer)
-                ir ?= s.unserialized_form @ 1
-                join_reject_cause := ir
+                s.get_integer
+                join_reject_cause := s.last_integer
             else -- package arrived and shouldn't. Ignore
                 std_error.put_string (l("Warning: received unrequested Join-Reject%N"))
             end

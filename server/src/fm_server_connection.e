@@ -34,7 +34,7 @@ feature -- Redefined features
         user, pass: STRING
         u: UNSERIALIZER
     do
-        u.start (buffer)
+        !!u.start (buffer)
         inspect
             ptype
         when msgtype_join then
@@ -86,6 +86,7 @@ feature {NONE} -- Operations: joining
     local
         s: SERIALIZER2
     do
+        !!s.make
         s.add_integer (cause)
         send_package (msgtype_join_reject, s.serialized_form)
     end

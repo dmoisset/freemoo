@@ -24,6 +24,7 @@ feature -- Redefined features
         s: SERIALIZER2
         i: ITERATOR[SHIP]
     do
+        !!s.make
         -- Currently just has same info as scanner
         s.add_tuple(<< owner, eta >>)
         if eta = 0 then
@@ -33,11 +34,9 @@ feature -- Redefined features
         end
         s.add_integer(ship_count)
         serialize_on(s)
-        from i := ships.get_new_iterator
-        until i.is_off
-        loop
+        from i := ships.get_new_iterator until i.is_off loop
             s.add_tuple(<<i.item.size, i.item.picture>>)
-	    i.next
+            i.next
         end
         Result := s.serialized_form
     end

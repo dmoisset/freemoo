@@ -27,39 +27,30 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
     on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
         -- Action when `msg' arrives from `provider''s `service'
     local
-        newmsg: STRING
         new_items: DICTIONARY [C_PLAYER, STRING]
         left: INTEGER
-
         name: STRING
-        pid: reference INTEGER
+        pid: INTEGER
         p: C_PLAYER
-        s: SERIALIZER
-        ir: reference INTEGER
+        s: UNSERIALIZER
     do
-        newmsg := msg
-
-        s.unserialize ("i", newmsg)
-        ir ?= s.unserialized_form @ 1; left := ir
-        -- Using `substring' instead of `remove_first' to create a copy
-        newmsg := newmsg.substring (s.used_serial_count+1, newmsg.count)
-
+        !!s.start (msg)
+        s.get_integer; left := s.last_integer
 --FIXME: make in-place instead of creating a new list
         !!new_items.make
         from until left = 0 loop
             -- Get name
-            s.unserialize ("is", newmsg)
-            pid ?= s.unserialized_form @ 1
-            name ?= s.unserialized_form @ 2
+            s.get_integer; pid := s.last_integer
+            s.get_string; name := s.last_string
             if has (name) then
                 p ?= Current @ name
-                    check p /= Void and p.id = pid end
+                    check p /= Void and then p.id = pid end
             else
                 !!p.make (name)
                 p.set_id(pid)
             end
             new_items.add (p, name)
-            p.unserialize_from (newmsg)
+            p.unserialize_from (s)
             left := left - 1
         end
         items := new_items

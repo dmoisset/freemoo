@@ -32,23 +32,24 @@ feature -- Redefined Features
         s: SERIALIZER2
         i: ITERATOR [PLANET]
     do
+        !!s.make
         -- Setup id upon first subscription
         if s_id = Void then
             s_id := service_id
         end
         s.add_string (name)
-        s.add_integer (5 - planets.fast_occurrences(Void))
+        s.add_integer (Max_planets - planets.fast_occurrences(Void))
         from
             i := planets.get_new_iterator
         until i.is_off loop
             if i.item /= Void then
-                s.add_tuple (<<i.item.size - i.item.plsize_min,
+                s.add_tuple (<<i.item.orbit,
+                               i.item.size - i.item.plsize_min,
                                i.item.climate - i.item.climate_min,
                                i.item.mineral - i.item.mnrl_min,
                                i.item.gravity - i.item.grav_min,
                                i.item.type - i.item.type_min,
-                               i.item.special - i.item.plspecial_min,
-                               i.item.orbit>>)
+                               i.item.special - i.item.plspecial_min>>)
             end
             i.next
         end

@@ -23,22 +23,12 @@ feature {NONE} -- Creation
 
 feature -- Operations
 
-    unserialize_from (serial: STRING) is
-        -- Update from `serial'. Modifies `serial' removing the
-        -- text processed
-    local
-        s: SERIALIZER
-        ir: reference INTEGER
-        br: reference BOOLEAN
+    unserialize_from (s: UNSERIALIZER) is
+        -- Update from `s'.
     do
-        s.unserialize ("isiib", serial)
-        ir ?= s.unserialized_form @ 1; set_id (ir)
-        name ?= s.unserialized_form @ 2
-        ir ?= s.unserialized_form @ 3; set_state (ir)
-        ir ?= s.unserialized_form @ 4; set_color (ir)
-        br ?= s.unserialized_form @ 5; connected := br
-
-        serial.remove_first (s.used_serial_count)
+        s.get_integer; set_state (s.last_integer)
+        s.get_integer; set_color (s.last_integer)
+        s.get_boolean; connected := s.last_boolean
     end
 
 feature {SERVICE_PROVIDER} -- Subscriber callback
@@ -46,25 +36,19 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
     on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
         -- Action when `msg' arrives from `provider''s `service'
     local
-        s: SERIALIZER
-        ir: reference INTEGER
+        s: UNSERIALIZER
         i: INTEGER
-        newmsg: STRING
         star: C_STAR
     do
-        newmsg := clone (msg)
-        s.unserialize ("i", newmsg)
-        ir ?= s.unserialized_form @ 1
-        newmsg.remove_first (s.used_serial_count)
+        !!s.start (msg)
+        s.get_integer
         from
-            i := ir
+            i := s.last_integer
             knows_star.clear
         until i = 0 loop
-            s.unserialize ("i", newmsg)
-            ir ?= s.unserialized_form @ 1
-            newmsg.remove_first (s.used_serial_count)
-            if server.galaxy.stars.has (ir) then
-                star ?= server.galaxy.stars @ ir
+            s.get_integer
+            if server.galaxy.stars.has (s.last_integer) then
+                star ?= server.galaxy.stars @ s.last_integer
                     check star /= Void end
                 knows_star.add (star)
                 star.subscribe (server, "star"+star.id.to_string)

@@ -67,7 +67,8 @@ feature -- Redefined features
         s: SERIALIZER2
         i: ITERATOR [STAR]
     do
--- Validate service_id
+        !!s.make
+        -- Validate service_id
         if service_id.has_prefix("player") then
             !!serv_id.copy(service_id)
             serv_id.remove_prefix("player")

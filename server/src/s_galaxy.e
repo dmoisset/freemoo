@@ -34,6 +34,7 @@ feature -- Redefined features
         reading: ARRAY [FLEET]
         fleet: ITERATOR [FLEET]
     do
+        !!s.make
         -- If first subscription to `service_id', add to `ids'
         if not service_id.has_suffix(":new_fleets") then
             ids.add(service_id)
@@ -79,6 +80,7 @@ feature -- Redefined features
         s: SERIALIZER2
         it: ITERATOR[FLEET]
     do
+        !!s.make
         s.add_integer (new_fleets.count)
         from
             it := new_fleets.get_new_iterator

@@ -29,6 +29,7 @@ feature -- Access
     fleets: DICTIONARY[FLEET, INTEGER]
         -- Subset of galaxy's `fleets', containing fleets that orbit this star.
 
+    Max_planets: INTEGER is 5
 feature -- Operations on fleets
 
     add_ship (item: SHIP) is
@@ -40,7 +41,7 @@ feature -- Operations on star system
     set_planet (newplanet: PLANET; orbit: INTEGER) is
     require
         newplanet /= Void
-        orbit.in_range (1, 5)
+        orbit.in_range (1, Max_planets)
     do
         newplanet.set_orbit (orbit)
         planets.put (newplanet, orbit)
@@ -79,6 +80,7 @@ feature -- Operations on star system
     set_kind (new_kind: INTEGER) is
     require
         new_kind /= Void
+        valid_kind: kind.in_range (kind_min, kind_max)
     do
         kind := new_kind
     ensure
@@ -93,7 +95,7 @@ feature {NONE} -- Creation
         kind := kind_min
         name := ""
         size := stsize_min
-        !!planets.make (1, 5)
+        !!planets.make (1, Max_planets)
         !!fleets.make
         special := stspecial_nospecial
     end
@@ -110,7 +112,7 @@ feature {NONE} -- Creation
         move_to (p)
         kind := k
         size := s
-        !!planets.make (1, 5)
+        !!planets.make (1, Max_planets)
         !!fleets.make
         special := stspecial_nospecial
     ensure
@@ -118,7 +120,7 @@ feature {NONE} -- Creation
         name = n
         kind = k
         size = s
-        no_planets: planets.occurrences (Void) = 5
+        no_planets: planets.occurrences (Void) = Max_planets
     end
 
 invariant
@@ -126,7 +128,7 @@ invariant
     valid_size: size.in_range (stsize_min, stsize_max)
     name /= Void
     planets /= Void
-    planets.count = 5
+    planets.count = Max_planets
     special.in_range (stspecial_min, stspecial_max)
 
 end -- class STAR

@@ -18,6 +18,7 @@ feature -- Redefined features
     local
         s: SERIALIZER2
     do
+        !!s.make
         s.add_tuple (<<open_slots, finished, started,
                      galaxy_size, galaxy_age, start_tech_level,
                      tactical_combat, random_events, antaran_attacks,
