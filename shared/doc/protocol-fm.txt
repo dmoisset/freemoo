@@ -11,6 +11,7 @@ CLIENT MESSAGES
 35: Setup complete. Ready to begin game
 36: Chat. Say something to other(s) player.
 40: End of Turn. Report that player won't play anymore for this turn
+41: Fleet movement. Player gives movement orders to some or all ships in a fleet
     
   * Join
 
@@ -81,6 +82,23 @@ CLIENT MESSAGES
   This produces a change of state in the player, to st_waiting_turn_end.
   The client should wait until the player state gets again to
   st_playing_turn.
+
+  * Fleet movement
+
+  offset(bytes) name         type     Notes
+  0             msgtype      INTEGER  41
+  4             length       INTEGER  12+4*count
+  8             fleet        INTEGER  id of the fleet getting orders
+  12            destination  INTEGER  id of the destination star system
+  16            count        INTEGER  number of ships getting orders
+  20            ship_1       INTEGER  id of first ship moved
+  24            ship_2       INTEGER  id of second ship moved
+  ...
+  16+4*count    ship_count   INTEGER  id of count'th ship moved
+
+  This sets the fleet destination, or splits the fleet and sets the destination
+  of the new one. Using as destanation the place where the ship is gives the
+  order to stay in its place, perhaps merging with other fleets.
 
 SERVER MESSAGES
 
