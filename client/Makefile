@@ -1,14 +1,20 @@
-EIFFLAGS=-cecil $(VEGTK)/VEGTK/cecil.se -case_insensitive -cc tcc
+EIFFLAGS=-cecil $(VEGTK)/VEGTK/cecil.se -case_insensitive
 LIBS=-L$(VEGTK)/VEGTK/gtk/C -L$(VEGTK)/VEGTK/gdk/C -L$(VEGTK)/VEGTK/support/C \
-     -lvegtk -lvegdk -lvegtksup \
-     `gtk-config --libs|sed s/-rdynamic//` -leifinet
+     -lvegtk -lvegdk -lvegtksup `gtk-config --libs` -leifinet
 TARGET=fm_client
 SOURCEFILES=src/*.e ../shared/*.e
+# Building commands: BUILD1; BUILD2 should build the system
+BUILD1=compile -O0
+BUILD2=true
+
+# Adapt to host environment. Resistance is futile
+-include Makefile.$(HOSTNAME)
 
 all: $(TARGET)
 
 $(TARGET): $(SOURCEFILES) gtk_interface
-	compile $(TARGET) -o $(TARGET) $(EIFFLAGS) $(LIBS)
+	$(BUILD1) -o $(TARGET) $(TARGET) $(EIFFLAGS) $(LIBS)
+	$(BUILD2) -o $(TARGET) $(TARGET).c $(LIBS)
 
 check: $(SOURCEFILES)
 	veglade gui.glade
