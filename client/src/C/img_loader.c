@@ -389,10 +389,10 @@ SDL_Surface *FMI_Load(FILE* fp)
 /* File isn't closed on exit */
 FMA_t *load_anim (FILE *f)
 {
-    FMA_t *answer;
-    SDL_RWops *src;            /* Input file */
+    FMA_t *answer = NULL;
+    SDL_RWops *src = NULL;     /* Input file */
     Uint32 palette[256] = {0}; /* Palette */
-    Uint32 magic;
+    Uint32 magic = 0 ;
     Uint16 imgcount[2],        /* Image Count and Loop-start indicator */
          delta_n_size[4],      /* Displacement and size for each image */
          imgfing;              /* Finger into images */
@@ -401,11 +401,16 @@ FMA_t *load_anim (FILE *f)
 
     src = SDL_RWFromFP(f, 0);
     answer = (FMA_t *)malloc(sizeof(FMA_t));
+    if (answer==NULL) {
+        fprintf (stderr, "load_anim: couldn't allocate FMA_t.\n");
+        return NULL;
+    }
 
 /* Read type and size */
     if (SDL_RWread (src, &magic, 4, 1) != 1)
     {
         SDL_SetError("Error Opening file\n");
+        fprintf (stderr, "load_anim: File access error, apparently not open.\n");
         return NULL;
     }
 
@@ -424,15 +429,19 @@ FMA_t *load_anim (FILE *f)
 /*        printf("Plain 8 bit images\n"); */
         loadpix = loadPixels_plain8;
         usecolorkey = 1 ;
-        if (loadPalette(src, palette))
+        if (loadPalette(src, palette)) {
+            fprintf (stderr, "load_anim: Error loading palette.\n");
             return NULL;
+        }
         break;
     case 0x38414c52:
 /*        printf("RLE 8 bit images\n"); */
         loadpix = loadPixels_rle8;
         usecolorkey = 1 ;
-        if (loadPalette(src, palette))
+        if (loadPalette(src, palette)) {
+            fprintf (stderr, "load_anim: Error loading palette.\n");
             return NULL;
+        }
         break;
     case 0x36494e41:
 /*        printf("Plain 16 bit images\n"); */
@@ -443,7 +452,8 @@ FMA_t *load_anim (FILE *f)
         loadpix = loadPixels_rle16;
         break;
     default:
-        return 0;
+        fprintf (stderr, "load_anim: Bad magic number.\n");
+        return NULL;
     }
 
     for(imgfing = 0; imgfing < imgcount[0]; imgfing++)
@@ -456,8 +466,11 @@ FMA_t *load_anim (FILE *f)
         else
             answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCALPHA,
                                          delta_n_size[2], delta_n_size[3], 24, 0xf80000, 0x07e000, 0x001f00, 0x0000ff);
-        if (!answer->items[imgfing])
-            return 0;
+        if (!answer->items[imgfing]) {
+            fprintf (stderr, "load_anim: CreateRGBSurface failed\n");
+            fprintf (stderr, "  %dx%d %s\n", delta_n_size[2], delta_n_size[3], usecolorkey?"colorkey":"nocolorkey");
+            return NULL;
+        }
         answer->x[imgfing] = delta_n_size[0];
         answer->y[imgfing] = delta_n_size[1];
         loadpix (src, answer->items[imgfing], palette, delta_n_size[2], delta_n_size[3]);
