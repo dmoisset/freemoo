@@ -1,8 +1,8 @@
 system
-    "fm_client"
+    "dumb_client"
 
 root
-    FM_CLIENT
+    DUMB_CLIENT
 
 default
     assertion            (require)
@@ -35,22 +35,15 @@ cluster
     NETSERVICES: "${SmartEiffelDirectory}lib_netservices/"
     UTILS: "${SmartEiffelDirectory}lib_utils/"
     STORAGE: "${SmartEiffelDirectory}/lib_storage/"
-    EWS: "${SmartEiffelDirectory}/lib_ews/"
-    EWS_EVENTS: "${SmartEiffelDirectory}/lib_ews/events"
-    EWS_WIDGETS: "${SmartEiffelDirectory}/lib_ews/widgets"
-    EWS_WINDOWS: "${SmartEiffelDirectory}/lib_ews/windows"
-    EWS_ANIMATIONS: "${SmartEiffelDirectory}/lib_ews/animations"
-    EWS_SDL: "${SmartEiffelDirectory}/lib_ews/driver-sdl"
 
 external
 
-    external_object_files: "src/C/net_thread.o src/C/img_loader.o ${SmartEiffelDirectory}/lib_ews/driver-sdl/C/driver-sdl.o"
-
-    external_lib: "SDL_image"
+    external_object_files: "src/C/net_thread.o"
     external_lib: "eifinet"
 
 generate
     cc:                 "gcc"
     linker_options:     "$(sdl-config --libs)"
+
 end
 
