@@ -1,5 +1,6 @@
 class CLIENT
     -- FreeMOO client
+    -- This class should be inherited by classes who need access to server
 
 feature -- Operations
 

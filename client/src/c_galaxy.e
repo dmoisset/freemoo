@@ -195,8 +195,6 @@ feature -- Redefined features
     on_fleet_change is
         -- Stars changed
     do
---        crash
-        changed_starlist := True
         changed_stardata := True
         notify_views
     end

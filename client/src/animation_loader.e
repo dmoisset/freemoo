@@ -41,6 +41,7 @@ feature {NONE} -- Creation template
             end
         else
             -- Fallback to dummy image
+            std_error.put_string ("Error loading FMA: "+path+". Fallback to dummy image%N")
             init_representation (1)
             width := 10
             height := 10
@@ -48,9 +49,6 @@ feature {NONE} -- Creation template
         end
         start
     rescue
-        if not tried then
-            std_error.put_string ("Error loading FMA: "+path+". Fallback to dummy image%N")
-        end
         if p.pkg_system.last_file_open.is_connected then
             p.pkg_system.last_file_open.disconnect
         end

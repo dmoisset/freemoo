@@ -3,7 +3,7 @@ class STAR_VIEW
 
 inherit
     VIEW[C_STAR]
-    VIEW[C_GAME_STATUS]
+    VIEW[C_GAME_STATUS] -- Needs time to set planet position
     MAP_CONSTANTS
     WINDOW
         rename make as window_make
