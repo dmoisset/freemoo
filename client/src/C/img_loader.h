@@ -23,7 +23,7 @@ INTEGER load_img_rle16 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h) ;
 /*  Load FMI Image.  Detects width, height and type.
  *  Returns NULL upon failure
  */
-SDL_Surface *FMI_Load(const char* filename);
+SDL_Surface *FMI_Load(FILE* fp);
 
 typedef struct {
     int count ;
