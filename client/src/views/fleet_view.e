@@ -101,6 +101,8 @@ feature {NONE} -- Callbacks
 
 	close is
 		do
+			model.remove_view(Current)
+			model := Void
 			remove
 		end
 
@@ -138,7 +140,6 @@ feature {NONE} -- Callbacks
 
 	scrollbar_handler(value: INTEGER) is
 		do
-			print("This is called only as a Scrollbar Handler (Value = " + value.to_string + ")...%N")
 			update_toggles
 			redraw_ships
 		end

@@ -65,9 +65,11 @@ feature {NONE} -- Widgets
 feature {NONE} -- Callbacks
 
     close is
-    do
-        remove
-    end
+		do
+			model.remove_view(Current)
+			model := Void
+			remove
+		end
 
     enable_animations is
     do
