@@ -142,14 +142,30 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/star-view/asteroids.fma\
                 $(INSTALL_DIR)/client/star-view/gas-giant.fma\
                 $(INSTALL_DIR)/client/star-view/bracket.fma\
-                $(INSTALL_DIR)/client/player-status/light0.fma\
-                $(INSTALL_DIR)/client/player-status/light1.fma\
-                $(INSTALL_DIR)/client/player-status/light2.fma\
-                $(INSTALL_DIR)/client/player-status/light3.fma\
-                $(INSTALL_DIR)/client/player-status/light4.fma\
-                $(INSTALL_DIR)/client/player-status/light5.fma\
-                $(INSTALL_DIR)/client/player-status/light6.fma\
-                $(INSTALL_DIR)/client/player-status/light7.fma
+                $(INSTALL_DIR)/client/player-status-view/light0.fma\
+                $(INSTALL_DIR)/client/player-status-view/light1.fma\
+                $(INSTALL_DIR)/client/player-status-view/light2.fma\
+                $(INSTALL_DIR)/client/player-status-view/light3.fma\
+                $(INSTALL_DIR)/client/player-status-view/light4.fma\
+                $(INSTALL_DIR)/client/player-status-view/light5.fma\
+                $(INSTALL_DIR)/client/player-status-view/light6.fma\
+                $(INSTALL_DIR)/client/player-status-view/light7.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-top-s.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-top-ns.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-middle-s.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-middle-ns.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-bottom-s.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-bottom-ns.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-scrollbar-trough.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-scrollbar-up.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-scrollbar-down.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-all-button.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-antares-button.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-colonize-button.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-engage-button.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-unload-button.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-outpost-button.fma\
+                $(INSTALL_DIR)/client/fleet-view/window-close-button.fma
 
 
 all: $(SUBDIRS)
