@@ -7,13 +7,13 @@ int main()
 
 
     FILE *fp;
-    fp = fopen ("r16.bmp", "w");
+    fp = fopen ("r16.fmi", "w");
 
 /* Magic Number 36454c52 */
-    fputc (0x36, fp);
-    fputc (0x45, fp);
-    fputc (0x4c, fp);
     fputc (0x52, fp);
+    fputc (0x4c, fp);
+    fputc (0x45, fp);
+    fputc (0x36, fp);
 
 /* Width = 400, Height = 400 (Intel Endian)*/
     fputc (144, fp);

@@ -11,6 +11,15 @@ feature -- Access
         Result >= 0
     end
 
+    serial_form: STRING is
+    local
+        s: SERIALIZER
+    do
+        s.serialize ("rr", <<x, y>>)
+        Result := s.serialized_form
+    end
+
+
 feature -- Operations
 
     move_to (other: POSITIONAL) is
@@ -42,6 +51,7 @@ feature -- Operations
     ensure
         is_approx (distance_to (other), (old distance_to(other) - dist).max (0))
     end
+
 
 feature {POSITIONAL, PROJECTION, MAP_GENERATOR} -- Position info
 

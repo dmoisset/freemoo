@@ -7,7 +7,7 @@ feature {NONE} -- Creation
     make is
     do
         !!stars.with_capacity (0, 1)
-        !!ships.make
+        !!fleets.with_capacity (0,1)
     end
 
 feature -- Access
@@ -15,17 +15,11 @@ feature -- Access
     stars: ARRAY [STAR]
         -- stars in the map, by id
 
-    ships: DICTIONARY [SHIP, INTEGER]
-        -- All the active ships, indexed by id
+    fleets: ARRAY [FLEET]
+        -- All the active fleets.  Need's handling methods like new_fleet,
+        -- maybe even a new class FLEET_LIST
 
 feature -- Operations
-
-    add_ship (item: SHIP) is
-        -- Add new ship
-    do
-        ships.put (item, next_id)
-        next_id := next_id + 1
-    end
 
 feature {MAP_GENERATOR} -- Generation
     set_stars (starlist:ARRAY[STAR]) is
@@ -35,13 +29,8 @@ feature {MAP_GENERATOR} -- Generation
         stars := starlist
     end
 
-feature {NONE} -- Representation
-
-    next_id: INTEGER
-        -- Id for the next ship to add
-
 invariant
     stars /= Void
-    ships /= Void
+    fleets /= Void
 
 end -- class GALAXY

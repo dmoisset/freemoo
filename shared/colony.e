@@ -24,6 +24,9 @@ feature -- Access
     location: PLANET
         -- location of the colony
 
+    owner: PLAYER
+        -- Player that controls the colony
+
 feature -- Constants
 
     product_none,

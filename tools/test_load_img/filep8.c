@@ -7,13 +7,13 @@ int main()
 
 
     FILE *fp;
-    fp = fopen ("p8.bmp", "w");
+    fp = fopen ("p8.fmi", "w");
 
 /* Magic Number 38474d49 */
-    fputc (0x38, fp);
-    fputc (0x47, fp);
-    fputc (0x4d, fp);
     fputc (0x49, fp);
+    fputc (0x4d, fp);
+    fputc (0x47, fp);
+    fputc (0x38, fp);
 
 /* Width = 640, Height = 480 (Intel Endian)*/
     fputc (128, fp);

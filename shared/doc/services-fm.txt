@@ -45,7 +45,7 @@ SCANNER
   Provided: Before game_status.started is set
   Descriptions: List of detected fleets for player n.
   Format: "i" <<count>>, followed by a sequence of
-          "irrii" <<owner, x, y, eta, destination, ships.count>>, and
+          "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
             "ii" <<size, picture>> (for each ship of the fleet)
   when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
   the fleet is travelling to `destination'
