@@ -62,7 +62,7 @@ feature -- Access
         Result:= ships.get_new_iterator_on_items
     end
 
-    splitted_fleet: FLEET
+    splitted_fleet: like Current
 
 feature -- Operations
 
@@ -90,6 +90,7 @@ feature -- Operations
         scanner_range := 0
     end
 
+--other: like Current?
     join (other: FLEET) is
         -- Join up with another fleet
     require
@@ -229,6 +230,7 @@ feature -- Operations
 
 feature {GALAXY} -- Scanning
 
+--alienfleet: like Current?
 	scan(alienfleet: FLEET; alienship: SHIP): BOOLEAN is
 		-- Returns true if this fleet picks up `alienship' with it's 
 		-- scanners.  `alienship' is part of `alienfleet'

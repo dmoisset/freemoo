@@ -59,4 +59,5 @@ feature {NONE} -- Internal
     fleet_type: S_FLEET
 
     star_type: S_STAR
+
 end -- class S_GAME

@@ -6,14 +6,12 @@ inherit
     FLEET
         redefine
             set_destination, add_ship, split, move,
-            splitted_fleet, join, clear_ships, orbit_center
+            join, clear_ships, orbit_center
         end
 
 creation make
 
 feature -- Redefined features
-
-    splitted_fleet: S_FLEET
 
     orbit_center: S_STAR
 
