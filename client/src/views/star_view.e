@@ -136,7 +136,7 @@ feature -- Effective features
         if model.has_info then
         -- Show info for an known system
             name_label.set_text("Star System " + model.name)
-            from ip := model.planets.get_new_iterator
+            from ip := model.get_new_iterator_on_planets
             until ip.is_off loop
                 planet := ip.item
                 if planet /= Void and then planet.type /= type_asteroids then
@@ -186,7 +186,7 @@ feature -- Redefined features
     -- Sun
                 suns.item(model.kind - kind_min).blit(cache, 157, 120)
     -- Orbits / Asteroid Fields
-                from ip := model.planets.get_new_iterator until ip.is_off loop
+                from ip := model.get_new_iterator_on_planets until ip.is_off loop
                     if ip.item /= Void then
                         i := ip.item.orbit
                         if ip.item.type = type_asteroids then
@@ -261,7 +261,7 @@ feature -- Redefined features
                 if m /= Void then
                     angle := ((m.y - 136.5) * 1.88).atan2(m.x - 173.5)
                     from
-                        ip := model.planets.get_new_iterator
+                        ip := model.get_new_iterator_on_planets
                         a := False
                         i := 0
                     until ip.is_off or a loop
@@ -486,7 +486,7 @@ feature {NONE} -- Internal
         i: INTEGER
     do
         from i := 1 until i > orbit loop
-            if model.planets @ i /= Void then Result := Result + 1 end
+            if model.planet_at (i) /= Void then Result := Result + 1 end
             i := i + 1
         end
     end

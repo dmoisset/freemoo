@@ -446,7 +446,7 @@ feature {NONE} -- Internal functions
         partial_r: RECTANGLE
         i: ITERATOR [PLANET]
     do
-        i := star.planets.get_new_iterator
+        i := star.get_new_iterator_on_planets
         -- Count howmany Colonies there are
         from i.start until i.is_off loop
             if i.item /= Void and then i.item.colony /= Void then

@@ -142,7 +142,7 @@ feature {NONE} -- Internal
     do
         s := galaxy.get_new_iterator_on_stars
         from s.start until s.is_off loop
-            p := s.item.planets.get_new_iterator
+            p := s.item.get_new_iterator_on_planets
             from p.start until p.is_off loop
                 if p.item /= Void and then p.item.colony /= Void then
                     p.item.colony.new_turn

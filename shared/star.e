@@ -18,10 +18,6 @@ feature -- Access
         -- star class: see `kind_*' constants. Determines color, and
         -- possibilities for having planets
 
-    planets: ARRAY [PLANET]
-        -- planets orbiting, from inner to outer orbit
-        -- has Void at empty orbits
-
     size: INTEGER
 
     special: INTEGER
@@ -30,6 +26,17 @@ feature -- Access
         -- Subset of galaxy's `fleets', containing fleets that orbit this star.
 
     Max_planets: INTEGER is 5
+
+    get_new_iterator_on_planets: ITERATOR [PLANET] is
+    do
+        Result := planets.get_new_iterator
+    end
+
+    planet_at (orbit: INTEGER): PLANET is
+    do
+        Result := planets @ orbit
+    end
+
 feature -- Operations on fleets
 
     add_ship (item: SHIP) is
@@ -122,6 +129,12 @@ feature {NONE} -- Creation
         size = s
         no_planets: planets.occurrences (Void) = Max_planets
     end
+
+feature {NONE} -- Representation
+
+    planets: ARRAY [PLANET]
+        -- planets orbiting, from inner to outer orbit
+        -- has Void at empty orbits
 
 invariant
     valid_kind: kind.in_range (kind_min, kind_max)
