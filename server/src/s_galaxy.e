@@ -63,9 +63,15 @@ feature -- Redefined features
             from
                 fleet := reading.get_new_iterator
             until fleet.is_off loop
-                s.serialize("oioi", <<fleet.item.owner, fleet.item.eta,
-                                    fleet.item.destination,
-                                    fleet.item.ship_count>>)
+                if fleet.item.destination /= Void then
+                    s.serialize("iiii", <<fleet.item.owner.id, fleet.item.eta,
+                                        fleet.item.destination.id,
+                                        fleet.item.ship_count>>)
+                else
+                    s.serialize("iiii", <<fleet.item.owner.id, fleet.item.eta,
+                                        fleet.item.orbit_center.id,
+                                        fleet.item.ship_count>>)
+                end
                 Result.append (s.serialized_form)
                 Result.append (fleet.item.serial_form)
                 from ship := fleet.item.get_new_iterator

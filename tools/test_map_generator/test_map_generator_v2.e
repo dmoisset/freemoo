@@ -6,6 +6,7 @@ inherit
     MAP_CONSTANTS
     PKG_USER
     STRING_FORMATTER
+    EASY_CLIENT
 
 creation {ANY}
     make
@@ -25,6 +26,10 @@ feature {ANY}
         it: ITERATOR[S_STAR]
         cstar: C_STAR
         font: FONT
+        colony: COLONY
+        fleet: FLEET
+        ship: SHIP
+        trout_connection: EASY_FM_CLIENT_CONNECTION
     do
         -- Setup Service Registry
         dsp_make
@@ -94,6 +99,25 @@ feature {ANY}
             it.next
             i := i + 1
         end
+
+        !!trout_connection.easy_make(plist, cgalaxy, plist @ "Hugo")
+        easy_set_server(trout_connection)
+
+        from it := sgalaxy.stars.get_new_iterator_on_items
+        until (it.item.planets @ 3) /= Void and then (it.item.planets @ 3).type = type_planet
+        loop it.next end
+        cstar := cgalaxy.stars @ it.item.id
+        !!colony.make(it.item.planets @ 3, plist @ "Hugo")
+        !!colony.make(cstar.planets @ 3, plist @ "Hugo")
+        !!fleet.make
+        fleet.set_owner(plist @ "Hugo")
+        fleet.enter_orbit (cstar)
+        !!ship.make
+        fleet.add_ship(ship)
+        sgalaxy.fleets.add(fleet, fleet.id)
+        sgalaxy.generate_scans(plist)
+        register(sgalaxy, (plist @ "Hugo").id.to_string + ":scanner")
+        subscribe(cgalaxy, (plist @ "Hugo").id.to_string + ":scanner")
 
         -- Main loop
         d.set_timer_interval (40)

@@ -17,7 +17,6 @@ feature {NONE} -- Creation
         -- build widget as view of `new_model'
     local
         a: FMA_FRAMESET
-        i, j: INTEGER
         r: RECTANGLE
     do
         -- To keep invariant while being added
@@ -30,26 +29,15 @@ feature {NONE} -- Creation
         -- Load images
         !!a.make ("client/galaxy-view/background.fma")
         background ?= a.images @ 1
-        !!pics.make (kind_min, kind_max, stsize_min, stsize_max + 3)
         r.set_with_size (0, 0, width, height)
+        -- Blackholes' window
         !!blackholes_window.make (Current, r)
+        -- Array of blackhole windows
         !!bh_windows.make (1, 0)
-        !!bh_anims.make (stsize_min, stsize_max + 3)
         font := create {BITMAP_FONT_FMI}.make ("client/galaxy-view/font2.fmi")
-
-        from j := stsize_min
-        until j > stsize_max + 3 loop
-            from i := kind_min
-            until i > kind_max loop
-                !!a.make ("client/galaxy-view/star" +
-                 (i - kind_min).to_string + (j - stsize_min).to_string + ".fma")
-                pics.put(a.images @ 1, i, j)
-                i := i + 1
-            end
-            bh_anims.put(create{ANIMATION_FMA_TRANSPARENT}.make("client/galaxy-view/star" +
-                 (kind_blackhole - kind_min).to_string + (j - stsize_min).to_string + ".fma"), j)
-            j := j + 1
-        end
+        -- Hotspots
+        !!fleet_hotspots.make
+        !!star_hotspots.make
         -- Update gui
         make_projs
         get_limits
@@ -136,19 +124,29 @@ feature -- Redefined features
 
     redraw (area: RECTANGLE) is
     local
-        i: ITERATOR[C_STAR]
+        star_it: ITERATOR[C_STAR]
+        fleet_it: ITERATOR[FLEET]
     do
         if dirty then
             dirty := False
             -- Initialize cache
             !!cache.make (width, height)
+            -- Initialize hotspots
             background.blit_fast (cache, 0, 0)
-            from i := model.stars.get_new_iterator_on_items
-            until i.is_off loop
-                if i.item.kind /= i.item.kind_blackhole then
-                    draw_star (i.item)
+            star_hotspots.clear
+            from star_it := model.stars.get_new_iterator_on_items
+            until star_it.is_off loop
+                if star_it.item.kind /= star_it.item.kind_blackhole then
+                    draw_star (star_it.item)
                 end
-                i.next
+                star_it.next
+            end
+            fleet_hotspots.clear
+            print("Here! " + model.fleets.count.to_string + "%N")
+            from fleet_it := model.fleets.get_new_iterator_on_items
+            until fleet_it.is_off loop
+                draw_fleet (fleet_it.item)
+                fleet_it.next
             end
         end
         show_image(cache, 0, 0, area)
@@ -200,9 +198,11 @@ feature {NONE} -- Redrawing
         current_projection.project(s)
         px := current_projection.x
         py := current_projection.y
-        img ?= pics.item(s.kind, s.size + zoom)
-        img.blit_fast (cache, (px - img.width / 2).rounded,
-                              (py - img.height / 2).rounded)
+        img ?= star_pics.item(s.kind, s.size + zoom)
+        r.set_with_size ((px - img.width / 2).rounded,
+                    (py - img.height / 2).rounded, img.width, img.height)
+        star_hotspots.add (r, s.id)
+        img.blit_fast (cache, r.x, r.y)
         if s.has_info then
             lwidth := font.width_of (s.name)
             lx := (px - lwidth / 2).rounded
@@ -213,6 +213,22 @@ feature {NONE} -- Redrawing
                 paint (r, s)
             end
         end
+    end
+
+    draw_fleet (f: FLEET) is
+    local
+        img: SDL_IMAGE -- fleet image
+        px, py: REAL -- projected fleet
+        r: RECTANGLE
+    do
+        current_projection.project(f)
+        px := current_projection.x
+        py := current_projection.y
+        img ?= fleet_pics.item(f.owner.color, zoom)
+        r.set_with_size ((px - img.width / 2 - 10).rounded,
+                    (py - img.height / 2 - 10).rounded, img.width, img.height)
+        fleet_hotspots.add (r, f.id)
+        img.blit_fast (cache, r.x, r.y)
     end
 
     draw_blackhole (s: STAR) is
@@ -233,38 +249,64 @@ feature {NONE} -- Redrawing
 
 feature {NONE} -- Event handlers
 
+    create_fleet_view(f: FLEET) is
+    local
+        r: RECTANGLE
+    do
+        if fleet_window /= Void and then children.fast_has(fleet_window) then
+            r := star_window.location
+            fleet_window.remove
+        else
+            r.set_with_size(10, 10, fleet_window_width, fleet_window_height)
+        end
+        if star_window /= Void and then children.fast_has (star_window) then
+            star_window.remove
+        end
+        -- `r' is a good place to put a view.
+        print("Not Yet Implemented%N")
+    end
+
     on_left_click (x, y: INTEGER) is
         -- Click on view, try to open a fleet or star window
     local
-        i: ITERATOR[C_STAR]
+        i: ITERATOR[RECTANGLE]
         found: BOOLEAN
         r: RECTANGLE
     do
-        from i := model.stars.get_new_iterator_on_items
+        from i := star_hotspots.get_new_iterator_on_items
         until i.is_off or found loop
-            current_projection.project(i.item)
-            if (current_projection.x - x).abs < 4 + 2 * (zoom + i.item.size - i.item.stsize_min)
-            and (current_projection.y - y).abs < 4 + 2 * (zoom + i.item.size - i.item.stsize_min)
-            and i.item.kind /= i.item.kind_blackhole then
+            if i.item.has(x, y) then
                 if star_window /= Void and then children.fast_has(star_window) then
                     r := star_window.location
                     star_window.remove
                 else
-                    if x > width / 2 then
-                        if y > height / 2 then
-                            r.set_with_size (10, 10, 347, 273)
-                        else
-                            r.set_with_size (10, (height - 283).max(10), 347, 273)
-                        end
-                    else
-                        if y > height / 2 then
-                            r.set_with_size ((width - 357).max(10), 10, 347, 273)
-                        else
-                            r.set_with_size ((width - 357).max(10), (height - 283).max(10), 347, 273)
-                        end
-                    end
+                    r.set_with_size(x, y, star_window_width, star_window_height)
+                    r := leave_visible(r)
                 end
-                !STAR_VIEW!star_window.make (Current, r, i.item)
+                if fleet_window /= Void and then children.fast_has(fleet_window) then
+                    fleet_window.remove
+                end
+                !STAR_VIEW!star_window.make (Current, r, model.stars @ (star_hotspots.fast_key_at(i.item)))
+                star_window.set_fleet_click_handler(agent create_fleet_view)
+                found := True
+            end
+            i.next
+        end
+        from i := fleet_hotspots.get_new_iterator_on_items
+        until i.is_off or found loop
+            if i.item.has(x, y) then
+                if fleet_window /= Void and then children.fast_has(fleet_window) then
+                    r := fleet_window.location
+                    fleet_window.remove
+                else
+                    r.set_with_size(x, y, fleet_window_width, fleet_window_height)
+                    r := leave_visible(r)
+                end
+                if star_window /= Void and then children.fast_has(star_window) then
+                    star_window.remove
+                end
+                --!FLEET_VIEW!fleet_window.make (Current, r, model.fleets @ (fleet_hotspots.fast_key_at(i.item)))
+                print("Habiendo estrellas la casa no se responsabiliza por hacer click en las flotas.%N")
                 found := True
             end
             i.next
@@ -288,10 +330,26 @@ feature {NONE} -- Event handlers
             current_projection.dy.min (gborder).max (height - limit_y - gborder))
     end
 
-feature {NONE} -- Internal
+feature {NONE} -- Internal functions
 
-    projs: ARRAY [PARAMETRIZED_PROJECTION]
-        -- Projections for different zoom levels
+    leave_visible(r: RECTANGLE): RECTANGLE is
+        -- Return a rectangle with the same width and height of `r',
+        -- but that if posible doesn't contain `r.x' and `r.y'
+    do
+        if r.x > width / 2 then
+            if r.y > height / 2 then
+                Result.set_with_size (10, 10, r.width, r.height)
+            else
+                Result.set_with_size (10, (height - r.height).max(10), r.width, r.height)
+            end
+        else
+            if r.y > height / 2 then
+                Result.set_with_size ((width - r.width).max(10), 10, r.width, r.height)
+            else
+                Result.set_with_size ((width - r.width).max(10), (height - r.height).max(10), r.width, r.height)
+            end
+        end
+    end
 
     current_projection: PARAMETRIZED_PROJECTION is
         -- Projection for current zoom level
@@ -311,38 +369,8 @@ feature {NONE} -- Internal
         limit_y := p.y
     end
 
-    limit_x, limit_y: REAL
-        -- Projected galaxy limit
-
-    background: SDL_IMAGE
-        -- View background
-
-    dirty: BOOLEAN
-    cache: SDL_IMAGE
-        -- View cache.
-
-    star_window: WINDOW
-        -- Window used to display a system
-
-    fleet_window: WINDOW
-        -- Window used to display a fleet
-
-    blackholes_window: WINDOW
-        -- Window for the blackholes
-
-    bh_windows: ARRAY [WINDOW]
-        -- List of blackhole windows
-
-    bh_anims: ARRAY [ANIMATION_FMA_TRANSPARENT]
-        -- Animations for the blackholes
-
-    pics: ARRAY2[IMAGE]
-        -- Pictures for the stars
-
-    font: SDL_BITMAP_FONT
-
     pals: ARRAY[ARRAY[INTEGER]] is
-    do
+    once
         !!Result.make(0, 8)
         Result.put(<<63488, 63488, 63488, 63488, 63488, 63488, 63488>>, 0)
         Result.put(<<50624, 50624, 50624, 50624, 50624, 50624, 50624>>, 1)
@@ -385,6 +413,95 @@ feature {NONE} -- Internal
         end
     end
 
+feature {NONE} -- Internal data
+
+    star_hotspots: DICTIONARY[RECTANGLE, INTEGER]
+        -- Stars' hotspots, generated in redraw
+
+    fleet_hotspots: DICTIONARY[RECTANGLE, INTEGER]
+        -- Fleets' hotspots, generated in redraw
+
+    projs: ARRAY [PARAMETRIZED_PROJECTION]
+        -- Projections for different zoom levels
+
+    limit_x, limit_y: REAL
+        -- Projected galaxy limit
+
+    background: SDL_IMAGE
+        -- View background
+
+    dirty: BOOLEAN
+    cache: SDL_IMAGE
+        -- View cache.
+
+    star_window: STAR_VIEW
+        -- Window used to display a system
+
+    fleet_window: WINDOW
+        -- Window used to display a fleet
+
+    blackholes_window: WINDOW
+        -- Window for the blackholes
+
+    bh_windows: ARRAY [WINDOW]
+        -- List of blackhole windows
+
+    bh_anims: ARRAY [ANIMATION_FMA_TRANSPARENT] is
+        -- Animations for the blackholes
+    local j: INTEGER
+    once
+        !!Result.make (stsize_min, stsize_max + 3)
+        from j := stsize_min
+        until j > stsize_max + 3 loop
+            Result.put(create{ANIMATION_FMA_TRANSPARENT}.make("client/galaxy-view/star" +
+                 (kind_blackhole - kind_min).to_string + (j - stsize_min).to_string + ".fma"), j)
+            j := j + 1
+        end
+    end
+
+    star_pics: ARRAY2[IMAGE] is
+        -- Pictures for the stars
+    local
+        i, j: INTEGER
+        a: FMA_FRAMESET
+    once
+        !!Result.make (kind_min, kind_max, stsize_min, stsize_max + 3)
+        from j := stsize_min
+        until j > stsize_max + 3 loop
+            from i := kind_min
+            until i > kind_max loop
+                !!a.make ("client/galaxy-view/star" +
+                 (i - kind_min).to_string + (j - stsize_min).to_string + ".fma")
+                Result.put(a.images @ 1, i, j)
+                i := i + 1
+            end
+            j := j + 1
+        end
+    end
+
+    fleet_pics: ARRAY2[IMAGE] is
+        -- Pictures for fleets
+    local
+        i, j: INTEGER
+        a: FMA_FRAMESET
+    once
+        check projs.lower = projs.upper - 3 end
+        !!Result.make (0, 7, projs.lower, projs.upper)
+        from i := 0
+        until i > 7 loop
+            from j := projs.lower
+            until j > projs.upper loop
+                !!a.make ("client/galaxy-view/fleet" +
+                 i.to_string + (j - projs.lower).to_string + ".fma")
+                Result.put(a.images @ 1, i, j)
+                j := j + 1
+            end
+            i := i + 1
+        end
+    end
+
+    font: SDL_BITMAP_FONT
+
 feature {NONE} -- Internal configuration and constants
 
     gborder: INTEGER is 20
@@ -415,6 +532,13 @@ feature {NONE} -- Internal configuration and constants
         p.scale ((3/2).to_real, (3/2).to_real)
         projs.put(p, 3)
     end
+
+    star_window_width: INTEGER is 347
+    star_window_height: INTEGER is 273
+        -- Star Window's dimensions
+
+    fleet_window_width: INTEGER is 42
+    fleet_window_height: INTEGER is 42
 
 invariant
     projs.valid_index (zoom)

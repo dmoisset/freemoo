@@ -1,6 +1,6 @@
 class EASY_PLAYER_LIST
 inherit
-    PLAYER_LIST[PLAYER]
+    C_PLAYER_LIST
         redefine add end
 
 creation

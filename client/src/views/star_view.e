@@ -37,6 +37,8 @@ feature {NONE} -- Creation
         r.set_with_size (15, 50, 310, 100)
         !!planet_label.make (Current, r, "")
         !!removable_children.make(1, 0)
+        -- Fleet hotspots
+        !!fleet_hotspots.make
         on_model_change
     end
 
@@ -62,6 +64,7 @@ feature -- Effective features
         -- Update gui
     local
         child: ITERATOR[WINDOW]
+        fleet: ITERATOR[FLEET]
         wa: WINDOW_ANIMATED
         msg_label: MULTILINE_LABEL
         button: BUTTON_PLANET
@@ -78,7 +81,20 @@ feature -- Effective features
             child.item.remove
             child.next
         end
+        -- Generate hotspots
+        fleet_hotspots.clear
+        from
+            fleet := model.fleets.get_new_iterator_on_items
+            i := 0
+        until fleet.is_off
+        loop
+            r.set_with_size(fleet_pic_firstx + i * (fleet_pic_width + fleet_pic_margin), fleet_pic_y, fleet_pic_width, fleet_pic_height)
+            fleet_hotspots.add (r, fleet.item.id)
+            fleet.next
+            i := i + 1
+        end
         if model.has_info then
+        -- Show info for an known system
             name_label.set_text("Star System " + model.name)
             from i := 1
             until i > 5 loop
@@ -102,6 +118,7 @@ feature -- Effective features
                 i := i + 1
             end
         else
+        --Show info for an unexplored system
             name_label.set_text("Star System Unexplored")
             r.set_with_size (58, 95, 240, 130)
             !!msg_label.make (Current, r, starmsgs @ model.kind)
@@ -117,10 +134,14 @@ feature -- Redefined features
     local
         tuple: TUPLE[INTEGER, INTEGER]
         i: INTEGER
+        fleet_it: ITERATOR[FLEET]
     do
+    -- Background
         show_image(background, 0, 0, r)
         if model.has_info then
+    -- Sun
             show_image(suns.item(model.kind - kind_min), 157, 120, r)
+    -- Orbits / Asteroid Fields
             from i := 1
             until i > 5 loop
                 if model.planets.item(i) /= Void then
@@ -132,6 +153,7 @@ feature -- Redefined features
                 end
                 i := i + 1
             end
+    -- Planets
             from i := 1
             until i > 5 loop
                 if model.planets.item(i) /= Void and then model.planets.item(i).colony /= Void then
@@ -140,6 +162,16 @@ feature -- Redefined features
                 end
                 i := i + 1
             end
+        end
+    -- Fleets
+        from
+            fleet_it := model.fleets.get_new_iterator_on_items
+            i := fleet_pic_firstx
+        until fleet_it.is_off
+        loop
+            show_image(fleets @ fleet_it.item.owner.color, i, fleet_pic_y, r)
+            i := i + (fleets @ fleet_it.item.owner.color).width + fleet_pic_margin
+            fleet_it.next
         end
         Precursor(r)
     end
@@ -151,12 +183,23 @@ feature -- Redefined features
         i: INTEGER
         x, y, angle: DOUBLE
         a: BOOLEAN
+        it: ITERATOR[RECTANGLE]
     do
         Precursor(event)
         if not event.handled then
             b ?= event
             if b /= Void then
                 event.set_handled
+                if b.button = 1 and not b.state then
+                    from it := fleet_hotspots.get_new_iterator_on_items
+                    until it.is_off
+                    loop
+                        if (it.item.has(b.x, b.y)) then
+                            fleet_click_handler.call([model.fleets @ (fleet_hotspots.key_at(it.item))])
+                        end
+                        it.next
+                    end
+                end
             else
                 m ?= event
                 if m /= Void and then not m.handled then
@@ -187,13 +230,16 @@ feature -- Redefined features
         end
     end
 
-feature -- Operations
-
 feature -- Controls
 
     set_planet_text (s: STRING) is
     do
         planet_label.set_text(s)
+    end
+
+    set_fleet_click_handler (p: PROCEDURE[ANY, TUPLE[FLEET]]) is
+    do
+        fleet_click_handler := p
     end
 
     enter_planet (p: PLANET) is
@@ -264,6 +310,20 @@ feature -- Once data
         from i := 0
         until i > 7 loop
             !!a.make("client/star-view/colony" + i.to_string + ".fma")
+            Result.put(a.images @ 1, i)
+            i := i + 1
+        end
+    end
+
+    fleets: ARRAY[IMAGE] is
+    local
+        i: INTEGER
+        a: FMA_FRAMESET
+    once
+        !!Result.make(0, 7)
+        from i := 0
+        until i > 7 loop
+            !!a.make("client/star-view/fleet" + i.to_string + ".fma")
             Result.put(a.images @ 1, i)
             i := i + 1
         end
@@ -344,10 +404,14 @@ feature {NONE} -- Callbacks
         print ("Not Yet Implemented%N")
     end
 
+    fleet_click_handler: PROCEDURE[ANY, TUPLE[FLEET]]
+
 feature {NONE} -- Internal
 
     removable_children: ARRAY[WINDOW]
         -- Child windows that will be removed on every on_model_change
+
+    fleet_hotspots: DICTIONARY[RECTANGLE, INTEGER]
 
     in_asteroid_field: BOOLEAN
         -- True when mouse pointer is inside asteroid field
@@ -385,6 +449,12 @@ feature {NONE} -- Internal constants
     xm: REAL is 1.88  -- x multiplier, x-y ratio for ellipse
     cx: REAL is 173.5 -- center x, x coordinate for center of view
     cy: REAL is 136.5 -- center y, y coordinate for center of view
+
+    fleet_pic_firstx: INTEGER is 20
+    fleet_pic_margin: INTEGER is 5
+    fleet_pic_y: INTEGER is 239
+    fleet_pic_width: INTEGER is 17
+    fleet_pic_height: INTEGER is 14
 
     roman: ARRAY[STRING] is
     once

@@ -50,43 +50,48 @@ feature -- Access
             from
                 alienfleet := fleets.get_new_iterator_on_items
             until alienfleet.is_off loop
-                if alienfleet.item.owner /= player then
             -- Find own closest asset, in parsecs.
             -- (Can be at negative distances, due to modifiers)
             -- (Currently doesn't consider any modifiers!)
-                    from ownfleet:=fleets.get_new_iterator_on_items
-                    until ownfleet.is_off loop
-                        closest := closest.min((ownfleet.item |-| alienfleet.item).rounded)
-                        ownfleet.next
-                    end
-                    from star := stars.get_new_iterator_on_items
-                    until star.is_off loop
-                        from planet := star.item.planets.get_new_iterator
-                        until planet.is_off loop
-                            if planet.item.colony /= Void and then planet.item.colony.owner = player then
-                                closest := closest.min((planet.item.orbit_center |-| alienfleet.item).rounded)
-                            end
-                            planet.next
+                from ownfleet:=fleets.get_new_iterator_on_items
+                until ownfleet.is_off loop
+                    closest := closest.min((ownfleet.item |-| alienfleet.item).rounded)
+                    ownfleet.next
+                end
+                from star := stars.get_new_iterator_on_items
+                until star.is_off loop
+                    from planet := star.item.planets.get_new_iterator
+                    until planet.is_off loop
+                        if planet.item /= Void and then planet.item.colony /= Void and then planet.item.colony.owner = player then
+                            closest := closest.min((planet.item.orbit_center |-| alienfleet.item).rounded)
                         end
-                        star.next
+                        planet.next
                     end
+                    star.next
+                end
             -- Determine which ships in alien fleet are detected, and report them
-                    from
-                        ships_detected := False
-                        ship:=alienfleet.item.get_new_iterator
-                    until ship.is_off loop
-                        if (not ship.item.is_stealthy) and (ship.item.size >= closest) then
-                            if not ships_detected then
-                                ships_detected := True
-                                !!fleet.make
-                            end
-                            fleet.add_ship(ship.item)
+                from
+                    ships_detected := False
+                    ship:=alienfleet.item.get_new_iterator
+                until ship.is_off loop
+                    if (not ship.item.is_stealthy) and (ship.item.size >= closest) then
+                        if not ships_detected then
+                            ships_detected := True
+                            !!fleet.make
                         end
-                        ship.next
+                        fleet.set_owner(alienfleet.item.owner)
+                        if alienfleet.item.is_stopped then
+                            fleet.enter_orbit(alienfleet.item.orbit_center)
+                        else
+                            fleet.set_destination(alienfleet.item.destination)
+                            fleet.set_eta(alienfleet.item.eta)
+                        end
+                        fleet.add_ship(ship.item)
                     end
-                    if ships_detected then
-                        Result.add_last(fleet)
-                    end
+                    ship.next
+                end
+                if ships_detected then
+                    Result.add_last(fleet)
                 end
                 alienfleet.next
             end

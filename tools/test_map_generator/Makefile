@@ -2,7 +2,8 @@ SmartEiffelDirectory=$(shell dirname $(shell dirname $(SmartEiffel)))
 TARGET=test_map_generator
 TARGET2=test_map_generator_v2
 SOURCEFILES=*.e ../../shared/*.e
-SOURCEFILES2=*.e ../../shared/*.e ../../client/src/views/*.e ../../client/src/widgets/*.e
+SOURCEFILES2=*.e ../../shared/*.e ../../server/src/*.e ../../client/src/*.e \
+     ../../client/src/views/*.e ../../client/src/widgets/*.e
 EIFFLAGS=-case_insensitive -high_memory_compiler
 LIBS=-L$(JEGL)/C -ljegl -lSDL_image `sdl-config --libs` -I../../client \
      $(SmartEiffelDirectory)/lib_ews/driver-sdl/C/driver-sdl.o \

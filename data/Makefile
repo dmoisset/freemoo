@@ -69,6 +69,38 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/galaxy-view/star02.fma \
                 $(INSTALL_DIR)/client/galaxy-view/star01.fma \
                 $(INSTALL_DIR)/client/galaxy-view/star00.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet00.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet01.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet02.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet03.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet10.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet11.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet12.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet13.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet20.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet21.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet22.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet23.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet30.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet31.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet32.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet33.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet40.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet41.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet42.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet43.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet50.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet51.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet52.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet53.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet60.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet61.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet62.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet63.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet70.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet71.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet72.fma \
+                $(INSTALL_DIR)/client/galaxy-view/fleet73.fma \
                 $(INSTALL_DIR)/client/galaxy-view/background.fma \
                 $(INSTALL_DIR)/client/star-view/background.fma \
                 $(INSTALL_DIR)/client/star-view/starmsgs.txt \
@@ -142,6 +174,14 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/star-view/asteroids.fma\
                 $(INSTALL_DIR)/client/star-view/gas-giant.fma\
                 $(INSTALL_DIR)/client/star-view/bracket.fma\
+                $(INSTALL_DIR)/client/star-view/fleet0.fma\
+                $(INSTALL_DIR)/client/star-view/fleet1.fma\
+                $(INSTALL_DIR)/client/star-view/fleet2.fma\
+                $(INSTALL_DIR)/client/star-view/fleet3.fma\
+                $(INSTALL_DIR)/client/star-view/fleet4.fma\
+                $(INSTALL_DIR)/client/star-view/fleet5.fma\
+                $(INSTALL_DIR)/client/star-view/fleet6.fma\
+                $(INSTALL_DIR)/client/star-view/fleet7.fma\
                 $(INSTALL_DIR)/client/player-status-view/light0.fma\
                 $(INSTALL_DIR)/client/player-status-view/light1.fma\
                 $(INSTALL_DIR)/client/player-status-view/light2.fma\

@@ -26,14 +26,17 @@ feature -- Access
 
     special: INTEGER
 
-feature -- Operations
+    fleets: DICTIONARY[FLEET, INTEGER]
+        -- Subset of galaxy's `fleets', containing fleets that orbit this star.
+
+feature -- Operations on fleets
 
     add_ship (item: SHIP) is
     do
 --        galaxy.add_ship (item)
     end
 
-feature -- Operations
+feature -- Operations on star system
     set_planet (newplanet: PLANET; orbit: INTEGER) is
     require
         newplanet /= Void
@@ -91,6 +94,7 @@ feature {NONE} -- Creation
         name := ""
         size := stsize_min
         !!planets.make (1, 5)
+        !!fleets.make
         special := stspecial_nospecial
     end
 
@@ -107,6 +111,7 @@ feature {NONE} -- Creation
         kind := k
         size := s
         !!planets.make (1, 5)
+        !!fleets.make
         special := stspecial_nospecial
     ensure
         distance_to (p) = 0

@@ -3,7 +3,10 @@ class
 
 inherit
     UNIQUE_ID
-    PLAYER
+    C_PLAYER
+	rename make as c_make
+    S_PLAYER
+	rename make as s_make
     PLAYER_CONSTANTS
 
 creation with_name
@@ -14,7 +17,7 @@ feature {NONE} -- Creation
         n /= Void
         c.in_range(min_color, max_color)
     do
-        make
+        player_make
         name := n
         color := c
         make_unique_id

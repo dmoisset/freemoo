@@ -2,6 +2,7 @@ class FLEET
     -- Group of SHIPs moving together
 
 inherit
+    UNIQUE_ID
     POSITIONAL
     ORBITING
 
@@ -158,6 +159,7 @@ feature {NONE} -- Creation
 
     make is
     do
+        make_unique_id
         !!ships.make
     end
 
@@ -189,6 +191,5 @@ invariant
     nonnegative_speed: current_speed >= 0
     nonnegative_eta: eta >= 0
     stopped_iff_not_travelling: is_stopped = (current_speed = 0)
-    stop_only_in_orbit: is_stopped implies is_in_orbit
 
 end -- class FLEET

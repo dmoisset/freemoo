@@ -55,7 +55,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     check p /= Void and p.id = pid end
             else
                 !!p.make (name)
-                p.set_id(id)
+                p.set_id(pid)
             end
             new_items.add (p, name)
             p.unserialize_from (newmsg)
