@@ -29,6 +29,7 @@ feature {NONE} -- Creation
             else
                 !ANIMATION_FMA_TRANSPARENT!a.make (argument (argument_count))
             end
+            print ("size="+a.width.to_string+"x"+a.height.to_string+"%N")
 
             !WINDOW_ANIMATED!w1.make (d.root, 0, 0, a)
 
@@ -39,8 +40,8 @@ feature {NONE} -- Creation
         else
             print ("Usage: fma_viewer [-t] <animation.fma>%N")
         end
---    rescue
---        if d /=Void then d.close end
+    rescue
+        if d /=Void then d.close end
     end
 
 end -- class FMA_VIEWER
