@@ -151,7 +151,7 @@ feature -- Redefined features
     on_new_package (ptype: INTEGER) is
         -- Handle incoming packages
     local
-        ir: INTEGER_REF
+        ir: reference INTEGER
         s: SERIALIZER
     do
         inspect
@@ -169,7 +169,7 @@ feature -- Redefined features
                 is_joining := False
                 s.unserialize ("i", buffer)
                 ir ?= s.unserialized_form @ 1
-                join_reject_cause := ir.item
+                join_reject_cause := ir
             else -- package arrived and shouldn't. Ignore
                 std_error.put_string (l("Warning: received unrequested Join-Reject%N"))
             end

@@ -36,12 +36,12 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         pid: reference INTEGER
         p: C_PLAYER
         s: SERIALIZER
-        ir: INTEGER_REF
+        ir: reference INTEGER
     do
         newmsg := msg
 
         s.unserialize ("i", newmsg)
-        ir ?= s.unserialized_form @ 1; left := ir.item
+        ir ?= s.unserialized_form @ 1; left := ir
         newmsg := newmsg.substring (s.used_serial_count+1, newmsg.count)
 
 --FIXME: make in-place instead of creating a new list

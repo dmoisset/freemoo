@@ -23,7 +23,7 @@ feature {NONE} -- Creation
 
         r.set_with_size (75, 75, 150, 25)
         !!title_label.make (Current, r, "Connected to ~1~")
-        title_label.set_alignment (0, 0.5)
+        title_label.set_h_alignment (0)
 
         r.set_with_size (75, 100, 235, 175)
         new_player_list (r)

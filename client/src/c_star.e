@@ -31,7 +31,7 @@ feature {SERVICE_PROVIDER} -- Redefined features
         -- Action when `msg' arrives from `provider''s `service'
     local
         newmsg: STRING
-        ir: INTEGER_REF
+        ir: reference INTEGER
         pcount: INTEGER
         new_planets: ARRAY[PLANET]
         planet: PLANET
@@ -44,7 +44,7 @@ feature {SERVICE_PROVIDER} -- Redefined features
         s.unserialize ("si", newmsg)
         name ?= s.unserialized_form @ 1
         ir ?= s.unserialized_form @ 2
-        pcount := ir.item
+        pcount := ir
         newmsg.remove_first(s.used_serial_count)
         !!new_planets.make (1, 5)
         -- If I could be sure that planets come in ascending orbit, I'd edit
@@ -53,24 +53,24 @@ feature {SERVICE_PROVIDER} -- Redefined features
         from until pcount = 0 loop
             s.unserialize ("iiiiiii", newmsg)
             ir ?= s.unserialized_form @ 7
-            orbit := ir.item
+            orbit := ir
             if (planets @ orbit) /= Void then
                 planet := planets@orbit
             else
                 !!planet.make_standard(Current)
             end
             ir ?= s.unserialized_form @ 1
-            planet.set_size (ir.item + plsize_min)
+            planet.set_size (ir + plsize_min)
             ir ?= s.unserialized_form @ 2
-            planet.set_climate (ir.item + climate_min)
+            planet.set_climate (ir + climate_min)
             ir ?= s.unserialized_form @ 3
-            planet.set_mineral (ir.item + mnrl_min)
+            planet.set_mineral (ir + mnrl_min)
             ir ?= s.unserialized_form @ 4
-            planet.set_gravity (ir.item + grav_min)
+            planet.set_gravity (ir + grav_min)
             ir ?= s.unserialized_form @ 5
-            planet.set_type (ir.item + type_min)
+            planet.set_type (ir + type_min)
             ir ?= s.unserialized_form @ 6
-            planet.set_special (ir.item + plspecial_min)
+            planet.set_special (ir + plspecial_min)
             planet.set_orbit (orbit)
             new_planets.put(planet, orbit)
             pcount := pcount - 1

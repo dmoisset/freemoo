@@ -31,7 +31,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         new_stars: ARRAY[C_STAR]
         new_fleets: ARRAY[FLEET]
         newmsg: STRING
-        ir: INTEGER_REF
+        ir: reference INTEGER
         id, count, shipcount: INTEGER
         s: SERIALIZER
         owner: PLAYER
@@ -43,7 +43,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             limit.unserialize_from(msg)
             s.unserialize("i", msg)
             ir ?= s.unserialized_form @ 1
-            count := ir.item
+            count := ir
             newmsg := msg
             newmsg.remove_first(s.used_serial_count)
             !!new_stars.with_capacity (count,1)
@@ -51,7 +51,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 s.unserialize("iii", newmsg)
                 newmsg.remove_first(s.used_serial_count)
                 ir ?= s.unserialized_form @ 1
-                id := ir.item
+                id := ir
                 if idmap.has(id) then
                     star ?= idmap @ id
                 else
@@ -59,9 +59,9 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     idmap.put(star, id)
                 end
                 ir ?= s.unserialized_form @ 2
-                star.set_kind(ir.item + star.kind_min)
+                star.set_kind(ir + star.kind_min)
                 ir ?= s.unserialized_form @ 3
-                star.set_size(ir.item + star.stsize_min)
+                star.set_size(ir + star.stsize_min)
                 star.unserialize_from (newmsg)
                 new_stars.force(star, count)
                 count := count - 1
@@ -71,7 +71,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         elseif service.has_suffix(":scanner") then
             s.unserialize("i", msg)
             ir ?= s.unserialized_form @ 1
-            count := ir.item
+            count := ir
             newmsg := msg.substring(s.used_serial_count + 1, newmsg.count)
             !!new_fleets.with_capacity (count,1)
             from until count = 0 loop
@@ -82,22 +82,22 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 fleet.set_owner(owner)
                 ir ?= s.unserialized_form @ 2
                 star ?= s.unserialized_form @ 3
-                if ir.item = 0 then
+                if ir = 0 then
                     fleet.set_orbit_center (star)
                 else
                     fleet.set_destination (star)
                 end
-                fleet.set_eta(ir.item)
+                fleet.set_eta(ir)
                 fleet.unserialize_from(newmsg)
                 new_fleets.put(fleet, count)
                 ir ?= s.unserialized_form @ 4
-                from shipcount := ir.item until shipcount = 0 loop
+                from shipcount := ir until shipcount = 0 loop
                     s.unserialize("ii", newmsg)
                     !!ship.make
                     ir ?= s.unserialized_form @ 1
-                    ship.set_size(ir.item)
+                    ship.set_size(ir)
                     ir ?= s.unserialized_form @ 2
-                    ship.set_picture(ir.item)
+                    ship.set_picture(ir)
                     newmsg.remove_first(s.used_serial_count)
                     shipcount := shipcount - 1
                 end

@@ -36,38 +36,38 @@ feature {NONE} -- Creation
             r.set_with_size (2, 2, 100, 20)
         until i > a.upper loop
             !!tag.make (Current, r, a @ i)
-            tag.set_alignment (0, 0)
+            tag.set_h_alignment (0)
             r.translate (0, 20)
             i := i + 1
         end
 
         r.set_with_size (110, 2, 100, 20)
         !!open_slots.make (Current, r, "")
-        open_slots.set_alignment (0, 0)
+        open_slots.set_h_alignment (0)
 
         r.translate (0, 20)
         !!size.make (Current, r, "")
-        size.set_alignment (0, 0)
+        size.set_h_alignment (0)
 
         r.translate (0, 20)
         !!age.make (Current, r, "")
-        age.set_alignment (0, 0)
+        age.set_h_alignment (0)
 
         r.translate (0, 20)
         !!tech.make (Current, r, "")
-        tech.set_alignment (0, 0)
+        tech.set_h_alignment (0)
 
         r.translate (0, 20)
         !!tactical_combat.make (Current, r, "")
-        tactical_combat.set_alignment (0, 0)
+        tactical_combat.set_h_alignment (0)
 
         r.translate (0, 20)
         !!random_events.make (Current, r, "")
-        random_events.set_alignment (0, 0)
+        random_events.set_h_alignment (0)
 
         r.translate (0, 20)
         !!antarans.make (Current, r, "")
-        antarans.set_alignment (0, 0)
+        antarans.set_h_alignment (0)
 
         -- Update gui
         on_model_change
