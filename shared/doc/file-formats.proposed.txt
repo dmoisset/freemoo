@@ -127,10 +127,10 @@ ANIMATIONS (.FMA)
   There are several variants of animation files. All of them start with a
   magic number indicating its format. Valid magic numbers are:
   
-  38474d49   Plain image file (8-bit w/colorkey)
-  36474d49   Plain image file (16-bit+8-bit alpha)
-  38454c52   RLE-compressed image (8-bit w/colorkey)
-  36454c52   RLE-compressed image (16-bit+8 bit alpha)
+  38494e41   Plain animation file (8-bit)
+  36494e41   Plain animation file (16-bit+8-bit alpha)
+  38414c52   RLE-compressed animation (8-bit)
+  36414c52   RLE-compressed animation (16-bit+8 bit alpha)
   
   Note that the magic numbers allow detection of incorrect endianness.  
 
