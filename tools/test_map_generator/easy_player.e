@@ -4,9 +4,9 @@ class
 inherit
     UNIQUE_ID
     C_PLAYER
-	rename make as c_make
+	rename make as c_make, add_to_known_list as foo end
     S_PLAYER
-	rename make as s_make
+	rename make as s_make end
     PLAYER_CONSTANTS
 
 creation with_name

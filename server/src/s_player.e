@@ -42,7 +42,7 @@ feature -- Operations
     do
         -- Check to avoid updates on initialization
         if registry /= Void then
-            send_message ("player"+id.to_string, subscription_message (""))
+            send_message ("player" + id.to_string, subscription_message ("player" + id.to_string))
         end
     end
 
@@ -68,17 +68,25 @@ feature -- Redefined features
 
     subscription_message (service_id: STRING): STRING is
     local
+        serv_id: STRING
         s: SERIALIZER
         i: ITERATOR [STAR]
     do
-        !!Result.make (0)
-        s.serialize ("i", <<knows_star.count>>)
-        Result.append (s.serialized_form)
-        i := knows_star.get_new_iterator
-        from i.start until i.is_off loop
-            s.serialize ("i", <<i.item.id>>)
-            Result.append (s.serialized_form)
-            i.next
+-- Validate service_id
+        if service_id.has_prefix("player") then
+            !!serv_id.copy(service_id)
+            serv_id.remove_prefix("player")
+            if serv_id.is_integer and then serv_id.to_integer = id then
+                !!Result.make (0)
+                s.serialize ("i", <<knows_star.count>>)
+                Result.append (s.serialized_form)
+                i := knows_star.get_new_iterator
+                from i.start until i.is_off loop
+                    s.serialize ("i", <<i.item.id>>)
+                    Result.append (s.serialized_form)
+                    i.next
+                end
+            end
         end
     end
 

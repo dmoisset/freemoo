@@ -2,9 +2,11 @@ class S_GALAXY
 
 inherit
     GALAXY
-        redefine stars, set_stars, make, create_star end
+        redefine stars, set_stars, make, create_star, create_fleet, add_fleet end
     SERVICE
         redefine subscription_message end
+    SERVER
+        rename make as server_make end
 
 creation make
 
@@ -31,11 +33,11 @@ feature -- Redefined features
         star: ITERATOR [S_STAR]
         reading: ARRAY [FLEET]
         fleet: ITERATOR [FLEET]
-        ship: ITERATOR [SHIP]
     do
 -- If first subscription to `service_id', add to `ids'
-        ids.add(service_id)
-
+        if not service_id.has_suffix(":new_fleets") then
+            ids.add(service_id)
+        end
         if service_id.is_equal("galaxy") then
 -- Public "galaxy" service
             !!Result.make (0)
@@ -63,28 +65,55 @@ feature -- Redefined features
             from
                 fleet := reading.get_new_iterator
             until fleet.is_off loop
-                if fleet.item.destination /= Void then
-                    s.serialize("iiii", <<fleet.item.owner.id, fleet.item.eta,
-                                        fleet.item.destination.id,
-                                        fleet.item.ship_count>>)
-                else
-                    s.serialize("iiii", <<fleet.item.owner.id, fleet.item.eta,
-                                        fleet.item.orbit_center.id,
-                                        fleet.item.ship_count>>)
-                end
-                Result.append (s.serialized_form)
-                Result.append (fleet.item.serial_form)
-                from ship := fleet.item.get_new_iterator
-                until ship.is_off loop
-                    s.serialize("ii", <<ship.item.size, ship.item.picture>>)
-                    Result.append (s.serialized_form)
-                    ship.next
-                end
+                Result.append (fleet.item.serialized_as_fleet)
                 fleet.next
             end
+        elseif service_id.has_suffix(":new_fleets") then
+            !!Result.make(0)
+            id := 0
+            s.serialize("i", <<id>>)
+            Result.append(s.serialized_form)
         else
             check unexpected_service_id: False end
         end
+    end
+
+    new_fleet_message(new_fleets: ARRAY[FLEET]): STRING is
+    -- Message sent for the <n>+":new_fleets" service
+    local
+        s: SERIALIZER
+        it: ITERATOR[FLEET]
+    do
+        !!s
+        !!Result.make(0)
+        s.serialize("i", <<new_fleets.count>>)
+        Result.append(s.serialized_form)
+        from
+            it := new_fleets.get_new_iterator
+        until
+            it.is_off
+        loop
+            s.serialize("i", <<it.item.id>>)
+            Result.append(s.serialized_form)
+            it.next
+        end
+    end
+
+    add_fleet(new_fleet: FLEET) is
+    local
+        s_new_fleet: S_FLEET
+        farray: ARRAY[S_FLEET]
+    do
+        s_new_fleet ?= new_fleet
+        check s_new_fleet /= Void end
+        fleets.add(s_new_fleet, s_new_fleet.id)
+        if s_new_fleet.orbit_center /= Void then
+            s_new_fleet.orbit_center.fleets.add(s_new_fleet, s_new_fleet.id)
+        end
+        !!farray.make(0, 0)
+        farray.put(s_new_fleet, 0)
+        server.register(s_new_fleet, "fleet" + s_new_fleet.id.to_string)
+        send_message(s_new_fleet.owner.id.to_string + ":new_fleets", new_fleet_message (farray))
     end
 
 feature {MAP_GENERATOR} -- Generation
@@ -103,6 +132,11 @@ feature -- Redefined factory method
     create_star:S_STAR is
     do
         !!Result.make_defaults
+    end
+
+    create_fleet:S_FLEET is
+    do
+        !!Result.make
     end
 
 feature -- Access

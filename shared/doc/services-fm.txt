@@ -44,7 +44,7 @@ FLEET
   the fleet is travelling to `destination'
 
 PLAYER
-  Name: "player"+id (id is a digit sequence = player_id) 
+  Name: "player"+id (id is a digit sequence = player.id) 
   Provided: Before game_status.started is set
   Description: Detailed player description
   Format: "i" <<count>, followed by a sequence of
@@ -70,8 +70,8 @@ TURN SUMMARY
           event_explored: "i" <<id>>, id of explored star.
           event_finished_production: "iis" <<id, kind, name>>, id of colony; product kind; name when it is a ship.
 
-OWN FLEETS
-  Name: n":own_fleets"
+NEW FLEETS
+  Name: n+":new_fleets" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
   Description: List of id's of new fleets to add.
   Format: "i" <<count>>, followed by a sequence of

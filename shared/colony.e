@@ -65,11 +65,9 @@ feature -- Operations
         when product_colony_ship then
             !COLONY_SHIP!sh.make
         end
--- This should add to the local fleet. Fix
---        if sh /= Void then -- Ship produced
---            location.add_ship (sh)
---            sh.enter_orbit (location.orbit_center)
---        end
+        if sh /= Void then -- Ship produced
+            shipyard := sh
+        end
     end
 
 feature -- Operations
@@ -81,6 +79,19 @@ feature -- Operations
     ensure
         producing = newproducing
     end
+
+    clear_shipyard is
+        -- Clear the shipyard
+    do
+        shipyard := Void
+    ensure
+        shipyard = Void
+    end
+
+feature -- Access
+
+    shipyard: SHIP
+        -- Placeholder for last built ship.  Game should come and fetch it.
 
 invariant
     valid_producing: producing.in_range (product_min, product_max)

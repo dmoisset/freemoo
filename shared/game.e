@@ -127,7 +127,7 @@ feature -- Operations
 feature {NONE} -- Internal
 
     map_generator: MAP_GENERATOR
-    
+
     evolver: EVOLVER
 
     options: SERVER_OPTIONS
@@ -137,6 +137,8 @@ feature {NONE} -- Internal
     local
         s: ITERATOR [STAR]
         p: ITERATOR [PLANET]
+        f: ITERATOR [FLEET]
+        fleet: FLEET
     do
         s := galaxy.stars.get_new_iterator_on_items
         from s.start until s.is_off loop
@@ -144,6 +146,21 @@ feature {NONE} -- Internal
             from p.start until p.is_off loop
                 if p.item /= Void and then p.item.colony /= Void then
                     p.item.colony.new_turn
+                    if p.item.colony.shipyard /= Void then
+                        from f := s.item.fleets.get_new_iterator_on_items
+                        until f.is_off or else f.item.owner = p.item.colony.owner
+                        loop f.next end
+                        if not f.is_off then
+                            f.item.add_ship(p.item.colony.shipyard)
+                        else
+                            fleet := galaxy.create_fleet
+                            fleet.set_owner(p.item.colony.owner)
+                            fleet.enter_orbit(p.item.orbit_center)
+                            fleet.add_ship(p.item.colony.shipyard)
+                            galaxy.add_fleet(fleet)
+                        end
+                        p.item.colony.clear_shipyard
+                    end
                 end
                 p.next
             end

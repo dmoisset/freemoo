@@ -4,6 +4,9 @@ class FLEET
 inherit
     UNIQUE_ID
     POSITIONAL
+        rename serial_form as serialized_as_positional,
+            unserialize_from as unserialize_as_positional
+    end
     ORBITING
 
 creation
@@ -56,6 +59,28 @@ feature -- Access
         Result:= ships.get_new_iterator
     end
 
+    serialized_as_fleet: STRING is
+    local
+        s: SERIALIZER
+        ship: ITERATOR[SHIP]
+    do
+        !!Result.make(0)
+        if destination /= Void then
+            s.serialize("iiii", <<owner.id, eta, destination.id, ship_count>>)
+        else
+            s.serialize("iiii", <<owner.id, eta, orbit_center.id, ship_count>>)
+        end
+	print("Sending <<" + owner.id.to_string + ", " + eta.to_string + ", " + orbit_center.id.to_string + ", " + ship_count.to_string + ">>%N")
+        Result.append (s.serialized_form)
+        Result.append (serialized_as_positional)
+        from ship := get_new_iterator
+        until ship.is_off loop
+            s.serialize("ii", <<ship.item.size, ship.item.picture>>)
+            Result.append (s.serialized_form)
+            ship.next
+        end
+    end
+
 feature -- Operations
 
     add_ship (ship: SHIP) is
@@ -83,6 +108,35 @@ feature -- Operations
     ensure
         ship_count >= old ship_count
         ship_count <= old ship_count + other.ship_count
+    end
+
+    split(shs: SET[SHIP]): FLEET is
+        -- Removes `ships' from current fleet, and returns a fleet with
+        -- those ships from `ships' that were in Current, and the same
+        -- `owner', `orbit_center', `destination' and `eta' as Current.
+    require
+        shs /= Void
+    local
+        ship: ITERATOR[SHIP]
+    do
+        !!Result.make
+        Result.set_orbit_center(orbit_center)
+        Result.set_destination(destination)
+        Result.set_eta(eta)
+        Result.set_owner(owner)
+        from ship := shs.get_new_iterator
+        until ship.is_off
+        loop
+            if has_ship(ship.item) then
+                remove_ship(ship.item)
+                Result.add_ship(ship.item)
+            end
+            ship.next
+        end
+    ensure
+        same_fleet: (Result.eta = eta) and (Result.owner = owner) and
+                    (Result.destination = destination) and (Result.orbit_center = orbit_center)
+        ship_conservation: Result.ship_count + ship_count = old ship_count
     end
 
     enter_orbit (star: STAR) is

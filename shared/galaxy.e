@@ -78,13 +78,13 @@ feature -- Access
                         if not ships_detected then
                             ships_detected := True
                             !!fleet.make
-                        end
-                        fleet.set_owner(alienfleet.item.owner)
-                        if alienfleet.item.is_stopped then
-                            fleet.enter_orbit(alienfleet.item.orbit_center)
-                        else
-                            fleet.set_destination(alienfleet.item.destination)
-                            fleet.set_eta(alienfleet.item.eta)
+                            fleet.set_owner(alienfleet.item.owner)
+                            if alienfleet.item.is_stopped then
+                                fleet.enter_orbit(alienfleet.item.orbit_center)
+                            else
+                                fleet.set_destination(alienfleet.item.destination)
+                                fleet.set_eta(alienfleet.item.eta)
+                            end
                         end
                         fleet.add_ship(ship.item)
                     end
@@ -120,10 +120,28 @@ feature -- Operations
         end
     end
 
-feature -- Factory method for stars
+    add_fleet (new_fleet: FLEET) is
+    require
+        new_fleet /= Void
+        not fleets.has(new_fleet.id)
+    do
+        fleets.add(new_fleet, new_fleet.id)
+        if new_fleet.orbit_center /= Void then
+            new_fleet.orbit_center.fleets.add(new_fleet, new_fleet.id)
+        end
+    ensure
+        fleets.has(new_fleet.id)
+    end
+
+feature -- Factory methods
     create_star:STAR is
     do
         !!Result.make_defaults
+    end
+
+    create_fleet:FLEET is
+    do
+        !!Result.make
     end
 
 feature {MAP_GENERATOR} -- Generation

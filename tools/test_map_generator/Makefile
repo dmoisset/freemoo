@@ -7,7 +7,8 @@ SOURCEFILES2=*.e ../../shared/*.e ../../server/src/*.e ../../client/src/*.e \
 EIFFLAGS=-case_insensitive -high_memory_compiler
 LIBS=-L$(JEGL)/C -ljegl -lSDL_image `sdl-config --libs` -I../../client \
      $(SmartEiffelDirectory)/lib_ews/driver-sdl/C/driver-sdl.o \
-     ../../client/src/C/img_loader.o 
+     ../../client/src/C/img_loader.o -leifinet \
+
 
 all: $(TARGET) $(TARGET2)
 

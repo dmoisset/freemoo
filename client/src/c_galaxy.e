@@ -6,11 +6,13 @@ class C_GALAXY
 inherit
     CLIENT
     GALAXY
-        redefine make, stars, set_stars, fleets end
+        redefine make, stars, set_stars, fleets, add_fleet end
     MODEL
         redefine notify_views end
     VIEW [C_STAR]
         rename on_model_change as on_star_change end
+    VIEW [C_FLEET]
+        rename on_model_change as on_fleet_change end
     SUBSCRIBER
 
 creation
@@ -35,6 +37,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             unpack_galaxy_message(msg)
         elseif service.has_suffix(":scanner") then
             unpack_scanner_message(msg)
+        elseif service.has_suffix(":new_fleets") then
+            unpack_new_fleets_message(msg)
         else
             check unexpected_message: False end
         end
@@ -130,9 +134,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 else
                     fleet.set_destination (stars @ ir.item)
                 end
-                fleet.unserialize_from(newmsg)
+                fleet.unserialize_as_positional(newmsg)
                 new_fleets.add(fleet, fleet.id)
                 ir ?= s.unserialized_form @ 4
+	print("Recieved <<" + fleet.owner.id.to_string + ", " + fleet.eta.to_string + ", " + fleet.orbit_center.id.to_string + ", " + ir.item.to_string + ">>%N")
                 from shipcount := ir.item until shipcount = 0 loop
                     s.unserialize("ii", newmsg)
                     !!ship.make
@@ -142,13 +147,39 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     ship.set_picture(ir.item)
                     newmsg.remove_first(s.used_serial_count)
                     shipcount := shipcount - 1
+                    fleet.add_ship(ship)
                 end
                 count := count - 1
             end
         end
-            check new_fleets /= Void end
+        check new_fleets /= Void end
         fleets := new_fleets
         notify_views
+    end
+
+    unpack_new_fleets_message(msg: STRING) is
+    local
+        remainder: STRING
+        s: SERIALIZER
+        ir: INTEGER_REF
+        i: INTEGER
+        fleet: C_FLEET
+    do
+        !!remainder.copy(msg)
+        s.unserialize("i", remainder)
+        remainder.remove_first(s.used_serial_count)
+        ir ?= s.unserialized_form @ 1
+        from i := ir.item
+        until i = 0 loop
+            s.unserialize("i", remainder)
+            ir ?= s.unserialized_form @ 1
+            !!fleet.make
+            fleet.set_owner(server.player)
+            fleet.set_id(ir.item)
+            add_fleet(fleet)
+            fleet.add_view(Current)
+            i := i - 1
+        end
     end
 
 feature -- Redefined features
@@ -166,11 +197,28 @@ feature -- Redefined features
         notify_views
     end
 
+    add_fleet(new_fleet: C_FLEET) is
+    do
+        fleets.add(new_fleet, new_fleet.id)
+        if new_fleet.orbit_center /= Void then
+            new_fleet.orbit_center.fleets.add(new_fleet, new_fleet.id)
+        end
+        server.subscribe(new_fleet, "fleet" + new_fleet.id.to_string)
+    end
+
 feature -- Redefined features
 
     on_star_change is
         -- Stars changed
     do
+        changed_stardata := True
+        notify_views
+    end
+
+    on_fleet_change is
+        -- Stars changed
+    do
+        changed_starlist := True
         changed_stardata := True
         notify_views
     end

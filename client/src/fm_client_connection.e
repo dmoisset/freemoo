@@ -89,6 +89,7 @@ feature -- Operations
     do
         subscribe (galaxy, "galaxy")
         subscribe (galaxy, player.id.to_string+":scanner")
+        subscribe (galaxy, player.id.to_string+":new_fleets")
         subscribe (player, "player"+player.id.to_string)
     end
 
