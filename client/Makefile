@@ -16,6 +16,10 @@ $(TARGET): $(SOURCEFILES) gtk_interface
 	$(BUILD1) -o $(TARGET) $(TARGET) $(EIFFLAGS) $(LIBS)
 	$(BUILD2) -o $(TARGET) $(TARGET).c $(LIBS)
 
+dumb_client: $(SOURCEFILES)
+	$(BUILD1) -o dumb_client dumb_client $(EIFFLAGS) -leifinet
+	$(BUILD2) -o dumb_client dumb_client.c -leifinet
+
 check: $(SOURCEFILES)
 	veglade gui.glade
 	compile_to_c $(TARGET) $(EIFFLAGS)
