@@ -58,7 +58,7 @@ feature {NONE} -- Creation
         s.get_integer
         shipcount := s.last_integer
         unserialize_from (s) -- Position
-        print("Received <<" + owner.id.to_string + ", " + eta.to_string + ", " + orbit_center.id.to_string + ", " + s.last_integer.to_string + ">>%N")
+--        print("Received <<" + owner.id.to_string + ", " + eta.to_string + ", " + orbit_center.id.to_string + ", " + s.last_integer.to_string + ">>%N")
         ships.clear
         from until shipcount = 0 loop
             !!ship.make(owner)

@@ -13,6 +13,7 @@ class FLEET_VIEW
 	 
 inherit
 	 VIEW[C_FLEET]
+	 CLIENT
 	 WINDOW
 	 rename make as window_make
 	 redefine redraw, handle_event end
@@ -111,20 +112,9 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
 		cancel_trajectory_selection_handler := p
 	end
 
-	send_selection_to(s: INTEGER) is
-	local
-		i: ITERATOR[SHIP]
+	send_selection_to(s: STAR) is
 	do
-		print("Ships ")
-		from
-			i := fleet_selection.get_new_iterator
-		until
-			i.is_off
-		loop
-			print(i.item.id.to_string + ", ")
-			i.next
-		end
-		print("scooting off to " + s.to_string + "%N")
+		server.move_fleet(model, s, fleet_selection)
 	end
 	
 feature {NONE} -- Callbacks

@@ -291,7 +291,7 @@ feature {NONE} -- Event handlers
 		i := xy_search(star_hotspots, x, y)
 		if not i.is_off then
 			if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
-				fleet_window.send_selection_to(star_hotspots.fast_key_at(i.item))
+				fleet_window.send_selection_to(model.stars @ (star_hotspots.fast_key_at(i.item)))
 			else
 				if star_window /= Void and then children.fast_has(star_window) then
 					r := star_window.location
