@@ -6,6 +6,7 @@ inherit
             make;
     MAP_CONSTANTS
     MAP_PROBABILITIES
+    PKG_USER
 
 creation
     make
@@ -176,6 +177,7 @@ feature {NONE} -- Position Generation
 
 
 feature {NONE} -- Name Generation
+
     generate_names: ARRAY[STRING] is
     local
         file: TEXT_FILE_READ
@@ -184,25 +186,29 @@ feature {NONE} -- Name Generation
     do
         !!Result.with_capacity (starcount, 1)
         !!buffer.make (1, 0)
-        from
-            !!file.connect_to("../../data/starnames.txt")
-        until
-            file.end_of_input
-        loop
+
+        pkg_system.open_file ("galaxy/starnames.txt")
+        file := pkg_system.last_file_open
+            check starnames_file_exists: file /= Void end
+
+        -- Load star names
+        from until file.end_of_input loop
             file.read_line
             buffer.add_last (clone(file.last_string))
         end
-        from
-        until
-            Result.count = starcount
-        loop
-            rand.next
-            index := rand.last_integer (831) + 13
-            if not Result.has (buffer.item (index)) then
-                Result.add_last(buffer.item (index))
-            end
-        end
         file.disconnect
+
+        -- Set star names
+            check enough_names: buffer.count >= (13+starcount) end
+            check buffer.count = buffer.upper end -- Assumed below
+        from until Result.count = starcount loop
+            rand.next
+            index := rand.last_integer (buffer.count-13) + 13
+            Result.add_last(buffer.item (index))
+            -- Remove used starname
+            buffer.swap (index, buffer.upper)
+            buffer.remove_last
+        end
     end
 
 feature {NONE} -- Planet Generation

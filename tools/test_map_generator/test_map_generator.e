@@ -5,6 +5,7 @@ inherit
     J_SCREEN_ACCESS
     J_CONSTANTS
     MAP_CONSTANTS
+    PKG_USER
 
 creation {ANY}
     make
@@ -52,6 +53,7 @@ feature {ANY}
         plist: EASY_PLAYER_LIST
     do
         init
+        pkg_system.make_with_config_file ("freemoo.conf")
         !!options.make
         options.parse_add ("galaxysize = huge")
         options.parse_add ("galaxyage = average")
