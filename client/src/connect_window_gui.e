@@ -41,7 +41,7 @@ feature {NONE} -- Creation
             create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-p.png"),
             create {SDL_IMAGE}.make_from_file ("../data/client/connect-window/connect-button-d.png")
             )
-        quit_button.set_click_handler (agent destroy)
+        quit_button.set_click_handler (agent quit)
 
         r.set_with_size (48, 350, 300, 25)
         !!status_label.make(Current, r,
@@ -71,7 +71,7 @@ feature {NONE} -- Callbacks
     connect is
     deferred end
 
-    destroy is
+    quit is
     deferred end
 
     delete_event is

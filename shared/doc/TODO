@@ -1,7 +1,6 @@
 - Convertir de GTK a EWS -- TERMINADO
     - falta portar flag_view, y poner seleccion de color
     - el ruler name no se usa nunca
-    - algunas cosas se manejan por polling c/timers, hacer eventos
 - Ciclar new_turn
 - Administracion de colonias y de flotas
 

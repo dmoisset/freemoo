@@ -16,12 +16,12 @@ feature -- Redefined features
 
     handle_event (event:EVENT) is
     local
-        t: EVENT_TIMER
+        n: EVENT_NETWORK
     do
         Precursor (event)
-        t ?= event
-        if t/= Void and on_timer_enabled then
-            on_timer
+        n ?= event
+        if n /= Void then
+            on_network
         end
     end
 
@@ -44,7 +44,6 @@ feature -- Operations
         show
         join_button.show
         joining := False
-        on_timer_enabled := True
     end
 
 feature {NONE} -- Callbacks
@@ -53,8 +52,6 @@ feature {NONE} -- Callbacks
         -- Close and hide window
     do
         hide
-        on_timer_enabled := False
-        display.add_event (create {EVENT_QUIT})
     end
 
     join is
@@ -77,9 +74,7 @@ feature {NONE} -- Callbacks
         destroy
     end
 
-    on_timer_enabled: BOOLEAN
-
-    on_timer is
+    on_network is
     do
         if not server.is_closed then
             if server.is_joined then

@@ -84,11 +84,13 @@ feature -- Operations
 
     close is
     do
-        if subscribed_to (game_status, "game_status") then
-            unsubscribe (game_status, "game_status")
-        end
-        if subscribed_to (player_list, "players_list") then
-            unsubscribe (player_list, "players_list")
+        if not remote_close then
+            if subscribed_to (game_status, "game_status") then
+                unsubscribe (game_status, "game_status")
+            end
+            if subscribed_to (player_list, "players_list") then
+                unsubscribe (player_list, "players_list")
+            end
         end
         is_joining := False
         is_joined := False

@@ -29,11 +29,13 @@ feature -- Redefined features
 
     handle_event (event:EVENT) is
     local
-        t: EVENT_TIMER
+        n: EVENT_NETWORK
     do
         Precursor (event)
-        t ?= event
-        if t/= Void then on_timer end
+        n ?= event
+        if n /= Void then
+            on_network_event
+        end
     end
 
 feature {NONE} -- Callbacks
@@ -54,10 +56,9 @@ feature {NONE} -- Callbacks
     do
         hide
 --        flag_viewer.widget.hide
-        display.add_event (create {EVENT_QUIT})
     end
 
-    on_timer is
+    on_network_event is
         -- Check network
     do
         if server.is_closed or not server.is_joined or server.game_status.started then

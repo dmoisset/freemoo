@@ -27,11 +27,16 @@ feature -- Redefined features
     handle_event (event:EVENT) is
     local
         t: EVENT_TIMER
+        n: EVENT_NETWORK
     do
         Precursor (event)
         t ?= event
-        if t/= Void and on_timer_enabled then
+        if t /= Void and on_timer_enabled then
             on_timer
+        end
+        n ?= event
+        if n /= Void then
+            on_network
         end
     end
 
@@ -57,8 +62,14 @@ feature {NONE} -- Callbacks
     do
         if state=st_waiting_info then
             server.close
+            set_state (st_disconnected)
         end
         hide
+    end
+
+    quit is
+    do
+        destroy
         display.add_event (create {EVENT_QUIT})
     end
 
@@ -94,27 +105,28 @@ feature {NONE} -- Callbacks
 
     on_timer is
         -- wait for network data, update info and move progress indicator.
-    local
-        dummy: INTEGER
+    require
+        state = st_connecting
     do
+        if server.is_opening then
+            if tolerant_wait_connection then
+                do_nothing
+            end
+        elseif server.is_closed then
+            set_state (st_disconnected)
+            on_timer_enabled := False
+            status_label.set_text (l("Connection failed."))
+        end
+    end
+
+    on_network is
+    do
+        on_timer_enabled := False
         inspect
             state
         when st_connecting then
-            if server.is_opening then
-                if tolerant_wait_connection then
-                    do_nothing
-                end
-                status_bar.activity
-            elseif server.is_closed then
-                set_state (st_disconnected)
-                status_label.set_text (l("Connection failed."))
-            else
-                set_state (st_waiting_info)
-                dummy := init_netevent_thread (server.socketfd)
-            end
+            set_state (st_waiting_info)
         when st_waiting_info then
-            status_bar.activity
--- This could be network-event driven
             if server.has ("game_status") and
                server.has ("players_list") then
                 set_state (st_connected)
@@ -124,11 +136,7 @@ feature {NONE} -- Callbacks
                 set_state (st_disconnected)
                 status_label.set_text (l("Connection failed."))
             end
-        when st_disconnected then
-            dummy := stop_netevent_thread
-            on_timer_enabled := False
-        when st_connected then
-            on_timer_enabled := False
+        else
         end
     end
 
@@ -174,18 +182,6 @@ feature {NONE} -- Internal
     rescue
         Result := True
         retry
-    end
-
-feature {NONE} -- External
-
-    init_netevent_thread (fd: INTEGER): INTEGER is
-    external "C"
-    ensure Result = 0
-    end
-
-    stop_netevent_thread: INTEGER is
-    external "C"
-    ensure Result = 0
     end
 
 invariant

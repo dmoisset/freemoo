@@ -2,7 +2,7 @@ class CONNECTION_INDICATOR
 
 inherit
     WINDOW
-    redefine make end
+    redefine make, handle_event end
 
 creation make
 
@@ -23,6 +23,19 @@ feature -- Access
 
     active: BOOLEAN
         -- True iff the indicator is active
+
+feature -- Redefined features
+
+    handle_event (event: EVENT) is
+    local
+        t: EVENT_TIMER
+    do
+        Precursor (event)
+        t ?= event
+        if active and t /= Void then
+            activity
+        end
+    end
 
 feature -- Operations
 
@@ -62,12 +75,14 @@ feature {NONE} -- Representation
     items: ARRAY [STRING] is
     once
         Result := <<" ",
-                    "**   ",
-                    " **  ",
-                    "  ** ",
-                    "   **",
-                    "  ** ",
-                    " **  "
+                    "**    ",
+                    " **   ",
+                    "  **  ",
+                    "   ** ",
+                    "    **",
+                    "   ** ",
+                    "  **  ",
+                    " **   "
                     >>
     end
 

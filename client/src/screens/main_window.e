@@ -18,19 +18,17 @@ feature -- Redefined_features
     handle_event (event: EVENT) is
     local
         s: EVENT_SDL_CUSTOM
-        t: EVENT_TIMER
+        n: EVENT_NETWORK
     do
-        Precursor (event)
         s ?= event
         if s /= Void and then s.sdl_event.type=sdl_network_event then
-            s.set_handled
-            on_network_event
+            on_network_data
+            event.set_handled
         end
-        t ?= event
-        if t /= Void and not at_on_timer then
-            at_on_timer := True
-            on_timer
-            at_on_timer := False
+        Precursor (event)
+        n ?= event
+        if n /= Void then
+            on_network_event
         end
     end
 
@@ -38,7 +36,7 @@ feature {NONE} -- Callbacks
 
     sdl_network_event: INTEGER is 25
 
-    on_network_event is
+    on_network_data is
     do
         -- Move bits
         if server /= Void and then not server.is_closed then
@@ -47,36 +45,54 @@ feature {NONE} -- Callbacks
         end
     end
 
-    at_on_timer: BOOLEAN
-
-    on_timer is
+    on_network_event is
     do
-        -- Ask server if disconnected
-        if server = Void or else server.is_closed then
-            connection_window.activate
-            display.do_event_loop
-        end
-        -- Ask login if not logged
-        if server = Void or else server.is_closed then
-            display.add_event (create {EVENT_QUIT})
-        elseif not server.is_joined then
-            join_window.activate
-            display.do_event_loop
-        end
-        -- Setup if not ready
-        if server /= Void and then
-           server.is_joined and then not server.game_status.started then
-            setup_window.activate
-            display.do_event_loop
+        inspect state
+        when st_offline then
+            if not connection_window.visible then
+                connection_window.activate
+            end
+        when st_connected then
+            if not join_window.visible then
+                join_window.activate
+            end
+        when st_joined then
+            if not setup_window.visible then
+                 setup_window.activate
+            end
+        else
         end
     end
 
 feature -- Operations
 
     activate is
+    require
+        server = Void
     do
         show
+        on_network_event
     end
+
+feature {NONE} -- Internal
+
+    state: INTEGER is
+    do
+        if server = Void or else server.is_closed or else
+               not server.has ("game_status") or else
+               not server.has ("players_list") then
+            Result := st_offline
+        elseif not server.is_joined then
+            Result := st_connected
+        elseif not server.game_status.started then
+            Result := st_joined
+        else
+            Result := st_playing
+        end
+    end
+
+    st_offline, st_connected, st_joined,
+    st_playing: INTEGER is unique
 
 feature {NONE} -- Dialogs 
 
