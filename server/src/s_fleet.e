@@ -4,21 +4,16 @@ inherit
     SERVICE
         redefine subscription_message end
     FLEET
-        redefine set_destination, add_ship, splitted_fleet end
+        redefine
+            set_destination, add_ship, split, move,
+            splitted_fleet
+        end
 
 creation make
 
 feature -- Redefined features
 
     splitted_fleet: S_FLEET
-
-    set_destination (dest: STAR) is
-    do
-        Precursor (dest)
-        if registry /= Void then
-            update_clients
-        end
-    end
 
     subscription_message (service_id: STRING): STRING is
         -- Complete information of fleet, with info about ships and
@@ -44,16 +39,36 @@ feature -- Redefined features
         Result := s.serialized_form
     end
 
-    update_clients is
+    set_destination (dest: STAR) is
     do
-        send_message("fleet" + id.to_string, subscription_message("fleet" + id.to_string))
+        Precursor (dest)
+        update_clients
     end
 
     add_ship(sh: SHIP) is
     do
         Precursor(sh)
+        update_clients
+    end
+
+    split (shs: SET [SHIP]) is
+    do
+        Precursor (shs)
+        update_clients
+    end
+    
+    move is
+    do
+        Precursor
+        update_clients
+    end
+    
+feature {NONE} -- Internal
+
+    update_clients is
+    do
         if registry /= Void then
-            update_clients
+            send_message("fleet" + id.to_string, subscription_message("fleet" + id.to_string))
         end
     end
 

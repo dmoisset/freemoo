@@ -147,9 +147,16 @@ feature {NONE} -- Internal
                 if p.item /= Void and then p.item.colony /= Void then
                     p.item.colony.new_turn
                     if p.item.colony.shipyard /= Void then
-                        from f := s.item.fleets.get_new_iterator_on_items
-                        until f.is_off or else f.item.owner = p.item.colony.owner
-                        loop f.next end
+                        from
+                            f := s.item.fleets.get_new_iterator_on_items
+                        until
+                            f.is_off or else 
+                            (f.item.owner = p.item.colony.owner and
+                             f.item.destination = Void
+                            )
+                        loop
+                            f.next
+                        end
                         if not f.is_off then
                             f.item.add_ship(p.item.colony.shipyard)
                         else

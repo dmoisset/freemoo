@@ -145,6 +145,8 @@ feature -- Operations
     require
         is_in_orbit
     do
+-- FIXME: DANGER! Abstraction breach -- code yellow
+        orbit_center.fleets.remove (id)
         orbit_center := Void
     ensure
         not is_in_orbit
