@@ -1,0 +1,113 @@
+Tutorial for using the package system
+-------------------------------------
+
+The package system allows access to a large set of files with a
+subdirectory-like hierarchy. Those files could be really stored in
+subdirectories, or packaged into bigger files. The system interface is
+the same no matter which format is used.
+
+The only format supported now is direct use of OS subdirectories.
+
+There are to ways to write code that uses the package system: inheritance
+and clientship.
+
+Using through inheritance
+-------------------------
+
+You can write a class inheriting from PKG_USER. That provides you with a
+feature called `pkg_system'. The most useful features from pkg_system
+are:
+
+    feature -- Operations
+
+        open_file (path: STRING) is
+            -- Open file at `path'. I successful, store result in `last_file_open'
+            -- If not, store Void in `last_file_open'
+        require
+            path /= Void
+    
+        ensure
+            last_file_open = Void or else last_file_open.is_connected
+        end
+
+Use this feature when you need access to a file. It creates an input
+stream connected to a file and stores it in `last_file_open' (see
+below). When it's not possible to open the file, it stores Void into
+`last_file_open'.
+
+    feature -- Access
+
+        last_file_open: TEXT_FILE_READ
+            -- Last file opened by `open_file'
+
+This feature is the last file opened by `open_file', Void when there is
+an open error.
+
+This is a simple class that uses the package system through inheritance
+[not tested]
+
+class SOME_CLASS
+
+inherit PKG_USER
+
+creation
+    make
+    
+feature
+    make is
+    local
+        f: TEXT_FILE_READ
+    do
+        pkg_system.open_file ("some_path/some_file.txt")
+        f := pkg_system.last_file_open
+        if f/= Void then
+            f.read_line
+            print ("read: "+f.last_line)
+            -- ... some other code using f as any other INPUT_STREAM
+            f.disconnect
+        else
+            print ("Error opening file%N")
+        end
+    end
+
+end -- class SOME_CLASS
+
+Using through clientship
+------------------------
+
+Usage is similar, but declaring a local feature of type PKG_USER, for example
+
+make is
+local
+    p: PKG_USER
+    f: INPUT_STREAM
+do
+    p.pkg_system.open_file ("something/something_else")
+    f := p.pkg_system.last_file_open
+    -- blah blah ... Don't forget to disconnect f
+end
+
+Other features
+--------------
+
+Before using pkg_system you might want to configure it. Configuration
+indicates the directories where files and packages are found. By
+default, the package system looks for files/packages in the current
+working directory ("."). You can change that calling:
+
+    make_with_paths (paths: COLLECTION [STRING]) is
+        -- Init with `paths' as package search dirs
+        -- Can be used to reconfigure search dirs after creation
+
+This method (called by pkg_system.make_with_paths(...) ), configures the
+package system with the paths indicated in its parameter. Old
+configuration is overwritten.
+
+    make_with_config_file (filename: STRING) is
+        -- Load path list from `filename'
+        -- Empty path list if can not open
+
+This method (called by pkg_system.make_with_config_file (...) ),
+configures the package system with the paths stored in the file
+indicated by its parameter. The config file must be a text file with one
+path in each line. Old configuration is overwritten. 
