@@ -68,7 +68,7 @@ feature {ANY}
         !!d.make (640, 480, 16, False)
         !!c.make (create {IMAGE_FMI}.make_from_file("client/gui/default_cursor.fmi"), 6, 4)
         d.root.set_pointer (c)
-        !SDL_BITMAP_FONT!font.make("../../data/client/gui/default_font.png")
+        !BITMAP_FONT_FMI!font.make("client/gui/default_font.fmi")
         d.set_default_font(font)
 
 

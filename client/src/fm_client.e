@@ -18,9 +18,8 @@ feature {NONE} -- Creation
         !!display.make (640, 480, 16, False)
         display.set_timer_interval (40)
         sdl.enable_keyboard_repeat (250, 50)
--- Load font form package, fonts should be shared
-        display.set_default_font (create {SDL_BITMAP_FONT}.make
-            ("../data/client/gui/default_font.png"))
+        display.set_default_font (create {BITMAP_FONT_FMI}.make
+            ("client/gui/default_font.fmi"))
 
         display.root.set_pointer (create {MOUSE_POINTER}.make (
             create {IMAGE_FMI}.make_from_file ("client/gui/default_cursor.fmi"),
