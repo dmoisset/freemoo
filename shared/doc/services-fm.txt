@@ -31,8 +31,25 @@ GALAXY
   Provided: Before game_status.started is set
   Description: Global galaxy map (star positions and colors)
   Format: "i" <<count>>, followed by sequence of
-          "iii" <<x, y, color>>
-  
+          "iiirr" <<id, kind, size, x, y>>
+
+STAR
+  Name: "star"+id (id is a digit sequence = star_id) 
+  Provided: Before adding star id to player's set of known star ids
+  Description: Full star description (star name, planet info)
+  Format: "si" <<name, planets.count>>, followed by a sequence of
+          "iiiiiii" <<size, climate, minerals, gravity, type, special, orbit>>
+
+SENSORS
+  Name: n+"sensor" (n is a digit sequence = color_id)
+  Provided: Before game_status.started is set
+  Descriptions: List of detected fleets for player n.
+  Format: "i" <<count>>, followed by a sequence of
+          "irrii" <<owner, x, y, eta, destination, ships.count>>, and
+            "ii" <<size, picture>> (for each ship of the fleet)
+  when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
+  the fleet is travelling to `destination'
+
 SERVICE
   Name: "name"
   Provided: 

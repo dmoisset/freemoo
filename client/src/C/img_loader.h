@@ -25,4 +25,18 @@ INTEGER load_img_rle16 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h) ;
  */
 SDL_Surface *FMI_Load(const char* filename);
 
+typedef struct {
+    int count ;
+    int loopstart ;
+    SDL_Surface **items ;
+    int *x ;
+    int *y ;
+} FMA_t ;
+
+FMA_t *load_anim (FILE *f) ;
+
+/* Frees x, y & items (_not_ *items) */
+void free_FMA (FMA_t *anim) ;
+
+
 #endif
