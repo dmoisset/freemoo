@@ -24,15 +24,15 @@ feature -- Operations
         -- text processed
     local
         s: SERIALIZER
-        ir: INTEGER_REF
-        br: BOOLEAN_REF
+        ir: reference INTEGER
+        br: reference BOOLEAN
     do
         s.unserialize ("isiib", serial)
         -- Ignore ID
         name ?= s.unserialized_form @ 2
-        ir ?= s.unserialized_form @ 3; set_state (ir.item)
-        ir ?= s.unserialized_form @ 4; set_color (ir.item)
-        br ?= s.unserialized_form @ 5; connected := br.item
+        ir ?= s.unserialized_form @ 3; set_state (ir)
+        ir ?= s.unserialized_form @ 4; set_color (ir)
+        br ?= s.unserialized_form @ 5; connected := br
 
         serial.remove_first (s.used_serial_count)
     end

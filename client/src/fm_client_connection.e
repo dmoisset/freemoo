@@ -8,6 +8,7 @@ inherit
         close
     end
     PROTOCOL
+    PLAYER_CONSTANTS
     GETTEXT
 
 creation
@@ -97,6 +98,7 @@ feature -- Operations
     do
         s.serialize ("b", <<multiple>>)
         send_package (msgtype_turn, s.serialized_form)
+        player_list.set_player_state (player, st_waiting_turn_end)
     end
 
     close is

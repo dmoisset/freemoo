@@ -4,7 +4,7 @@ class S_GAME_STATUS
 inherit
     GAME_STATUS
     redefine
-        fill_slot, start, finish
+        fill_slot, start, finish, next_date
     end
     SERVICE
     redefine subscription_message end
@@ -18,9 +18,10 @@ feature -- Redefined features
     local
         s: SERIALIZER
     do
-        s.serialize ("ibbiiibbb", <<open_slots, finished, started,
+        s.serialize ("ibbiiibbbi", <<open_slots, finished, started,
                      galaxy_size, galaxy_age, start_tech_level,
-                     tactical_combat, random_events, antaran_attacks>>)
+                     tactical_combat, random_events, antaran_attacks,
+                     date>>)
         Result := s.serialized_form
     end
 
@@ -43,6 +44,12 @@ feature -- Operations
     end
 
     finish is
+    do
+        Precursor
+        update_clients
+    end
+
+    next_date is
     do
         Precursor
         update_clients

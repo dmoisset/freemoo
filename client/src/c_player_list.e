@@ -44,7 +44,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         ir ?= s.unserialized_form @ 1; left := ir.item
         newmsg := newmsg.substring (s.used_serial_count+1, newmsg.count)
 
---FIXME: make in-place instade of creating a new list
+--FIXME: make in-place instead of creating a new list
         !!new_items.make
         from until left = 0 loop
             -- Get name
@@ -53,9 +53,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             name ?= s.unserialized_form @ 2
             if idmap.has (pid) then
                 p ?= idmap @ pid
-                    check p /= void end
+                    check p /= Void end
             else
                 !!p.make (name)
+                idmap.add (p, pid)
             end
             new_items.add (p, name)
             p.unserialize_from (newmsg)

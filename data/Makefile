@@ -17,6 +17,7 @@ INSTALL_TARGETS=$(INSTALL_DIR)/galaxy/starnames.txt \
                 $(INSTALL_DIR)/client/join-window/background.fmi \
                 $(INSTALL_DIR)/client/setup-window/background.fmi \
                 $(INSTALL_DIR)/client/main-window/background.fma \
+                $(INSTALL_DIR)/client/main-window/turn-button.fma \
                 $(INSTALL_DIR)/client/galaxy-view/star12.fma \
                 $(INSTALL_DIR)/client/galaxy-view/star11.fma \
                 $(INSTALL_DIR)/client/galaxy-view/star10.fma \

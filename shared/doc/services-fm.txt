@@ -7,9 +7,10 @@ GAME STATUS
             until connection close
   Description: rules of the server and basic status of the game. Note that
                this service does not requires authentication.
-  Format: "ibbiiibbb", <<open_slots, finished, started,
+  Format: "ibbiiibbbi", <<open_slots, finished, started,
                         galaxy_size, galaxy_age, start_tech_level,
-                        tactical_combat, random_events, antaran_attacks>>
+                        tactical_combat, random_events, antaran_attacks,
+                        date>>
 
 PLAYERS LIST
   Name: "players_list"

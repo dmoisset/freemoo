@@ -26,4 +26,18 @@ feature {NONE} -- Widgets
         !!galaxy.make (Current, where, server.galaxy)
     end
 
+    new_date (where: RECTANGLE) is
+    local
+        v: DATE_VIEW
+    do
+        !!v.make (Current, where, server.game_status)
+    end
+
+feature {NONE} -- Callbacks
+
+    end_turn is
+    do
+        server.end_turn (False)
+    end
+
 end -- class MAIN_WINDOW
