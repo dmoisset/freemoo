@@ -42,36 +42,42 @@ feature -- Access
         Result := ships.count
     end
 
-    has_ship (ship: SHIP): BOOLEAN is
-        -- is ship in fleet?
+    has_ship (sid: INTEGER): BOOLEAN is
+        -- fleet has a ship with id `sid'?
     do
-        Result := ships.has(ship)
-    ensure
-        Result implies ship_count > 0
+        Result := ships.has (sid)
     end
-
+    
+    ship (sid: INTEGER): SHIP is
+        -- Ship in this fleet with id `sid'
+    require
+        has_ship (sid)
+    do
+        Result := ships @ sid
+    end
+    
     get_new_iterator: ITERATOR[SHIP] is
         -- Returns an iterator on the fleet's ships
     do
-        Result:= ships.get_new_iterator
+        Result:= ships.get_new_iterator_on_items
     end
 
 feature -- Operations
 
-    add_ship (ship: SHIP) is
-        -- Add ship to fleet
+    add_ship (s: SHIP) is
+        -- Add `s' to fleet
     do
-        ships.add(ship)
+        ships.put (s, s.id)
     ensure
-        has_ship(ship)
+        has_ship (s.id)
     end
 
-    remove_ship(ship:SHIP) is
-        -- Remove ship from fleet
+    remove_ship (s: SHIP) is
+        -- Remove `s' from fleet
     do
-        ships.remove(ship)
+        ships.remove(s.id)
     ensure
-        not has_ship(ship)
+        not has_ship(s.id)
     end
 
     join (other: FLEET) is
@@ -207,7 +213,8 @@ feature {NONE} -- Internal
 
 feature {FLEET} -- Representation
 
-    ships: SET[SHIP]
+    ships: DICTIONARY [SHIP, INTEGER]
+        -- Ships, indexed by id
 
 invariant
     orbiting_really_here: is_in_orbit implies distance_to (orbit_center) = 0

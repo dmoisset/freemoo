@@ -28,7 +28,7 @@ feature {NONE} -- Creation
         s: UNSERIALIZER
         it: ITERATOR[PLAYER]
         shipcount: INTEGER
-        ship: SHIP
+        sh: SHIP
     do
         !!s.start (msg)
         s.get_integer
@@ -61,13 +61,13 @@ feature {NONE} -- Creation
 --        print("Received <<" + owner.id.to_string + ", " + eta.to_string + ", " + orbit_center.id.to_string + ", " + s.last_integer.to_string + ">>%N")
         ships.clear
         from until shipcount = 0 loop
-            !!ship.make(owner)
+            !!sh.make(owner)
             s.get_integer
-            ship.set_size(s.last_integer)
+            sh.set_size(s.last_integer)
             s.get_integer
-            ship.set_picture(s.last_integer)
+            sh.set_picture(s.last_integer)
             shipcount := shipcount - 1
-            add_ship(ship)
+            add_ship(sh)
         end
         notify_views
     end
