@@ -21,7 +21,7 @@ feature {NONE} -- Utililty functions
         from
             k := probs.lower
         until k > probs.upper loop
-            a.put ([k-probs.lower+min, probs @ k], k)
+            a.put ([probs @ k, k-probs.lower+min], k)
             k := k + 1
         end
         !!Result.make (a)
@@ -56,8 +56,8 @@ feature {NONE} -- Star constants
     star_sizes: FINITE_PTABLE [INTEGER] is
         -- Probability of a star being a certain size.
     once
-        Result := create_int_ptable (stsize_big, stsize_small,
-            <<290, 445, 265>>)
+        Result := create_int_ptable (stsize_small, stsize_big,
+            <<265, 445, 290>>)
     end
 
 feature {NONE} -- Planet Constants

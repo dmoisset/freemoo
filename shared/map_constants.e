@@ -3,8 +3,8 @@ class MAP_CONSTANTS
 
 feature -- Constants
 
-    kind_blackhole, kind_bluewhite, kind_orange,
-    kind_red, kind_white, kind_brown, kind_yellow: INTEGER is unique
+    kind_blackhole, kind_bluewhite, kind_white, kind_yellow,
+    kind_orange, kind_red, kind_brown: INTEGER is unique
         -- Possible values for a star's `kind'
 
     kind_min: INTEGER is
@@ -16,7 +16,7 @@ feature -- Constants
     kind_max: INTEGER is
         -- Maximum value for a star's `kind'
     once
-        Result := kind_yellow
+        Result := kind_brown
     end
 
     kind_names: DICTIONARY[STRING, INTEGER] is
@@ -156,19 +156,19 @@ feature -- Constants
     end
 
 
-    type_planet, type_gasgiant, type_asteroids: INTEGER is unique
+    type_asteroids, type_gasgiant, type_planet: INTEGER is unique
         -- Possible values for a planet's `type'
 
     type_min: INTEGER is
         -- Minimum value for a planet's `type'
     once
-        Result := type_planet
+        Result := type_asteroids
     end
 
     type_max: INTEGER is
         -- Maximum value for a planet's `type'
     once
-        Result := type_asteroids
+        Result := type_planet
     end
 
     type_names: DICTIONARY[STRING, INTEGER] is
