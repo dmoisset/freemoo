@@ -14,8 +14,10 @@
 static int loadPalette (SDL_RWops *src, Uint32 *palette)
 {
     Uint32 palfing;            /* Finger into palette */
-    Uint8 palcount[2];         /* dummy byte + palette count */
+    Uint8 palcount[2];         /* transparent flag + palette count */
 
+    Uint32 usedcolor[257];
+    Uint16 i ;
 
 /* Load Palette Count */
     if (SDL_RWread (src, palcount, 1, 2) != 2)
@@ -24,11 +26,19 @@ static int loadPalette (SDL_RWops *src, Uint32 *palette)
         return 1;
     }
 
+    for (i = 0; i <= 256; i++) usedcolor[i] = 0 ;
 /* Load Palette */
     for (palfing = 0; palfing <= palcount[1]; palfing++)
     {
-        SDL_RWread(src, &palette[palfing], 1, 2);
-        palette[palfing] = (palette[palfing] << 8) + 255;
+        Uint16 color ;
+        SDL_RWread(src, &color, 1, 2);
+        palette[palfing] = color ;
+        if (color<257)
+            usedcolor[color] = 1 ;
+    }
+    if (palcount[0]) { /* Transparent image */
+        for (i=0; usedcolor[i]; i++) ;
+        palette[0xff] = i ;
     }
     return 0;
 }
@@ -42,8 +52,7 @@ static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, 
            offset = 0;          /* Absolute offset within s->pixels */
 
     /* Set Surface flags */
-    SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, 0) ;
-    SDL_SetAlpha (s, 0, 255) ;
+    SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
 
 /* Load file into buffer */
     SDL_RWread(src, &filebuffer, 1, w * h);
@@ -51,15 +60,15 @@ static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, 
 /* Move buffer into s->pixels, looking up in palette */
     for (filefing = 0; filefing < w * h;)
     {
-        ((Uint8*)(s->pixels))[offset] = palette[filebuffer[filefing]] & 0xFF;
-        ((Uint8*)(s->pixels))[offset+1] = (palette[filebuffer[filefing]] >> 8) & 0xFF;
-        ((Uint8*)(s->pixels))[offset+2] = (palette[filebuffer[filefing]] >> 16) & 0xFF;
+        ((Uint16*)(s->pixels))[offset] = palette[filebuffer[filefing]] ;
         filefing++;
         if (filefing % w)
-            offset += 3;
+            offset ++;
         else
         {
-            offset = scanline + s -> pitch;
+/*FIXME: this is broen if pitch is odd. This happens several times in
+  this module*/
+            offset = scanline + (s -> pitch >> 1);
             scanline = offset;
         }
     }
@@ -81,8 +90,7 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
 
 
     /* Set Surface flags */
-    SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, 0) ;
-    SDL_SetAlpha (s, 0, 255) ;
+    SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, palette[0xFF]) ;
 
     SDL_RWread(src, &tcount, 4, 1);
 
@@ -97,15 +105,13 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
 /* Repeat the repeated pixel n times */
         for (tupfing = filebuffer[filefing]; tupfing; tupfing--)
         {
-            ((Uint8*)(s->pixels))[offset] = pixel & 0xFF;
-            ((Uint8*)(s->pixels))[offset+1] = (pixel >> 8) & 0xFF;
-            ((Uint8*)(s->pixels))[offset+2] = (pixel >> 16) & 0xFF;
+            ((Uint16*)(s->pixels))[offset] = pixel ;
             imgfing++;
             if (imgfing % w)
-                offset += 3;
+                offset ++;
             else
             {
-                offset = scanline + s -> pitch;
+                offset = scanline + (s -> pitch >> 1);
                 scanline = offset;
             }
         }
@@ -114,16 +120,14 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
 /* Read in non-repeat list */
         for (tupfing = filebuffer[filefing - 2]; tupfing; tupfing--)
         {
-            ((Uint8*)(s->pixels))[offset] = palette[filebuffer[filefing]] & 0xFF;
-            ((Uint8*)(s->pixels))[offset+1] = (palette[filebuffer[filefing]] >> 8) & 0xFF;
-            ((Uint8*)(s->pixels))[offset+2] = (palette[filebuffer[filefing]] >> 16) & 0xFF;
+            ((Uint16*)(s->pixels))[offset] = palette[filebuffer[filefing]] ;
             imgfing++;
             filefing++;
             if (imgfing % w)
-                offset += 3;
+                offset ++;
             else
             {
-                offset = scanline + s -> pitch;
+                offset = scanline + (s -> pitch >> 1);
                 scanline = offset;
             }
         }
@@ -375,7 +379,7 @@ FMA_t *load_anim (FILE *f)
          delta_n_size[4],      /* Displacement and size for each image */
          imgfing;              /* Finger into images */
     void (*loadpix)(SDL_RWops *, SDL_Surface*, Uint32*, INTEGER, INTEGER) = NULL;
-
+    int usecolorkey = 0 ;
 
     src = SDL_RWFromFP(f, 0);
     answer = (FMA_t *)malloc(sizeof(FMA_t));
@@ -401,12 +405,14 @@ FMA_t *load_anim (FILE *f)
     case 0x38494e41:
 //        printf("Plain 8 bit images\n");
         loadpix = loadPixels_plain8;
+        usecolorkey = 1 ;
         if (loadPalette(src, palette))
             return NULL;
         break;
     case 0x38414c52:
 //        printf("RLE 8 bit images\n");
         loadpix = loadPixels_rle8;
+        usecolorkey = 1 ;
         if (loadPalette(src, palette))
             return NULL;
         break;
@@ -424,7 +430,12 @@ FMA_t *load_anim (FILE *f)
     {
         SDL_RWread (src, delta_n_size, 2, 4);
 //        printf("Loading %dx%d image displaced %dx%d...\n", delta_n_size[2], delta_n_size[3], delta_n_size[0], delta_n_size[1]);
-        answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE, delta_n_size[2], delta_n_size[3], 24, 0xf80000, 0x07e000, 0x001f00, 0x0000ff);
+        if (usecolorkey)
+            answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCCOLORKEY|SDL_RLEACCEL,
+                                         delta_n_size[2], delta_n_size[3], 16, 0xf800, 0x07e0, 0x001f, 0);
+        else
+            answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCALPHA,
+                                         delta_n_size[2], delta_n_size[3], 24, 0xf80000, 0x07e000, 0x001f00, 0x0000ff);
         if (!answer->items[imgfing])
             return 0;
         answer->x[imgfing] = delta_n_size[0];
