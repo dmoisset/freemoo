@@ -56,7 +56,6 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     -- We do the above check to avoid network overhead
                     -- Not doing iit implies we re-suscribe to the star service for
                     -- ALL stars
-                    print ("Adding star "+star.id.to_string+"%N")
                     star.subscribe (server, "star"+star.id.to_string)
                 else
                     old_list.remove (star)
