@@ -155,7 +155,7 @@ feature -- Incredibly smart AI
         from
             i := server.galaxy.fleets.get_new_iterator_on_items
         until i.is_off loop
-            if i.item.owner = server.player then
+            if i.item.owner = server.player and i.item.destination = Void then
                 !!ll.make
                 from j := i.item.get_new_iterator until j.is_off loop
                     ll.add (j.item)
