@@ -1,6 +1,6 @@
 class PLAYER_STATUS_VIEW
     -- Ews view for players status
-    
+
 inherit
     VIEW [C_PLAYER_LIST]
     WINDOW
@@ -8,10 +8,10 @@ inherit
         make as window_make
     end
     PLAYER_CONSTANTS
-    
+
 creation
     make
-    
+
 feature -- Creation
 
     make (w: WINDOW; where: RECTANGLE; new_model: C_PLAYER_LIST) is
@@ -21,24 +21,24 @@ feature -- Creation
         set_model(new_model)
         on_model_change
     end
-    
+
 feature -- Redefined features
 
     on_model_change is
     local
         dx: INTEGER
-        i: ITERATOR[STRING]
+        i: ITERATOR[PLAYER]
         r: RECTANGLE
         cid: INTEGER
     do
-        i := model.names.get_new_iterator
+        i := model.get_new_iterator
         from
             i.start
         until
             i.is_off
         loop
-            cid := (model @ i.item).color - min_color
-            if (model @ i.item).state = st_waiting_turn_end then
+            cid := i.item.color - min_color
+            if i.item.state = st_waiting_turn_end then
                 r.set_with_size (dx, 0, 11, 14)
                 window_light.item(cid).move (r)
                 if not (window_light @ cid).visible then
@@ -49,11 +49,11 @@ feature -- Redefined features
                 if (window_light @ cid).visible then
                     (window_light @ cid).hide
                 end
-            end 
+            end
             i.next
         end
     end
-    
+
 feature {NONE} -- Implementation
 
     window_light: ARRAY[WINDOW_ANIMATED] is

@@ -101,16 +101,16 @@ feature -- Operations
         reading: ARRAY[FLEET]
         fleet: ITERATOR[FLEET]
         ship: ITERATOR[SHIP]
-        it: ITERATOR[STRING]
+        it: ITERATOR[PLAYER]
         msg: STRING
     do
         !!scanner_msgs.with_capacity(pl.count)
         from
-            it := pl.names.get_new_iterator
+            it := pl.get_new_iterator
         until
             it.is_off
         loop
-            reading := scanner(pl @ it.item)
+            reading := scanner(it.item)
             s.serialize ("i", <<reading.count>>)
             !!msg.copy (s.serialized_form)
             from
@@ -129,7 +129,7 @@ feature -- Operations
                 end
                 fleet.next
             end
-            scanner_msgs.add(msg, (pl @ it.item).color)
+            scanner_msgs.add(msg, it.item.color)
             it.next
         end
     end
