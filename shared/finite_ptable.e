@@ -10,15 +10,26 @@ creation
 feature -- Creation
 
     make (items: ARRAY [TUPLE [INTEGER, E]]) is
+        -- for each [p, x] in items, assign a weight of p to
+        -- event x, i.e. P(x) = p/S, where S is the sum of first components
+        -- of items.
     require
         items /= Void
         items.count >= 1
-        -- No value in items is Void
-        -- All values in first components of items are unique, greater then 0,
-        -- less than or equal than 1000.
-        -- One of items has 1000 as probability
+        -- forall i in items: i /= Void
+        -- forall i in items: i >= 0
+    local
+        i: ITERATOR [TUPLE [INTEGER, E]]
     do
         probs := items
+        i := items.get_new_iterator
+        from
+            sum := 0
+            i.start
+        until i.is_off loop
+            sum := sum + i.item.first
+            i.next
+        end
     end
 
 feature -- Access
@@ -26,23 +37,17 @@ feature -- Access
     item (p: DOUBLE): E is
     local
         curs: ITERATOR [TUPLE [INTEGER, E]]
-        best: INTEGER
         choice: INTEGER
     do
-        choice := (p * 1000 + 1).floor.min (1000)
+        choice := (p*sum).floor.min (sum-1)
         curs := probs.get_new_iterator
         from
             curs.start
-            best := 1001
-        until
-            curs.is_off
-        loop
-            if curs.item.first.in_range (choice, best) then
-                best := curs.item.first
-                Result := curs.item.second
-            end
+        until choice < curs.item.first loop
+            choice := choice - curs.item.first
             curs.next
         end
+        Result := curs.item.second
     ensure
         Result /= Void
     end
@@ -50,13 +55,12 @@ feature -- Access
 feature {NONE} -- Representation
 
     probs: ARRAY [TUPLE [INTEGER, E]]
+    sum: INTEGER
 
 invariant
     probs /= Void
     probs.count >= 1
-    -- No value in probs is Void
-    -- All values in first components of probs are unique, greater then 0,
-    -- less than or equal than 1000.
-    -- One of probs has 1000 as  probability
+    -- forall i in probs: i /= Void
+    -- forall i in probs: i.first >= 0
 
 end -- deferred class FINITE_PTABLE
