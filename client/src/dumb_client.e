@@ -161,7 +161,15 @@ feature -- Incredibly smart AI
                     ll.add (j.item)
                     j.next
                 end
-                server.move_fleet (i.item, server.galaxy.stars.item (1), ll)
+                if not ll.is_empty then
+                    server.move_fleet (i.item, server.galaxy.stars.item (1), ll)
+                else
+                    print ("Fleet empty? ")
+                    print (i.item.id)
+                    print ("<-id   ships->")
+                    print (i.item.ship_count)
+                    print ('%N')
+                end
             end
             i.next
         end
