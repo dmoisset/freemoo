@@ -48,12 +48,17 @@ feature {NONE} -- Creation template
         end
         start
     rescue
+        if not tried then
+            std_error.put_string ("Error loading FMA: "+path+". Fallback to dummy image%N")
+        end
+        if p.pkg_system.last_file_open.is_connected then
+            p.pkg_system.last_file_open.disconnect
+        end
         if not fma.is_null then
             free_FMA (fma)
             fma := default_pointer
         end
         if not tried then
-            print ("Error loading FMA: "+path+"%N")
             tried := True
             retry
         end
