@@ -40,4 +40,9 @@ feature {NONE} -- Callbacks
         server.end_turn (False)
     end
 
+    game_menu, colonies, planets, fleets is
+    do
+        print ("Not yet implemented%N")
+    end
+
 end -- class MAIN_WINDOW
