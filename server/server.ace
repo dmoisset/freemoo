@@ -5,7 +5,7 @@ root
     SERVER
 
 default
-    assertion            (debug)
+    assertion            (require)
     case_insensitive     (yes)
     high_memory_compiler (yes)
 
@@ -22,18 +22,22 @@ cluster
 
     -- Main program
     MAIN: "src"
+        default assertion (all) end
     -- FreeMOO classes
     FREEMOO_SHARED: "../shared"
+        default assertion (all) end
 
     -- Networking and utilities libs
     EIFINET: "${SmartEiffelDirectory}lib_eifinet/"
     NETSERVICES: "${SmartEiffelDirectory}lib_netservices/"
     UTILS: "${SmartEiffelDirectory}lib_utils/"
+    STORAGE: "${SmartEiffelDirectory}lib_storage/"
+    XML_PARSER: "${SmartEiffelDirectory}lib_xml_parser/"
 
 external
     external_lib:       "eifinet"
 
 generate
-    cc:                 "tcc"
-    c_compiler_options: "-Dummy_argument"
+    cc:                 "gcc"
 end
+
