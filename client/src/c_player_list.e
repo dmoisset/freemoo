@@ -10,6 +10,7 @@ inherit
     end
     SUBSCRIBER
     MODEL
+    IDMAP_ACCESS
 
 creation
     make
@@ -32,6 +33,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         left: INTEGER
 
         name: STRING
+        pid: reference INTEGER
         p: C_PLAYER
         s: SERIALIZER
         ir: INTEGER_REF
@@ -46,10 +48,12 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         !!new_items.make
         from until left = 0 loop
             -- Get name
-            s.unserialize ("s", newmsg)
-            name ?= s.unserialized_form @ 1
-            if items.has (name) then
-                p := items @ name
+            s.unserialize ("is", newmsg)
+            pid ?= s.unserialized_form @ 1
+            name ?= s.unserialized_form @ 2
+            if idmap.has (pid) then
+                p ?= idmap @ pid
+                    check p /= void end
             else
                 !!p.make (name)
             end

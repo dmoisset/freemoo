@@ -3,6 +3,7 @@ class S_PLAYER
 inherit
     PLAYER
     rename make as player_make end
+    UNIQUE_ID
 
 creation
     make
@@ -14,6 +15,7 @@ feature {NONE} -- Creation
         name := clone (new_name)
         password := clone (new_password)
         player_make
+        make_unique_id
     ensure
         name.is_equal (new_name)
         password.is_equal (new_password)
@@ -41,7 +43,7 @@ feature -- Access
     local
         s: SERIALIZER
     do
-        s.serialize ("siib", <<name, state, color_id, connection/=Void>>)
+        s.serialize ("isiib", <<id, name, state, color_id, connection/=Void>>)
         Result := s.serialized_form
     ensure
         -- name is the first item serialized
