@@ -22,13 +22,9 @@ NAQ (Not Answered Questions)
 5. En que momento entran en efecto los resultados de transacciones
    diplomáticas? (elaborate more on this).
    
-6. Cuales son las posibilidades para tipos de estrella? (dependiendo de la
-   edad de la galaxia). Las posibilidades para cantidad de planetas (depende
-   del tipo de estrella? a ojo, las rojas tienen menos planetas). Las
-   posibilidades para tipos de planeta? (deppende del tipo de estrella;
-   ¿depende de la posición orbital?)
+6. Generación de mapa: resuelto
 
-7. Como se distribuyen los homeworlds en el mapa?
+7. Distribución de mapa: resuelto
 
 8. Implementación de concurrencia en el final del turno
 
