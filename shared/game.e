@@ -4,9 +4,6 @@ class GAME
 inherit
     PLAYER_CONSTANTS
 
-creation
-    make_with_options
-
 feature {NONE} -- Creation
 
     make_with_options (opt: OPTION_LIST) is
