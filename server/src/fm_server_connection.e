@@ -54,6 +54,8 @@ feature -- Redefined features
         when msgtype_turn then
             u.get_boolean
             next_turn (u.last_boolean)
+        when msgtype_fleet then
+            move_fleet (u)
         else
             Precursor (ptype)
         end
@@ -150,6 +152,8 @@ feature {NONE} -- Operations: joining
         end
     end
 
+feature {NONE} -- Operations
+
     next_turn (multiple: BOOLEAN) is
         -- player finished turn. `multiple' iff player wants to let several
         -- turns to pass
@@ -165,6 +169,29 @@ feature {NONE} -- Operations: joining
         end
     end
 
+    move_fleet (u: UNSERIALIZER) is
+    local
+        fleet_id: INTEGER
+        destination_id: INTEGER
+        ships: ARRAY [INTEGER]
+        i: INTEGER
+    do
+        u.get_integer; fleet_id := u.last_integer
+        u.get_integer; destination_id := u.last_integer
+        u.get_integer
+        !!ships.make (1, u.last_integer)
+        from i := ships.lower until i > ships.upper loop
+            u.get_integer
+            ships.put (u.last_integer, i)
+            i:=i+1
+        end
+        print ("Got fleet move request%N")
+        print ("  id: "+fleet_id.to_string+"%N")
+        print ("  destination: "+destination_id.to_string+"%N")
+        print ("  ships: <<"); print (ships); print (">>%N")
+        print ("Not yet implemented%N")
+    end
+    
 feature {NONE} -- Representation
 
     player: S_PLAYER

@@ -29,7 +29,7 @@ feature -- Creation
         end
     end
 
-feature -- Operations
+feature -- Operations -- Login commands
 
     join (name, password: STRING) is
         -- Join in server as `name' using given `password'
@@ -93,6 +93,8 @@ feature -- Operations
         subscribe (player, "player"+player.id.to_string)
     end
 
+feature -- Operations -- Game commands
+
     end_turn (multiple: BOOLEAN) is
         -- Notify server that player has finished_turn
         -- if `multiple', player allows more than one turn to pass.
@@ -105,6 +107,26 @@ feature -- Operations
         player_list.set_player_state (player, st_waiting_turn_end)
     end
 
+    move_fleet (f: FLEET; dest: STAR; ships: SET [SHIP]) is
+        -- Send server a request to move `ships' of `f' toward `dest'
+    require
+        f/= Void and dest /= Void and ships /= Void
+        not ships.is_empty
+        owned_fleet: f.owner = player
+--        ships_in_fleet: ships.for_all (agent f.has_ship (?))
+    local
+        s: SERIALIZER2
+        i: ITERATOR [SHIP]
+    do
+        !!s.make
+        s.add_tuple (<<f.id, dest.id, ships.count>>)
+        from i := ships.get_new_iterator until i.is_off loop
+            s.add_integer (i.item.id)
+            i.next
+        end
+        send_package (msgtype_fleet, s.serialized_form)
+    end
+    
     close is
     do
         if not remote_close then

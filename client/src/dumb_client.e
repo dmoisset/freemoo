@@ -112,10 +112,14 @@ feature
 
     play is
     do
+        print ("Subscribing for game services%N")
+        server.subscribe_init
         print ("Playing now%N")
         from until false loop
             server.get_data (-1)
             if server.player.state = st_playing_turn then
+                print ("Moving fleets%N")
+                move_some_fleets
                 print ("Ending the turn%N")
                 server.end_turn (False)
             end
@@ -140,5 +144,27 @@ feature
         Result.put (l("That player is already logged in"), reject_cause_alreadylog)
     end
 
+feature -- Incredibly smart AI
+
+    move_some_fleets is
+    local
+        i: ITERATOR [FLEET]
+        j: ITERATOR [SHIP]
+        ll: SET [SHIP]
+    do
+        from
+            i := server.galaxy.fleets.get_new_iterator_on_items
+        until i.is_off loop
+            if i.item.owner = server.player then
+                !!ll.make
+                from j := i.item.get_new_iterator until j.is_off loop
+                    ll.add (j.item)
+                    j.next
+                end
+                server.move_fleet (i.item, server.galaxy.stars.item (1), ll)
+            end
+            i.next
+        end
+    end
 
 end -- class DUMB_CLIENT

@@ -9,6 +9,7 @@ feature -- Constants
     msgtype_start: INTEGER is 35
     msgtype_chat: INTEGER is 36
     msgtype_turn: INTEGER is 40
+    msgtype_fleet: INTEGER is 41
 
     msgtype_join_accept: INTEGER is 32
     msgtype_join_reject: INTEGER is 33
