@@ -60,13 +60,13 @@ feature {NONE} -- Implementation
     local
         i: INTEGER
     once
-        !!Result.make (0, 7)
+        !!Result.make (min_color, max_color)
         from
-            i := 0
+            i := Result.lower
         until
-            i >= 8
+            i > Result.upper
         loop
-            Result.put (Create {WINDOW_ANIMATED}.make (Current, 0, 0, waiting_light @ i), i)
+            Result.put (create {WINDOW_ANIMATED}.make (Current, 0, 0, waiting_light @ i), i)
             (Result @ i).hide
             i := i + 1
         end
@@ -76,13 +76,13 @@ feature {NONE} -- Implementation
     local
         i: INTEGER
     once
-        !!Result.make (0, 7)
+        !!Result.make (min_color, max_color)
         from
-            i := 0
+            i := Result.lower
         until
-            i >= 8
+            i > Result.upper
         loop
-            Result.put (Create {ANIMATION_FMA}.make ("client/player-status/light" + i.to_string + ".fma"), i)
+            Result.put (create {ANIMATION_FMA}.make ("client/player-status/light" + i.to_string + ".fma"), i)
             i := i + 1
         end
     end
