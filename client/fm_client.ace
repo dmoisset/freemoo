@@ -12,11 +12,11 @@ default
 cluster
 
     -- Base library
-    "${SmartEiffelDirectory}lib/kernel"
-    "${SmartEiffelDirectory}lib/base"
-    "${SmartEiffelDirectory}lib/io"
-    "${SmartEiffelDirectory}lib/iterator"
-    "${SmartEiffelDirectory}lib/sorting"
+    "${SmartEiffelDirectory}/lib/kernel"
+    "${SmartEiffelDirectory}/lib/base"
+    "${SmartEiffelDirectory}/lib/io"
+    "${SmartEiffelDirectory}/lib/iterator"
+    "${SmartEiffelDirectory}/lib/sorting"
 
     -- Main program
     MAIN: "src"
@@ -31,9 +31,9 @@ cluster
         default assertion (all) end
 
     -- Networking and utilities libs
-    EIFINET: "${SmartEiffelDirectory}lib_eifinet/"
-    NETSERVICES: "${SmartEiffelDirectory}lib_netservices/"
-    UTILS: "${SmartEiffelDirectory}lib_utils/"
+    EIFINET: "${SmartEiffelDirectory}/lib_eifinet/"
+    NETSERVICES: "${SmartEiffelDirectory}/lib_netservices/"
+    UTILS: "${SmartEiffelDirectory}/lib_utils/"
     STORAGE: "${SmartEiffelDirectory}/lib_storage/"
     EWS: "${SmartEiffelDirectory}/lib_ews/"
     EWS_EVENTS: "${SmartEiffelDirectory}/lib_ews/events"
