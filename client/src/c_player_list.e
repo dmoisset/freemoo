@@ -9,7 +9,6 @@ inherit
         make
     end
     SUBSCRIBER
-    MODEL
 
 creation
     make
@@ -19,8 +18,12 @@ feature -- Creation
     make is
     do
         Precursor
-        make_model
+        create changed.make
     end
+
+feature -- Signals
+
+    changed: SIGNAL_1 [C_PLAYER_LIST]
 
 feature {SERVICE_PROVIDER} -- Subscriber callback
 
@@ -54,8 +57,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             left := left - 1
         end
         items := new_items
-
-        notify_views
+        changed.emit (Current)
     end
 
 end -- class C_PLAYER_LIST

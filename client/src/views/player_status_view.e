@@ -2,7 +2,6 @@ class PLAYER_STATUS_VIEW
     -- Ews view for players status
 
 inherit
-    VIEW [C_PLAYER_LIST]
     WINDOW
     rename
         make as window_make
@@ -14,24 +13,29 @@ creation
 
 feature -- Creation
 
-    make (w: WINDOW; where: RECTANGLE; new_model: C_PLAYER_LIST) is
-        -- build widget as view of `new_model'
+    make (w: WINDOW; where: RECTANGLE; new_players: C_PLAYER_LIST) is
+        -- build widget as view of `new_players'
     do
         window_make(w, where)
-        set_model(new_model)
-        on_model_change
+        players := new_players
+        players.changed.connect (agent update_players)
+        update_players (players)
     end
 
-feature -- Redefined features
+feature {NONE} -- Implementation
 
-    on_model_change is
+    players: C_PLAYER_LIST
+
+    update_players (pl: C_PLAYER_LIST) is
+    require
+        pl = players
     local
         dx: INTEGER
         i: ITERATOR[PLAYER]
         r: RECTANGLE
         cid: INTEGER
     do
-        i := model.get_new_iterator
+        i := players.get_new_iterator
         from
             i.start
         until
@@ -53,8 +57,6 @@ feature -- Redefined features
             i.next
         end
     end
-
-feature {NONE} -- Implementation
 
     window_light: ARRAY[WINDOW_ANIMATED] is
     local

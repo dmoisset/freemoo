@@ -2,7 +2,6 @@ class PLAYER_LIST_VIEW
     -- View for a PLAYER_LIST
 
 inherit
-    VIEW [C_PLAYER_LIST]
     WINDOW
     rename
         make as window_make
@@ -16,28 +15,35 @@ creation
 
 feature {NONE} -- Creation
 
-    make (w: WINDOW; where: RECTANGLE; new_model: C_PLAYER_LIST) is
-        -- build widget as view of `new_model'
+    make (w: WINDOW; where: RECTANGLE; new_players: C_PLAYER_LIST) is
+        -- build widget as view of `new_players'
     do
         !!labels.make (1, 0)
         window_make (w, where)
-        set_model (new_model)
+        players := new_players
+        players.changed.connect (agent update_players)
 
         -- Update gui
-        on_model_change
+        update_players (players)
     end
 
-feature -- Redefined features
+feature {NONE} -- Representation
 
-    on_model_change is
+    labels: ARRAY [LABEL]
+
+    players: C_PLAYER_LIST
+
+    update_players (pl: C_PLAYER_LIST) is
         -- Update gui
+    require
+        pl = players
     local
         i: ITERATOR [C_PLAYER]
         j: INTEGER
         s: STRING
         r: RECTANGLE
     do
-        i := model.get_new_iterator
+        i := players.get_new_iterator
         from
             i.start
             j := labels.lower
@@ -63,10 +69,6 @@ feature -- Redefined features
             labels.remove (j)
         end
     end
-
-feature {NONE} -- Widgets
-
-    labels: ARRAY [LABEL]
 
 feature {NONE} -- Constants
 
