@@ -15,7 +15,7 @@ feature {NONE} -- Creation
         !!status.make_with_options (options)
         !!players.make
         !!galaxy.make
-        !TEST_MAP_GENERATOR!map_generator.make (options)
+        !MAP_GENERATOR_V1!map_generator.make (options)
     end
 
 feature -- Access

@@ -128,7 +128,7 @@ feature {ANY}
         screen.unlock
         if galaxy.stars.item (i).kind /= kind_blackhole then
             font.put_string (screen, 450, 20, galaxy.stars.item (i).name)
-            font.put_string (screen, 490, 35, stsize_names.at (galaxy.stars.item (i).size))
+            font.put_string (screen, 510, 35, stsize_names.at (galaxy.stars.item (i).size))
             from
                 j := 1
             until

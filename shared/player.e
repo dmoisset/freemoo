@@ -3,6 +3,8 @@ class PLAYER
 inherit
     PLAYER_CONSTANTS
 
+creation make
+
 feature {NONE} -- Creation
 
     make is

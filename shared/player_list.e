@@ -3,8 +3,7 @@ class PLAYER_LIST [P -> PLAYER]
 inherit
     PLAYER_CONSTANTS
 
-creation
-    make
+creation make
 
 feature {NONE} -- Creation
 
