@@ -33,7 +33,7 @@ feature -- Operations
         server /= Void
         not server.is_closed
         not server.is_joining
-        not server.is_joined
+        not server.has_joined
     do
         show
         title_label.set_text (format(l("Connected to ~1~:~2~"),
@@ -77,7 +77,7 @@ feature {NONE} -- Callbacks
     on_network is
     do
         if not server.is_closed then
-            if server.is_joined then
+            if server.has_joined then
                 joining := False
                 destroy
             end

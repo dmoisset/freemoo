@@ -10,7 +10,7 @@ creation
 feature {NONE} -- Creation
 
     make_from_file (path: STRING) is
-        -- Load from FMA in a package
+        -- Load from FMI in a package
     local
         s: SDL_SURFACE
         p: PKG_USER

@@ -119,7 +119,7 @@ feature {NONE} -- Callbacks
                 set_state (st_joining)
             end
         when st_joining then
-            if server.is_joined then
+            if server.has_joined then
                 if server.game_status.started then
                     set_state (st_playing)
                 else

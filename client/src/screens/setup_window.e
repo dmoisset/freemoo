@@ -61,7 +61,7 @@ feature {NONE} -- Callbacks
     on_network_event is
         -- Check network
     do
-        if server.is_closed or not server.is_joined or server.game_status.started then
+        if server.is_closed or not server.has_joined or server.game_status.started then
             destroy
         end
     end

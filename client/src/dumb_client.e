@@ -87,7 +87,7 @@ feature
         from until server.is_joined or not server.is_joining loop
             server.get_data (-1)
         end
-        if not server.is_joined then
+        if not server.has_joined then
             print ("Can't join: ")
             print (join_reject_causes @ server.join_reject_cause)
             print ("%N")
@@ -100,7 +100,7 @@ feature
         -- Last stage on connection. Setup of player parameters (color, race, 
         -- etc.) and start of game
     require
-        must_be_joined: server.is_joined
+        must_have_joined: server.has_joined
     do
         print ("Starting game...%N")
         server.set_ready

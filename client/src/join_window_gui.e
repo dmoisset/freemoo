@@ -67,6 +67,14 @@ feature {NONE} -- Widgets
     status_label: LABEL
     join_button, disconnect_button: BUTTON
 
+    new_player_list (where: RECTANGLE) is
+    deferred
+    end
+
+    new_server_rules (where: RECTANGLE) is
+    deferred
+    end
+
 feature {NONE} -- Callbacks
 
     join is
@@ -77,13 +85,5 @@ feature {NONE} -- Callbacks
 
     delete_event is
     deferred end
-
-    new_player_list (where: RECTANGLE) is
-    deferred
-    end
-
-    new_server_rules (where: RECTANGLE) is
-    deferred
-    end
 
 end -- class JOIN_WINDOW_GUI

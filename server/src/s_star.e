@@ -26,6 +26,7 @@ feature {NONE} -- Creation
     end
 
 feature -- Redefined Features
+
     subscription_message (service_id: STRING): STRING is
     local
         s: SERIALIZER
@@ -53,6 +54,7 @@ feature -- Redefined Features
     end
 
 feature {MAP_GENERATOR} -- Redefined
+
     set_planet (newplanet: PLANET; orbit: INTEGER) is
     do
         Precursor(newplanet, orbit)
@@ -76,7 +78,6 @@ feature -- Access
     s_id: STRING
         -- Name of the service we provide
 
-
 feature -- Operations
 
     update_clients is
@@ -85,6 +86,5 @@ feature -- Operations
             send_message (s_id, subscription_message (s_id))
         end
     end
-
 
 end -- class S_STAR

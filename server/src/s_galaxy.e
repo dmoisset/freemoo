@@ -60,12 +60,12 @@ feature -- Redefined features
             id := service_id.substring(1, service_id.count - 8).to_integer
             player ?= idmap @ id
             reading := scanner(player)
-            !!Result.make (0)
             s.serialize ("i", <<reading.count>>)
+            !!Result.copy (s.serialized_form)
             from
                 fleet := reading.get_new_iterator
             until fleet.is_off loop
-                s.serialize("iiii", <<fleet.item.owner.color_id, fleet.item.eta,
+                s.serialize("oioi", <<fleet.item.owner, fleet.item.eta,
                                     fleet.item.destination,
                                     fleet.item.ship_count>>)
                 Result.append (s.serialized_form)

@@ -60,8 +60,6 @@ feature {NONE} -- Widgets
     start_button,
     disconnect_button: BUTTON
 
-feature {NONE} -- Custom widgets
-
     new_player_list (where: RECTANGLE) is deferred end
     new_flag_view (where: RECTANGLE) is deferred end
     new_chat (where: RECTANGLE) is deferred end

@@ -38,7 +38,7 @@ feature -- Operations
     require
         name /= Void and password /= Void
         not is_closed
-        not is_joining and not is_joined
+        not is_joining and not has_joined
     local
         s: SERIALIZER
     do
@@ -55,7 +55,7 @@ feature -- Operations
     require
         name /= Void and password /= Void
         not is_closed
-        not is_joining and not is_joined
+        not is_joining and not has_joined
     local
         s: SERIALIZER
     do
@@ -112,7 +112,7 @@ feature -- Operations
             end
         end
         is_joining := False
-        is_joined := False
+        has_joined := False
         player := Void
         player_name := Void
         Precursor
@@ -123,9 +123,12 @@ feature -- Access
     is_joining: BOOLEAN
         -- True when awaiting (re)join accept/reject
 
-    is_joined: BOOLEAN
-        -- True after server accepted (re)join
+    is_joined: BOOLEAN is
+    obsolete "Renamed to has_joined"
+    do Result := has_joined end
 
+    has_joined: BOOLEAN
+        -- True after server accepted (re)join
     join_reject_cause: INTEGER
         -- Valid after failing to join
 
@@ -159,7 +162,7 @@ feature -- Redefined features
         when msgtype_join_accept then
             if is_joining then
                 is_joining := False
-                is_joined := True
+                has_joined := True
                 player := player_list @ player_name
             else -- package arrived and shouldn't. Ignore
                 std_error.put_string (l("Warning: received unrequested Join-Accept%N"))
@@ -179,6 +182,6 @@ feature -- Redefined features
     end
 
 invariant
-    is_joining implies not is_joined
+    is_joining implies not has_joined
 
 end -- class FM_CLIENT_CONNECTION

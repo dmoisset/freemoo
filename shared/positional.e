@@ -64,7 +64,6 @@ feature -- Operations
         is_approx (distance_to (other), (old distance_to(other) - dist).max (0))
     end
 
-
 feature {POSITIONAL, PROJECTION, MAP_GENERATOR} -- Position info
 
     x, y: REAL
