@@ -253,9 +253,9 @@ feature {NONE} -- Planet Generation
         hmworldind: INTEGER
         hmworld: PLANET
     do
-        hmworldnams := <<"Color 0 Homeworld", "Color 1 Homeworld",
-        "Color 2 Homeworld", "Color 3 Homeworld", "Color 4 Homeworld"
-        "Color 5 Homeworld", "Color 6 Homeworld", "Color 7 Homeworld">>
+        hmworldnams := <<"Color 1 Homeworld", "Color 2 Homeworld",
+        "Color 3 Homeworld", "Color 4 Homeworld", "Color 5 Homeworld"
+        "Color 6 Homeworld", "Color 7 Homeworld", "Color 8 Homeworld">>
 -- Get this out.  Should be race homeworld names
         step := perimeter / players.count
         rand.next
@@ -274,7 +274,9 @@ feature {NONE} -- Planet Generation
             rand.next
             starlist.item (hmworldind).set_planet (hmworld, rand.last_integer (5))
             starlist.item (hmworldind).set_name (hmworldnams.item ((players @ (i.item)).color_id))
+            done := done + 1
             dont_touch.add (hmworldind)
+            i.next
         end
     end
 
@@ -330,6 +332,8 @@ feature{NONE} -- Internal
             end
             curs := curs + 1
         end
+    ensure
+        Result.in_range (starlist.lower, starlist.upper)
     end
 
     closest_star_to_or_within (c: COORDS; threshold: INTEGER; starlist: ARRAY[STAR]): INTEGER is
@@ -352,6 +356,8 @@ feature{NONE} -- Internal
             end
             curs := curs + 1
         end
+    ensure
+        Result.in_range (starlist.lower, starlist.upper)
     end
 
 feature -- Operation

@@ -48,7 +48,8 @@ feature {ANY}
         proj: PROJECTION
         selected: INTEGER
         options: OPTION_LIST
-        plist: PLAYER_LIST[PLAYER]
+        player: EASY_PLAYER
+        plist: EASY_PLAYER_LIST
     do
         init
         !!options.make
@@ -56,7 +57,22 @@ feature {ANY}
         options.parse_add ("galaxyage = average")
         !!mapgen.make (options)
         !!proj
+
         !!plist.make
+        !!player.with_name ("Yo", 1)
+        plist.add (player)
+        !!player.with_name ("Hugo", 2)
+        plist.add (player)
+        !!player.with_name ("Paco", 3)
+        plist.add (player)
+        !!player.with_name ("Luis", 4)
+        plist.add (player)
+        !!player.with_name ("Pepe", 5)
+        plist.add (player)
+        !!player.with_name ("Huevo", 6)
+        plist.add (player)
+        !!player.with_name ("Totote", 7)
+        plist.add (player)
         !!galaxy.make
         mapgen.generate (galaxy, plist)
         screen.lock
