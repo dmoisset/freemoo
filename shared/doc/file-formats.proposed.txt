@@ -2,7 +2,7 @@ PACKAGE FILES
 
   Not implemented
   
-IMAGE FILES
+IMAGE FILES (.FMI)
 
   There are several variants of image files. All of them start with a
   magic number indicating its format. Valid magic numbers are:
@@ -23,7 +23,7 @@ IMAGE FILES
     pixel values are indices into a palette included in the file. The
     palette starts immediatly after the height an has the following
     format
-    
+		    
        Offset   type    Description
         0       int8    non-zero for colorkey
         1       int8    n = Last color index (i.e. Palette length-1)
@@ -122,10 +122,58 @@ IMAGE FILES
        encoded image (w/8-bit or 16-bit pixel values)
        encoded alpha channel (w/8-bit alpha, only in 16-bit images)
 
-ANIMATIONS
+ANIMATIONS (.FMA)
 
-  Not implemented
+  There are several variants of animation files. All of them start with a
+  magic number indicating its format. Valid magic numbers are:
   
+  38474d49   Plain image file (8-bit w/colorkey)
+  36474d49   Plain image file (16-bit+8-bit alpha)
+  38454c52   RLE-compressed image (8-bit w/colorkey)
+  36454c52   RLE-compressed image (16-bit+8 bit alpha)
+  
+  Note that the magic numbers allow detection of incorrect endianness.  
+
+  After the magic number, there are two 16-bit integers. The first one
+  represents the total number of images in the animation. The second one
+  indicates the index of the frame where the animation loop starts
+  (counting from 0). If this index is equal to the last frame of the
+  animation, then the animation is for all practical purposess a
+  sequential animation.
+  
+  Afther the loop start indicator, and only if the format indicates 8-bit
+  pixel values, a palette is included. The palette format is identical
+  to the one used in 8-bit images.
+  
+  Finally, a sequence of image data is included, representing each frame
+  of the animation, starting from the first frame. This consists of: two
+  16-bit integers representing a horizontal and a vertical displacement,
+  followed by a simplified version of an image file, which contains just:
+  
+       width (2 bytes)
+       height (2 bytes)
+       image data (w/8-bit or 16-bit pixel values, encoded if rle)
+       alpha channel (w/8-bit alpha, only in 16-bit images, encoded if rle)
+       
+  Note this is the same as an image file, only without magic number and palette
+  description.    
+  
+  The overall file structure would be:
+  
+  magic number (4 bytes)
+  image count (2 bytes)
+  loop start indicator (2 bytes)
+  palette (variable size, only if 8-bit)
+  for each image
+    deltax (2 bytes)
+    deltay (2 bytes)
+    image data (as described above)
+    
+  WARNING: With this information, it is impossible to obtain the animation
+  real width or height. However the maximum width and height can be
+  calculated (maxwidth = max(deltax+image.width) for all images,
+  idem maxheight), which should be enough information for any possible use.
+    
 SOUND
 
   Not implemented       
