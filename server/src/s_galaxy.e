@@ -33,6 +33,7 @@ feature -- Redefined features
         star: ITERATOR [S_STAR]
         reading: ARRAY [FLEET]
         fleet: ITERATOR [FLEET]
+        ship: ITERATOR [SHIP]
     do
         !!s.make
         -- If first subscription to `service_id', add to `ids'
@@ -63,7 +64,18 @@ feature -- Redefined features
             from
                 fleet := reading.get_new_iterator
             until fleet.is_off loop
+                s.add_tuple (<<fleet.item.owner.id, fleet.item.eta>>)
+                if fleet.item.is_stopped then
+                    s.add_integer (fleet.item.orbit_center.id)
+                else
+                    s.add_integer (fleet.item.destination.id)
+                end
+                s.add_integer (fleet.item.ship_count)
                 fleet.item.serialize_on (s)
+                from ship := fleet.item.get_new_iterator until ship.is_off loop
+                    s.add_tuple (<<ship.item.size, ship.item.picture>>)
+                    ship.next
+                end
                 fleet.next
             end
         elseif service_id.has_suffix(":new_fleets") then
