@@ -39,11 +39,145 @@
 
 <H2>Clases compartidas (shared)</H2>
 
-<P>COLONY, COLONY_SHIP, FLEET, GALAXY, PLANET, PLAYER, SHIP, STARSHIP, STAR:
-data model
+<H3>Modelo de datos</H3>
+
+<P>Las clases <A HREF="short/galaxy.html">GALAXY</A>,
+<A HREF="short/star.html">STAR</A>,
+<A HREF="short/planet.html">PLANET</A>,
+<A HREF="short/colony.html">COLONY</A>,
+<A HREF="short/fleet.html">FLEET</A>,
+<A HREF="short/ship.html">SHIP</A>,
+<A HREF="short/player_list.html">PLAYER_LIST</A>,
+<A HREF="short/player.html">PLAYER</A>
+son las que almacenan información de estado del juego. El árbol de la relación
+"contiene a" es: 
+
+<P><FONT COLOR="blue">[TODO: poner links en todas las clases]</FONT>
+
+<UL>
+    <LI>GALAXY: La galaxia (el terreno de juego). Contiene las estrellas y 
+                todas las flotas en juego.<UL>
+        <LI>STAR: Un sistema estelar con hasta 5 planetas en órbita.<UL>
+            <LI>PLANET: Un planeta, que puede tener una colonia.<UL>
+                <LI>COLONY: Una colonia.
+            </UL>
+        </UL>
+        <LI>FLEET: Contiene al menos una nave<UL>
+            <LI>SHIP: En realidad se usan instancias de los hijos efectivos
+                      de SHIP (STARSHIP, COLONY_SHIP)
+        </UL>
+    </UL>
+    <LI>PLAYER_LIST: Contiene a todos los jugadores.<UL>
+        <LI>PLAYER: Cada jugador.
+    </UL>
+</UL>
+
+<P>Estas clases tienen cada una atributos pertinentes que las describen
+(por ej.: una estrella tiene nombre, color, etc.). Algunos atributos son
+enumeraciónes, cuyas constantes pueden encontrarse en MAP_CONSTANTS (para
+STAR y PLANET), SHIP_CONSTANTS (para SHIP) o PLAYER_CONSTANTS (para PLAYER).
+
+<P>Además de la relación
+de inclusión mostrada arriba, hay relaciones cruzadas (las colonias y flotas
+tienen por ej.: un owner, que es un jugador, y un jugador tiene la lista de
+flotas que le pertenecen). Sin embargo, la estructura de arriba es la forma
+oficial de llegar a toda la información. Todas las instancias de las clases
+mostradas arriba deberían ser accesibles a través de ese árbol
+
+<P>Las clases anteriores que son contenedores incluyén métodos para manipular
+los elementos contenidos, y a veces para manipular sus atributos (en otros
+casos hay atributos que solo pueden fijarse en la creación).
+
+<H4>Otras clases del modelo de datos</H4>
+
+<P>POSITIONAL abstrae un punto, y es heredada por aquellas clases que tienen
+una posición en la galaxy (en este momento, STAR y FLEET). La idea de
+POSITIONAL, además de ofrecer atributos comunes, es abstraer el espacio de
+coordenadas, para que sea fácil cambiar por ejemplo de un mapa 2D a uno 3D,
+o a un mapa 2D cilíndrico, etc. Cuando hace falta crear un punto con
+coordenadas dadas puede usarse COORDS. Cuando solo interesa obtener una
+proyección al plano de la coordenada (para dibujar mapas, por ejemplo), 
+corresponde usar PROJECTION, que toma un POSITIONAL, lo proyecta, y devuelve
+un par de coordenadas (x,y) en el plano.
+
+<P>ORBITING contiene los atributos comunes de objetos que pueden estar en
+orbita en un sistema (actualmente, PLANET y FLEET). <FONT COLOR="red">
+[FIXME: revisar si realmente hace falta].</FONT>
+
+<P>La clase POD no está siendo usada en este momento, pero eventualmente
+iría incluida en STARSHIP. Modela un sistema de armas.
+
+<H3>Inicio del juego</H3>
+
+<P>El juego se encapsula en una instancia de la clase GAME, que contiene
+una GALAXY, una PLAYER_LIST, y un GAME_STATUS (clase para describir
+propiedades globales de la partida). Con esto, desde GAME se puede acceder
+a todo el estado del juego.
+
+<P>Una vez creado un game con un conjunto de opciones (que se pasan en
+una instancia de SERVER_OPTIONS <FONT COLOR="red">[FIXME: el nombre debería ser GAME_OPTIONS]</FONT>),
+se agregan jugadores al GAME con add_player, y cuando cada jugador esta listo
+para empezar (luego de configurar raza, color, etc....) se invoca a
+set_player_ready. Las invocaciones de add_player y set_player_ready pueden
+sucederse en cualquier orden (siempre y cuando para un jugador dado se invoque
+add_player antes de set_player_ready).
+
+<P>En el momento en que el juego esta lleno, y todos los jugadores están
+listos (i.e., se invoco a set_player), se inicializa el estado del juego.
+El mapa es generado con un MAP_GENERATOR que hay dentro de GAME.
+
+<P><FONT COLOR="blue">[TODO: hablar un poco de las clases para generar
+mapas.]</FONT>
+
+<H3>Reglas del juego</H3>
+
+<P>En las clases en shared esta toda la implementación de las reglas del
+juego.
+
+<P>Cada jugador da las ordenes durante el turno llamando a los métodos
+apropiados de las clases del módelo de datos (por ejemplo, set_destination
+de FLEET si quiere mover una de sus flotas, o set_production de COLONY si
+quiere decidir cambiar de producción).
+
+<P>Al final del turno de cada jugador, se invoca a end_turn de GAME.
+Cuando el ultimo_jugador invoca end_turn, se invoca automáticante a new_turn
+que efectúa todo el proceso de avance de turno. GAME contiene las reglas
+generales de paso de turno. Los detalles están en métodos de las clases del
+modelo de datos, que son invocados directa o indirectamente por new_turn.
+Por ejemplo, la producción esta modelada en COLONY, el viaje interestelar
+en FLEET, etc.
+
+<H3>Miscelaneas</H3>
+
+Aqui se describen varias clases útiles adicionales que hay en
+"shared". Todas ellas podrían moverse eventualmente fuera de FreeMOO.
+
+<UL>
+    <LI>COMMENTED_TEXT_FILE: Esta clase permite leer un archivo de texto,
+        ignorando lineas en blanco y comentarios (iniciados con '#') de
+        forma automática.
+    <LI>PROBABILITY_TABLE, FINITE_PTABLE: Esta clase modela conjuntos
+        finitos de eventos, con
+        probabilidades asociadas de que ocurra uno en un momento dado.
+    <LI>GETTEXT: Aun sin impplementar, esta clase debería ser una interfaz
+        a la biblioteca gettext de GNU.
+    <LI>PKG_SYSTEM, PKG_USER: En estas clases esta el sistema de
+        empaquetamiento (un mecanismo para acceder a archivos que
+        pueden estar en el filesystem o empaquetados en otros archivos).
+        La documentación de estos módulos esta en 
+        <A HREF="pkg-system.txt">pkg-system.txt</A>.
+    <LI>TEXT_FILE_READ_EXPORTABLE: equivalente a la clase standard
+        TEXT_FILE_READ (hereda de ella), pero permite acceder al FILE *
+        interno para pasarselo a rutinas de C (por eso "exportable").
+</UL>
+
+Además, en shared esta la clase PROTOCOL, con constantes usadas en el cliente
+y en el servidor para las comunicaciones, pero que no estan relacionadas con
+las reglas del juego. <FONT COLOR="red">[FIXME: no debería estar en shared.]</FONT>
 
 <H2>Arquitectura cliente/servidor</H2>
 
-<P>
+<P><FONT COLOR="blue">[TODO: sección incompleta]</FONT>.
+
 </BODY>
 </HTML>

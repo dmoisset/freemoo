@@ -1,0 +1,4 @@
+#!/bin/sh
+for i in ../../*.e; do
+    short "$i" -html2 >`basename "$i" .e`.html;
+done
