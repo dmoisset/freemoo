@@ -5,7 +5,7 @@ feature -- Access
 
     distance_to, infix "|-|" (other: POSITIONAL): REAL is
     do
-        Result := (x*x + y*y).sqrt.to_real
+        Result := ((x-other.x)*(x-other.x) + (y-other.y)*(y-other.y)).sqrt.to_real
         if Result < epsilon then Result := 0 end
     ensure
         Result >= 0

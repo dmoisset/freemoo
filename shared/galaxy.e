@@ -6,7 +6,7 @@ feature {NONE} -- Creation
 
     make is
     do
-        !!stars.with_capacity (256, 1)
+        !!stars.with_capacity (0, 1)
         !!ships.make
     end
 
@@ -25,6 +25,14 @@ feature -- Operations
     do
         ships.put (item, next_id)
         next_id := next_id + 1
+    end
+
+feature {MAP_GENERATOR} -- Generation
+    set_stars (starlist:ARRAY[STAR]) is
+    require
+        starlist /= Void
+    do
+        stars := starlist
     end
 
 feature {NONE} -- Representation
