@@ -226,6 +226,7 @@ feature {NONE} -- Redrawing
         img: IMAGE -- fleet image
         px, py: INTEGER -- projected fleet
         r: RECTANGLE
+		traj: TRAJECTORY
     do
         current_projection.project(f)
         img := fleet_pics.item(f.owner.color, zoom)
@@ -239,6 +240,11 @@ feature {NONE} -- Redrawing
 				px := px - 10
 				py := py - 10
 			end
+		end
+		if f.destination /= Void then
+			!!traj.with_projection(f, f.destination, current_projection)
+			traj.set_type(traj.traj_type_normal)
+			traj.blit(cache, traj.showx, traj.showy)
 		end
         r.set_with_size (px, py, img.width, img.height)
         fleet_hotspots.add (r, f.id)
@@ -345,39 +351,17 @@ feature {NONE} -- Event handlers
 	check_fleet_trajectory (x, y: INTEGER) is
 	local
 		i: ITERATOR[RECTANGLE]
-		x1, y1, x2, y2, x3, y3: INTEGER
-		traj: SDL_LINE_IMAGE
+		traj: TRAJECTORY
 	do
 		i := star_hotspots.item_at_xy(x, y)
 		if not i.is_off then
 			if trajectory_window /= Void then
 				trajectory_window.remove
 			end
-			current_projection.project(fleet_window.model_position)
-			x1 := current_projection.x.rounded
-			y1 := current_projection.y.rounded
-			x2 := i.item.x + i.item.width // 2
-			y2 := i.item.y + i.item.height // 2
-			x3 := x1.min(x2)
-			y3 := y1.min(y2)
-			if x2 > x1 then
-				x2 := x2 - x1
-				x1 := 0
-			else
-				x1 := x1 - x2
-				x2 := 0
-			end
-			if y2 > y1 then
-				y2 := y2 - y1
-				y1 := 0
-			else
-				y1 := y1 - y2
-				y2 := 0
-			end
-			!!traj.make(x1, y1, x2, y2, 55, 155, 55)
-			traj.set_dash(trajectory_dash)
-			
-			!!trajectory_window.make(Current, x3, y3, traj)
+			!!traj.with_projection(model.stars@(star_hotspots.fast_key_at(i.item)), fleet_window.model_position, current_projection)
+			traj.set_type(traj.traj_type_select_ok)
+			!!trajectory_window.make(Current, traj.showx, traj.showy, traj)
+			trajectory_window.send_behind(fleet_window)
 		end
 	end
 	
@@ -385,7 +369,10 @@ feature {NONE} -- Event handlers
 	
 feature {NONE} -- Internal functions
 
-	
+	traj_x, traj_y: INTEGER
+
+	traj_image: SDL_LINE_IMAGE
+
     leave_visible(r: RECTANGLE): RECTANGLE is
         -- Return a rectangle with the same width and height of `r',
         -- but that if posible doesn't contain `r.x' and `r.y'
@@ -567,13 +554,6 @@ feature {NONE} -- Internal configuration and constants
     label_offset: INTEGER is 20
         -- pixels between star center and star name label center
 
-	trajectory_dash: ARRAY[INTEGER] is
-	once
-		!!Result.make(0, 1)
-		Result.put(5, 0)
-		Result.put(3, 1)
-	end
-	
     make_projs is
         -- Make diferent zoom.
         -- Zoom levels in progression 6 4 3 2
