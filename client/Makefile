@@ -21,7 +21,7 @@ check: $(SOURCEFILES)
 	compile_to_c $(TARGET) $(EIFFLAGS)
 
 clean:
-	rm -f $(TARGET) gtk_interface
+	rm -f $(TARGET) gtk_interface cecil.h
 	clean $(TARGET)
 
 gtk_interface: gui.glade

@@ -1,7 +1,7 @@
 class MAP_PROBABILITIES
   -- Probabilistic Constants for Galaxy Generation
 
-feature{NONE} -- Internal Constants
+feature {NONE} -- Star constants
 
     average_star_kinds: ARRAY [TUPLE [INTEGER, INTEGER]] is
         -- Accumulative probability of a star being certain kind,
@@ -54,9 +54,9 @@ feature{NONE} -- Internal Constants
         Result.put ([1000, stsize_small], 3)
     end
 
------------------------------------------------------------
--- Planet constants:  Still few samples for brown stars  --
------------------------------------------------------------
+feature {NONE} -- Planet Constants
+
+-- Still few samples for brown stars
 
     planet_prob: DICTIONARY [INTEGER, INTEGER] is
         -- Probability of any orbit having a non-null planet,
@@ -73,8 +73,8 @@ feature{NONE} -- Internal Constants
     end
 
     planet_types: ARRAY [TUPLE [INTEGER, INTEGER]] is
-       -- planet type probability, indexed by type.  Independent
-       -- of anything else
+        -- planet type probability, indexed by type.  Independent
+        -- of anything else
     once
         !!Result.make (1, 3)
         Result.put ([200, type_asteroids], 1)
@@ -325,8 +325,8 @@ feature{NONE} -- Internal Constants
     end
 
     planet_sizes: ARRAY [TUPLE [INTEGER, INTEGER]] is
-      -- Accumulated probability for a planet being a certain size.
-      -- Independent of star-kinds and galaxy ages
+        -- Accumulated probability for a planet being a certain size.
+        -- Independent of star-kinds and galaxy ages
     once
         !!Result.make (1, 5)
         Result.put ([100, plsize_tiny], 1)
@@ -338,7 +338,7 @@ feature{NONE} -- Internal Constants
 
 
     planet_gravs: DICTIONARY [ARRAY [TUPLE [INTEGER, INTEGER]], INTEGER] is
-      -- Planet Gravity probabilities, indexed by star kind
+        -- Planet Gravity probabilities, indexed by star kind
     local
         dict: ARRAY [TUPLE[INTEGER, INTEGER]]
     once
@@ -376,7 +376,7 @@ feature{NONE} -- Internal Constants
     end
 
     planet_minerals: DICTIONARY[ ARRAY[ TUPLE [INTEGER, INTEGER]], INTEGER] is
-      -- planet Mineral richness, indexed by star kind
+        -- planet Mineral richness, indexed by star kind
     local
         dict: ARRAY [TUPLE [INTEGER, INTEGER]]
     once

@@ -10,14 +10,16 @@ inherit
 creation
     make
 
-feature{NONE} -- Position Generation
+feature {NONE} -- Position Generation
+
     mapmethod_one: ARRAY[COORDS] is
     local
         i: INTEGER
         newc: COORDS
     do
         !!Result.make (1, 0)
--- First toss in stars anywhere
+
+        -- Toss in stars anywhere
         from
         until
             Result.count = starcount
@@ -26,7 +28,7 @@ feature{NONE} -- Position Generation
             Result.add_last(newc)
         end
 
--- Then remove any buch-up
+        -- Remove any bunch-up
         from
             i := Result.lower
         until
@@ -39,10 +41,10 @@ feature{NONE} -- Position Generation
             end
         end
 
--- Then add in more to complete (carefully now)
+        -- Add in more to complete (carefully now)
         fill_carefully (Result)
 
--- Then remove any lone-ranger
+        -- Remove any lone-ranger
         from
             i := Result.lower
         until
@@ -55,7 +57,7 @@ feature{NONE} -- Position Generation
             end
         end
 
--- Finally top up (carefully) and serve cold
+        -- Top up (carefully) and serve cold
         fill_carefully(Result)
     ensure
         Result.count = starcount
