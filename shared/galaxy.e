@@ -27,77 +27,57 @@ feature -- Access
     scanner (player: PLAYER):ARRAY[FLEET] is
         -- All fleets detected by `player' (not including their own)
     local
-        ship: ITERATOR[SHIP]
+        alienship: ITERATOR[SHIP]
         alienfleet, ownfleet: ITERATOR[FLEET]
-        star: ITERATOR[STAR]
-        planet: ITERATOR[PLANET]
-        closest: INTEGER
-        ships_detected: BOOLEAN
+        owncolony: ITERATOR[COLONY]
+        ships_detected, detected: BOOLEAN
         fleet: FLEET
     do
-        if player.sees_all_ships then
-            !!Result.make(1, 0)
-            from
-                alienfleet := fleets.get_new_iterator_on_items
-            until
-                alienfleet.is_off
-            loop
-                if alienfleet.item.owner /= player then
-                    Result.add_last(alienfleet.item)
-                end
-                alienfleet.next
-            end
-        else
-            !!Result.with_capacity(0,1)
-            from
-                alienfleet := fleets.get_new_iterator_on_items
-            until alienfleet.is_off loop
-            -- Find own closest asset, in parsecs.
-            -- (Can be at negative distances, due to modifiers)
-            -- (Currently doesn't consider any modifiers!)
-                from ownfleet:=fleets.get_new_iterator_on_items
-                until ownfleet.is_off loop
-                    closest := closest.min((ownfleet.item |-| alienfleet.item).rounded)
-                    ownfleet.next
-                end
-                from star := stars.get_new_iterator_on_items
-                until star.is_off loop
-                    from planet := star.item.planets.get_new_iterator
-                    until planet.is_off loop
-                        if planet.item /= Void and then planet.item.colony /= Void and then planet.item.colony.owner = player then
-                            closest := closest.min((planet.item.orbit_center |-| alienfleet.item).rounded)
-                        end
-                        planet.next
-                    end
-                    star.next
-                end
-            -- Determine which ships in alien fleet are detected, and report them
-                from
-                    ships_detected := False
-                    ship:=alienfleet.item.get_new_iterator
-                until ship.is_off loop
-                    if (not ship.item.is_stealthy) and (ship.item.size >= closest) then
-                        if not ships_detected then
-                            ships_detected := True
-                            !!fleet.make
-                            fleet.set_owner(alienfleet.item.owner)
-                            if alienfleet.item.is_stopped then
-                                fleet.enter_orbit(alienfleet.item.orbit_center)
-                            else
-                                fleet.set_destination(alienfleet.item.destination)
-                                fleet.set_eta(alienfleet.item.eta)
+		print("Scanner for player " + player.id.to_string)
+		!!Result.with_capacity(0,1)
+		from
+			alienfleet := fleets.get_new_iterator_on_items
+		until alienfleet.is_off loop
+			ships_detected := false
+			if alienfleet.item.owner /= player then
+				from alienship := alienfleet.item.get_new_iterator
+				until alienship.is_off loop
+					detected := false
+					from ownfleet := fleets.get_new_iterator_on_items
+					until ownfleet.is_off or detected loop
+						if ownfleet.item.owner = player and then ownfleet.item.scan(alienfleet.item, alienship.item) then
+							detected := true
+							if not ships_detected then
+								ships_detected := true
+								!!fleet.make
+								fleet.copy_from(alienfleet.item)
                             end
-                        end
-                        fleet.add_ship(ship.item)
-                    end
-                    ship.next
-                end
-                if ships_detected and fleet.owner /= player then
-                    Result.add_last(fleet)
-                end
-                alienfleet.next
-            end
-        end
+							fleet.add_ship(alienship.item)
+						end
+						ownfleet.next
+					end
+					from owncolony := player.colonies.get_new_iterator_on_items
+					until owncolony.is_off or detected loop
+						if owncolony.item.scan(alienfleet.item, alienship.item) then
+							detected := true
+							if not ships_detected then
+								ships_detected := true
+								!!fleet.make
+								fleet.copy_from(alienfleet.item)
+							end
+							fleet.add_ship(alienship.item)
+						end
+						owncolony.next
+					end
+					alienship.next
+				end
+				if ships_detected then
+					Result.add_last(fleet)
+				end
+			end
+			alienfleet.next
+		end
+		print(" picks up " + Result.count.to_string + " alien fleets%N")
     end
 
     scans: DICTIONARY [ARRAY [FLEET], INTEGER]
@@ -136,6 +116,7 @@ feature -- Operations
     end
 
 feature -- Factory methods
+
     create_star:STAR is
     do
         !!Result.make_defaults

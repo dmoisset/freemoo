@@ -70,6 +70,7 @@ feature -- Operations
         -- Add `s' to fleet
     do
         ships.put (s, s.id)
+		scanner_range := 0
     ensure
         has_ship (s.id)
     end
@@ -78,6 +79,7 @@ feature -- Operations
         -- Remove `s' from fleet
     do
         ships.remove(s.id)
+		scanner_range := 0
     ensure
         not has_ship(s.id)
     end
@@ -88,6 +90,7 @@ feature -- Operations
         other /= Void
     do
         ships.union(other.ships)
+		scanner_range := 0
     ensure
         ship_count >= old ship_count
         ship_count <= old ship_count + other.ship_count
@@ -116,6 +119,7 @@ feature -- Operations
             splitted_fleet.add_ship(sh.item)
             sh.next
         end
+		scanner_range := 0
     ensure
         same_fleet: (splitted_fleet.eta = eta) and 
                     (splitted_fleet.owner = owner) and
@@ -174,6 +178,21 @@ feature -- Operations
         end
     end
 
+feature -- Operations
+
+	copy_from (f: FLEET) is
+		-- Copies all information from `f', except ship list
+	do
+		owner := f.owner
+		destination := f.destination
+		eta := f.eta
+		id := f.id
+		orbit_center := f.orbit_center
+		x := f.x
+		y := f.y
+		scanner_range := 0
+	end
+
     set_eta (e: INTEGER) is
     require
         valid_eta: e >= 0
@@ -193,10 +212,46 @@ feature -- Operations
     set_owner (o: PLAYER) is
     do
         owner := o
+		scanner_range := 0
     ensure
         owner = o
     end
 
+feature {GALAXY} -- Scanning
+
+	scan(alienfleet: FLEET; alienship: SHIP): BOOLEAN is
+		-- Returns true if this fleet picks up `alienship' with it's 
+		-- scanners.  `alienship' is part of `alienfleet'
+	require
+		alienfleet.has_ship(alienship.id)
+	do
+		if scanner_range = 0 then
+			recalculate_scanner_range
+		end
+		
+		if owner.sees_all_ships then
+			Result := true
+		else
+			if Current |-| alienfleet < scanner_range + alienship.size - alienship.ship_size_frigate then
+				Result := true
+			end
+		end
+	end
+	
+feature {NONE} -- Auxiliary for scanning
+
+	scanner_range: INTEGER
+		-- Scanner range considering all our fleet's modifiers.  
+		-- Should be reset to 0 after any modification (joining, 
+		-- splitting, leader assignment, etc.).
+	
+	recalculate_scanner_range is
+		-- Recalculates `scanner_range' considering all our modifiers.
+		-- Quite dumb for now...
+	do
+		scanner_range := 2
+	end
+	
 feature {NONE} -- Creation
 
     make is

@@ -243,12 +243,17 @@ feature {NONE} -- Redrawing
 		end
 		if f.destination /= Void then
 			!!traj.with_projection(f, f.destination, current_projection)
-			traj.set_type(traj.traj_type_normal)
+			if f.owner = model.server.player then
+				traj.set_type(traj.traj_type_normal)
+			else
+				traj.set_type(traj.traj_type_enemy)
+			end
 			traj.blit(cache, traj.showx, traj.showy)
 		end
         r.set_with_size (px, py, img.width, img.height)
         fleet_hotspots.add (r, f.id)
-        img.blit(cache, px, py)
+		r.set_with_size(0, 0, cache.width, cache.height)
+        img.blit_region(cache, r, px, py)
     end
 
     draw_blackhole (s: STAR) is

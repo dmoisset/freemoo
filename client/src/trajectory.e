@@ -75,19 +75,19 @@ feature {NONE} -- Representation
 
 	rs: ARRAY[INTEGER] is
 	once
-		Result := <<80, 120, 200, 250>>
+		Result := <<80, 120, 200, 180>>
 		Result.reindex(traj_type_normal)
 	end
 
 	gs: ARRAY[INTEGER] is
 	once
-		Result := <<180, 250, 100, 120>>
+		Result := <<180, 250, 100, 0>>
 		Result.reindex(traj_type_normal)
 	end
 	
 	bs: ARRAY[INTEGER] is
 	once
-		Result := <<80, 120, 100, 120>>
+		Result := <<80, 120, 100, 0>>
 		Result.reindex(traj_type_normal)
 	end
 

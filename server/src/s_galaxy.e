@@ -1,12 +1,14 @@
 class S_GALAXY
-
+	
 inherit
     GALAXY
-        redefine stars, set_stars, make, create_star, create_fleet, add_fleet end
-    SERVICE
-        redefine subscription_message end
+	redefine stars, set_stars, make, create_star, create_fleet,
+		add_fleet, generate_scans
+	end
+	SERVICE
+	redefine subscription_message end
     SERVER
-        rename make as server_make end
+	rename make as server_make end
 
 creation make
 
@@ -159,6 +161,13 @@ feature -- Access
 
 feature -- Operations
 
+	generate_scans(pl: PLAYER_LIST[PLAYER]) is
+	do
+		Precursor(pl)
+		update_clients
+	end
+	
+	
     update_clients is
     local
         id: ITERATOR[STRING]

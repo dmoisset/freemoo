@@ -88,6 +88,44 @@ feature -- Operations
         shipyard = Void
     end
 
+
+feature {GALAXY} -- Scanning
+
+	scan(alienfleet: FLEET; alienship: SHIP): BOOLEAN is
+		-- Returns true if this colony picks up `alienship' with it's 
+		-- scanners.  `alienship' is part of `alienfleet'
+	require
+		alienfleet.has_ship(alienship.id)
+	do
+		if scanner_range = 0 then
+			recalculate_scanner_range
+		end
+		
+		if owner.sees_all_ships then
+			Result := true
+		else
+			if location.orbit_center |-| alienfleet < scanner_range + alienship.size - alienship.ship_size_frigate then
+				Result := true
+			end
+		end
+	end
+	
+	
+feature {NONE} -- Auxiliary for scanning
+
+	scanner_range: INTEGER
+		-- Scanner range considering all our colony's modifiers.  
+		-- Should be reset to 0 after any modification (constructions,
+		-- research, etc.).
+	
+	recalculate_scanner_range is
+		-- Recalculates `scanner_range' considering all our modifiers.
+		-- Quite dumb for now...
+	do
+		scanner_range := 2
+	end
+	
+	
 feature -- Access
 
     shipyard: SHIP

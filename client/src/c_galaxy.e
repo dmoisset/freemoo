@@ -88,6 +88,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         ship: SHIP
         it: ITERATOR[PLAYER]
         star_it: ITERATOR[STAR]
+		fleet_it: ITERATOR[C_FLEET]
     do
         !!s.start (msg)
         from star_it := stars.get_new_iterator_on_items
@@ -99,6 +100,15 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         s.get_integer
         count := s.last_integer
         !!new_fleets.make
+		from fleet_it := fleets.get_new_iterator_on_items
+		until fleet_it.is_off
+		loop
+			if fleet_it.item.owner = server.player then
+				new_fleets.add(fleet_it.item, fleet_it.item.id)
+			end
+			fleet_it.next
+		end
+
         from until count = 0 loop
             !!fleet.make
             s.get_integer
@@ -163,6 +173,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 
 feature -- Redefined features
 
+	
+	
     stars: DICTIONARY [C_STAR, INTEGER]
 
     fleets: DICTIONARY [C_FLEET, INTEGER]
