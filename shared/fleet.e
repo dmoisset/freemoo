@@ -104,6 +104,7 @@ feature -- Operations
         sh: ITERATOR[SHIP]
     do
         !!splitted_fleet.make
+        splitted_fleet.move_to (Current)
         splitted_fleet.set_orbit_center(orbit_center)
         splitted_fleet.set_destination(destination)
         splitted_fleet.set_eta(eta)
@@ -166,8 +167,8 @@ feature -- Operations
         -- Arrival
         if eta = 0 and not is_stopped then
             enter_orbit (destination)
-            owner.add_to_known_list (destination)
-            owner.add_to_visited_list (destination)
+            owner.add_to_known_list (orbit_center)
+            owner.add_to_visited_list (orbit_center)
         end
     end
 
@@ -230,5 +231,6 @@ invariant
 
     nonnegative_speed: current_speed >= 0
     nonnegative_eta: eta >= 0
+    is_stopped implies current_speed = 0
 
 end -- class FLEET
