@@ -376,7 +376,7 @@ feature {NONE} -- Event handlers
 			!!traj.with_projection(model.stars@(star_hotspots.fast_key_at(i.item)), fleet_window.model_position, current_projection)
 			traj.set_type(traj.traj_type_select_ok)
 			!!trajectory_window.make(Current, traj.showx, traj.showy, traj)
---			trajectory_window.send_behind(fleet_window)
+			trajectory_window.send_behind(fleet_window)
 		end
 	end
 	
