@@ -10,7 +10,7 @@
  * Assumes image is `w'×`h' pixels, `f' is open, and `s' is allocated
  * and has format (565RGB + 8 alpha).
  *
- * Assumes readers (magic, width, height) has been already read.
+ * Assumes headers (magic, width, height) has been already read.
  *
  * Return 0 on success, non-zero on failure.
  */

@@ -1,4 +1,4 @@
-#!/usr/bin/tcc
+#!/usr/bin/env tcc
 #include <stdio.h>
 
 int main()
