@@ -65,6 +65,16 @@ feature -- Operations
 --        end
     end
 
+feature -- Operations
+
+    set_producing (newproducing: INTEGER) is
+    require newproducing.in_range(product_min, product_max)
+    do
+        producing := newproducing
+    ensure
+        producing = newproducing
+    end
+
 invariant
     valid_producing: producing.in_range (product_min, product_max)
     location /= Void

@@ -112,6 +112,13 @@ feature -- Operations
         special = newspecial
     end
 
+    set_colony (newcolony: COLONY) is
+    do
+        colony := newcolony
+    ensure
+        colony = newcolony
+    end
+
 feature -- Access
 
     colony: COLONY
