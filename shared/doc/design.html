@@ -41,41 +41,41 @@
 
 <H3>Modelo de datos</H3>
 
-<P>Las clases <A HREF="short/galaxy.html">GALAXY</A>,
-<A HREF="short/star.html">STAR</A>,
-<A HREF="short/planet.html">PLANET</A>,
-<A HREF="short/colony.html">COLONY</A>,
-<A HREF="short/fleet.html">FLEET</A>,
-<A HREF="short/ship.html">SHIP</A>,
-<A HREF="short/player_list.html">PLAYER_LIST</A>,
-<A HREF="short/player.html">PLAYER</A>
+<P>Las clases <A href="short/galaxy.html">GALAXY</A>,
+<A href="short/star.html">STAR</A>,
+<A href="short/planet.html">PLANET</A>,
+<A href="short/colony.html">COLONY</A>,
+<A href="short/fleet.html">FLEET</A>,
+<A href="short/ship.html">SHIP</A>,
+<A href="short/player_list.html">PLAYER_LIST</A>,
+<A href="short/player.html">PLAYER</A>
 son las que almacenan información de estado del juego. El árbol de la relación
 "contiene a" es: 
 
-<P><FONT COLOR="blue">[TODO: poner links en todas las clases]</FONT>
-
 <UL>
-    <LI>GALAXY: La galaxia (el terreno de juego). Contiene las estrellas y 
+    <LI><A href="short/galaxy.html">GALAXY</A>: La galaxia (el terreno de juego). Contiene las estrellas y 
                 todas las flotas en juego.<UL>
-        <LI>STAR: Un sistema estelar con hasta 5 planetas en órbita.<UL>
-            <LI>PLANET: Un planeta, que puede tener una colonia.<UL>
-                <LI>COLONY: Una colonia.
+        <LI><A href="short/star.html">STAR</A>: Un sistema estelar con hasta 5 planetas en órbita.<UL>
+            <LI><A href="short/planet.html">PLANET</A>: Un planeta, que puede tener una colonia.<UL>
+                <LI><A href="short/colony.html">COLONY</A>: Una colonia.
             </UL>
         </UL>
-        <LI>FLEET: Contiene al menos una nave<UL>
-            <LI>SHIP: En realidad se usan instancias de los hijos efectivos
-                      de SHIP (STARSHIP, COLONY_SHIP)
+        <LI><A href="short/fleet.html">FLEET</A>: Contiene al menos una nave<UL>
+            <LI><A href="short/ship.html">SHIP</A>: En realidad se usan instancias de los hijos efectivos
+                      de <A href="short/ship.html">SHIP</A> (<A href="short/starship.html">STARSHIP</A>, <A href="short/colony_ship.html">COLONY_SHIP</A>)
         </UL>
     </UL>
-    <LI>PLAYER_LIST: Contiene a todos los jugadores.<UL>
-        <LI>PLAYER: Cada jugador.
+    <LI><A href="short/player_list.html">PLAYER_LIST</A>: Contiene a todos los jugadores.<UL>
+        <LI><A href="short/player.html">PLAYER</A>: Cada jugador.
     </UL>
 </UL>
 
 <P>Estas clases tienen cada una atributos pertinentes que las describen
 (por ej.: una estrella tiene nombre, color, etc.). Algunos atributos son
-enumeraciónes, cuyas constantes pueden encontrarse en MAP_CONSTANTS (para
-STAR y PLANET), SHIP_CONSTANTS (para SHIP) o PLAYER_CONSTANTS (para PLAYER).
+enumeraciónes, cuyas constantes pueden encontrarse en <A href="short/map_constants.html">MAP_CONSTANTS</A> (para
+<A href="short/star.html">STAR</A> y <A href="short/planet.html">PLANET</A>),
+<A href="short/ship_constants.html">SHIP_CONSTANTS</A> (para <A href="short/ship.html">SHIP</A>)
+o <A href="short/player_constants.html">PLAYER_CONSTANTS</A> (para <A href="short/player.html">PLAYER</A>).
 
 <P>Además de la relación
 de inclusión mostrada arriba, hay relaciones cruzadas (las colonias y flotas
@@ -90,6 +90,8 @@ casos hay atributos que solo pueden fijarse en la creación).
 
 <H4>Otras clases del modelo de datos</H4>
 
+<P><FONT color="blue">[TODO: poner links en todas las clases]</FONT>
+
 <P>POSITIONAL abstrae un punto, y es heredada por aquellas clases que tienen
 una posición en la galaxy (en este momento, STAR y FLEET). La idea de
 POSITIONAL, además de ofrecer atributos comunes, es abstraer el espacio de
@@ -101,7 +103,7 @@ corresponde usar PROJECTION, que toma un POSITIONAL, lo proyecta, y devuelve
 un par de coordenadas (x,y) en el plano.
 
 <P>ORBITING contiene los atributos comunes de objetos que pueden estar en
-orbita en un sistema (actualmente, PLANET y FLEET). <FONT COLOR="red">
+orbita en un sistema (actualmente, PLANET y FLEET). <FONT color="red">
 [FIXME: revisar si realmente hace falta].</FONT>
 
 <P>La clase POD no está siendo usada en este momento, pero eventualmente
@@ -115,7 +117,7 @@ propiedades globales de la partida). Con esto, desde GAME se puede acceder
 a todo el estado del juego.
 
 <P>Una vez creado un game con un conjunto de opciones (que se pasan en
-una instancia de SERVER_OPTIONS <FONT COLOR="red">[FIXME: el nombre debería ser GAME_OPTIONS]</FONT>),
+una instancia de SERVER_OPTIONS <FONT color="red">[FIXME: el nombre debería ser GAME_OPTIONS]</FONT>),
 se agregan jugadores al GAME con add_player, y cuando cada jugador esta listo
 para empezar (luego de configurar raza, color, etc....) se invoca a
 set_player_ready. Las invocaciones de add_player y set_player_ready pueden
@@ -126,7 +128,7 @@ add_player antes de set_player_ready).
 listos (i.e., se invoco a set_player), se inicializa el estado del juego.
 El mapa es generado con un MAP_GENERATOR que hay dentro de GAME.
 
-<P><FONT COLOR="blue">[TODO: hablar un poco de las clases para generar
+<P><FONT color="blue">[TODO: hablar un poco de las clases para generar
 mapas.]</FONT>
 
 <H3>Reglas del juego</H3>
@@ -165,7 +167,7 @@ Aqui se describen varias clases útiles adicionales que hay en
         empaquetamiento (un mecanismo para acceder a archivos que
         pueden estar en el filesystem o empaquetados en otros archivos).
         La documentación de estos módulos esta en 
-        <A HREF="pkg-system.txt">pkg-system.txt</A>.
+        <A href="pkg-system.txt">pkg-system.txt</A>.
     <LI>TEXT_FILE_READ_EXPORTABLE: equivalente a la clase standard
         TEXT_FILE_READ (hereda de ella), pero permite acceder al FILE *
         interno para pasarselo a rutinas de C (por eso "exportable").
@@ -173,11 +175,65 @@ Aqui se describen varias clases útiles adicionales que hay en
 
 Además, en shared esta la clase PROTOCOL, con constantes usadas en el cliente
 y en el servidor para las comunicaciones, pero que no estan relacionadas con
-las reglas del juego. <FONT COLOR="red">[FIXME: no debería estar en shared.]</FONT>
+las reglas del juego. <FONT color="red">[FIXME: no debería estar en shared.]</FONT>
 
 <H2>Arquitectura cliente/servidor</H2>
 
-<P><FONT COLOR="blue">[TODO: sección incompleta]</FONT>.
+<P>La versión en red del juego esta basado en un modelo client/server. El
+servidor mantiene todo el estado, y el cliente recibe actualizaciones de la
+parte del estado que puede ver.
+
+<P>El mecanismo para mantener sincronizado el cliente con el servidor es a
+través de pares SERVICE/SUBSCRIBER, comunicandose via sockets con el módulo
+netservices. Se definen para las clases del modelo de datos herederos en el
+servidor (llamados S_x para la clase x) que también heredan de SERVICE.
+Paralelamente, en el cliente se definen herederos de las clases del modelo
+de datos (llamadas C_x para la clase x). El servidor registra los servicios,
+y el cliente se va suscribiendo.
+
+<P>La siguiente tabla muestra para cada clase del modelo de datos los
+servicios que propagan su estado:
+
+<TABLE border="1">
+<TR><TD><B>Clase</B></TD><TD><B>Servicio</B></TD><TD><B>Comentarios</B></TD></TR>
+
+<TR><TD>GAME_STATUS</TD><TD>"game_status"</TD></TR>
+
+<TR><TD>PLAYER_LIST</TD><TD>"players_list"</TD></TR>
+
+<TR><TD>PLAYER</TD><TD>"players_list"</TD><TD>Only basic description (name, status and color)</TD></TR>
+
+<TR><TD rowspan="2">GALAXY</TD><TD>"galaxy"</TD><TD>Star list</TD></TR>
+<TR>                           <TD>n+":scanner"</TD><TD>Fleets seen by n (not including own)</TD></TR>
+
+<TR><TD rowspan="2">STAR</TD><TD>"galaxy"</TD><TD>Only public description (position, color, size)</TD></TR>
+<TR>                         <TD>"star"+id</TD><TD>Description for players who visited the star</TD></TR>
+
+<TR><TD>PLANET</TD><TD>"star"+id</TD></TR>
+
+<TR><TD>FLEET</TD><TD>"n+":scanner</TD><TD>Only public details</TD></TR>
+
+<TR><TD>SHIP</TD><TD>"n+":scanner</TD><TD>Only size and picture</TD></TR>
+
+</TABLE>
+
+<P>Puede encontrarse una descripción del formato de mensaje para cada
+servicio en <A href="services-fm.txt">services-fm.txt</A>
+
+<P><FONT color="red">[Faltan: descripción completa del jugador.
+Flotas/naves del jugador.
+Colonias (propias y ajenas).
+]</FONT>
+
+<P>Los comandos del cliente al servidor se transmiten en mensajes especiales.
+La lista de esos mensajes puede encontrarse en 
+<A href="protocol-fm.txt">protocol-fm.txt</A>. Ese documento también
+contiene descripción de algunos mensajes especiales del servidor al cliente,
+no relacionados con servicios (en este momento, solo relacionados con el
+proceso de autenticación).
+
+<P><FONT color="blue">[TODO: sección incompleta]</FONT>.
+
 
 </BODY>
 </HTML>

@@ -43,6 +43,7 @@ main window:
 system display window:
     0036-0043: icon: colony indicator (8 colors)
     0044-0051: icon: outpost indicator (8 colors)
+    0074: background    
     0076: icon: bracket around selected colony
     0078-0082: icon: planet orbit ellipse (5 orbits)
     0083: button: close
@@ -87,9 +88,6 @@ fleet orders window:
     0066: button: build outpost
     0067: button: close
     0068-0073: repeats 0062-0067
-
-leader offer window:
-    0074: background    
 
 diplomacy request window:
     0016: window: diplomacy request
