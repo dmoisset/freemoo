@@ -139,11 +139,21 @@ feature -- Access
 
 feature -- Operations
 
-	generate_scans (pl: ITERATOR [PLAYER]) is
-	do
-		Precursor (pl)
-		update_clients
-	end
+    generate_scans (pl: ITERATOR [PLAYER]) is
+    local
+        scanname: STRING
+    do
+        Precursor (pl)
+-- This, is ugly, and similar but not exactly update_clients. It should
+-- be cleaner
+        from pl.start until pl.is_off loop
+            scanname := pl.item.id.to_string+":scanner"
+            if ids.has (scanname) then
+                send_message(scanname, subscription_message(scanname))
+            end
+            pl.next
+        end
+    end
 
     update_clients is
     local
