@@ -323,15 +323,6 @@ feature -- Factory methods
 
 feature {MAP_GENERATOR} -- Generation
 
-    set_stars (starlist: like stars) is
-    require
-        starlist /= Void
-    do
-        stars := starlist
-    ensure
-        stars = starlist
-    end
-
     set_limit (l: COORDS) is
     require
         l /= Void

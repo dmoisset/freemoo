@@ -2,7 +2,7 @@ class S_GALAXY
 	
 inherit
     GALAXY
-	redefine set_stars, make, last_star, create_fleet,
+	redefine make, last_star, create_fleet,
 		add_fleet, generate_scans
 	end
 	SERVICE
@@ -132,12 +132,6 @@ feature -- Redefined features
 
 feature {MAP_GENERATOR} -- Generation
 
-    set_stars (starlist: like stars) is
-    do
-        stars := starlist
-        update_clients
-    end
-
     last_star: S_STAR
     
 feature -- Redefined factory method
@@ -158,8 +152,7 @@ feature -- Operations
 		Precursor(pl)
 		update_clients
 	end
-	
-	
+
     update_clients is
     local
         id: ITERATOR[STRING]

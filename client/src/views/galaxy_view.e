@@ -1,4 +1,4 @@
-Class GALAXY_VIEW
+class GALAXY_VIEW
     -- ews view for a GALAXY
 
 inherit
@@ -116,7 +116,7 @@ feature -- Redefined features
     do
         remove_blackholes
         -- Add blackholes
-        from i := model.stars.get_new_iterator_on_items
+        from i := model.get_new_iterator_on_stars
         until i.is_off loop
             if i.item.kind = i.item.kind_blackhole then
                 draw_blackhole (i.item)
@@ -138,7 +138,7 @@ feature -- Redefined features
             -- Initialize hotspots
             background.blit_fast (cache, 0, 0)
             star_hotspots.clear
-            from star_it := model.stars.get_new_iterator_on_items
+            from star_it := model.get_new_iterator_on_stars
             until star_it.is_off loop
                 if star_it.item.kind /= star_it.item.kind_blackhole then
                     draw_star (star_it.item)
@@ -321,7 +321,7 @@ feature {NONE} -- Event handlers
 		i := star_hotspots.item_at_xy(x, y)
 		if not i.is_off then
 			if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
-				fleet_window.send_selection_to(model.stars @ (star_hotspots.fast_key_at(i.item)))
+				fleet_window.send_selection_to(model.star_with_id (star_hotspots.fast_key_at(i.item)))
 			else
 				if star_window /= Void and then children.fast_has(star_window) then
 					r := star_window.location
@@ -334,7 +334,7 @@ feature {NONE} -- Event handlers
 					fleet_window.remove
 					cancel_trajectory_selection
 				end
-				!STAR_VIEW!star_window.make (Current, r, model.stars @ (star_hotspots.fast_key_at(i.item)), model.server.game_status)
+				!STAR_VIEW!star_window.make (Current, r, model.star_with_id (star_hotspots.fast_key_at(i.item)), model.server.game_status)
 				star_window.set_fleet_click_handler(agent create_fleet_view)
 			end
 		else
@@ -373,7 +373,7 @@ feature {NONE} -- Event handlers
 			if trajectory_window /= Void then
 				trajectory_window.remove
 			end
-			!!traj.with_projection(model.stars@(star_hotspots.fast_key_at(i.item)), fleet_window.model_position, current_projection)
+			!!traj.with_projection (model.star_with_id (star_hotspots.fast_key_at (i.item)), fleet_window.model_position, current_projection)
 			traj.set_type(traj.traj_type_select_ok)
 			!!trajectory_window.make(Current, traj.showx, traj.showy, traj)
 			trajectory_window.send_behind(fleet_window)

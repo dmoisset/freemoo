@@ -150,6 +150,7 @@ feature -- Incredibly smart AI
     local
         i: ITERATOR [FLEET]
         j: ITERATOR [SHIP]
+        s: ITERATOR [STAR]
         ll: SET [SHIP]
     do
         from
@@ -162,7 +163,8 @@ feature -- Incredibly smart AI
                     j.next
                 end
                 if not ll.is_empty then
-                    server.move_fleet (i.item, server.galaxy.stars.item (1), ll)
+                    s := server.galaxy.get_new_iterator_on_stars
+                    server.move_fleet (i.item, s.item, ll)
                 else
                     print ("Fleet empty? ")
                     print (i.item.id)

@@ -6,7 +6,7 @@ class C_GALAXY
 inherit
     CLIENT
     GALAXY
-        redefine make, stars, set_stars, fleets, add_fleet end
+        redefine last_star, make, fleets, add_fleet end
     MODEL
         redefine notify_views end
     VIEW [C_STAR]
@@ -74,7 +74,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             new_stars.add(star, id)
             count := count - 1
         end
-        set_stars (new_stars)
+        stars := new_stars
+        changed_starlist := True
         notify_views
     end
 
@@ -173,18 +174,9 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 
 feature -- Redefined features
 
-	
-	
-    stars: DICTIONARY [C_STAR, INTEGER]
-
+    last_star: C_STAR
+    
     fleets: DICTIONARY [C_FLEET, INTEGER]
-
-    set_stars (starlist: DICTIONARY [C_STAR, INTEGER]) is
-    do
-        stars := starlist
-        changed_starlist := True
-        notify_views
-    end
 
     add_fleet(new_fleet: C_FLEET) is
     do

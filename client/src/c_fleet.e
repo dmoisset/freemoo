@@ -45,22 +45,22 @@ feature {NONE} -- Creation
         if is_in_orbit then
 			if destination = Void then
 				orbit_center.fleets.remove(id)
-                server.galaxy.stars.at(orbit_center.id).notify_views
+                server.galaxy.star_with_id (orbit_center.id).notify_views
 			end
 			leave_orbit
 		end
         if s.last_integer /= -1 then
             i := s.last_integer
-                check orbit_center = Void or orbit_center = server.galaxy.stars @ i end
+                check orbit_center = Void or orbit_center = server.galaxy.star_with_id (i) end
             if orbit_center = Void then
-                enter_orbit (server.galaxy.stars @ i) ;
+                enter_orbit (server.galaxy.star_with_id (i)) ;
 --FIXME: notification should be done when fleet is added
-                (server.galaxy.stars @ i).notify_views
+                (server.galaxy.star_with_id (i)).notify_views
             end
         end
         s.get_integer
         if s.last_integer /= -1  then
-            set_destination (server.galaxy.stars @ s.last_integer)
+            set_destination (server.galaxy.star_with_id (s.last_integer))
         end
         s.get_integer
         shipcount := s.last_integer

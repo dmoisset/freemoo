@@ -47,9 +47,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             knows_star.clear
         until i = 0 loop
             s.get_integer
-            if server.galaxy.stars.has (s.last_integer) then
-                star ?= server.galaxy.stars @ s.last_integer
-                    check star /= Void end
+            if server.galaxy.has_star (s.last_integer) then
+                star := server.galaxy.star_with_id (s.last_integer)
                 knows_star.add (star)
                 star.subscribe (server, "star"+star.id.to_string)
             else
