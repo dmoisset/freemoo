@@ -198,7 +198,7 @@ feature -- Operations
     require
         new_fleet /= Void
         not has_fleet (new_fleet.id)
-        new_fleet.orbit_center /= Void implies new_fleet.orbit_center.has_fleet (new_fleet)
+        new_fleet.orbit_center /= Void implies new_fleet.orbit_center.has_fleet (new_fleet.id)
     do
         fleets.add(new_fleet, new_fleet.id)
     ensure

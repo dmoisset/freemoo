@@ -124,7 +124,7 @@ feature -- Effective features
         -- Generate hotspots
         fleet_hotspots.clear
         from
-            fleet := model.fleets.get_new_iterator_on_items
+            fleet := model.get_new_iterator_on_fleets
             i := 0
         until fleet.is_off
         loop
@@ -210,7 +210,7 @@ feature -- Redefined features
             end
     -- Fleets
             from
-                fleet_it := model.fleets.get_new_iterator_on_items
+                fleet_it := model.get_new_iterator_on_fleets
                 i := fleet_pic_firstx
             until fleet_it.is_off loop
                 fleets.item(fleet_it.item.owner.color).blit(cache, i, fleet_pic_y)
@@ -250,7 +250,7 @@ feature -- Redefined features
                     loop
                         if (it.item.has(b.x, b.y)) then
                             if fleet_click_handler /= Void then
-                                fleet_click_handler.call([model.fleets @ (fleet_hotspots.key_at(it.item))])
+                                fleet_click_handler.call([model.fleet_with_id (fleet_hotspots.key_at(it.item))])
                             end
                         end
                         it.next

@@ -43,10 +43,7 @@ feature {NONE} -- Creation
         set_eta (s.last_integer)
         s.get_integer
         if is_in_orbit then
-			if destination = Void then
-				orbit_center.remove_fleet (Current)
-                server.galaxy.star_with_id (orbit_center.id).notify_views
-			end
+-- Check if necessary to do a notify_views on orbit_center
 			leave_orbit
 		end
         if s.last_integer /= -1 then

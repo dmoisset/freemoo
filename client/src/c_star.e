@@ -4,7 +4,7 @@ class C_STAR
 
 inherit
     STAR
-        redefine make, make_defaults, fleets, fleet_type end
+        redefine make, make_defaults, fleet_type end
     MODEL
     SUBSCRIBER
 
@@ -71,10 +71,6 @@ feature {SERVICE_PROVIDER} -- Redefined features
         notify_views
     end
 
-feature -- Redefined
-
-    fleets: DICTIONARY[C_FLEET, INTEGER]
-
 feature -- Accounting
 
     has_info: BOOLEAN
@@ -83,4 +79,5 @@ feature -- Accounting
 feature {NONE} -- Internal
 
     fleet_type: C_FLEET
+
 end -- class C_STAR

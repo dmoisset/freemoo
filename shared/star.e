@@ -34,9 +34,16 @@ feature -- Access
         Result := planets @ orbit
     end
 
-    has_fleet (f: like fleet_type): BOOLEAN is
+    has_fleet (fid: INTEGER): BOOLEAN is
     do
-        Result := fleets.has (f.id)
+        Result := fleets.has (fid)
+    end
+
+    fleet_with_id (fid: INTEGER): like fleet_type is
+    require
+        has_fleet (fid)
+    do
+        Result := fleets @ fid
     end
 
     fleet_count: INTEGER is
@@ -60,7 +67,7 @@ feature -- Operations on fleets
 
     remove_fleet (f: like fleet_type) is
     require
-        has_fleet (f)
+        has_fleet (f.id)
     do
         fleets.remove (f.id)
     end
