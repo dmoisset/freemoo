@@ -5,8 +5,9 @@ root
     FM_CLIENT
 
 default
-    assertion           (debug)
-    case_insensitive    (yes)
+    assertion            (debug)
+    case_insensitive     (yes)
+    high_memory_compiler (yes)
 
 cluster
 
@@ -60,6 +61,7 @@ external
     external_lib       "gtk gdk gmodule glib dl Xi Xext X11 m"
 
 generate
---    cc:                 "tcc"
+    cc:                 "tcc"
+    c_compiler_options: "-Dummy_argument"
 
 end
