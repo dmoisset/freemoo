@@ -42,7 +42,7 @@ STAR
           "iiiiiii" <<size, climate, minerals, gravity, type, special, orbit>>
 
 SCANNER
-  Name: n+":scanner" (n is a digit sequence = color_id)
+  Name: n+":scanner" (n is a digit sequence = id)
   Provided: Before game_status.started is set
   Descriptions: List of detected fleets for player n.
   Format: "i" <<count>>, followed by a sequence of
@@ -50,6 +50,21 @@ SCANNER
             "ii" <<size, picture>> (for each ship of the fleet)
   when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
   the fleet is travelling to `destination'
+
+TURN SUMMARY
+  Name: n+":turn_summary" (n is a digit sequence = id)
+  Provided: Before game_status.started is set
+  Description: Events for this turn, for player n.
+  Format: "i" <<count>>, followed by a sequence of
+          "i" <<kind>>, followed by a kind-dependent format per event:
+          event_explored: "i" <<id>>, id of explored star.
+          event_finished_production: "iis" <<id, kind, name>>, id of colony; product kind; name when it is a ship.
+
+FLEET
+  Name: "fleet"+id (id is a digit sequence = fleet_id) 
+  Provided: Before reporting fleet on scanner.
+  Description: Full fleet description
+  Format: ""
 
 SERVICE
   Name: "name"
