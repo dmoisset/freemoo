@@ -117,7 +117,7 @@ feature -- Redefinition to c_ feature
     require
         starlist /= Void
     do
-        stars := starlist
+        Precursor (starlist)
         notify_views
     end
 
