@@ -34,6 +34,7 @@ feature {NONE} -- Creation
     ensure
         map_generator /= Void
     end
+
 feature -- Access
 
     status: GAME_STATUS
@@ -78,6 +79,7 @@ feature -- Operations
         players.has (player.name)
         not status.finished
 --        player.state = player.playing_turn
+-- Server used to break with this precondition. See what to do about it.
     do
         players.set_player_state (player, st_waiting_turn_end)
         if players.all_in_state (st_waiting_turn_end) then
@@ -106,20 +108,19 @@ feature {NONE} -- Internal
     colony_new_turn is
         -- Advance turn for colonies
     local
-        s, p: INTEGER
-        star: STAR
-        planet: PLANET
+        s: ITERATOR [STAR]
+        p: ITERATOR [PLANET]
     do
-        from s := galaxy.stars.lower until s > galaxy.stars.upper loop
-            star := galaxy.stars @ s
-            from p := star.planets.lower until p > star.planets.upper loop
-                planet := star.planets @ p
-                if planet /= Void and then planet.colony /= Void then
-                    planet.colony.new_turn
+        s := galaxy.stars.get_new_iterator
+        from s.start until s.is_off loop
+            p := s.item.planets.get_new_iterator
+            from p.start until p.is_off loop
+                if p.item /= Void and then p.item.colony /= Void then
+                    p.item.colony.new_turn
                 end
-                p := p + 1
+                p.next
             end
-            s := s + 1
+            s.next
         end
     end
 

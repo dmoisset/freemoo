@@ -1,5 +1,7 @@
 class POD
 
+obsolete "All this must be redone."
+
 feature
 
     weapon_noweapon, weapon_massdriver, weapon_gausscannon, weapon_lasercannon,
@@ -51,7 +53,7 @@ feature
     mod_nomod, mod_heavymount, mod_pointdefense, mod_armorpiercing,
     mod_continuous, mod_norangedissipation, mod_shieldpiercing, mod_autofire,
     mod_enveloping, mod_mirv, mod_eccm, mod_heavilyarmored, mod_fast,
-    mod_emisionsguidance, mod_overloaded: INTEGER is unique
+    mod_emissionsguidance, mod_overloaded: INTEGER is unique
 
     mod_min: INTEGER is
     once

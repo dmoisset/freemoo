@@ -125,4 +125,4 @@ feature {NONE} -- Representation
 
     items: DICTIONARY [P, STRING]
 
-end -- class PLAYER_LIST [P <- PLAYER]
+end -- class PLAYER_LIST [P -> PLAYER]

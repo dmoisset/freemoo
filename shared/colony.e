@@ -4,12 +4,13 @@ creation make
 
 feature {NONE} -- Creation
 
-    make (p: PLANET) is
-        -- Build colony on planet `p'
+    make (p: PLANET; o: PLAYER) is
+        -- Build `o' colony on planet `p'
     require
         p /= Void
     do
         location := p
+        owner := o
         producing := product_none
     ensure
         location = p
@@ -67,5 +68,6 @@ feature -- Operations
 invariant
     valid_producing: producing.in_range (product_min, product_max)
     location /= Void
+    owner /= Void
 
 end -- class COLONY

@@ -139,7 +139,7 @@ feature {NONE} -- Operations: joining
         -- player ready to start game
     do
         if player = Void then
-            std_error.put_string (l("Client error. Player asked to start without login%N"))
+            std_error.put_string (l("Client error. Player asked to start without logging in first%N"))
         elseif player.state /= st_setup then
             std_error.put_string (format(l("Client error. Player ~1~ asked to start being in an invalid state.%N"),
                               <<player.name>>))
@@ -153,7 +153,7 @@ feature {NONE} -- Operations: joining
         -- turns to pass
     do
         if player = Void then
-            std_error.put_string (l("Client error. Player asked to pass turn without login%N"))
+            std_error.put_string (l("Client error. Player asked to pass turn without logging in before%N"))
         elseif player.state /= st_playing_turn then
             std_error.put_string (format(l("Client error. Player ~1~ asked to pass turn being in an invalid state.%N"),
                               <<player.name>>))

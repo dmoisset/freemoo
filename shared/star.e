@@ -116,7 +116,7 @@ feature {NONE} -- Creation
 invariant
     valid_kind: kind.in_range (kind_min, kind_max)
     valid_size: size.in_range (stsize_min, stsize_max)
-    not_nnx: name /= Void
+    name /= Void
     planets /= Void
     planets.count = 5
     special.in_range (stspecial_min, stspecial_max)

@@ -16,7 +16,7 @@ feature -- Creation and configuration
         -- Load path list from `filename'
         -- Empty path list if can not open
     local
-        f: TEXT_FILE_READ_EXPORTABLE
+        f: TEXT_FILE_READ
         p: STRING
     do
         !!path_list.make

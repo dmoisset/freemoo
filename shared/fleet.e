@@ -28,7 +28,7 @@ feature -- Access
         -- Estimated time of arrival when traveling, 0 when not
 
     is_stopped: BOOLEAN is
-        -- is fleet stopped?
+        -- is stopped?
     do
         Result := destination = Void
     ensure
@@ -118,7 +118,7 @@ feature -- Operations
             leave_orbit
         end
         -- Travel
-        check not is_stopped = not is_in_orbit end
+            check not is_stopped = not is_in_orbit end
         eta := (eta - 1).max (0)
         if destination /= Void then
             move_towards (destination, current_speed)
@@ -186,6 +186,7 @@ invariant
 
     nonnegative_speed: current_speed >= 0
     nonnegative_eta: eta >= 0
-    stopped_iff_not_travelling: (destination = Void) = (current_speed = 0)
+    stopped_iff_not_travelling: is_stopped = (current_speed = 0)
+    stop_only_in_orbit: is_stopped implies is_in_orbit
 
 end -- class FLEET
