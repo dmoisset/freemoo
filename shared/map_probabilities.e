@@ -1,57 +1,56 @@
 class MAP_PROBABILITIES
   -- Probabilistic Constants for Galaxy Generation
 
+inherit
+    MAP_CONSTANTS
+
 feature {NONE} -- Star constants
 
-    average_star_kinds: ARRAY [TUPLE [INTEGER, INTEGER]] is
+    average_star_kinds: FINITE_PTABLE [INTEGER] is
         -- Accumulative probability of a star being certain kind,
         -- in an average galaxy.
     once
-        !!Result.make(1, 7)
-        Result.put ([40, kind_blackhole], 1)
-        Result.put ([145, kind_bluewhite], 2)
-        Result.put ([290, kind_white], 3)
-        Result.put ([426, kind_yellow], 4)
-        Result.put ([570, kind_orange], 5)
-        Result.put ([974, kind_red], 6)
-        Result.put ([1000, kind_brown], 7)
+        !!Result.make (<<[40, kind_blackhole],
+                         [145, kind_bluewhite],
+                         [290, kind_white],
+                         [426, kind_yellow],
+                         [570, kind_orange],
+                         [974, kind_red],
+                         [1000, kind_brown]>>)
     end
 
-    orgrich_star_kinds: ARRAY [TUPLE [INTEGER, INTEGER]] is
+    orgrich_star_kinds: FINITE_PTABLE [INTEGER] is
         -- Accumulative probability of a star being certain kind,
         -- in an organic-rich galaxy.
     once
-        !!Result.make (1, 7)
-        Result.put ([70, kind_blackhole], 1)
-        Result.put ([110, kind_bluewhite], 2)
-        Result.put ([150, kind_white], 3)
-        Result.put ([455, kind_yellow], 4)
-        Result.put ([650, kind_orange], 5)
-        Result.put ([977, kind_red], 6)
-        Result.put ([1000, kind_brown], 7)
+        !!Result.make (<<[70, kind_blackhole],
+                         [110, kind_bluewhite],
+                         [150, kind_white],
+                         [455, kind_yellow],
+                         [650, kind_orange],
+                         [977, kind_red],
+                         [1000, kind_brown]>>)
     end
 
-    minrich_star_kinds: ARRAY [TUPLE [INTEGER, INTEGER]] is
+    minrich_star_kinds: FINITE_PTABLE [INTEGER] is
         -- Accumulative probability of a star being a certain kind,
         -- in an mineral-rich galaxy.
     once
-        !!Result.make (1, 7)
-        Result.put ([30, kind_blackhole], 1)
-        Result.put ([215, kind_bluewhite], 2)
-        Result.put ([435, kind_white], 3)
-        Result.put ([532, kind_yellow], 4)
-        Result.put ([621, kind_orange], 5)
-        Result.put ([993, kind_red], 6)
-        Result.put ([1000, kind_brown], 7)
+        !!Result.make (<<[30, kind_blackhole],
+                         [215, kind_bluewhite],
+                         [435, kind_white],
+                         [532, kind_yellow],
+                         [621, kind_orange],
+                         [993, kind_red],
+                         [1000, kind_brown]>>)
     end
 
-    star_sizes: ARRAY [TUPLE [INTEGER, INTEGER]] is
+    star_sizes: FINITE_PTABLE [INTEGER] is
         -- Accumulative probability of a star being a certain size.
     once
-        !!Result.make (1, 3)
-        Result.put ([290, stsize_big], 1)
-        Result.put ([735, stsize_medium], 2)
-        Result.put ([1000, stsize_small], 3)
+        !!Result.make (<<[290, stsize_big],
+                         [735, stsize_medium],
+                         [1000, stsize_small]>>)
     end
 
 feature {NONE} -- Planet Constants
@@ -72,358 +71,316 @@ feature {NONE} -- Planet Constants
         Result.add (0, kind_blackhole)
     end
 
-    planet_types: ARRAY [TUPLE [INTEGER, INTEGER]] is
+    planet_types: FINITE_PTABLE [INTEGER] is
         -- planet type probability, indexed by type.  Independent
         -- of anything else
     once
-        !!Result.make (1, 3)
-        Result.put ([200, type_asteroids], 1)
-        Result.put ([411, type_gasgiant], 2)
-        Result.put ([1000, type_planet], 3)
+        !!Result.make (<<[200, type_asteroids],
+                         [411, type_gasgiant],
+                         [1000, type_planet]>>)
     end
 
-    average_climates: DICTIONARY [ ARRAY [TUPLE [INTEGER, INTEGER]], INTEGER] is
+    average_climates: DICTIONARY [ FINITE_PTABLE [INTEGER], INTEGER] is
         -- Probability Dictionary of (planet probabilities of being a
         -- certain climate), indexed by star kind; for an average galaxy
-    local
-        dict: ARRAY [TUPLE [INTEGER, INTEGER]]
     once
         !!Result.make
-         !!dict.make (1, 10)
-         dict.add ([163, climate_toxic], 1)
-         dict.add ([649, climate_radiated], 2)
-         dict.add ([921, climate_barren], 3)
-         dict.add ([990, climate_desert], 4)
-         dict.add ([993, climate_tundra], 5)
-         dict.add ([994, climate_ocean], 6)
-         dict.add ([995, climate_swamp], 7)
-         dict.add ([996, climate_arid], 8)
-         dict.add ([998, climate_terran], 9)
-         dict.add ([1000, climate_gaia], 10)
-        Result.add (dict, kind_bluewhite) -- 422 Samples
-         !!dict.make (1, 10)
-         dict.put ([166, climate_toxic], 1)
-         dict.put ([534, climate_radiated], 2)
-         dict.put ([805, climate_barren], 3)
-         dict.put ([865, climate_desert], 4)
-         dict.put ([908, climate_tundra], 5)
-         dict.put ([925, climate_ocean], 6)
-         dict.put ([935, climate_swamp], 7)
-         dict.put ([961, climate_arid], 8)
-         dict.put ([993, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_white) -- 468 Samples
-         !!dict.make (1, 10)
-         dict.put ([127, climate_toxic], 1)
-         dict.put ([395, climate_radiated], 2)
-         dict.put ([697, climate_barren], 3)
-         dict.put ([756, climate_desert], 4)
-         dict.put ([833, climate_tundra], 5)
-         dict.put ([877, climate_ocean], 6)
-         dict.put ([915, climate_swamp], 7)
-         dict.put ([946, climate_arid], 8)
-         dict.put ([988, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_yellow) -- 612 Samples
-         !!dict.make (1, 10)
-         dict.put ([167, climate_toxic], 1)
-         dict.put ([341, climate_radiated], 2)
-         dict.put ([569, climate_barren], 3)
-         dict.put ([651, climate_desert], 4)
-         dict.put ([722, climate_tundra], 5)
-         dict.put ([779, climate_ocean], 6)
-         dict.put ([848, climate_swamp], 7)
-         dict.put ([911, climate_arid], 8)
-         dict.put ([986, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_orange) -- 712 Samples
-         !!dict.make (1, 10)
-         dict.put ([162, climate_toxic], 1)
-         dict.put ([291, climate_radiated], 2)
-         dict.put ([788, climate_barren], 3)
-         dict.put ([818, climate_desert], 4)
-         dict.put ([884, climate_tundra], 5)
-         dict.put ([906, climate_ocean], 6)
-         dict.put ([929, climate_swamp], 7)
-         dict.put ([954, climate_arid], 8)
-         dict.put ([994, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_red) -- 1087 Samples
-         !!dict.make (1, 10)
-         dict.put ([208, climate_toxic], 1)
-         dict.put ([500, climate_radiated], 2)
-         dict.put ([600, climate_barren], 3)
-         dict.put ([800, climate_desert], 4)
-         dict.put ([900, climate_tundra], 5)
-         dict.put ([920, climate_ocean], 6)
-         dict.put ([940, climate_swamp], 7)
-         dict.put ([960, climate_arid], 8)
-         dict.put ([990, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_brown) -- 12 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [163, climate_toxic],
+            [649, climate_radiated],
+            [921, climate_barren],
+            [990, climate_desert],
+            [993, climate_tundra],
+            [994, climate_ocean],
+            [995, climate_swamp],
+            [996, climate_arid],
+            [998, climate_terran],
+            [1000, climate_gaia]>>), kind_bluewhite) -- 422 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [166, climate_toxic],
+            [534, climate_radiated],
+            [805, climate_barren],
+            [865, climate_desert],
+            [908, climate_tundra],
+            [925, climate_ocean],
+            [935, climate_swamp],
+            [961, climate_arid],
+            [993, climate_terran],
+            [1000, climate_gaia]>>), kind_white) -- 468 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [127, climate_toxic],
+            [395, climate_radiated],
+            [697, climate_barren],
+            [756, climate_desert],
+            [833, climate_tundra],
+            [877, climate_ocean],
+            [915, climate_swamp],
+            [946, climate_arid],
+            [988, climate_terran],
+            [1000, climate_gaia]>>), kind_yellow) -- 612 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [167, climate_toxic],
+            [341, climate_radiated],
+            [569, climate_barren],
+            [651, climate_desert],
+            [722, climate_tundra],
+            [779, climate_ocean],
+            [848, climate_swamp],
+            [911, climate_arid],
+            [986, climate_terran],
+            [1000, climate_gaia]>>), kind_orange) -- 712 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [162, climate_toxic],
+            [291, climate_radiated],
+            [788, climate_barren],
+            [818, climate_desert],
+            [884, climate_tundra],
+            [906, climate_ocean],
+            [929, climate_swamp],
+            [954, climate_arid],
+            [994, climate_terran],
+            [1000, climate_gaia]>>), kind_red) -- 1087 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [208, climate_toxic],
+            [500, climate_radiated],
+            [600, climate_barren],
+            [800, climate_desert],
+            [900, climate_tundra],
+            [920, climate_ocean],
+            [940, climate_swamp],
+            [960, climate_arid],
+            [990, climate_terran],
+            [1000, climate_gaia]>>), kind_brown) -- 12 Samples
     end
 
-    orgrich_climates: DICTIONARY [ARRAY [TUPLE [INTEGER, INTEGER]], INTEGER] is
+    orgrich_climates: DICTIONARY [FINITE_PTABLE [INTEGER], INTEGER] is
         -- Probability Dictionary of (planet probabilities of being a
         -- certain climate), indexed by star kind; for an organic-rich galaxy
-    local
-        dict: ARRAY [TUPLE [INTEGER, INTEGER]]
     once
         !!Result.make
-         !!dict.make (1, 10)
-         dict.put ([130, climate_toxic], 1)
-         dict.put ([500, climate_radiated], 2)
-         dict.put ([722, climate_barren], 3)
-         dict.put ([989, climate_desert], 4)
-         dict.put ([995, climate_tundra], 5)
-         dict.put ([996, climate_ocean], 6)
-         dict.put ([997, climate_swamp], 7)
-         dict.put ([998, climate_arid], 8)
-         dict.put ([999, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_bluewhite) -- 184 Samples
-         !!dict.make (1, 10)
-         dict.put ([71, climate_toxic], 1)
-         dict.put ([326, climate_radiated], 2)
-         dict.put ([532, climate_barren], 3)
-         dict.put ([745, climate_desert], 4)
-         dict.put ([808, climate_tundra], 5)
-         dict.put ([830, climate_ocean], 6)
-         dict.put ([865, climate_swamp], 7)
-         dict.put ([929, climate_arid], 8)
-         dict.put ([993, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_white) -- 141 Samples
-         !!dict.make (1, 10)
-         dict.put ([88, climate_toxic], 1)
-         dict.put ([263, climate_radiated], 2)
-         dict.put ([439, climate_barren], 3)
-         dict.put ([598, climate_desert], 4)
-         dict.put ([736, climate_tundra], 5)
-         dict.put ([800, climate_ocean], 6)
-         dict.put ([858, climate_swamp], 7)
-         dict.put ([920, climate_arid], 8)
-         dict.put ([980, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_yellow) -- 1346 Samples
-         !!dict.make (1, 10)
-         dict.put ([70, climate_toxic], 1)
-         dict.put ([177, climate_radiated], 2)
-         dict.put ([327, climate_barren], 3)
-         dict.put ([446, climate_desert], 4)
-         dict.put ([619, climate_tundra], 5)
-         dict.put ([711, climate_ocean], 6)
-         dict.put ([790, climate_swamp], 7)
-         dict.put ([890, climate_arid], 8)
-         dict.put ([971, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_orange) -- 1022 Samples
-         !!dict.make (1, 10)
-         dict.put ([128, climate_toxic], 1)
-         dict.put ([194, climate_radiated], 2)
-         dict.put ([564, climate_barren], 3)
-         dict.put ([628, climate_desert], 4)
-         dict.put ([864, climate_tundra], 5)
-         dict.put ([900, climate_ocean], 6)
-         dict.put ([932, climate_swamp], 7)
-         dict.put ([964, climate_arid], 8)
-         dict.put ([999, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_red) -- 872 Samples
-         !!dict.make (1, 10)
-         dict.put ([200, climate_toxic], 1)
-         dict.put ([500, climate_radiated], 2)
-         dict.put ([600, climate_barren], 3)
-         dict.put ([800, climate_desert], 4)
-         dict.put ([900, climate_tundra], 5)
-         dict.put ([920, climate_ocean], 6)
-         dict.put ([940, climate_swamp], 7)
-         dict.put ([960, climate_arid], 8)
-         dict.put ([990, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_brown) -- 10 Samples
-    end
-    minrich_climates: DICTIONARY [ARRAY [TUPLE [INTEGER, INTEGER]], INTEGER] is
-        -- Probability Dictionary of (planet probabilities of being a
-        -- certain climate), indexed by star kind; for an mineral-rich galaxy
-    local
-        dict: ARRAY [TUPLE [INTEGER, INTEGER]]
-    once
-        !!Result.make
-         !!dict.make (1, 10)
-         dict.put ([129, climate_toxic], 1)
-         dict.put ([671, climate_radiated], 2)
-         dict.put ([931, climate_barren], 3)
-         dict.put ([988, climate_desert], 4)
-         dict.put ([995, climate_tundra], 5)
-         dict.put ([996, climate_ocean], 6)
-         dict.put ([997, climate_swamp], 7)
-         dict.put ([998, climate_arid], 8)
-         dict.put ([999, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_bluewhite) -- 770 Samples
-         !!dict.make (1, 10)
-         dict.put ([132, climate_toxic], 1)
-         dict.put ([471, climate_radiated], 2)
-         dict.put ([816, climate_barren], 3)
-         dict.put ([866, climate_desert], 4)
-         dict.put ([911, climate_tundra], 5)
-         dict.put ([931, climate_ocean], 6)
-         dict.put ([953, climate_swamp], 7)
-         dict.put ([967, climate_arid], 8)
-         dict.put ([997, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_white) -- 703 Samples
-         !!dict.make (1, 10)
-         dict.put ([135, climate_toxic], 1)
-         dict.put ([365, climate_radiated], 2)
-         dict.put ([674, climate_barren], 3)
-         dict.put ([741, climate_desert], 4)
-         dict.put ([811, climate_tundra], 5)
-         dict.put ([860, climate_ocean], 6)
-         dict.put ([890, climate_swamp], 7)
-         dict.put ([930, climate_arid], 8)
-         dict.put ([993, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_yellow) -- 430 Samples
-         !!dict.make (1, 10)
-         dict.put ([117, climate_toxic], 1)
-         dict.put ([292, climate_radiated], 2)
-         dict.put ([582, climate_barren], 3)
-         dict.put ([638, climate_desert],4 )
-         dict.put ([738, climate_tundra], 5)
-         dict.put ([781, climate_ocean], 6)
-         dict.put ([842, climate_swamp], 7)
-         dict.put ([903, climate_arid], 8)
-         dict.put ([980, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_orange) -- 462 Samples
-         !!dict.make (1, 10)
-         dict.put ([174, climate_toxic], 1)
-         dict.put ([314, climate_radiated], 2)
-         dict.put ([766, climate_barren], 3)
-         dict.put ([807, climate_desert], 4)
-         dict.put ([894, climate_tundra], 5)
-         dict.put ([922, climate_ocean], 6)
-         dict.put ([942, climate_swamp], 7)
-         dict.put ([960, climate_arid], 8)
-         dict.put ([997, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_red) -- 967 Samples
-         !!dict.make (1, 10)
-         dict.put ([208, climate_toxic], 1)
-         dict.put ([500, climate_radiated], 2)
-         dict.put ([600, climate_barren], 3)
-         dict.put ([800, climate_desert], 4)
-         dict.put ([900, climate_tundra], 5)
-         dict.put ([920, climate_ocean], 6)
-         dict.put ([940, climate_swamp], 7)
-         dict.put ([960, climate_arid], 8)
-         dict.put ([990, climate_terran], 9)
-         dict.put ([1000, climate_gaia], 10)
-        Result.add (dict, kind_brown) -- 0 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [130, climate_toxic],
+            [500, climate_radiated],
+            [722, climate_barren],
+            [989, climate_desert],
+            [995, climate_tundra],
+            [996, climate_ocean],
+            [997, climate_swamp],
+            [998, climate_arid],
+            [999, climate_terran],
+            [1000, climate_gaia]>>), kind_bluewhite) -- 184 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [71, climate_toxic],
+            [326, climate_radiated],
+            [532, climate_barren],
+            [745, climate_desert],
+            [808, climate_tundra],
+            [830, climate_ocean],
+            [865, climate_swamp],
+            [929, climate_arid],
+            [993, climate_terran],
+            [1000, climate_gaia]>>), kind_white) -- 141 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [88, climate_toxic],
+            [263, climate_radiated],
+            [439, climate_barren],
+            [598, climate_desert],
+            [736, climate_tundra],
+            [800, climate_ocean],
+            [858, climate_swamp],
+            [920, climate_arid],
+            [980, climate_terran],
+            [1000, climate_gaia]>>), kind_yellow) -- 1346 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [70, climate_toxic],
+            [177, climate_radiated],
+            [327, climate_barren],
+            [446, climate_desert],
+            [619, climate_tundra],
+            [711, climate_ocean],
+            [790, climate_swamp],
+            [890, climate_arid],
+            [971, climate_terran],
+            [1000, climate_gaia]>>), kind_orange) -- 1022 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [128, climate_toxic],
+            [194, climate_radiated],
+            [564, climate_barren],
+            [628, climate_desert],
+            [864, climate_tundra],
+            [900, climate_ocean],
+            [932, climate_swamp],
+            [964, climate_arid],
+            [999, climate_terran],
+            [1000, climate_gaia]>>), kind_red) -- 872 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [200, climate_toxic],
+            [500, climate_radiated],
+            [600, climate_barren],
+            [800, climate_desert],
+            [900, climate_tundra],
+            [920, climate_ocean],
+            [940, climate_swamp],
+            [960, climate_arid],
+            [990, climate_terran],
+            [1000, climate_gaia]>>), kind_brown) -- 10 Samples
     end
 
-    planet_sizes: ARRAY [TUPLE [INTEGER, INTEGER]] is
+    minrich_climates: DICTIONARY [FINITE_PTABLE [INTEGER], INTEGER] is
+        -- Probability Dictionary of (planet probabilities of being a
+        -- certain climate), indexed by star kind; for an mineral-rich galaxy
+    once
+        !!Result.make
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [129, climate_toxic],
+            [671, climate_radiated],
+            [931, climate_barren],
+            [988, climate_desert],
+            [995, climate_tundra],
+            [996, climate_ocean],
+            [997, climate_swamp],
+            [998, climate_arid],
+            [999, climate_terran],
+            [1000, climate_gaia]>>), kind_bluewhite) -- 770 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [132, climate_toxic],
+            [471, climate_radiated],
+            [816, climate_barren],
+            [866, climate_desert],
+            [911, climate_tundra],
+            [931, climate_ocean],
+            [953, climate_swamp],
+            [967, climate_arid],
+            [997, climate_terran],
+            [1000, climate_gaia]>>), kind_white) -- 703 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [135, climate_toxic],
+            [365, climate_radiated],
+            [674, climate_barren],
+            [741, climate_desert],
+            [811, climate_tundra],
+            [860, climate_ocean],
+            [890, climate_swamp],
+            [930, climate_arid],
+            [993, climate_terran],
+            [1000, climate_gaia]>>), kind_yellow) -- 430 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [117, climate_toxic],
+            [292, climate_radiated],
+            [582, climate_barren],
+            [638, climate_desert],
+            [738, climate_tundra],
+            [781, climate_ocean],
+            [842, climate_swamp],
+            [903, climate_arid],
+            [980, climate_terran],
+            [1000, climate_gaia]>>), kind_orange) -- 462 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [174, climate_toxic],
+            [314, climate_radiated],
+            [766, climate_barren],
+            [807, climate_desert],
+            [894, climate_tundra],
+            [922, climate_ocean],
+            [942, climate_swamp],
+            [960, climate_arid],
+            [997, climate_terran],
+            [1000, climate_gaia]>>), kind_red) -- 967 Samples
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [208, climate_toxic],
+            [500, climate_radiated],
+            [600, climate_barren],
+            [800, climate_desert],
+            [900, climate_tundra],
+            [920, climate_ocean],
+            [940, climate_swamp],
+            [960, climate_arid],
+            [990, climate_terran],
+            [1000, climate_gaia]>>), kind_brown) -- 0 Samples
+    end
+
+    planet_sizes: FINITE_PTABLE [INTEGER] is
         -- Accumulated probability for a planet being a certain size.
         -- Independent of star-kinds and galaxy ages
     once
-        !!Result.make (1, 5)
-        Result.put ([100, plsize_tiny], 1)
-        Result.put ([293, plsize_small], 2)
-        Result.put ([704, plsize_medium], 3)
-        Result.put ([904, plsize_large], 4)
-        Result.put ([1000, plsize_huge], 5)
+        !!Result.make (<<[100, plsize_tiny],
+                         [293, plsize_small],
+                         [704, plsize_medium],
+                         [904, plsize_large],
+                         [1000, plsize_huge]>>)
     end
 
 
-    planet_gravs: DICTIONARY [ARRAY [TUPLE [INTEGER, INTEGER]], INTEGER] is
+    planet_gravs: DICTIONARY [FINITE_PTABLE [INTEGER], INTEGER] is
         -- Planet Gravity probabilities, indexed by star kind
-    local
-        dict: ARRAY [TUPLE[INTEGER, INTEGER]]
     once
         !!Result.make
-        !!dict.make (1, 3)
-        dict.put ([42, grav_lowg], 1)
-        dict.put ([711, grav_normalg], 2)
-        dict.put ([1000, grav_highg], 3)
-        Result.add (dict, kind_bluewhite)
-        !!dict.make (1, 3)
-        dict.put ([106, grav_lowg], 1)
-        dict.put ([807, grav_normalg], 2)
-        dict.put ([1000, grav_highg], 3)
-        Result.add (dict, kind_white)
-        !!dict.make (1, 3)
-        dict.put ([138, grav_lowg], 1)
-        dict.put ([841, grav_normalg], 2)
-        dict.put ([1000, grav_highg], 3)
-        Result.add (dict, kind_yellow)
-        !!dict.make (1, 3)
-        dict.put ([221, grav_lowg], 1)
-        dict.put ([933, grav_normalg], 2)
-        dict.put ([1000, grav_highg], 3)
-        Result.add (dict, kind_orange)
-        !!dict.make (1, 3)
-        dict.put ([296, grav_lowg], 1)
-        dict.put ([958, grav_normalg], 2)
-        dict.put ([1000, grav_highg], 3)
-        Result.add (dict, kind_red)
-        !!dict.make (1, 3)
-        dict.put ([136, grav_lowg], 1)
-        dict.put ([909, grav_normalg], 2)
-        dict.put ([1000, grav_highg], 3)
-        Result.add (dict, kind_brown)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [42, grav_lowg],
+            [711, grav_normalg],
+            [1000, grav_highg]>>), kind_bluewhite)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [106, grav_lowg],
+            [807, grav_normalg],
+            [1000, grav_highg]>>), kind_white)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [138, grav_lowg],
+            [841, grav_normalg],
+            [1000, grav_highg]>>), kind_yellow)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [221, grav_lowg],
+            [933, grav_normalg],
+            [1000, grav_highg]>>), kind_orange)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [296, grav_lowg],
+            [958, grav_normalg],
+            [1000, grav_highg]>>), kind_red)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [136, grav_lowg],
+            [909, grav_normalg],
+            [1000, grav_highg]>>), kind_brown)
     end
 
-    planet_minerals: DICTIONARY[ ARRAY[ TUPLE [INTEGER, INTEGER]], INTEGER] is
+    planet_minerals: DICTIONARY[ FINITE_PTABLE [INTEGER], INTEGER] is
         -- planet Mineral richness, indexed by star kind
-    local
-        dict: ARRAY [TUPLE [INTEGER, INTEGER]]
     once
         !!Result.make
-         !!dict.make (1, 5)
-         dict.put ([1, mnrl_ultrapoor], 1)
-         dict.put ([2, mnrl_poor], 2)
-         dict.put ([399, mnrl_abundant], 3)
-         dict.put ([815, mnrl_rich], 4)
-         dict.put ([1000, mnrl_ultrarich], 5)
-        Result.add (dict, kind_bluewhite)
-         !!dict.make (1, 5)
-         dict.put ([1, mnrl_ultrapoor], 1)
-         dict.put ([196, mnrl_poor], 2)
-         dict.put ([608, mnrl_abundant], 3)
-         dict.put ([902, mnrl_rich], 4)
-         dict.put ([1000, mnrl_ultrarich], 5)
-        Result.add (dict, kind_white)
-         !!dict.make (1, 5)
-         dict.put ([1, mnrl_ultrapoor], 1)
-         dict.put ([304, mnrl_poor], 2)
-         dict.put ([708, mnrl_abundant], 3)
-         dict.put ([915, mnrl_rich], 4)
-         dict.put ([1000, mnrl_ultrarich], 5)
-        Result.add (dict, kind_yellow)
-         !!dict.make (1, 5)
-         dict.put ([104, mnrl_ultrapoor], 1)
-         dict.put ([506, mnrl_poor], 2)
-         dict.put ([896, mnrl_abundant], 3)
-         dict.put ([999, mnrl_rich], 4)
-         dict.put ([1000, mnrl_ultrarich], 5)
-        Result.add (dict, kind_orange)
-         !!dict.make (1, 5)
-         dict.put ([186, mnrl_ultrapoor], 1)
-         dict.put ([569, mnrl_poor], 2)
-         dict.put ([992, mnrl_abundant], 3)
-         dict.put ([996, mnrl_rich], 4)
-         dict.put ([1000, mnrl_ultrarich], 5)
-        Result.add (dict, kind_red)
-         !!dict.make (1, 5)
-         dict.put ([50, mnrl_ultrapoor], 1)
-         dict.put ([160, mnrl_poor], 2)
-         dict.put ([770, mnrl_abundant], 3)
-         dict.put ([950, mnrl_rich], 4)
-         dict.put ([1000, mnrl_ultrarich], 5)
-        Result.add (dict, kind_brown)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [1, mnrl_ultrapoor],
+            [2, mnrl_poor],
+            [399, mnrl_abundant],
+            [815, mnrl_rich],
+            [1000, mnrl_ultrarich]>>), kind_bluewhite)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [1, mnrl_ultrapoor],
+            [196, mnrl_poor],
+            [608, mnrl_abundant],
+            [902, mnrl_rich],
+            [1000, mnrl_ultrarich]>>), kind_white)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [1, mnrl_ultrapoor],
+            [304, mnrl_poor],
+            [708, mnrl_abundant],
+            [915, mnrl_rich],
+            [1000, mnrl_ultrarich]>>), kind_yellow)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [104, mnrl_ultrapoor],
+            [506, mnrl_poor],
+            [896, mnrl_abundant],
+            [999, mnrl_rich],
+            [1000, mnrl_ultrarich]>>), kind_orange)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [186, mnrl_ultrapoor],
+            [569, mnrl_poor],
+            [992, mnrl_abundant],
+            [996, mnrl_rich],
+            [1000, mnrl_ultrarich]>>), kind_red)
+        Result.add (create {FINITE_PTABLE [INTEGER]}.make (<<
+            [50, mnrl_ultrapoor],
+            [160, mnrl_poor],
+            [770, mnrl_abundant],
+            [950, mnrl_rich],
+            [1000, mnrl_ultrarich]>>), kind_brown)
     end
-
 
 end -- class MAP_PROBABILITIES

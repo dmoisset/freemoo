@@ -162,11 +162,11 @@ feature {NONE} -- Planet Generation
         loop
             rand.next
             if rand.last_integer (100) <= planet_prob.at (star.kind) then
-                !!planet.make (star, one_of (planet_sizes),
-                one_of (planet_climates.at (star.kind)),
-                one_of (planet_minerals.at (star.kind)),
-                one_of (planet_gravs.at (star.kind)),
-                one_of (planet_types), plspecial_nospecial)
+                !!planet.make (star, planet_sizes.random_item,
+                planet_climates.at (star.kind).random_item,
+                planet_minerals.at (star.kind).random_item,
+                planet_gravs.at (star.kind).random_item,
+                planet_types.random_item, plspecial_nospecial)
                 star.set_planet (planet, i)
             end
             i := i + 1
@@ -229,36 +229,6 @@ feature {NONE} -- Planet Generation
     end
 
 feature{NONE} -- Internal
-
-    one_of (probs: ARRAY [TUPLE [INTEGER, INTEGER]]):INTEGER is
-     -- Choose a random entry of probs.
-     -- Tuples are (probability, value) probability of choosing value or less
-     -- (in thousandths)
-     -- If probs contains probabilities > 1000 or repeated values,
-     --  it's your guess.
-    require
-        probs /= Void
-    local
-        curs: ITERATOR_ON_COLLECTION [TUPLE [INTEGER, INTEGER]]
-        best: INTEGER
-        choice: INTEGER
-    do
-        rand.next
-        choice := rand.last_integer (1000)
-        !!curs.make (probs)
-        from
-            curs.start
-            best := 1001
-        until
-            curs.is_off or else (curs.item = Void)
-        loop
-            if curs.item.first.in_range (choice, best) then
-                best := curs.item.first
-                Result := curs.item.second
-            end
-            curs.next
-        end
-    end
 
     closest_star_to (c: COORDS; starlist: ARRAY[STAR]): INTEGER is
     require
@@ -331,7 +301,8 @@ feature -- Operation
             i > starposs.upper
         loop
             rand.next
-            !!newstar.make(starposs @ i, starnams @ i, one_of (star_kinds), one_of (star_sizes))
+            !!newstar.make(starposs @ i, starnams @ i,
+                           star_kinds.random_item, star_sizes.random_item)
             make_planets_on (newstar)
             starlist.add_last(newstar)
             i := i + 1
@@ -405,11 +376,11 @@ feature {NONE} -- Implementation
     starcount: INTEGER
         -- Number of stars in galaxy, depends of size
 
-    star_kinds: ARRAY [TUPLE [INTEGER, INTEGER]]
+    star_kinds: FINITE_PTABLE [INTEGER]
         -- Accumulative probability of a star being certain kind.
         -- One of average_star_kinds, orgrich_star_kinds or minrich_star_kinds
 
-    planet_climates: DICTIONARY [ARRAY [TUPLE [INTEGER, INTEGER]], INTEGER]
+    planet_climates: DICTIONARY [FINITE_PTABLE [INTEGER], INTEGER]
         -- Probability for a star having a certain climate, indexed by
         -- star kind.  One of average_climates, orgrich_climates or
         -- minrich_climates
