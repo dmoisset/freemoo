@@ -105,6 +105,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 		loop
 			if fleet_it.item.owner = server.player then
 				new_fleets.add(fleet_it.item, fleet_it.item.id)
+-- FIXME: more abstraction breach
+			if fleet_it.item.orbit_center /= Void then
+					fleet_it.item.orbit_center.fleets.add (fleet_it.item, fleet_it.item.id)
+				end
 			end
 			fleet_it.next
 		end
@@ -127,6 +131,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 --These don't work >:G #!?!
 --                    stars.item(ir.item).fleets.add(fleet, fleet.id)
 --                    (stars.item(ir.item)).fleets.add(fleet, fleet.id)
+-- FIXME: abstraction breach
                 (stars @ s.last_integer).fleets.add(fleet, fleet.id);
                 (stars @ s.last_integer).notify_views
             else
