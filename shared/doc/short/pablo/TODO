@@ -1,0 +1,2 @@
+clean erases ALL html files, not just short output
+sed should be replaced with basename
