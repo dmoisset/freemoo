@@ -188,7 +188,7 @@ feature {NONE} -- Redrawing
 
     draw_star (s: C_STAR) is
     local
-        img: SDL_IMAGE -- star image
+		  img: IMAGE -- star image
         px, py: REAL -- projected star
         lx, ly: INTEGER -- star label position
         lwidth: INTEGER -- star label width
@@ -197,11 +197,11 @@ feature {NONE} -- Redrawing
         current_projection.project(s)
         px := current_projection.x
         py := current_projection.y
-        img ?= star_pics.item(s.kind, s.size + zoom)
+        img := star_pics.item(s.kind, s.size + zoom)
         r.set_with_size ((px - img.width / 2).rounded,
                     (py - img.height / 2).rounded, img.width, img.height)
         star_hotspots.add (r, s.id)
-        img.blit_fast (cache, r.x, r.y)
+        img.blit (cache, r.x, r.y)
         if s.has_info then
             lwidth := font.width_of (s.name)
             lx := (px - lwidth / 2).rounded
@@ -216,18 +216,18 @@ feature {NONE} -- Redrawing
 
     draw_fleet (f: FLEET) is
     local
-        img: SDL_IMAGE -- fleet image
+        img: IMAGE -- fleet image
         px, py: REAL -- projected fleet
         r: RECTANGLE
     do
         current_projection.project(f)
         px := current_projection.x
         py := current_projection.y
-        img ?= fleet_pics.item(f.owner.color, zoom)
+        img := fleet_pics.item(f.owner.color, zoom)
         r.set_with_size ((px - img.width / 2 - 10).rounded,
                     (py - img.height / 2 - 10).rounded, img.width, img.height)
         fleet_hotspots.add (r, f.id)
-        img.blit_fast (cache, r.x, r.y)
+        img.blit(cache, r.x, r.y)
     end
 
     draw_blackhole (s: STAR) is

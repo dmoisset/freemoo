@@ -168,27 +168,26 @@ feature -- Redefined features
     local
         tuple: TUPLE[INTEGER, INTEGER]
         i: INTEGER
-        img: SDL_IMAGE
         fleet_it: ITERATOR[C_FLEET]
     do
         if dirty then
             dirty := False
     -- Background
             !!cache.make (width, height)
-            background.blit_fast (cache, 0, 0)
+            background.blit(cache, 0, 0)
             if model.has_info then
     -- Sun
-                suns.item(model.kind - kind_min).blit_fast(cache, 157, 120)
+                suns.item(model.kind - kind_min).blit(cache, 157, 120)
     -- Orbits / Asteroid Fields
                 from i := 1
                 until i > 5 loop
                     if model.planets.item(i) /= Void then
                         if model.planets.item(i).type = type_asteroids then
-                            img ?= asteroids.images.item(i)
-                            img.blit_fast(cache, 29 + asteroids.positions.item(i).x,
-                                          59 + asteroids.positions.item(i).y)
+									asteroids.images.item(i).blit(cache,
+											 29 + asteroids.positions.item(i).x,
+											 59 + asteroids.positions.item(i).y)
                         else
-                            orbits.item(i).blit_fast(cache, 29, 59)
+                            orbits.item(i).blit(cache, 29, 59)
                         end
                     end
                     i := i + 1
@@ -198,7 +197,7 @@ feature -- Redefined features
                 until i > 5 loop
                     if model.planets.item(i) /= Void and then model.planets.item(i).colony /= Void then
                         tuple := planet_pos(model.planets.item(i))
-                        colonies.item(model.planets.item(i).colony.owner.color).blit_fast(cache, tuple.first - 15, tuple.second - 15)
+                        colonies.item(model.planets.item(i).colony.owner.color).blit(cache, tuple.first - 15, tuple.second - 15)
                     end
                     i := i + 1
                 end
@@ -209,7 +208,7 @@ feature -- Redefined features
                 i := fleet_pic_firstx
             until fleet_it.is_off
             loop
-                fleets.item(fleet_it.item.owner.color).blit_fast(cache, i, fleet_pic_y)
+                fleets.item(fleet_it.item.owner.color).blit(cache, i, fleet_pic_y)
                 i := i + (fleets @ fleet_it.item.owner.color).width + fleet_pic_margin
                 fleet_it.next
             end
@@ -316,74 +315,66 @@ feature -- Controls
 
 feature -- Once data
 
-    background: SDL_IMAGE is
+    background: IMAGE is
     local
         a: FMA_FRAMESET
     once
         !!a.make("client/star-view/background.fma")
-        Result ?= a.images@ 1
+        Result := a.images@ 1
     end
 
-    orbits: ARRAY[SDL_IMAGE] is
+    orbits: ARRAY[IMAGE] is
     local
         i: INTEGER
-        img: SDL_IMAGE
         a: ANIMATION_FMA_TRANSPARENT
     once
         !!Result.make(1, 5)
         from i := 1
         until i > 5 loop
             !!a.make("client/star-view/orbit" + i.to_string + ".fma")
-            img ?= a.item
-            Result.put(img, i)
+            Result.put(a.item, i)
             i := i + 1
         end
     end
 
-    suns: ARRAY[SDL_IMAGE] is
+    suns: ARRAY[IMAGE] is
     local
         i: INTEGER
-        img: SDL_IMAGE
         a: FMA_FRAMESET
     once
         !!Result.make(1, 6)
         from i := 1
         until i > 6 loop
             !!a.make("client/star-view/sun" + i.to_string + ".fma")
-            img ?= a.images @ 1
-            Result.put(img, i)
+            Result.put(a.images @ 1, i)
             i := i + 1
         end
     end
 
-    colonies: ARRAY[SDL_IMAGE] is
+    colonies: ARRAY[IMAGE] is
     local
         i: INTEGER
-        img: SDL_IMAGE
         a: FMA_FRAMESET
     once
         !!Result.make(0, 7)
         from i := 0
         until i > 7 loop
             !!a.make("client/star-view/colony" + i.to_string + ".fma")
-            img ?= a.images @ 1
-            Result.put(img, i)
+            Result.put(a.images @ 1, i)
             i := i + 1
         end
     end
 
-    fleets: ARRAY[SDL_IMAGE] is
+    fleets: ARRAY[IMAGE] is
     local
         i: INTEGER
-        img: SDL_IMAGE
         a: FMA_FRAMESET
     once
         !!Result.make(0, 7)
         from i := 0
         until i > 7 loop
             !!a.make("client/star-view/fleet" + i.to_string + ".fma")
-            img ?= a.images @ 1
-            Result.put(img, i)
+            Result.put(a.images @ 1, i)
             i := i + 1
         end
     end
