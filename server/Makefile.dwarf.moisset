@@ -1,3 +1,3 @@
-EIFFLAGS:=$(EIFFLAGS) -cc tcc
+EIFFLAGS+=-cc tcc
 BUILD1=compile
         
