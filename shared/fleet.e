@@ -104,15 +104,13 @@ feature -- Operations
         ship_count <= old ship_count + old other.ship_count
     end
 
-    split(shs: SET[SHIP]) is
-        -- Removes `ships' from current fleet, and returns a fleet with
-        -- those ships from `ships' that were in Current, and the same
+    split(sh: ITERATOR [SHIP]) is
+        -- Removes ships in`sh' from current fleet, and returns a 
+        -- fleet with those ships, and the same
         -- `owner', `orbit_center', `destination' and `eta' as Current.
     require
-        shs /= Void
-        -- shs.for_all (agent has_ship (?.id))
-    local
-        sh: ITERATOR[SHIP]
+        sh /= Void
+        -- sh.for_all (agent has_ship (?.id))
     do
         !!splitted_fleet.make
         splitted_fleet.move_to (Current)
@@ -122,9 +120,7 @@ feature -- Operations
         if orbit_center /= Void then
             splitted_fleet.enter_orbit (orbit_center)
         end
-        from sh := shs.get_new_iterator
-        until sh.is_off
-        loop
+        from until sh.is_off loop
             remove_ship(sh.item)
             splitted_fleet.add_ship(sh.item)
             sh.next
@@ -136,7 +132,6 @@ feature -- Operations
                     (splitted_fleet.destination = destination) and 
                     (splitted_fleet.orbit_center = orbit_center)
         ship_conservation: splitted_fleet.ship_count + ship_count = old ship_count
-        splitted_fleet.ship_count = shs.count
     end
 
     enter_orbit (star: like orbit_center) is

@@ -10,7 +10,7 @@ feature {NONE} -- Creation
 
 feature -- Operations
 
-    evolve (players: PLAYER_LIST [PLAYER]) is
+    evolve (players: ITERATOR [PLAYER]) is
         -- Configure `players' to initial state.
     require
         players /= Void

@@ -14,21 +14,15 @@ feature {NONE} -- Creation
 
 feature -- Operations
 
-    evolve (players: PLAYER_LIST [PLAYER]) is
+    evolve (players: ITERATOR [PLAYER]) is
         -- Configure `players' to initial state.
     local
-        i: ITERATOR[PLAYER]
         p: PLAYER
     do
-        from
-            i := players.get_new_iterator
-            i.start
-        until
-            i.is_off
-        loop
-            p := i.item
+        from until players.is_off loop
+            p := players.item
             p.colonies.item(p.colonies.lower).set_producing (p.colonies.item(p.colonies.lower).product_starship)
-            i.next
+            players.next
         end
     end
 

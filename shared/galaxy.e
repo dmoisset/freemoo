@@ -177,20 +177,16 @@ feature -- Access -- fleet list
 
 feature -- Operations
 
-    generate_scans (pl: PLAYER_LIST [PLAYER]) is
+    generate_scans (pl: ITERATOR [PLAYER]) is
         -- Store in `scans' current scanner for all players in `pl'
     require
         pl /= Void
-    local
-        i: ITERATOR [PLAYER]
     do
-        i := pl.get_new_iterator
         from
-            i.start
             scans.clear
-        until i.is_off loop
-            scans.put (scanner (i.item), i.item.id)
-            i.next
+        until pl.is_off loop
+            scans.put (scanner (pl.item), pl.item.id)
+            pl.next
         end
     end
 
@@ -227,7 +223,7 @@ feature -- Operations
     do
         f := fleet
         if ships.count /= f.ship_count then
-            f.split (ships)
+            f.split (ships.get_new_iterator)
             f := f.splitted_fleet
             f.set_destination (destination)
             add_fleet (f)

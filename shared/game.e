@@ -82,7 +82,7 @@ feature -- Operations
         if players.all_in_state (st_ready) and status.open_slots = 0 then
             -- Generate Galaxy
             map_generator.generate (galaxy, players)
-            evolver.evolve (players)
+            evolver.evolve (players.get_new_iterator)
 --FIXME: Start what has to start
             init_game
             status.start
@@ -119,7 +119,7 @@ feature -- Operations
         -- Fleet combat
         -- Bombardment/ground combat
         -- Colonization
-        galaxy.generate_scans (players)
+        galaxy.generate_scans (players.get_new_iterator)
         status.next_date
         players.set_all_state (st_playing_turn)
     end
@@ -197,7 +197,7 @@ feature {NONE} -- Internal
         -- Called just before setting players state to playing for the
         -- first time
     do
-        galaxy.generate_scans (players)
+        galaxy.generate_scans (players.get_new_iterator)
     end
 
 feature {NONE} -- Internal

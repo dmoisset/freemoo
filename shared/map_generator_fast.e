@@ -30,7 +30,7 @@ feature {NONE} -- Position Generation
         until
             i > Result.upper
         loop
-            if bunched_up (Result.item (i), Result) then
+            if bunched_up (Result.item (i), Result.get_new_iterator) then
                 Result.remove (i)
             else
                 i := i + 1
@@ -46,7 +46,7 @@ feature {NONE} -- Position Generation
         until
             i > Result.upper
         loop
-            if too_far_away(Result.item(i), Result) then
+            if too_far_away(Result.item(i), Result.get_new_iterator) then
                 Result.remove(i)
             else
                 i := i + 1

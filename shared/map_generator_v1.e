@@ -41,7 +41,7 @@ feature {NONE} -- Position Generation
         Result.count = starcount
     end
 
-    fill_carefully(res:ARRAY[COORDS]) is
+    fill_carefully (res: ARRAY [COORDS]) is
     local
         newc: COORDS
     do
@@ -52,7 +52,7 @@ feature {NONE} -- Position Generation
             from
                 newc := newcoords
             until
-                goodstar (newc, res)
+                goodstar (newc, res.get_new_iterator)
             loop
                 newc := newcoords
             end
@@ -62,66 +62,59 @@ feature {NONE} -- Position Generation
         res.count = starcount
     end
 
-    bunched_up (this: COORDS; here: ARRAY[COORDS]): BOOLEAN is
+    bunched_up (this: COORDS; here: ITERATOR [COORDS]): BOOLEAN is
         -- true if closer than mindelta to another star
-    local
-        j: INTEGER
     do
-        from
-            j := here.lower
-        until
-            j > here.upper or Result
+        from until here.is_off or Result
         loop
-            Result := here.item(j) /= this and then ((here.item(j) |-| this) < mindelta)
-            j := j + 1
+            Result := here.item /= this and then ((here.item |-| this) < mindelta)
+            here.next
         end
     end
 
-    too_far_away (this: COORDS; here: ARRAY[COORDS]): BOOLEAN is
+    too_far_away (this: COORDS; here: ITERATOR [COORDS]): BOOLEAN is
         -- true if this' nearest neighbour is farther than maxdelta away
     local
-        j: INTEGER
         farthest: REAL
     do
         from
-            j := here.lower
             farthest := maxdelta + 1
+            Result := not here.is_off -- not empty list
         until
-            j > here.upper
+            here.is_off
         loop
-            if this /= here.item(j) then
-                farthest := farthest.min(this |-| here.item(j))
+            if this /= here.item then
+                farthest := farthest.min(this |-| here.item)
             end
-            j := j + 1
+            here.next
         end
-        Result := (farthest > maxdelta) and not here.is_empty
+        Result := (farthest > maxdelta) and Result
     end
 
-    goodstar (this: COORDS; here: ARRAY[COORDS]): BOOLEAN is
+    goodstar (this: COORDS; here: ITERATOR [COORDS]): BOOLEAN is
         -- Optimization for not_bunched and too_far_away, goes over
         -- the structure only once
     local
-        i: INTEGER
         farthest: REAL
+        empty: BOOLEAN
     do
         Result := true
         farthest := maxdelta + 1
-        from
-            i := here.lower
-        until
-            i > here.upper or not Result
+        empty := here.is_off
+        from until here.is_off or not Result
         loop
-            if (this |-| here.item (i)) < mindelta then
+            if (this |-| here.item) < mindelta then
                 Result := false
             end
-            farthest := farthest.min (this |-| here.item (i))
-            i := i + 1
+            farthest := farthest.min (this |-| here.item)
+            here.next
         end
-        if farthest > maxdelta and not here.is_empty then
+        if farthest > maxdelta and not empty then
             Result := false
         end
     ensure
-        Result = not (bunched_up (this, here) or too_far_away (this, here))
+-- Invalidated because here is modified
+--        Result = not (bunched_up (this, here) or too_far_away (this, here))
     end
 
     newcoords: COORDS is

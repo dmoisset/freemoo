@@ -139,9 +139,9 @@ feature -- Access
 
 feature -- Operations
 
-	generate_scans(pl: PLAYER_LIST[PLAYER]) is
+	generate_scans (pl: ITERATOR [PLAYER]) is
 	do
-		Precursor(pl)
+		Precursor (pl)
 		update_clients
 	end
 

@@ -56,9 +56,9 @@ feature -- Redefined features
         update_clients
     end
 
-    split (shs: SET [SHIP]) is
+    split (sh: ITERATOR [SHIP]) is
     do
-        Precursor (shs)
+        Precursor (sh)
         update_clients
     end
     
