@@ -202,6 +202,8 @@ feature {NONE} -- Planet Generation
         hmworldnams := <<"Color 1 Homeworld", "Color 2 Homeworld",
         "Color 3 Homeworld", "Color 4 Homeworld", "Color 5 Homeworld"
         "Color 6 Homeworld", "Color 7 Homeworld", "Color 8 Homeworld">>
+        -- player colors star with 0
+        hmworldnams.reindex (0)
 -- Get this out.  Should be race homeworld names
         step := perimeter / players.count
         rand.next
@@ -346,7 +348,7 @@ feature -- Operation
 
 
 feature{NONE} -- Creation
-    make (options: OPTION_LIST) is
+    make (options: SERVER_OPTIONS) is
     require
         options /= Void
     local

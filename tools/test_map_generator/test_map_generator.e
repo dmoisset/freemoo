@@ -44,11 +44,11 @@ feature {ANY}
     make is
     local
         done: BOOLEAN
-        mapgen: MAP_GENERATOR_V1
+        mapgen: MAP_GENERATOR
         i: INTEGER
         proj: PROJECTION
         selected: INTEGER
-        options: OPTION_LIST
+        options: SERVER_OPTIONS
         player: EASY_PLAYER
         plist: EASY_PLAYER_LIST
     do
@@ -57,7 +57,7 @@ feature {ANY}
         !!options.make
         options.parse_add ("galaxysize = huge")
         options.parse_add ("galaxyage = average")
-        !!mapgen.make (options)
+        !MAP_GENERATOR_FAST!mapgen.make (options)
         !!proj
 
         !!plist.make

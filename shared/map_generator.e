@@ -2,7 +2,7 @@ deferred class MAP_GENERATOR
 
 feature {NONE} -- Creation
 
-    make (options: OPTION_LIST) is
+    make (options: SERVER_OPTIONS) is
     require
         options /= Void
     deferred

@@ -8,6 +8,7 @@ inherit
     end
     GETTEXT
     STRING_FORMATTER
+    PKG_USER
 
 creation make
 
@@ -16,6 +17,7 @@ feature {NONE} -- Creation
     make is
     do
         std_error.put_string (l("FreeMOO server v0.1 started%N"))
+        pkg_system.make_with_config_file ("freemoo.conf")
         init
         Precursor
     end
@@ -86,6 +88,6 @@ feature -- Server attributes
 
     game: S_GAME
 
-    options: OPTION_LIST
+    options: SERVER_OPTIONS
 
 end -- class FM_SERVER

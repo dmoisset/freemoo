@@ -6,7 +6,7 @@ inherit
 
 feature {NONE} -- Creation
 
-    make_with_options (opt: OPTION_LIST) is
+    make_with_options (opt: SERVER_OPTIONS) is
     do
         options := opt
         !!status.make_with_options (options)
@@ -85,7 +85,7 @@ feature {NONE} -- Internal
 
     map_generator: MAP_GENERATOR
 
-    options: OPTION_LIST
+    options: SERVER_OPTIONS
 
     colony_new_turn is
         -- Advance turn for colonies

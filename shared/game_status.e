@@ -10,7 +10,7 @@ feature {NONE} -- Creation
     do
     end
 
-    make_with_options (options: OPTION_LIST) is
+    make_with_options (options: SERVER_OPTIONS) is
     do
         open_slots       := options.int_options     @ "maxplayers"
         galaxy_size      := options.enum_options    @ "galaxysize"
