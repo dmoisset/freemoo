@@ -27,6 +27,9 @@ feature {NONE} -- Creation
             make (10, 10)
         end
     rescue
+        if p.pkg_system.last_file_open.is_connected then
+            p.pkg_system.last_file_open.disconnect
+        end
         if not tried then
             print ("Error loading FMI: "+path+"%N")
             tried := True
