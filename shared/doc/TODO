@@ -1,23 +1,12 @@
-BUG: problema desconocido con net-thread
-Suscripciones de estrellas, scanner
-Servicio de exploración
-DESIGN: info de flotas propias
-    - Servicio de flotas
 BUG: Scanner debería delegar escaneado a elementos
 BUG: scanner debería usar lista de flotas y colonias del jugador
     - ?
 image bin
-Mostrar flotas en galaxy_view
-    - dibujar lineas
 DESIGN: ordenes a flotas
-scrollbar en EWS
-fleet_view
 Hacer más tolerante el server respecto a caidas
 Renombre de estrellas
 Usar cursores
 Emprolijar player_status view (orden de aparición, constantes)
-colorear fonts
-drag de star_view (y posición inicial)
 galaxy_view:
     fondo movil
     scroll suave
@@ -27,3 +16,6 @@ galaxy_view:
 indicador de espera de fin de turno
 selección de color, ruler_name (player setup)
 chat
+nueva interfaz para serializer
+updates incrementales
+Revision general de código

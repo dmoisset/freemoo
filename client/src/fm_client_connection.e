@@ -88,8 +88,8 @@ feature -- Operations
         -- subscribe to services provided on beginning
     do
         subscribe (galaxy, "galaxy")
--- waiting for changes
---        subscribe (galaxy, player.id.to_string+":scanner")
+        subscribe (galaxy, player.id.to_string+":scanner")
+        subscribe (player, "player"+player.id.to_string)
     end
 
     end_turn (multiple: BOOLEAN) is

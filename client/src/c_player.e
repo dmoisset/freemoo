@@ -1,8 +1,11 @@
 class C_PLAYER
+    -- Should subscribe after galaxy
 
 inherit
     PLAYER
     rename make as player_make end
+    SUBSCRIBER
+    CLIENT
 
 creation
     make
@@ -36,6 +39,40 @@ feature -- Operations
         br ?= s.unserialized_form @ 5; connected := br
 
         serial.remove_first (s.used_serial_count)
+    end
+
+feature {SERVICE_PROVIDER} -- Subscriber callback
+
+    on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
+        -- Action when `msg' arrives from `provider''s `service'
+    local
+        s: SERIALIZER
+        ir: reference INTEGER
+        i: INTEGER
+        newmsg: STRING
+        star: C_STAR
+    do
+        newmsg := clone (msg)
+        s.unserialize ("i", newmsg)
+        ir ?= s.unserialized_form @ 1
+        newmsg.remove_first (s.used_serial_count)
+        from
+            i := ir
+            knows_star.clear
+        until i = 0 loop
+            s.unserialize ("i", newmsg)
+            ir ?= s.unserialized_form @ 1
+            newmsg.remove_first (s.used_serial_count)
+            if server.galaxy.stars.has (ir) then
+                star ?= server.galaxy.stars @ ir
+                    check star /= Void end
+                knows_star.add (star)
+                star.subscribe (server, "star"+star.id.to_string)
+            else
+                print ("Warning: star not found!%N")
+            end
+            i := i - 1
+        end
     end
 
 feature -- Access

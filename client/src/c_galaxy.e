@@ -66,7 +66,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             else
                 !!star.make_defaults
                 star.add_view (Current)
-                star.set_id(id)
+                star.set_id (id)
             end
             ir ?= s.unserialized_form @ 2
 -- Using .item below because of SE bug #152
@@ -103,9 +103,9 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         s.unserialize("i", msg)
         ir ?= s.unserialized_form @ 1
         count := ir.item
+        !!new_fleets.make
         if count > 0 then
             newmsg := msg.substring(s.used_serial_count + 1, msg.count)
-            !!new_fleets.make
             from until count = 0 loop
                 !!fleet.make
                 s.unserialize("iiii", newmsg)
@@ -146,6 +146,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 count := count - 1
             end
         end
+            check new_fleets /= Void end
         fleets := new_fleets
         notify_views
     end

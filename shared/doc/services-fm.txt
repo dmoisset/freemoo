@@ -20,13 +20,6 @@ PLAYERS LIST
   Format: "i" <<count>>, followed by sequence of
           "isiib", <<id, name, state, color, connected>>
 
-CHAT MESSAGES
-  Name: "chatroom"
-  Provided: when the Join-Accept is sent, until connection close
-  Description: messages from chat
-  Format: "iss", <<color, destinations, message_said>>
-          color can be 0 (server message)
-
 GALAXY
   Name: "galaxy"
   Provided: Before game_status.started is set
@@ -41,8 +34,21 @@ STAR
   Format: "si" <<name, planets.count>>, followed by a sequence of
           "iiiiiii" <<size, climate, minerals, gravity, type, special, orbit>>
 
+FLEET
+  Name: "fleet"+id (id is a digit sequence = fleet_id) 
+  Provided: Before reporting fleet on scanner.
+  Description: Full fleet description
+  Format: ""
+
+PLAYER
+  Name: "player"+id (id is a digit sequence = player_id) 
+  Provided: Before game_status.started is set
+  Description: Detailed player description
+  Format: "i" <<count>, followed by a sequence of
+             "i" <<star_id>> (this is the known_stars list)
+
 SCANNER
-  Name: n+":scanner" (n is a digit sequence = id)
+  Name: n+":scanner" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
   Descriptions: List of detected fleets for player n.
   Format: "i" <<count>>, followed by a sequence of
@@ -52,7 +58,7 @@ SCANNER
   the fleet is travelling to `destination'
 
 TURN SUMMARY
-  Name: n+":turn_summary" (n is a digit sequence = id)
+  Name: n+":turn_summary" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
   Description: Events for this turn, for player n.
   Format: "i" <<count>>, followed by a sequence of
@@ -60,11 +66,12 @@ TURN SUMMARY
           event_explored: "i" <<id>>, id of explored star.
           event_finished_production: "iis" <<id, kind, name>>, id of colony; product kind; name when it is a ship.
 
-FLEET
-  Name: "fleet"+id (id is a digit sequence = fleet_id) 
-  Provided: Before reporting fleet on scanner.
-  Description: Full fleet description
-  Format: ""
+CHAT MESSAGES
+  Name: "chatroom"
+  Provided: when the Join-Accept is sent, until connection close
+  Description: messages from chat
+  Format: "iss", <<color, destinations, message_said>>
+          color can be 0 (server message)
 
 SERVICE
   Name: "name"

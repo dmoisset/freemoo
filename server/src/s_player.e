@@ -2,7 +2,15 @@ class S_PLAYER
 
 inherit
     PLAYER
-    rename make as player_make end
+    rename
+        make as player_make
+    redefine
+        add_to_known_list
+    end
+    SERVICE
+    redefine
+        subscription_message
+    end
 
 creation
     make
@@ -30,6 +38,14 @@ feature -- Operations
         connection = new_connection
     end
 
+    update_clients is
+    do
+        -- Check to avoid updates on initialization
+        if registry /= Void then
+            send_message ("player"+id.to_string, subscription_message (""))
+        end
+    end
+
 feature -- Access
 
     password: STRING
@@ -46,6 +62,30 @@ feature -- Access
         Result := s.serialized_form
     ensure
         -- name is the first item serialized
+    end
+
+feature -- Redefined features
+
+    subscription_message (service_id: STRING): STRING is
+    local
+        s: SERIALIZER
+        i: ITERATOR [STAR]
+    do
+        !!Result.make (0)
+        s.serialize ("i", <<knows_star.count>>)
+        Result.append (s.serialized_form)
+        i := knows_star.get_new_iterator
+        from i.start until i.is_off loop
+            s.serialize ("i", <<i.item.id>>)
+            Result.append (s.serialized_form)
+            i.next
+        end
+    end
+
+    add_to_known_list (star: STAR) is
+    do
+        Precursor (star)
+        update_clients
     end
 
 end -- class S_PLAYER

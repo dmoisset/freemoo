@@ -206,7 +206,8 @@ servicios que propagan su estado:
 
 <TR><TD>PLAYER_LIST</TD><TD>"players_list"</TD></TR>
 
-<TR><TD>PLAYER</TD><TD>"players_list"</TD><TD>Only basic description (name, status and color)</TD></TR>
+<TR><TD rowspan="2">PLAYER</TD><TD>"players_list"</TD><TD>Only basic description (name, status and color)</TD></TR>
+<TR>                           <TD>"player"+n</TD><TD>Description for the client playing this player.</TD></TR>
 
 <TR><TD rowspan="2">GALAXY</TD><TD>"galaxy"</TD><TD>Star list</TD></TR>
 <TR>                           <TD>n+":scanner"</TD><TD>Fleets seen by n (not including own)</TD></TR>
@@ -216,7 +217,8 @@ servicios que propagan su estado:
 
 <TR><TD>PLANET</TD><TD>"star"+id</TD></TR>
 
-<TR><TD>FLEET</TD><TD>"n+":scanner</TD><TD>Only public details</TD></TR>
+<TR><TD rowspan="2">FLEET</TD><TD>n+":scanner"</TD><TD>Only public details</TD></TR>
+<TR>                          <TD>"fleet"+:scanner</TD><TD>Complete description</TD></TR>
 
 <TR><TD>SHIP</TD><TD>"n+":scanner</TD><TD>Only size and picture</TD></TR>
 

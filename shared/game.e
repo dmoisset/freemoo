@@ -84,7 +84,6 @@ feature -- Operations
             map_generator.generate (galaxy, players)
             evolver.evolve (players)
 --FIXME: Start what has to start
-            print ("gogogo!!%N")
             init_game
             status.start
             players.set_all_state (st_playing_turn)
@@ -168,6 +167,7 @@ feature {NONE} -- Internal
         -- Called just before setting players state to playing for the
         -- first time
     do
+        galaxy.generate_scans (players)
     end
 
 invariant

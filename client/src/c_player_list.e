@@ -41,6 +41,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 
         s.unserialize ("i", newmsg)
         ir ?= s.unserialized_form @ 1; left := ir
+        -- Using `substring' instead of `remove_first' to create a copy
         newmsg := newmsg.substring (s.used_serial_count+1, newmsg.count)
 
 --FIXME: make in-place instead of creating a new list
