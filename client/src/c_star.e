@@ -16,12 +16,14 @@ feature {NONE} -- Creation
     make (p:POSITIONAL; n:STRING; k:INTEGER; s:INTEGER) is
     do
         Precursor (p, n, k, s)
+        create changed.make
         make_model
     end
 
     make_defaults is
     do
         Precursor
+        create changed.make
         make_model
     end
 
@@ -68,6 +70,7 @@ feature {SERVICE_PROVIDER} -- Redefined features
             end
             pcount := pcount + 1
         end
+        changed.emit (Current)
         notify_views
     end
 
@@ -75,6 +78,10 @@ feature -- Accounting
 
     has_info: BOOLEAN
         -- Player has planet info
+
+feature -- Signals
+
+    changed: SIGNAL_1 [C_STAR]
 
 feature {NONE} -- Internal
 

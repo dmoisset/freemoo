@@ -4,34 +4,39 @@
 --handle commands (colonize planet, download troops)
 
 class FLEET_VIEW
-	 --ews class view for a FLEET
+	--ews class view for a FLEET
 	 
 inherit
-	 VIEW[C_FLEET]
-	 CLIENT
-	 WINDOW
-	 rename make as window_make
-	 redefine redraw, handle_event end
+	CLIENT
+	WINDOW
+	rename make as window_make
+	redefine redraw, handle_event end
 	 
 creation
 	 make
 	 
+feature {NONE} -- Representation
+
+    fleet: C_FLEET
+
 feature {NONE} -- Creation
-	 
-	 make (w: WINDOW; where: RECTANGLE; new_model: C_FLEET) is
-		  -- build widget as view of `new_model'
-	 local
-		  r: RECTANGLE
-	 do
-		  window_make(w, where)
-		  set_model (new_model)
-		  
-		  make_widgets
-		  
-		  !!fleet_selection.make
-		  
-		  on_model_change
-	 end
+
+    make (w: WINDOW; where: RECTANGLE; f: C_FLEET) is
+        -- build widget as view of `f'
+    local
+        r: RECTANGLE
+    do
+        window_make(w, where)
+
+        fleet_changed_handler := agent fleet_changed
+        fleet := f
+        fleet.changed.connect (fleet_changed_handler)
+
+        make_widgets
+        !!fleet_selection.make
+
+        fleet_changed (fleet)
+    end
 	 
 	 
 	 make_widgets is
@@ -82,7 +87,7 @@ feature {NONE} -- Creation
 		  !!scrollbar.make(Current, r, create {SDL_SOLID_IMAGE}.make(0, 0, 30, 30, 250))
 		  scrollbar.set_first_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 1, scrollbar_img @ 2)
 		  scrollbar.set_second_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 4, scrollbar_img @ 5)
-		  scrollbar.set_limits(0, (model.ship_count - 1) // 3 + 1, 0)
+		  scrollbar.set_limits(0, (fleet.ship_count - 1) // 3 + 1, 0)
 		  scrollbar.set_increments(1, 3)
 		  r.set_with_size(2, 28, 9, 100)
 		  scrollbar.set_trough(r)
@@ -99,7 +104,7 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
 	
 	model_position: POSITIONAL is
 	do
-		Result := model
+		Result := fleet
 	end
 
 	set_cancel_trajectory_selection_callback (p: PROCEDURE[ANY, TUPLE]) is
@@ -109,24 +114,24 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
 
 	send_selection_to(s: STAR) is
 	do
-		server.move_fleet(model, s, fleet_selection)
+		server.move_fleet(fleet, s, fleet_selection)
 	end
 	
 feature {NONE} -- Callbacks
 
 	cancel_trajectory_selection_handler: PROCEDURE[ANY, TUPLE]
 	
-	close is
-	do
-		if cancel_trajectory_selection_handler /= Void then
+    close is
+    do
+        if cancel_trajectory_selection_handler /= Void then
             cancel_trajectory_selection_handler.call ([])
         end
-		model.remove_view(Current)
-		model := Void
-		hide
-		remove
-	end
-	 
+        fleet.changed.disconnect (fleet_changed_handler)
+        fleet := Void
+        hide
+        remove
+    end
+
 	toggle_ship_selection(sh: SHIP) is
 	do
 		if fleet_selection.has(sh) then
@@ -144,7 +149,7 @@ feature {NONE} -- Callbacks
 		si: ITERATOR[SHIP]
 	do
 		from
-			si := model.get_new_iterator
+			si := fleet.get_new_iterator
 		until
 			si.is_off
 		loop
@@ -228,11 +233,11 @@ feature {NONE} -- Internal features
 		loop
 			if i + scrollbar.value * 3 <= ships.upper then
 				ship := ships @ (i+scrollbar.value*3)
-				i1 := get_ship_pic(model.owner.color,
+				i1 := get_ship_pic(fleet.owner.color,
 								   ship.creator.color,
 								   ship.size,
 								   ship.picture, false)
-				i2 := get_ship_pic(model.owner.color,
+				i2 := get_ship_pic(fleet.owner.color,
 								   ship.creator.color,
 								   ship.size,
 								   ship.picture, true)
@@ -258,8 +263,8 @@ feature {NONE} -- Internal features
 	local
 		r: RECTANGLE
 	do
-		if model.ship_count <= 9 then
-			size_index := (model.ship_count - 1) // 3 + 2
+		if fleet.ship_count <= 9 then
+			size_index := (fleet.ship_count - 1) // 3 + 2
 			scrollbar.hide
 			r.set_with_size(0, 0, bg_ns_width, bg_top_height)
 			drag.move(r)
@@ -283,8 +288,17 @@ feature {NONE} -- Internal features
 	end
 	 
 	 
-feature {MODEL} -- Effective features
-	
+feature {NONE} -- Signal Handler
+
+    fleet_changed_handler: PROCEDURE [ANY, TUPLE [C_FLEET]]
+
+    fleet_changed (f: C_FLEET) is
+    require
+        f = fleet
+    do
+        on_model_change
+    end
+
 	on_model_change is
 		--Update gui
 	local
@@ -292,7 +306,7 @@ feature {MODEL} -- Effective features
 	do
 		!!ships.make(0, -1);
 		from
-			si := model.get_new_iterator
+			si := fleet.get_new_iterator
 		until
 			si.is_off
 		loop
@@ -306,7 +320,7 @@ feature {MODEL} -- Effective features
 		update_window_size
 		select_none
 		update_toggles
-		if model.ship_count = 0 then close end
+		if fleet.ship_count = 0 then close end
 	end
 	 
 	 
@@ -363,16 +377,16 @@ feature {NONE} -- Once features
 		-- Container for ship pics.  Don't access directly; fetch 
 		-- images with `get_ship_pic'.
 	once
-		!!Result.make(model.owner.min_color, model.owner.max_color,
-					  model.owner.min_color, model.owner.max_color) -- Creator and owner
+		!!Result.make(fleet.owner.min_color, fleet.owner.max_color,
+					  fleet.owner.min_color, fleet.owner.max_color) -- Creator and owner
 	end
 	
 	get_ship_pic(owner, creator, size, pic: INTEGER; highlight: BOOLEAN): IMAGE is
 		-- Gets a ship image from `ship_pics', checking first to see if 
 		-- it has already been loaded.
 	require
-		owner.in_range(model.owner.min_color, model.owner.max_color)
-		creator.in_range(model.owner.min_color, model.owner.max_color)
+		owner.in_range(fleet.owner.min_color, fleet.owner.max_color)
+		creator.in_range(fleet.owner.min_color, fleet.owner.max_color)
 		size.in_range(1, 6)
 		pic.in_range(0, 7)
 	local
@@ -388,10 +402,10 @@ feature {NONE} -- Once features
 			!!imgs.make (1, 2)
 			ship_pics.item(owner, creator).put(imgs, size, pic)
 			!!a.make("client/fleet-view/ships/ship" + 
-			         (creator - model.owner.min_color).to_string +
+			         (creator - fleet.owner.min_color).to_string +
 			         size.to_string +
 			         pic.to_string +
-			         (owner - model.owner.min_color).to_string + ".fma")
+			         (owner - fleet.owner.min_color).to_string + ".fma")
 			xoffset := a.positions.item (1).x
 			yoffset := a.positions.item (1).y
 			imgs.put(create {IMAGE_OFFSET}.make (a.images @ 1,
@@ -517,5 +531,4 @@ feature {NONE} -- Numeric and Layout Constants
 	 end
 	 
 end -- class FLEET_VIEW
-
 

@@ -5,7 +5,6 @@ class C_FLEET
 inherit
     FLEET
     redefine make end
-    MODEL
     SUBSCRIBER
     CLIENT
 
@@ -17,7 +16,7 @@ feature {NONE} -- Creation
     make is
     do
         Precursor
-        make_model
+        create changed.make
     end
 
     on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
@@ -75,7 +74,11 @@ feature {NONE} -- Creation
             shipcount := shipcount - 1
             add_ship (sh)
         end
-        notify_views
+        changed.emit (Current)
     end
+
+feature -- Signals
+
+    changed: SIGNAL_1 [C_FLEET]
 
 end -- class C_FLEET

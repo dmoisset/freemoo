@@ -9,10 +9,6 @@ inherit
         redefine last_star, last_fleet, make, add_fleet end
     MODEL
         redefine notify_views end
-    VIEW [C_STAR]
-        rename on_model_change as on_star_change end
-    VIEW [C_FLEET]
-        rename on_model_change as on_fleet_change end
     SUBSCRIBER
 
 creation
@@ -63,7 +59,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 star ?= stars @ id
             else
                 !!star.make_defaults
-                star.add_view (Current)
+                star.changed.connect (agent star_changed)
                 star.set_id (id)
             end
             s.get_integer
@@ -163,7 +159,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         from i := s.last_integer until i = 0 loop
             s.get_integer
             !!fleet.make
-            fleet.add_view(Current)
+            fleet.changed.connect (agent fleet_changed)
             fleet.set_owner(server.player)
             fleet.set_id (s.last_integer)
             add_fleet(fleet)
@@ -185,20 +181,18 @@ feature -- Redefined features
 
 feature -- Redefined features
 
-    on_star_change is
-        -- Stars changed
+    fleet_changed (fleet: C_FLEET) is
     do
         changed_stardata := True
         notify_views
     end
-
-    on_fleet_change is
-        -- Stars changed
+    
+    star_changed (star: C_STAR) is
     do
         changed_stardata := True
         notify_views
     end
-
+    
 feature -- Notification
 
     changed_starlist: BOOLEAN
