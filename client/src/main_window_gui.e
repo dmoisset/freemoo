@@ -70,6 +70,9 @@ feature {NONE} -- Creation
         -- No more buttons
         r.set_with_size (549, 27, 63, 13)
         new_date (r)
+        r.set_with_size (73, 5, 11*8, 14)
+        new_player_status (r)
+        
     end
 
 feature {NONE} -- Widgets
@@ -83,6 +86,7 @@ feature {NONE} -- Widgets
 
     new_galaxy (where: RECTANGLE) is deferred end
     new_date (where: RECTANGLE) is deferred end
+    new_player_status (where: RECTANGLE) is deferred end
 
 feature {NONE} -- Callbacks
 
