@@ -1,4 +1,4 @@
-class MAP_GENERATOR_V1
+deferred class MAP_GENERATOR_V1
 
 inherit
     MAP_GENERATOR
@@ -8,58 +8,11 @@ inherit
     MAP_PROBABILITIES
     PKG_USER
 
-creation
-    make
-
 feature {NONE} -- Position Generation
 
-    mapmethod_one: ARRAY[COORDS] is
-    local
-        i: INTEGER
-        newc: COORDS
-    do
-        !!Result.make (1, 0)
-
-        -- Toss in stars anywhere
-        from
-        until
-            Result.count = starcount
-        loop
-            newc := newcoords
-            Result.add_last(newc)
-        end
-
-        -- Remove any bunch-up
-        from
-            i := Result.lower
-        until
-            i > Result.upper
-        loop
-            if bunched_up (Result.item (i), Result) then
-                Result.remove (i)
-            else
-                i := i + 1
-            end
-        end
-
-        -- Add in more to complete (carefully now)
-        fill_carefully (Result)
-
-        -- Remove any lone-ranger
-        from
-            i := Result.lower
-        until
-            i > Result.upper
-        loop
-            if too_far_away(Result.item(i), Result) then
-                Result.remove(i)
-            else
-                i := i + 1
-            end
-        end
-
-        -- Top up (carefully) and serve cold
-        fill_carefully(Result)
+    make_positions: ARRAY[COORDS] is
+        -- Return an array og star positions
+    deferred
     ensure
         Result.count = starcount
     end
@@ -84,18 +37,6 @@ feature {NONE} -- Position Generation
     ensure
         res.count = starcount
     end
-
-
-
-    mapmethod_two: ARRAY[COORDS] is
-    do
-        !!Result.make (1, 0)
-        fill_carefully (Result)
-    ensure
-        Result.count = starcount
-    end
-
-
 
     bunched_up (this: COORDS; here: ARRAY[COORDS]): BOOLEAN is
         -- true if closer than mindelta to another star
@@ -132,7 +73,6 @@ feature {NONE} -- Position Generation
         Result := (farthest > maxdelta) and not here.is_empty
     end
 
-
     goodstar (this: COORDS; here: ARRAY[COORDS]): BOOLEAN is
         -- Optimization for not_bunched and too_far_away, goes over
         -- the structure only once
@@ -160,7 +100,6 @@ feature {NONE} -- Position Generation
         Result = not (bunched_up (this, here) or too_far_away (this, here))
     end
 
-
     newcoords: COORDS is
       -- Random Coords within limits
     local
@@ -174,7 +113,6 @@ feature {NONE} -- Position Generation
     ensure
         Result /= Void
     end
-
 
 feature {NONE} -- Name Generation
 
@@ -381,7 +319,7 @@ feature -- Operation
         !!planets.make(1,0)
         !!starlist.make(1,0)
         print("Generating Positions%N")
-        starposs := mapmethod_one
+        starposs := make_positions
         print("Generating Names%N")
         starnams := generate_names
         print("Generating Planets%N")
@@ -524,4 +462,5 @@ invariant
     star_kinds /= Void
     planet_climates /= Void
     mindelta < maxdelta
-end
+
+end -- deferred class MAP_GENERATOR_V1

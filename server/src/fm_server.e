@@ -58,6 +58,7 @@ feature {NONE} -- Internal
         options.parse_add ("galaxysize=huge")
         options.parse_add ("galaxyage=average")
         options.parse_add ("starttech=prewarp")
+        options.parse_add ("mapgen=fast1")
         options.parse_add ("tactical")
         options.parse_add ("randomevs")
         options.parse_add ("antarans")

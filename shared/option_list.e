@@ -134,6 +134,7 @@ feature {NONE} -- Valid options and values
         Result.put (ot_enum   , "galaxysize")
         Result.put (ot_enum   , "galaxyage")
         Result.put (ot_enum   , "starttech")
+        Result.put (ot_enum   , "mapgen")
         Result.put (ot_bool   , "tactical")
         Result.put (ot_bool   , "randomevs")
         Result.put (ot_bool   , "antarans")
@@ -163,6 +164,11 @@ feature {NONE} -- Valid options and values
             enum.put (1, "medium")
             enum.put (2, "advanced")
         Result.put (enum, "starttech")
+            -- Map generators
+            !!enum.make
+            enum.put (0, "slow1")
+            enum.put (1, "fast1")
+        Result.put (enum, "mapgen")
     end
 
 invariant

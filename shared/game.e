@@ -12,9 +12,28 @@ feature {NONE} -- Creation
         !!status.make_with_options (options)
         !!players.make
         !!galaxy.make
-        !MAP_GENERATOR_V1!map_generator.make (options)
+        make_mapgenerator
     end
 
+    make_mapgenerator is
+    require
+        options /= Void
+        options.enum_options_names.has ("mapgen")
+    local
+        genname: STRING
+    do
+        genname := options.enum_options_names @ "mapgen"
+        if genname.is_equal ("slow1") then
+            !MAP_GENERATOR_SLOW!map_generator.make (options)
+        elseif genname.is_equal ("fast1") then
+            !MAP_GENERATOR_FAST!map_generator.make (options)
+        else
+-- see what to do here
+           check False end
+        end
+    ensure
+        map_generator /= Void
+    end
 feature -- Access
 
     status: GAME_STATUS
