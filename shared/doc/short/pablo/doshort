@@ -1,0 +1,20 @@
+#!/bin/bash
+./clean
+echo "<HTML><HEAD><TITLE>Listado</TITLE></HEAD>" > index.html
+echo "<BODY>" >> index.html
+for f in `tree -fi | grep "\.e"`
+do
+    if [ -f $f ] 
+    then
+        fs=`echo $f | sed "s/\.e//"`
+        short -no_style_warning -html2 $f > $fs.html 2> $fs.w
+        echo "<A HREF = \"$fs.html\">`basename $f`</A><BR>" >> index.html
+        if ! [ -s $fs.w ] 
+        then
+            rm $fs.w
+        else
+            rm $fs.html
+        fi
+    fi
+done
+echo "</BODY></HTML>" >> index.html
