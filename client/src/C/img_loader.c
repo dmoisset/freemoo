@@ -25,7 +25,7 @@ int loadPalette (SDL_RWops *src, Uint32 *palette)
     }
 
 /* Load Palette */
-    for (palfing = 0; palfing < palcount[1]; palfing++)
+    for (palfing = 0; palfing <= palcount[1]; palfing++)
     {
         SDL_RWread(src, &palette[palfing], 1, 2);
         palette[palfing] = (palette[palfing] << 8) + 255;

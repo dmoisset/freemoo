@@ -20,7 +20,7 @@ feature -- Access
         -- Player that controls Current
 
     size: INTEGER
-        -- one of ship_size_* constants
+        -- Ship size.  Use commodity ship_size* values
 
     picture: INTEGER
         -- icon for ship
@@ -34,6 +34,9 @@ feature {NONE} -- Creation
         counter.increment
     end
 
+feature -- Modifiers
+    is_stealthy: BOOLEAN
+
 feature -- Implementarion
     counter: COUNTER is
     once
@@ -42,6 +45,6 @@ feature -- Implementarion
 
 
 invariant
-    size.in_range(ship_size_min, ship_size_max)
+    size.in_range(1, 6)
 
 end -- class SHIP

@@ -84,7 +84,7 @@ feature {ANY}
             i > galaxy.stars.upper
         loop
             proj.project (galaxy.stars.item (i))
-            screen.put_pixel (proj.x.rounded, proj.y.rounded, colors.at(galaxy.stars.item (i).kind))
+            screen.put_pixel ((proj.x * 10).rounded, (proj.y * 10).rounded, colors.at(galaxy.stars.item (i).kind))
             i := i + 1
         end
         screen.unlock
@@ -134,15 +134,15 @@ feature {ANY}
         screen.lock
         proj.project (galaxy.stars.item (i))
         if proj.x > 2 and proj.y > 2 then
-            screen.put_pixel (proj.x.rounded - 2, proj.y.rounded - 2, colors @ kind_white)
+            screen.put_pixel ((proj.x * 10).rounded - 2, (proj.y * 10).rounded - 2, colors @ kind_white)
         end
         if proj.y > 2 then
-            screen.put_pixel (proj.x.rounded + 2, proj.y.rounded - 2, colors @ kind_white)
+            screen.put_pixel ((proj.x * 10).rounded + 2, (proj.y * 10).rounded - 2, colors @ kind_white)
         end
         if proj.x > 2 then
-            screen.put_pixel (proj.x.rounded - 2, proj.y.rounded + 2, colors @ kind_white)
+            screen.put_pixel ((proj.x * 10).rounded - 2, (proj.y * 10).rounded + 2, colors @ kind_white)
         end
-        screen.put_pixel (proj.x.rounded + 2, proj.y.rounded + 2, colors @ kind_white)
+        screen.put_pixel ((proj.x * 10).rounded + 2, (proj.y * 10).rounded + 2, colors @ kind_white)
         screen.unlock
         if galaxy.stars.item (i).kind /= kind_blackhole then
             font.put_string (screen, 450, 20, galaxy.stars.item (i).name)
@@ -177,15 +177,15 @@ feature {ANY}
         screen.lock
         proj.project (galaxy.stars.item (i))
         if proj.x > 2 and proj.y >2 then
-            screen.put_pixel(proj.x.rounded - 2, proj.y.rounded - 2, colors @ 100)
+            screen.put_pixel((proj.x * 10).rounded - 2, (proj.y * 10).rounded - 2, colors @ 100)
         end
         if proj.y > 2 then
-            screen.put_pixel(proj.x.rounded + 2, proj.y.rounded - 2, colors @ 100)
+            screen.put_pixel((proj.x * 10).rounded + 2, (proj.y * 10).rounded - 2, colors @ 100)
         end
         if proj.x > 2 then
-            screen.put_pixel(proj.x.rounded - 2, proj.y.rounded + 2, colors @ 100)
+            screen.put_pixel((proj.x * 10).rounded - 2, (proj.y * 10).rounded + 2, colors @ 100)
         end
-        screen.put_pixel(proj.x.rounded + 2, proj.y.rounded + 2, colors @ 100)
+        screen.put_pixel((proj.x * 10).rounded + 2, (proj.y * 10).rounded + 2, colors @ 100)
         screen.unlock
         screen.fill_area(area, colors @ 100)
     end

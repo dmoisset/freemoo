@@ -20,16 +20,16 @@ feature{NONE} -- Creation
         !!dont_touch.make
 
         if size.is_equal("small") then
-            !!limit.make_at (200, 147)
+            !!limit.make_at (20, 14.7)
             starcount := 20
         elseif size.is_equal("medium") then
-            !!limit.make_at (270, 190)
+            !!limit.make_at (27, 19)
             starcount := 36
         elseif size.is_equal("large") then
-            !!limit.make_at (330, 230)
+            !!limit.make_at (33, 23)
             starcount := 54
         elseif size.is_equal("huge") then
-            !!limit.make_at (380, 270)
+            !!limit.make_at (38, 27)
             starcount := 71
         end
         -- Load constants for given galaxy age
@@ -409,8 +409,8 @@ feature {NONE} -- Implementation
 
 feature{NONE} -- Internal Constants
 
-    mindelta: REAL is 25
-    maxdelta: REAL is 50
+    mindelta: REAL is 2.5
+    maxdelta: REAL is 5
 
 invariant
     size /= Void

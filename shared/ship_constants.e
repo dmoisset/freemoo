@@ -10,14 +10,4 @@ feature
     ship_size_doomstar: INTEGER is 6
         -- Allowed sizes for ships, *shouldn't* be changed for unique values
 
-    ship_size_min: INTEGER is
-    do
-        Result := ship_size_frigate
-    end
-
-    ship_size_max: INTEGER is
-    do
-        Result := ship_size_doomstar
-    end
-
 end -- class SHIP_CONSTANTS

@@ -19,6 +19,14 @@ feature -- Access
         Result := s.serialized_form
     end
 
+    unserialize_from (incoming: STRING) is
+    local
+        s: SERIALIZER
+    do
+        s.unserialize ("rr", incoming)
+        x := s.unserialized_form @ 1
+        y := s.unserialized_form @ 2
+    end
 
 feature -- Operations
 

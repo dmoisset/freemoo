@@ -1,9 +1,12 @@
-deferred class FLEET
+class FLEET
     -- Group of SHIPs moving together
 
 inherit
     POSITIONAL
     ORBITING
+
+creation
+    make
 
 feature -- Access
 
@@ -41,7 +44,7 @@ feature -- Access
         Result := ships.count
     end
 
-    has_ship(ship:SHIP): BOOLEAN is
+    has_ship (ship: SHIP): BOOLEAN is
         -- is ship in fleet?
     do
         Result := ships.has(ship)
@@ -57,7 +60,7 @@ feature -- Access
 
 feature -- Operations
 
-    add_ship(ship:SHIP) is
+    add_ship (ship: SHIP) is
         -- Add ship to fleet
     do
         ships.add(ship)
@@ -71,6 +74,17 @@ feature -- Operations
         ships.remove(ship)
     ensure
         not has_ship(ship)
+    end
+
+    join (other: FLEET) is
+        -- Join up with another fleet
+    require
+        other /= Void
+    do
+        ships.union(other.ships)
+    ensure
+        ship_count >= old ship_count
+        ship_count <= old ship_count + other.ship_count
     end
 
     enter_orbit (star: STAR) is
@@ -116,7 +130,11 @@ feature -- Operations
         end
     end
 
-
+feature {NONE} -- Creation
+    make is
+    do
+        !!ships.make
+    end
 
 feature {NONE} -- Internal
 
@@ -131,7 +149,7 @@ feature {NONE} -- Internal
         Result >= 0
     end
 
-feature {NONE} -- Representation
+feature {FLEET} -- Representation
 
     ships: SET[SHIP]
 

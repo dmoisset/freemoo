@@ -35,6 +35,10 @@ feature -- Access
     state: INTEGER
         -- State on the game
 
+feature -- Special abilities
+
+    sees_all_ships: BOOLEAN
+
 feature {PLAYER_LIST} -- Operations
 
     set_state (new_state: INTEGER) is
