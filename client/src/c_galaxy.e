@@ -81,7 +81,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 
     unpack_scanner_message (msg: STRING) is
     local
-        new_fleets: DICTIONARY[C_FLEET, INTEGER]
+        new_fleets: like fleets
         count, shipcount: INTEGER
         s: UNSERIALIZER
         owner: PLAYER
@@ -89,7 +89,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         ship: SHIP
         it: ITERATOR[PLAYER]
         star_it: ITERATOR[STAR]
-        fleet_it: ITERATOR[C_FLEET]
+        fleet_it: ITERATOR[like last_fleet]
     do
         !!s.start (msg)
         from star_it := stars.get_new_iterator_on_items
@@ -156,7 +156,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
     local
         s: UNSERIALIZER
         i: INTEGER
-        fleet: C_FLEET
+        fleet: like last_fleet
     do
         !!s.start (msg)
         s.get_integer
