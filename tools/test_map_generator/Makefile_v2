@@ -1,7 +1,7 @@
 SmartEiffelDirectory=$(shell dirname $(shell dirname $(SmartEiffel)))
 TARGET=test_map_generator_v2
 SOURCEFILES=*.e ../../shared/*.e
-EIFFLAGS=-case_insensitive -high_memory_compiler -no_check
+EIFFLAGS=-case_insensitive -high_memory_compiler
 LIBS=-lSDL_image `sdl-config --libs` -I../../client\
      $(SmartEiffelDirectory)/lib_ews/driver-sdl/C/driver-sdl.o ../../client/src/C/img_loader.o
      

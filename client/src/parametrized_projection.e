@@ -37,8 +37,9 @@ feature -- Operations
         dx := dx + deltax
         dy := dy + deltay
     ensure
-        dx = old dx + deltax
-        dy = old dy + deltay
+-- Commented out, because of rounding errors. = below means "approximately equal to"
+--        dx = old dx + deltax
+--        dy = old dy + deltay
     end
 
     set_translation (deltax, deltay: REAL) is

@@ -66,7 +66,7 @@ feature -- redefined features
             remove_child(child.item)
             child.next
         end
-        if model.has_been_visited then
+        if model.has_info then
             name_label.set_text("Star System " + model.name)
             !!ww.make(Current, 157, 120, suns.item(model.kind - model.kind_min))
             removable_children.add_last(ww)

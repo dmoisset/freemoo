@@ -7,6 +7,7 @@ inherit
         rename make as window_make
         redefine handle_event, redraw end
     MAP_CONSTANTS
+    SDL_IMAGE_ACCESS
 
 creation
     make
@@ -28,8 +29,9 @@ feature {NONE} -- Creation
         window_make (w, where)
         -- Load images
         !!a.make ("client/galaxy-view/background.fma")
-        background := a.images @ 1
+        background ?= a.images @ 1
         !!pics.make (kind_min, kind_max, stsize_min, stsize_max + 3)
+        !!bh_windows.make (1, 0)
         !!bh_anims.make (stsize_min, stsize_max + 3)
         from j := stsize_min
         until j > stsize_max + 3 loop
@@ -60,22 +62,16 @@ feature -- Operations
         -- Change the zoom level to `value', fixed point on (`x', `y')
     local
         posx, posy: REAL
-        p: PARAMETRIZED_PROJECTION
     do
-        p := current_projection.twin
-        p.set_translation (0, 0)
-        p.project (model.limit)
+        get_limits
         -- Note: This assumes projections w/o rotations
-        if p.x > 0 and p.y > 0 and projs.valid_index (zoom) then
+        if limit_x > 0 and limit_y > 0 and projs.valid_index (zoom) then
             current_projection.translate (-x, -y)
-            posx := -current_projection.dx / p.x
-            posy := -current_projection.dy / p.y
-                check posx.in_range (0, 1) and posy.in_range (0, 1) end
+            posx := -current_projection.dx / limit_x
+            posy := -current_projection.dy / limit_y
             zoom := value
-            p := current_projection.twin
-            p.set_translation (0, 0)
-            p.project (model.limit)
-            current_projection.set_translation (-posx*p.x, -posy*p.y)
+            get_limits
+            current_projection.set_translation (-posx*limit_x, -posy*limit_y)
             current_projection.translate (x, y)
             normalize_position
             refresh
@@ -104,23 +100,50 @@ feature -- Redefined features
         -- Update gui
     do
         make_projs
+        get_limits
         refresh
     end
 
     refresh is
+        -- Regenerate cache, put blackhole animations
     local
         i: ITERATOR[C_STAR]
         ic: ITERATOR[WINDOW]
-        ww: WINDOW
-        a: ANIMATION
+        ww: WINDOW -- blackhole window
+        a: ANIMATION -- blackhole animation
+        px, py: REAL -- projected star
+        img: SDL_IMAGE -- star image
+        lwidth: INTEGER -- star label width
+        lx, ly: INTEGER -- star label position
     do
--- Should only remove blackholes
-        from ic := children.get_new_iterator until ic.is_off loop
+        -- Remove old blackholes
+        from ic := bh_windows.get_new_iterator until ic.is_off loop
             remove_child(ic.item)
+            ic.next
         end
-            check children.is_empty end
-        from i := model.stars.get_new_iterator until i.is_off loop
-            if i.item.kind = i.item.kind_blackhole then
+        bh_windows.clear
+        -- Initialize cache
+        !!cache.make (width, height)
+        background.image_data.blit_fast (cache.image_data, 0, 0)
+        -- Add stars
+        from i := model.stars.get_new_iterator
+        until i.is_off loop
+            if i.item.kind /= i.item.kind_blackhole then
+                current_projection.project(i.item)
+                px := current_projection.x
+                py := current_projection.y
+                img ?= pics.item(i.item.kind, i.item.size + zoom)
+                img.image_data.blit_fast (cache.image_data,
+                                          (px - img.width / 2).rounded,
+                                          (py - img.height / 2).rounded)
+                lwidth := display.default_font.width_of (i.item.name)
+                lx := (px - lwidth / 2).rounded
+                ly := label_offset+(py - display.default_font.height / 2).rounded
+                if i.item.has_info and lx < width and ly < height then
+-- Should have a font here
+                    display.default_font.show_at (cache, lx, ly, i.item.name)
+                end
+            else -- Blackhole animation here
                 current_projection.project(i.item)
                 if (current_projection.x >= 0) and (current_projection.y >= 0) then
                     a := clone (bh_anims @ (i.item.size + zoom))
@@ -128,7 +151,7 @@ feature -- Redefined features
                         (current_projection.x - a.width / 2).rounded,
                         (current_projection.y - a.height / 2).rounded,
                         a)
-                    children.add_last(ww)
+                    bh_windows.add_last (ww)
                 end
             end
             i.next
@@ -137,37 +160,9 @@ feature -- Redefined features
     end
 
     redraw (area: RECTANGLE) is
-    local
-        i: ITERATOR[C_STAR]
-        px, py: REAL
-        img: IMAGE
     do
-        show_image (create {SDL_SOLID_IMAGE}.make (area.width, area.height, 0, 0, 0),
-                    area.x, area.y, area)
-        show_image(background, 0, 0, area)
--- Perhaps cache this?
+        show_image(cache, 0, 0, area)
         Precursor (area)
-        from i := model.stars.get_new_iterator
-        until i.is_off loop
-            if i.item.kind /= i.item.kind_blackhole then
-                current_projection.project(i.item)
-                px := current_projection.x
-                py := current_projection.y
-                img := pics.item(i.item.kind, i.item.size + zoom)
-                show_image (img, (px - img.width / 2).rounded,
-                            (py - img.height / 2).rounded, area)
--- has_been_visited must be renamed
-                if i.item.has_been_visited then
--- Should have a font here
-                    img := display.default_font.show (i.item.name)
-                    show_image (img,
-                                (px - img.width / 2).rounded,
-                                label_offset+(py - img.height / 2).rounded,
-                                area)
-                end
-            end
-            i.next
-        end
     end
 
     handle_event (event: EVENT) is
@@ -185,6 +180,7 @@ feature -- Redefined features
                 when 3 then center_on (b.x, b.y)
                 when 4 then zoom_in (b.x, b.y)
                 when 5 then zoom_out (b.x, b.y)
+                else do_nothing
                 end
             end
         end
@@ -206,11 +202,10 @@ feature {NONE} -- Event handlers
             and (current_projection.y - y).abs < 4 + 2 * (zoom + i.item.size - i.item.stsize_min)
             and i.item.kind /= i.item.kind_blackhole then
                 r.set_with_size (40, 40, 347, 273)
--- Should be `Current', not `parent'
-                if star_window /= Void and then parent.children.fast_has(star_window) then
-                    parent.remove_child(star_window)
+                if star_window /= Void and then children.fast_has(star_window) then
+                    remove_child(star_window)
                 end
-                !STAR_VIEW!star_window.make (parent, r, i.item)
+                !STAR_VIEW!star_window.make (Current, r, i.item)
                 found := True
             end
             i.next
@@ -227,15 +222,10 @@ feature {NONE} -- Event handlers
 
     normalize_position is
         -- Put scroll inside limits
-    local
-        p: PARAMETRIZED_PROJECTION
     do
-        p := current_projection.twin
-        p.set_translation (0, 0)
-        p.project (model.limit)
         current_projection.set_translation (
-            current_projection.dx.min (gborder).max (width - p.x - gborder),
-            current_projection.dy.min (gborder).max (height - p.y - gborder))
+            current_projection.dx.min (gborder).max (width - limit_x - gborder),
+            current_projection.dy.min (gborder).max (height - limit_y - gborder))
     end
 
 feature {NONE} -- Internal
@@ -249,8 +239,26 @@ feature {NONE} -- Internal
         Result := projs @ zoom
     end
 
-    background: IMAGE
+    get_limits is
+        -- Set `limit_x' and `limit_y'
+    local
+        p: PARAMETRIZED_PROJECTION
+    do
+        p := current_projection.twin
+        p.set_translation (0, 0)
+        p.project (model.limit)
+        limit_x := p.x
+        limit_y := p.y
+    end
+
+    limit_x, limit_y: REAL
+        -- Projected galaxy limit
+
+    background: SDL_IMAGE
         -- View background
+
+    cache: SDL_IMAGE
+        -- View cache.
 
     star_window: WINDOW
         -- Window used to display a system
@@ -260,6 +268,9 @@ feature {NONE} -- Internal
 
     bh_anims: ARRAY [ANIMATION_FMA_TRANSPARENT]
         -- Animations for the blackholes
+
+    bh_windows: ARRAY [WINDOW]
+        -- Windows for the blackholes
 
     pics: ARRAY2[IMAGE]
         -- Pictures for the stars

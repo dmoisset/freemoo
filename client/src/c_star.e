@@ -40,7 +40,7 @@ feature {SERVICE_PROVIDER} -- Redefined features
     do
         newmsg := msg
 
-        has_been_visited := True
+        has_info := True
         s.unserialize ("si", newmsg)
         name ?= s.unserialized_form @ 1
         ir ?= s.unserialized_form @ 2
@@ -83,6 +83,7 @@ feature {SERVICE_PROVIDER} -- Redefined features
 
 feature -- Accounting
 
-    has_been_visited: BOOLEAN
+    has_info: BOOLEAN
+        -- Player has planet info
 
 end -- class C_STAR

@@ -1,4 +1,4 @@
-TARGETS=unlbx mpview mergepal
+TARGETS=unlbx mpview mergepal palview
 
 all: $(TARGETS)
 
