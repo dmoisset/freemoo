@@ -15,7 +15,7 @@ creation
 
 feature -- Redefined features
 
-    subscription_message: STRING is
+    subscription_message (service_id: STRING): STRING is
     local
         s: SERIALIZER
         i: ITERATOR [S_PLAYER]
@@ -51,7 +51,7 @@ feature -- Operations
 
     update_clients is
     do
-        send_message (id, subscription_message)
+        send_message (id, subscription_message (id))
     end
 
 end -- class S_PLAYER_LIST
