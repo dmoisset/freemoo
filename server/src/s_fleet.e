@@ -34,7 +34,7 @@ feature -- Redefined features
         end
         s.add_integer(ship_count)
         serialize_on(s)
-        from i := ships.get_new_iterator until i.is_off loop
+        from i := get_new_iterator until i.is_off loop
             s.add_tuple(<<i.item.size, i.item.picture>>)
             i.next
         end
