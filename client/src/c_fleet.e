@@ -53,6 +53,7 @@ feature {NONE} -- Creation
                 (server.galaxy.stars @ i).notify_views
             end
         else
+            if is_in_orbit then leave_orbit end
             set_destination (server.galaxy.stars @ s.last_integer)
         end
         s.get_integer
@@ -63,11 +64,13 @@ feature {NONE} -- Creation
         from until shipcount = 0 loop
             !!sh.make(owner)
             s.get_integer
-            sh.set_size(s.last_integer)
+            sh.set_id (s.last_integer)
+            s.get_integer
+            sh.set_size (s.last_integer)
             s.get_integer
             sh.set_picture(s.last_integer)
             shipcount := shipcount - 1
-            add_ship(sh)
+            add_ship (sh)
         end
         notify_views
     end

@@ -39,7 +39,7 @@ FLEET
   Provided: Before reporting fleet on scanner or new_fleets.
   Description: Full fleet description
   Format: "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
-            "ii" <<size, picture>> (for each ship of the fleet)
+            "iii" <<id, size, picture>> (for each ship of the fleet)
   when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
   the fleet is travelling to `destination'
 

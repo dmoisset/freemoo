@@ -4,11 +4,14 @@ inherit
     SERVICE
         redefine subscription_message end
     FLEET
-        redefine set_destination, add_ship end
+        redefine set_destination, add_ship, splitted_fleet end
 
 creation make
 
 feature -- Redefined features
+
+    splitted_fleet: S_FLEET
+
     set_destination (dest: STAR) is
     do
         Precursor (dest)
@@ -35,7 +38,7 @@ feature -- Redefined features
         s.add_integer(ship_count)
         serialize_on(s)
         from i := get_new_iterator until i.is_off loop
-            s.add_tuple(<<i.item.size, i.item.picture>>)
+            s.add_tuple(<<i.item.id, i.item.size, i.item.picture>>)
             i.next
         end
         Result := s.serialized_form

@@ -62,6 +62,8 @@ feature -- Access
         Result:= ships.get_new_iterator_on_items
     end
 
+    splitted_fleet: FLEET
+
 feature -- Operations
 
     add_ship (s: SHIP) is
@@ -91,33 +93,35 @@ feature -- Operations
         ship_count <= old ship_count + other.ship_count
     end
 
-    split(shs: SET[SHIP]): FLEET is
+    split(shs: SET[SHIP]) is
         -- Removes `ships' from current fleet, and returns a fleet with
         -- those ships from `ships' that were in Current, and the same
         -- `owner', `orbit_center', `destination' and `eta' as Current.
     require
         shs /= Void
+--        shs.for_all (agent has_ship (?.id))
     local
-        ship: ITERATOR[SHIP]
+        sh: ITERATOR[SHIP]
     do
-        !!Result.make
-        Result.set_orbit_center(orbit_center)
-        Result.set_destination(destination)
-        Result.set_eta(eta)
-        Result.set_owner(owner)
-        from ship := shs.get_new_iterator
-        until ship.is_off
+        !!splitted_fleet.make
+        splitted_fleet.set_orbit_center(orbit_center)
+        splitted_fleet.set_destination(destination)
+        splitted_fleet.set_eta(eta)
+        splitted_fleet.set_owner(owner)
+        from sh := shs.get_new_iterator
+        until sh.is_off
         loop
-            if has_ship(ship.item) then
-                remove_ship(ship.item)
-                Result.add_ship(ship.item)
-            end
-            ship.next
+            remove_ship(sh.item)
+            splitted_fleet.add_ship(sh.item)
+            sh.next
         end
     ensure
-        same_fleet: (Result.eta = eta) and (Result.owner = owner) and
-                    (Result.destination = destination) and (Result.orbit_center = orbit_center)
-        ship_conservation: Result.ship_count + ship_count = old ship_count
+        same_fleet: (splitted_fleet.eta = eta) and 
+                    (splitted_fleet.owner = owner) and
+                    (splitted_fleet.destination = destination) and 
+                    (splitted_fleet.orbit_center = orbit_center)
+        ship_conservation: splitted_fleet.ship_count + ship_count = old ship_count
+        splitted_fleet.ship_count = shs.count
     end
 
     enter_orbit (star: STAR) is
@@ -226,6 +230,5 @@ invariant
 
     nonnegative_speed: current_speed >= 0
     nonnegative_eta: eta >= 0
-    stopped_iff_not_travelling: is_stopped = (current_speed = 0)
 
 end -- class FLEET
