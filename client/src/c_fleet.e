@@ -66,6 +66,7 @@ feature {NONE} -- Creation
         shipcount := s.last_integer
         unserialize_from (s) -- Position
         ships.clear
+        if shipcount = 0 then server.galaxy.remove_fleet (Current) end
         from until shipcount = 0 loop
             !!sh.make(owner)
             s.get_integer

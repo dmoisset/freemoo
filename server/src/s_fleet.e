@@ -6,7 +6,7 @@ inherit
     FLEET
         redefine
             set_destination, add_ship, split, move,
-            splitted_fleet
+            splitted_fleet, join, clear_ships
         end
 
 creation make
@@ -59,6 +59,18 @@ feature -- Redefined features
     split (shs: SET [SHIP]) is
     do
         Precursor (shs)
+        update_clients
+    end
+    
+    join (other: FLEET) is
+    do
+        Precursor (other)
+        update_clients
+    end
+
+    clear_ships is
+    do
+        Precursor
         update_clients
     end
     

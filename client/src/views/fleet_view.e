@@ -306,6 +306,7 @@ feature {MODEL} -- Effective features
 		update_window_size
 		select_none
 		update_toggles
+		if model.ship_count = 0 then close end
 	 end
 	 
 	 

@@ -190,6 +190,7 @@ feature {NONE} -- Internal
             end
             i.next
         end
+        galaxy.fleet_cleanup
     end
 
     init_game is

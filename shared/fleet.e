@@ -84,17 +84,23 @@ feature -- Operations
         not has_ship(s.id)
     end
 
+    clear_ships is
+    do
+        ships.clear
+        scanner_range := 0
+    end
+
     join (other: FLEET) is
         -- Join up with another fleet
     require
         other /= Void
     do
         other.ships.do_all (agent ships.put (?, ?))
-        other.ships.clear
+        other.clear_ships
         scanner_range := 0
     ensure
         ship_count >= old ship_count
-        ship_count <= old ship_count + other.ship_count
+        ship_count <= old ship_count + old other.ship_count
     end
 
     split(shs: SET[SHIP]) is

@@ -33,7 +33,7 @@ feature -- Access
         ships_detected, detected: BOOLEAN
         fleet: FLEET
     do
-		print("Scanner for player " + player.id.to_string)
+--		print("Scanner for player " + player.id.to_string)
 		!!Result.with_capacity(0,1)
 		from
 			alienfleet := fleets.get_new_iterator_on_items
@@ -77,7 +77,7 @@ feature -- Access
 			end
 			alienfleet.next
 		end
-		print(" picks up " + Result.count.to_string + " alien fleets%N")
+--		print(" picks up " + Result.count.to_string + " alien fleets%N")
     end
 
     scans: DICTIONARY [ARRAY [FLEET], INTEGER]
@@ -111,6 +111,14 @@ feature -- Operations
         fleets.add(new_fleet, new_fleet.id)
     ensure
         fleets.has(new_fleet.id)
+    end
+
+    remove_fleet (f: FLEET) is
+    require
+        f /= Void
+    do
+        if f.is_in_orbit then f.leave_orbit end
+        fleets.remove (f.id)
     end
 
     fleet_orders (fleet: FLEET; destination: STAR; ships: SET[SHIP]) is
@@ -149,13 +157,13 @@ feature -- Operations
         i: INTEGER
         f, g: FLEET
     do
-        print ("Looking for fleets to join at "+s.name+"%N")
+--        print ("Looking for fleets to join at "+s.name+"%N")
         -- Get and group fleets at s
         !!fs.with_capacity (s.fleets.count, 1)
         s.fleets.do_all (agent fs.add_last (?))
         sorter.set_order (agent fleet_ungrouping(?, ?))
         sorter.sort (fs)
-        print ("  Checking "+fs.count.to_string+" fleets %N")
+--        print ("  Checking "+fs.count.to_string+" fleets %N")
         -- Join
         from i := fs.lower until i >= fs.upper loop -- >= instead of > because we compare each pair
             f := fs @ i
@@ -163,12 +171,35 @@ feature -- Operations
             if not fleet_ungrouping (f, g) then
                     check f.owner = g.owner end
                     check f.destination = g.destination end
-                print ("  Must join fleets "+f.id.to_string+
-                       " and "+g.id.to_string+"%N")
+--                print ("  Must join fleets "+f.id.to_string+
+--                       " and "+g.id.to_string+"%N")
+                f.join (g)
                 fs.remove (i+1)
             else
                 i := i + 1
             end
+        end
+    end
+
+    fleet_cleanup is
+        -- Remove all 0-sized (i.e. dead) fleets
+    local
+        i: ITERATOR [FLEET]
+        dead: SET [FLEET]
+    do
+        !!dead.make
+        from i := fleets.get_new_iterator_on_items until i.is_off loop
+            if i.item.ship_count = 0 then
+                dead.add (i.item)
+            end
+            i.next
+        end
+        from i := dead.get_new_iterator until i.is_off loop
+            fleets.remove (i.item.id)
+            if i.item.is_in_orbit then
+                i.item.leave_orbit -- To remove from star
+            end
+            i.next
         end
     end
 
