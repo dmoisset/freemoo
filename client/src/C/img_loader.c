@@ -41,6 +41,10 @@ static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, 
            scanline = 0,        /* Offset within s->pixels to previous beginning of scanline */
            offset = 0;          /* Absolute offset within s->pixels */
 
+    /* Set Surface flags */
+    SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, 0) ;
+    SDL_SetAlpha (s, 0, 255) ;
+
 /* Load file into buffer */
     SDL_RWread(src, &filebuffer, 1, w * h);
 
@@ -75,6 +79,10 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
            pixel;              /* Current pixel value */
     Uint8 tupfing;             /* Tuple cursor */
 
+
+    /* Set Surface flags */
+    SDL_SetColorKey (s, SDL_SRCCOLORKEY|SDL_RLEACCEL, 0) ;
+    SDL_SetAlpha (s, 0, 255) ;
 
     SDL_RWread(src, &tcount, 4, 1);
 
@@ -335,7 +343,7 @@ SDL_Surface *FMI_Load(FILE* fp)
     SDL_RWread (src, &width, sizeof (width), 1);
     SDL_RWread (src, &height, sizeof (height), 1);
 
-    surface = SDL_CreateRGBSurface(SDL_SRCALPHA, width, height, 24, 0xf80000,
+    surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 24, 0xf80000,
              0x07e000, 0x001f00, 0x0000ff);
     if (!surface)
         return 0;
@@ -416,7 +424,7 @@ FMA_t *load_anim (FILE *f)
     {
         SDL_RWread (src, delta_n_size, 2, 4);
 //        printf("Loading %dx%d image displaced %dx%d...\n", delta_n_size[2], delta_n_size[3], delta_n_size[0], delta_n_size[1]);
-        answer->items[imgfing] = SDL_CreateRGBSurface(SDL_SRCALPHA, delta_n_size[2], delta_n_size[3], 24, 0xf80000, 0x07e000, 0x001f00, 0x0000ff);
+        answer->items[imgfing] = SDL_CreateRGBSurface(SDL_HWSURFACE, delta_n_size[2], delta_n_size[3], 24, 0xf80000, 0x07e000, 0x001f00, 0x0000ff);
         if (!answer->items[imgfing])
             return 0;
         answer->x[imgfing] = delta_n_size[0];

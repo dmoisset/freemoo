@@ -32,7 +32,7 @@ feature -- Operations
         -- Go to first frame of the animation
     do
         position := surfaces.lower
-        !SDL_SURFACE!canvas.make (width, height)
+        !SDL_SURFACE!canvas.make_transparent (width, height)
         !SDL_IMAGE!item.make_from_surface (canvas)
         !SDL_IMAGE!item2.make_from_surface (canvas)
         paint
