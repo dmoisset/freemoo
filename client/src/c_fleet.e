@@ -57,7 +57,7 @@ feature {NONE} -- Creation
             set_destination (server.galaxy.stars @ ir)
         end
         ir ?= s.unserialized_form @ 4
-        unserialize_as_positional(msg)
+        unserialize_from (msg)
 	print("Recieved <<" + owner.id.to_string + ", " + eta.to_string + ", " + orbit_center.id.to_string + ", " + ir.to_string + ">>%N")
         ships.clear
         from shipcount := ir until shipcount = 0 loop

@@ -134,7 +134,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 else
                     fleet.set_destination (stars @ ir.item)
                 end
-                fleet.unserialize_as_positional(newmsg)
+                fleet.unserialize_from (newmsg)
                 new_fleets.add(fleet, fleet.id)
                 ir ?= s.unserialized_form @ 4
 	print("Recieved <<" + fleet.owner.id.to_string + ", " + fleet.eta.to_string + ", " + fleet.orbit_center.id.to_string + ", " + ir.item.to_string + ">>%N")
@@ -174,10 +174,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             s.unserialize("i", remainder)
             ir ?= s.unserialized_form @ 1
             !!fleet.make
+            fleet.add_view(Current)
             fleet.set_owner(server.player)
             fleet.set_id(ir.item)
             add_fleet(fleet)
-            fleet.add_view(Current)
             i := i - 1
         end
     end
@@ -218,6 +218,7 @@ feature -- Redefined features
     on_fleet_change is
         -- Stars changed
     do
+--        crash
         changed_starlist := True
         changed_stardata := True
         notify_views
