@@ -11,16 +11,16 @@ feature {NONE} -- Creation
 
     make_from_file (path: STRING) is
         -- Load from FMI in a package
+    require else
+        path /= Void
     local
-        s: SDL_SURFACE
         p: PKG_USER
         tried: BOOLEAN
     do
         if not tried then
             p.pkg_system.open_file (path)
             if p.pkg_system.last_file_open /= Void then
-                !!s.make_from_surface (FMI_Load (p.pkg_system.last_file_open.to_external))
-                make_from_surface (s)
+                make_from_surface (FMI_Load (p.pkg_system.last_file_open.to_external))
                 p.pkg_system.last_file_open.disconnect
             end
         else

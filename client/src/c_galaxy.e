@@ -7,6 +7,9 @@ inherit
     GALAXY
         redefine make, stars, set_stars end
     MODEL
+        redefine notify_views end
+    VIEW [C_STAR]
+        rename on_model_change as on_star_change end
     SUBSCRIBER
     IDMAP_ACCESS
 
@@ -56,6 +59,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     star ?= idmap @ id
                 else
                     !!star.make_defaults
+                    star.add_view (Current)
                     idmap.put(star, id)
                 end
                 ir ?= s.unserialized_form @ 2
@@ -67,8 +71,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 new_stars.add(star, id)
                 count := count - 1
             end
-            stars := new_stars
-            notify_views
+            set_stars (new_stars)
         elseif service.has_suffix(":scanner") then
             s.unserialize("i", msg)
             ir ?= s.unserialized_form @ 1
@@ -110,16 +113,39 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         end
     end
 
-feature -- Redefinition to c_ feature
+feature -- Redefined features
 
-    stars: DICTIONARY[C_STAR, INTEGER]
+    stars: DICTIONARY [C_STAR, INTEGER]
 
-    set_stars (starlist: DICTIONARY[C_STAR, INTEGER]) is
+    set_stars (starlist: DICTIONARY [C_STAR, INTEGER]) is
     require
         starlist /= Void
     do
         stars := starlist
+        changed_starlist := True
         notify_views
+    end
+
+feature -- Redefined features
+
+    on_star_change is
+        -- Stars changed
+    do
+        changed_stardata := True
+        notify_views
+    end
+
+feature -- Notification
+
+    changed_starlist: BOOLEAN
+
+    changed_stardata: BOOLEAN
+
+    notify_views is
+    do
+        Precursor
+        changed_starlist := False
+        changed_stardata := False
     end
 
 end -- class C_GALAXY

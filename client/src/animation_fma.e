@@ -13,11 +13,11 @@ feature {NONE} -- Creation
         !!images.make (0, count-1)
     end
 
-    add_frame (index: INTEGER; s: SDL_SURFACE; ox, oy: INTEGER) is
+    add_frame (index: INTEGER; s: SDL_IMAGE; ox, oy: INTEGER) is
     local
         img: IMAGE_OFFSET
     do
-        !!img.make (create {SDL_IMAGE}.make_from_surface (s), ox, oy)
+        !!img.make (s, ox, oy)
         images.put (img, index)
     end
 

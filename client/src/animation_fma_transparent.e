@@ -10,14 +10,14 @@ feature {NONE} -- Creation
 
     init_representation (count: INTEGER) is
     do
-        !!surfaces.make (0, count-1)
+        !!images.make (0, count-1)
     end
 
-    last_frame: SDL_SURFACE
+    last_frame: SDL_IMAGE
 
-    add_frame (index: INTEGER; s: SDL_SURFACE; ox, oy: INTEGER) is
+    add_frame (index: INTEGER; s: SDL_IMAGE; ox, oy: INTEGER) is
     local
-        new: SDL_SURFACE
+        new: SDL_IMAGE
     do
         !!new.make_transparent (width, height)
         if last_frame /= Void then
@@ -27,7 +27,7 @@ feature {NONE} -- Creation
         end
         s.blit_fast (new, ox, oy)
         last_frame := new
-        surfaces.put (new, index)
+        images.put (new, index)
     end
 
 feature -- Access
@@ -39,8 +39,8 @@ feature -- Operations
     start is
         -- Go to first frame of the animation
     do
-        position := surfaces.lower
-        !SDL_IMAGE!item.make_from_surface (surfaces.first)
+        position := images.lower
+        item := images.first
     end
 
     next is
@@ -50,24 +50,22 @@ feature -- Operations
     do
         old_position := position
         position := position + 1
-        if position > surfaces.upper then position := loop_frame end
-        if position /= old_position then
-            !SDL_IMAGE!item.make_from_surface (surfaces @ position)
-        end
+        if position > images.upper then position := loop_frame end
+        item := images @ position
     end
 
 feature {NONE} -- Representations
 
-    surfaces: ARRAY [SDL_SURFACE]
+    images: ARRAY [SDL_IMAGE]
         -- Animation images
 
     position: INTEGER
         -- Current frame
 
 invariant
-    surfaces /= Void
-    surfaces.count >= 1
-    surfaces.valid_index (position)
-    surfaces.valid_index (loop_frame)
+    images /= Void
+    images.count >= 1
+    images.valid_index (position)
+    images.valid_index (loop_frame)
 
 end -- class ANIMATION_FMA_TRANSPARENT

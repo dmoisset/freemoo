@@ -7,7 +7,6 @@ inherit
         rename make as window_make
         redefine handle_event, redraw end
     MAP_CONSTANTS
-    SDL_IMAGE_ACCESS
 
 creation
     make
@@ -52,7 +51,10 @@ feature {NONE} -- Creation
             j := j + 1
         end
         -- Update gui
-        on_model_change
+        make_projs
+        get_limits
+        refresh
+        dirty := True
         set_zoom (0, width//2, height//2)
     end
 
@@ -79,6 +81,7 @@ feature -- Operations
             current_projection.set_translation (-posx*limit_x, -posy*limit_y)
             current_projection.translate (x, y)
             normalize_position
+            dirty := True
             refresh
         end
     end
@@ -104,64 +107,27 @@ feature -- Redefined features
     on_model_change is
         -- Update gui
     do
-        make_projs
-        get_limits
-        refresh
+        if model.changed_starlist then
+            make_projs
+            get_limits
+            refresh
+        else
+            request_redraw_all
+        end
+        dirty := True
     end
 
     refresh is
         -- Regenerate cache, put blackhole animations
     local
         i: ITERATOR[C_STAR]
-        ic: ITERATOR[WINDOW]
-        ww: WINDOW -- blackhole window
-        a: ANIMATION -- blackhole animation
-        px, py: REAL -- projected star
-        img: SDL_IMAGE -- star image
-        lwidth: INTEGER -- star label width
-        lx, ly: INTEGER -- star label position
-        r: RECTANGLE
     do
-        -- Remove old blackholes
-        from ic := bh_windows.get_new_iterator until ic.is_off loop
-            ic.item.remove
-            ic.next
-        end
-        bh_windows.clear
-        -- Initialize cache
-        !!cache.make (width, height)
-        background.image_data.blit_fast (cache.image_data, 0, 0)
-        -- Add stars
+        remove_blackholes
+        -- Add blackholes
         from i := model.stars.get_new_iterator_on_items
         until i.is_off loop
-            if i.item.kind /= i.item.kind_blackhole then
-                current_projection.project(i.item)
-                px := current_projection.x
-                py := current_projection.y
-                img ?= pics.item(i.item.kind, i.item.size + zoom)
-                img.image_data.blit_fast (cache.image_data,
-                                          (px - img.width / 2).rounded,
-                                          (py - img.height / 2).rounded)
-                if i.item.has_info then
-                    lwidth := font.width_of (i.item.name)
-                    lx := (px - lwidth / 2).rounded
-                    ly := label_offset+(py - font.height / 2).rounded
-                    if lx < width and ly < height then
-                        font.show_at(cache, lx, ly, i.item.name)
-                        r.set_with_size(lx - 1, ly, lwidth, font.height)
-                        paint(r, i.item)
-                    end
-                end
-            else -- Blackhole animation here
-                current_projection.project(i.item)
-                if (current_projection.x >= 0) and (current_projection.y >= 0) then
-                    a := clone (bh_anims @ (i.item.size + zoom))
-                    !WINDOW_ANIMATED!ww.make (blackholes_window,
-                        (current_projection.x - a.width / 2).rounded,
-                        (current_projection.y - a.height / 2).rounded,
-                        a)
-                    bh_windows.add_last (ww)
-                end
+            if i.item.kind = i.item.kind_blackhole then
+                draw_blackhole (i.item)
             end
             i.next
         end
@@ -169,7 +135,22 @@ feature -- Redefined features
     end
 
     redraw (area: RECTANGLE) is
+    local
+        i: ITERATOR[C_STAR]
     do
+        if dirty then
+            dirty := False
+            -- Initialize cache
+            !!cache.make (width, height)
+            background.blit_fast (cache, 0, 0)
+            from i := model.stars.get_new_iterator_on_items
+            until i.is_off loop
+                if i.item.kind /= i.item.kind_blackhole then
+                    draw_star (i.item)
+                end
+                i.next
+            end
+        end
         show_image(cache, 0, 0, area)
         Precursor (area)
     end
@@ -192,6 +173,61 @@ feature -- Redefined features
                 else do_nothing
                 end
             end
+        end
+    end
+
+feature {NONE} -- Redrawing
+
+    remove_blackholes is
+    local
+        ic: ITERATOR[WINDOW]
+    do
+        from ic := bh_windows.get_new_iterator until ic.is_off loop
+            ic.item.remove
+            ic.next
+        end
+        bh_windows.clear
+    end
+
+    draw_star (s: C_STAR) is
+    local
+        img: SDL_IMAGE -- star image
+        px, py: REAL -- projected star
+        lx, ly: INTEGER -- star label position
+        lwidth: INTEGER -- star label width
+        r: RECTANGLE
+    do
+        current_projection.project(s)
+        px := current_projection.x
+        py := current_projection.y
+        img ?= pics.item(s.kind, s.size + zoom)
+        img.blit_fast (cache, (px - img.width / 2).rounded,
+                              (py - img.height / 2).rounded)
+        if s.has_info then
+            lwidth := font.width_of (s.name)
+            lx := (px - lwidth / 2).rounded
+            ly := label_offset+(py - font.height / 2).rounded
+            if lx < width and ly < height then
+                font.show_at(cache, lx, ly, s.name)
+                r.set_with_size(lx - 1, ly, lwidth, font.height)
+                paint (r, s)
+            end
+        end
+    end
+
+    draw_blackhole (s: STAR) is
+    local
+        ww: WINDOW -- blackhole window
+        a: ANIMATION -- blackhole animation
+    do
+        current_projection.project(s)
+        if (current_projection.x >= 0) and (current_projection.y >= 0) then
+            a := clone (bh_anims @ (s.size + zoom))
+            !WINDOW_ANIMATED!ww.make (blackholes_window,
+                (current_projection.x - a.width / 2).rounded,
+                (current_projection.y - a.height / 2).rounded,
+                a)
+            bh_windows.add_last (ww)
         end
     end
 
@@ -227,6 +263,7 @@ feature {NONE} -- Event handlers
         current_projection.translate (width // 2 - x, height // 2 - y)
         normalize_position
         refresh
+        dirty := True
     end
 
     normalize_position is
@@ -266,6 +303,7 @@ feature {NONE} -- Internal
     background: SDL_IMAGE
         -- View background
 
+    dirty: BOOLEAN
     cache: SDL_IMAGE
         -- View cache.
 
@@ -303,7 +341,7 @@ feature {NONE} -- Internal
         Result.put(<<33808, 33808, 33808, 33808, 33808, 33808, 33808>>, 8)
     end
 
-    paint(r: RECTANGLE; star: C_STAR) is
+    paint(r: RECTANGLE; star: STAR) is
         -- Colorizes `cache' within `r' according to colonies on `star'
     local
         i, total, partial, fraction: INTEGER

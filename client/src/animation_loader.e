@@ -13,7 +13,7 @@ feature {NONE} -- Creation template
         count, i: INTEGER
         imgs: NATIVE_ARRAY [POINTER]
         lx, ly: NATIVE_ARRAY [INTEGER]
-        s: SDL_SURFACE
+        s: SDL_IMAGE
 
         tried: BOOLEAN
     do
@@ -44,7 +44,7 @@ feature {NONE} -- Creation template
             init_representation (1)
             width := 10
             height := 10
-            add_frame (0, create {SDL_SURFACE}.make (10, 10), 0, 0)
+            add_frame (0, create {SDL_IMAGE}.make (10, 10), 0, 0)
         end
         start
     rescue
@@ -64,7 +64,7 @@ feature {NONE} -- Creation template
     deferred
     end
 
-    add_frame (index: INTEGER; s: SDL_SURFACE; ox, oy: INTEGER) is
+    add_frame (index: INTEGER; s: SDL_IMAGE; ox, oy: INTEGER) is
         -- Add `s' as frame at `index' with offset vector (`ox',`oy')
     require
         s /= Void

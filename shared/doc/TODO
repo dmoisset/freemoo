@@ -1,41 +1,31 @@
-- Portar flag_view, y poner seleccion de color
-- Agregar control de chat
-- terminar la parte de player setup (ruler_name, etc)
-- Administracion de colonias y de flotas
-
-        BUG: llevar notificaciones a contenedores
-        BUG: problema desconocido con net-thread
-        BUG? Server necesita un idmap?
-            - no. el cliente tampoco.
-            - Sacar o de serializer, hacer tablas locales.
-        Crear colonias iniciales
-            - Lo hace map generator
-            - Diseñar evolver
-        Suscripciones de estrellas, scanner
-        Servicio de exploración
-        DESIGN: info de flotas propias
-            - Servicio de flotas
-        BUG: Scanner debería delegar escaneado a elementos
-        BUG: scanner debería usar lista de flotas y colonias del jugador
-            - ?
-        image bin
-        Mostrar flotas en galaxy_view
-            - dibujar lineas
-        DESIGN: ordenes a flotas
-        scrollbar en EWS
-        fleet_view
-        Hacer más tolerante el server respecto a caidas
-        Renombre de estrellas
-        Usar cursores
-        Emprolijar player_status view (orden de aparición, constantes)
-        colorear fonts
-        drag de star_view (y posición inicial)
-        galaxy_view:
-            fondo movil
-            scroll suave
-            drag para moverse
-            star labels (coloreado, parentesis)
-            modo zoom (en vez de los botones de ahora)
-        selección de color, ruler_name
-        chat
-
+BUG: problema desconocido con net-thread
+Crear colonias iniciales
+    - Lo hace map generator
+    - Diseñar evolver
+Suscripciones de estrellas, scanner
+Servicio de exploración
+DESIGN: info de flotas propias
+    - Servicio de flotas
+BUG: Scanner debería delegar escaneado a elementos
+BUG: scanner debería usar lista de flotas y colonias del jugador
+    - ?
+image bin
+Mostrar flotas en galaxy_view
+    - dibujar lineas
+DESIGN: ordenes a flotas
+scrollbar en EWS
+fleet_view
+Hacer más tolerante el server respecto a caidas
+Renombre de estrellas
+Usar cursores
+Emprolijar player_status view (orden de aparición, constantes)
+colorear fonts
+drag de star_view (y posición inicial)
+galaxy_view:
+    fondo movil
+    scroll suave
+    drag para moverse
+    star labels (coloreado, parentesis)
+    modo zoom (en vez de los botones de ahora)
+selección de color, ruler_name (player setup)
+chat

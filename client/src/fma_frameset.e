@@ -14,14 +14,12 @@ feature {NONE} -- Creation
         !!positions.make (1, count)
     end
 
-    add_frame (index: INTEGER; s: SDL_SURFACE; ox, oy: INTEGER) is
+    add_frame (index: INTEGER; s: SDL_IMAGE; ox, oy: INTEGER) is
     local
-        img: IMAGE
         r: RECTANGLE
     do
-        !SDL_IMAGE!img.make_from_surface (s)
         r.set_with_size (ox, oy, s.width, s.height)
-        images.put (img, index+1)
+        images.put (s, index+1)
         positions.put (r, index+1)
     end
 
