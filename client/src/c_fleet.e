@@ -42,18 +42,17 @@ feature {NONE} -- Creation
         s.get_integer
         set_eta (s.last_integer)
         s.get_integer
-        if eta = 0 then
-            if (is_in_orbit) then
-                leave_orbit
-            end
+        if is_in_orbit then leave_orbit end
+        if s.last_integer /= -1 then
             i := s.last_integer
             enter_orbit (server.galaxy.stars @ i);
             if not (server.galaxy.stars @ i).fleets.has(id) then
                 (server.galaxy.stars @ i).fleets.add(Current, id);
                 (server.galaxy.stars @ i).notify_views
             end
-        else
-            if is_in_orbit then leave_orbit end
+        end
+        s.get_integer
+        if s.last_integer /= -1  then
             set_destination (server.galaxy.stars @ s.last_integer)
         end
         s.get_integer

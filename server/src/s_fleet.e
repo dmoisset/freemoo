@@ -25,10 +25,15 @@ feature -- Redefined features
         !!s.make
         -- Currently just has same info as scanner
         s.add_tuple(<< owner, eta >>)
-        if eta = 0 then
+        if orbit_center/=Void then
             s.add_integer(orbit_center.id)
         else
+            s.add_integer(-1)
+        end
+        if destination/=Void then
             s.add_integer(destination.id)
+        else
+            s.add_integer(-1)
         end
         s.add_integer(ship_count)
         serialize_on(s)

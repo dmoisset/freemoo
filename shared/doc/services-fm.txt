@@ -38,10 +38,9 @@ FLEET
   Name: "fleet"+id (id is a digit sequence = fleet_id) 
   Provided: Before reporting fleet on scanner or new_fleets.
   Description: Full fleet description
-  Format: "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
+  Format: "iiiiirr" <<owner, eta, orbiting, destination, ships.count, x, y>>, and
             "iii" <<id, size, picture>> (for each ship of the fleet)
-  when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
-  the fleet is travelling to `destination'
+  `orbiting' and `destination may be -1, which means "none".
 
 PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
