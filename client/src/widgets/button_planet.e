@@ -37,8 +37,10 @@ feature -- Redefined Features
                              roman @ planet.orbit + "%N" +
                              plsize_names @ planet.size + ", " +
                              climate_names @ planet.climate + "%N" +
+                             mineral_names @ planet.mineral + "  " +
                              gravity_names @ planet.gravity)
                 end
+                event.set_handled
             end
         end
     end

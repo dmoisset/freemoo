@@ -6,7 +6,7 @@ inherit
     MAP_CONSTANTS
     WINDOW
         rename make as window_make
-        redefine redraw end
+        redefine redraw, handle_event end
 
 creation
     make
@@ -33,6 +33,7 @@ feature {NONE} -- Creation
         r.set_with_size (15, 50, 310, 100)
         !!planet_label.make (Current, r, "")
         !!removable_children.make(1, 0)
+        in_asteroid_field := false
         on_model_change
     end
 
@@ -41,7 +42,15 @@ feature -- Controls
 
     set_planet_text (s: STRING) is
     do
-        planet_label.set_text(s)
+        if s.is_equal(asteroid_msg) then
+            if not in_asteroid_field then
+                planet_label.set_text(s)
+                in_asteroid_field := true
+            end
+        else
+            planet_label.set_text(s)
+            in_asteroid_field := false
+        end
     end
 
 feature {NONE} -- Widgets
@@ -52,6 +61,7 @@ feature {NONE} -- Widgets
 
     planet_label: MULTILINE_LABEL
 
+
 feature {NONE} -- Callbacks
 
     close is
@@ -59,7 +69,7 @@ feature {NONE} -- Callbacks
         remove
     end
 
-feature -- redefined features
+feature -- Effective features
 
     on_model_change is
         -- Update gui
@@ -88,9 +98,9 @@ feature -- redefined features
                 planet := model.planets.item(i)
                 if planet /= Void and then planet.type /= type_asteroids then
                     if planet.type = type_gasgiant then
-                        ani := gas_giant
+                        ani := gas_giant.twin
                     else
-                        ani := planets.item (planet.climate, planet.size)
+                        ani := planets.item (planet.climate, planet.size).twin
                     end
                     tuple := planet_pos(planet)
                     !!wa.make(Current, tuple.first - ani.width // 2,
@@ -106,7 +116,7 @@ feature -- redefined features
             end
         else
             name_label.set_text("Star System Unexplored")
-            r.set_with_size (58, 95, 240, 100)
+            r.set_with_size (58, 95, 240, 130)
             !!msg_label.make (Current, r, starmsgs @ model.kind)
             msg_label.set_justify(false)
             msg_label.set_h_alignment (0.5)
@@ -137,6 +147,43 @@ feature -- Redefined features
         Precursor(r)
     end
 
+    handle_event(event: EVENT) is
+    local
+        b: EVENT_MOUSE_BUTTON
+        m: EVENT_MOUSE_MOVE
+        i: INTEGER
+        x, y, angle: DOUBLE
+    do
+        Precursor(event)
+        if not event.handled then
+            b ?= event
+            if b /= Void then
+                event.set_handled
+            else
+                m ?= event
+                if m /= Void then
+                    angle := ((m.y - 136.5) * 1.88).atan2(m.x - 173.5)
+                    --print ("[angle:"+ angle.to_string + "r   x:"+ m.x.to_string + " y:" + m.y.to_string)
+                    from i := 1
+                    until i > 5 loop
+                        if model.planets @ i /= Void and then (model.planets @ i).type = type_asteroids then
+                            y := br * (bi + i)
+                            x := y * xm
+                            y := cy + angle.sin * y
+                            x := cx + angle.cos * x
+                            if (x - m.x).abs < 3 and then (y - m.y).abs < 3 then
+                                set_planet_text (asteroid_msg)
+                            end
+                            --print ("   orbit" + i.to_string + " x:" + x.rounded.to_string + " y:" + y.rounded.to_string)
+                        end
+                        i := i + 1
+                    end
+                    --print("%N")
+                    event.set_handled
+                end
+            end
+        end
+    end
 
 feature -- Once data
 
@@ -256,16 +303,30 @@ feature {NONE} -- Internal
     removable_children: ARRAY[WINDOW]
         -- Child windows that will be removed on every on_model_change
 
+    in_asteroid_field: BOOLEAN
+        -- True when mouse pointer is inside asteroid field
+
+    asteroid_msg: STRING is "Asteroid Field (Uninhabitable)"
+
     planet_pos(p: PLANET): TUPLE[INTEGER, INTEGER] is
         -- Calculate `p's position inside view.
     local
         x, y: DOUBLE
     do
-        y := 24.5 * (1 + 0.51 * (p.orbit - 1))
-        x := y * 1.88
-        y := 136.5 - (Pi / 3 * p.orbit).sin * y
-        x := 173.5 + (Pi / 3 * p.orbit).cos * x
+--        y := 24.5 * (.49 + p.orbit * 0.51))
+        y := br * (bi + p.orbit)
+        x := y * xm
+        y := cy - (Pi / 3 * p.orbit).sin * y
+        x := cx + (Pi / 3 * p.orbit).cos * x
         Result := [x.rounded, y.rounded]
     end
+
+feature {NONE} -- Internal constants
+    -- These numbers are in pixels:
+    br: REAL is 12.9  -- base radius, difference between orbits on y axis
+    bi: REAL is 0.96  -- base increment, increment for radius to first orbit
+    xm: REAL is 1.88  -- x multiplier, x-y ratio for ellipse
+    cx: REAL is 173.5 -- center x, x coordinate for center of view
+    cy: REAL is 136.5 -- center y, y coordinate for center of view
 
 end -- class STAR_VIEW

@@ -81,9 +81,11 @@ feature {ANY}
         sgalaxy.update_clients
         from i := 1
         until i > 40 loop
-            register (sgalaxy.stars @ i, "star" + i.to_string)
-            subscribe (cgalaxy.stars @ i, "star" + i.to_string)
-            sgalaxy.stars.item(i).update_clients
+            if (sgalaxy.stars @ i).kind /= kind_blackhole then
+                register (sgalaxy.stars @ i, "star" + i.to_string)
+                subscribe (cgalaxy.stars @ i, "star" + i.to_string)
+                sgalaxy.stars.item(i).update_clients
+            end
             i := i + 1
         end
 
