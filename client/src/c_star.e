@@ -4,7 +4,7 @@ class C_STAR
 
 inherit
     STAR
-        redefine make, make_defaults end
+        redefine make, make_defaults, fleets end
     MODEL
     SUBSCRIBER
 
@@ -79,6 +79,10 @@ feature {SERVICE_PROVIDER} -- Redefined features
         end
         notify_views
     end
+
+feature -- Redefined
+
+    fleets: DICTIONARY[C_FLEET, INTEGER]
 
 feature -- Accounting
 

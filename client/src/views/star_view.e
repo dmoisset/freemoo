@@ -25,6 +25,8 @@ feature {NONE} -- Creation
         -- Drag Handle
         r.set_with_size(0, 0, 347, 45)
         !!d.make(Current, r)
+--        d.set_pre_drag (agent disable_animations)
+  --      d.set_post_drag (agent enable_animations)
         -- Close Button
         !!a.make ("client/star-view/close-button.fma")
         !BUTTON_IMAGE!close_button.make (Current, 262, 235,
@@ -58,13 +60,32 @@ feature {NONE} -- Callbacks
         remove
     end
 
+    enable_animations is
+    do
+        handle_ticks := False
+    end
+
+    disable_animations is
+    do
+        handle_ticks := True
+    end
+
+feature {NONE} -- Callbacks
+
+    planet_click is
+    do
+        print ("Not Yet Implemented%N")
+    end
+
+    fleet_click_handler: PROCEDURE[ANY, TUPLE[C_FLEET]]
+
 feature -- Effective features
 
     on_model_change is
         -- Update gui
     local
         child: ITERATOR[WINDOW]
-        fleet: ITERATOR[FLEET]
+        fleet: ITERATOR[C_FLEET]
         wa: WINDOW_ANIMATED
         msg_label: MULTILINE_LABEL
         button: BUTTON_PLANET
@@ -74,6 +95,8 @@ feature -- Effective features
         r: RECTANGLE
         tuple: TUPLE[INTEGER, INTEGER]
     do
+        -- Redraw cache on next redraw
+        dirty := True
         -- Remove removable children
         from child := removable_children.get_new_iterator
         until child.is_off
@@ -134,45 +157,53 @@ feature -- Redefined features
     local
         tuple: TUPLE[INTEGER, INTEGER]
         i: INTEGER
-        fleet_it: ITERATOR[FLEET]
+        img: SDL_IMAGE
+        fleet_it: ITERATOR[C_FLEET]
     do
+        if dirty then
+            dirty := False
     -- Background
-        show_image(background, 0, 0, r)
-        if model.has_info then
+            !!cache.make (width, height)
+            background.blit_fast (cache, 0, 0)
+            if model.has_info then
     -- Sun
-            show_image(suns.item(model.kind - kind_min), 157, 120, r)
+                suns.item(model.kind - kind_min).blit_fast(cache, 157, 120)
     -- Orbits / Asteroid Fields
-            from i := 1
-            until i > 5 loop
-                if model.planets.item(i) /= Void then
-                    if model.planets.item(i).type = type_asteroids then
-                        show_image(asteroids.item(i), 29, 59, r)
-                    else
-                        show_image(orbits.item(i), 29, 59, r)
+                from i := 1
+                until i > 5 loop
+                    if model.planets.item(i) /= Void then
+                        if model.planets.item(i).type = type_asteroids then
+                            img ?= asteroids.images.item(i)
+                            img.blit_fast(cache, 29 + asteroids.positions.item(i).x,
+                                          59 + asteroids.positions.item(i).y)
+                        else
+                            orbits.item(i).blit_fast(cache, 29, 59)
+                        end
                     end
+                    i := i + 1
                 end
-                i := i + 1
-            end
     -- Planets
-            from i := 1
-            until i > 5 loop
-                if model.planets.item(i) /= Void and then model.planets.item(i).colony /= Void then
-                    tuple := planet_pos(model.planets.item(i))
-                    show_image(colonies @ model.planets.item(i).colony.owner.color, tuple.first - 15, tuple.second - 15, r)
+                from i := 1
+                until i > 5 loop
+                    if model.planets.item(i) /= Void and then model.planets.item(i).colony /= Void then
+                        tuple := planet_pos(model.planets.item(i))
+                        colonies.item(model.planets.item(i).colony.owner.color).blit_fast(cache, tuple.first - 15, tuple.second - 15)
+                    end
+                    i := i + 1
                 end
-                i := i + 1
+            end
+    -- Fleets
+            from
+                fleet_it := model.fleets.get_new_iterator_on_items
+                i := fleet_pic_firstx
+            until fleet_it.is_off
+            loop
+                fleets.item(fleet_it.item.owner.color).blit_fast(cache, i, fleet_pic_y)
+                i := i + (fleets @ fleet_it.item.owner.color).width + fleet_pic_margin
+                fleet_it.next
             end
         end
-    -- Fleets
-        from
-            fleet_it := model.fleets.get_new_iterator_on_items
-            i := fleet_pic_firstx
-        until fleet_it.is_off
-        loop
-            show_image(fleets @ fleet_it.item.owner.color, i, fleet_pic_y, r)
-            i := i + (fleets @ fleet_it.item.owner.color).width + fleet_pic_margin
-            fleet_it.next
-        end
+        show_image(cache, 0, 0, r)
         Precursor(r)
     end
 
@@ -180,11 +211,18 @@ feature -- Redefined features
     local
         b: EVENT_MOUSE_BUTTON
         m: EVENT_MOUSE_MOVE
+        tick: EVENT_TIMER
         i: INTEGER
         x, y, angle: DOUBLE
         a: BOOLEAN
         it: ITERATOR[RECTANGLE]
     do
+        if handle_ticks then
+            tick ?= event
+            if tick /= Void then
+                tick.set_handled
+            end
+        end
         Precursor(event)
         if not event.handled then
             b ?= event
@@ -195,14 +233,16 @@ feature -- Redefined features
                     until it.is_off
                     loop
                         if (it.item.has(b.x, b.y)) then
-                            fleet_click_handler.call([model.fleets @ (fleet_hotspots.key_at(it.item))])
+                            if fleet_click_handler /= Void then
+                                fleet_click_handler.call([model.fleets @ (fleet_hotspots.key_at(it.item))])
+                            end
                         end
                         it.next
                     end
                 end
             else
                 m ?= event
-                if m /= Void and then not m.handled then
+                if m /= Void then
                     angle := ((m.y - 136.5) * 1.88).atan2(m.x - 173.5)
                     from
                         i := 1
@@ -237,7 +277,7 @@ feature -- Controls
         planet_label.set_text(s)
     end
 
-    set_fleet_click_handler (p: PROCEDURE[ANY, TUPLE[FLEET]]) is
+    set_fleet_click_handler (p: PROCEDURE[ANY, TUPLE[C_FLEET]]) is
     do
         fleet_click_handler := p
     end
@@ -265,66 +305,74 @@ feature -- Controls
 
 feature -- Once data
 
-    background: IMAGE is
+    background: SDL_IMAGE is
     local
         a: FMA_FRAMESET
     once
         !!a.make("client/star-view/background.fma")
-        Result := a.images@ 1
+        Result ?= a.images@ 1
     end
 
-    orbits: ARRAY[IMAGE] is
+    orbits: ARRAY[SDL_IMAGE] is
     local
         i: INTEGER
+        img: SDL_IMAGE
         a: ANIMATION_FMA_TRANSPARENT
     once
         !!Result.make(1, 5)
         from i := 1
         until i > 5 loop
             !!a.make("client/star-view/orbit" + i.to_string + ".fma")
-            Result.put(a.item, i)
+            img ?= a.item
+            Result.put(img, i)
             i := i + 1
         end
     end
 
-    suns: ARRAY[IMAGE] is
+    suns: ARRAY[SDL_IMAGE] is
     local
         i: INTEGER
+        img: SDL_IMAGE
         a: FMA_FRAMESET
     once
         !!Result.make(1, 6)
         from i := 1
         until i > 6 loop
             !!a.make("client/star-view/sun" + i.to_string + ".fma")
-            Result.put(a.images @ 1, i)
+            img ?= a.images @ 1
+            Result.put(img, i)
             i := i + 1
         end
     end
 
-    colonies: ARRAY[IMAGE] is
+    colonies: ARRAY[SDL_IMAGE] is
     local
         i: INTEGER
+        img: SDL_IMAGE
         a: FMA_FRAMESET
     once
         !!Result.make(0, 7)
         from i := 0
         until i > 7 loop
             !!a.make("client/star-view/colony" + i.to_string + ".fma")
-            Result.put(a.images @ 1, i)
+            img ?= a.images @ 1
+            Result.put(img, i)
             i := i + 1
         end
     end
 
-    fleets: ARRAY[IMAGE] is
+    fleets: ARRAY[SDL_IMAGE] is
     local
         i: INTEGER
+        img: SDL_IMAGE
         a: FMA_FRAMESET
     once
         !!Result.make(0, 7)
         from i := 0
         until i > 7 loop
             !!a.make("client/star-view/fleet" + i.to_string + ".fma")
-            Result.put(a.images @ 1, i)
+            img ?= a.images @ 1
+            Result.put(img, i)
             i := i + 1
         end
     end
@@ -361,19 +409,10 @@ feature -- Once data
         !!Result.make("client/star-view/gas-giant.fma")
     end
 
-    asteroids: ARRAY[IMAGE] is
+    asteroids: FMA_FRAMESET is
     local
-        i: INTEGER
-        a: ANIMATION_FMA
     once
-        !!Result.make(1, 5)
-        !!a.make("client/star-view/asteroids.fma")
-        from i := 1
-        until i > 5 loop
-            Result.put(a.item, i)
-            a.next
-            i := i + 1
-        end
+        !!Result.make("client/star-view/asteroids.fma")
     end
 
     starmsgs: ARRAY[STRING] is
@@ -397,16 +436,13 @@ feature -- Once data
         end
     end
 
-feature {NONE} -- Callbacks
-
-    planet_click is
-    do
-        print ("Not Yet Implemented%N")
-    end
-
-    fleet_click_handler: PROCEDURE[ANY, TUPLE[FLEET]]
-
 feature {NONE} -- Internal
+
+    dirty: BOOLEAN
+    cache: SDL_IMAGE
+
+    handle_ticks: BOOLEAN
+        -- True when animations are disabled; if so we handle timer_events
 
     removable_children: ARRAY[WINDOW]
         -- Child windows that will be removed on every on_model_change
@@ -443,6 +479,7 @@ feature {NONE} -- Internal
     end
 
 feature {NONE} -- Internal constants
+
     -- These numbers are in pixels:
     br: REAL is 12.9  -- base radius, difference between orbits on y axis
     bi: REAL is 0.96  -- base increment, increment for radius to first orbit

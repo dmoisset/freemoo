@@ -249,7 +249,7 @@ feature {NONE} -- Redrawing
 
 feature {NONE} -- Event handlers
 
-    create_fleet_view(f: FLEET) is
+    create_fleet_view(f: C_FLEET) is
     local
         r: RECTANGLE
     do
@@ -262,8 +262,7 @@ feature {NONE} -- Event handlers
         if star_window /= Void and then children.fast_has (star_window) then
             star_window.remove
         end
-        -- `r' is a good place to put a view.
-        print("Not Yet Implemented%N")
+        !FLEET_VIEW!fleet_window.make(Current, r, f)
     end
 
     on_left_click (x, y: INTEGER) is
@@ -305,8 +304,8 @@ feature {NONE} -- Event handlers
                 if star_window /= Void and then children.fast_has(star_window) then
                     star_window.remove
                 end
-                --!FLEET_VIEW!fleet_window.make (Current, r, model.fleets @ (fleet_hotspots.fast_key_at(i.item)))
-                print("Habiendo estrellas la casa no se responsabiliza por hacer click en las flotas.%N")
+                !FLEET_VIEW!fleet_window.make (Current, r, model.fleets @ (fleet_hotspots.fast_key_at(i.item)))
+                --print("Habiendo estrellas la casa no se responsabiliza por hacer click en las flotas.%N")
                 found := True
             end
             i.next
@@ -537,8 +536,8 @@ feature {NONE} -- Internal configuration and constants
     star_window_height: INTEGER is 273
         -- Star Window's dimensions
 
-    fleet_window_width: INTEGER is 42
-    fleet_window_height: INTEGER is 42
+    fleet_window_width: INTEGER is 217
+    fleet_window_height: INTEGER is 275
 
 invariant
     projs.valid_index (zoom)

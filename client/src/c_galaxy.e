@@ -6,7 +6,7 @@ class C_GALAXY
 inherit
     CLIENT
     GALAXY
-        redefine make, stars, set_stars end
+        redefine make, stars, set_stars, fleets end
     MODEL
         redefine notify_views end
     VIEW [C_STAR]
@@ -83,13 +83,13 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 
     unpack_scanner_message(msg:STRING) is
     local
-        new_fleets: DICTIONARY[FLEET, INTEGER]
+        new_fleets: DICTIONARY[C_FLEET, INTEGER]
         newmsg: STRING
         ir: INTEGER_REF
         count, shipcount: INTEGER
         s: SERIALIZER
         owner: PLAYER
-        fleet: FLEET
+        fleet: C_FLEET
         ship: SHIP
         it: ITERATOR[PLAYER]
         star_it: ITERATOR[STAR]
@@ -153,6 +153,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 feature -- Redefined features
 
     stars: DICTIONARY [C_STAR, INTEGER]
+
+    fleets: DICTIONARY [C_FLEET, INTEGER]
 
     set_stars (starlist: DICTIONARY [C_STAR, INTEGER]) is
     require
