@@ -13,15 +13,12 @@ feature -- Access
     owner: PLAYER
         -- Player that controls Current
 
-    orbiting: STAR
-        -- Star being orbited, Void iff none
-
     is_in_orbit: BOOLEAN is
         -- Is in orbit around a star?
     do
-        Result := orbiting /= Void
+        Result := orbit_center /= Void
     ensure
-        Result = (orbiting /= Void)
+        Result = (orbit_center /= Void)
     end
 
     destination: STAR
@@ -94,12 +91,12 @@ feature -- Operations
         not is_in_orbit
     do
         move_to (star)
-        orbiting := star
+        orbit_center := star
         eta := 0
         current_speed := 0
         destination := Void
     ensure
-        is_in_orbit and orbiting = star
+        is_in_orbit and orbit_center = star
     end
 
     leave_orbit is
@@ -107,7 +104,7 @@ feature -- Operations
     require
         is_in_orbit
     do
-        orbiting := Void
+        orbit_center := Void
     ensure
         not is_in_orbit
     end
@@ -116,23 +113,45 @@ feature -- Operations
     do
         -- Departure
         if is_in_orbit and not is_stopped then
-            current_speed := speed (orbiting, destination)
-            eta := ((orbiting |-| destination) / current_speed).ceiling
+            current_speed := speed (orbit_center, destination)
+            eta := ((orbit_center |-| destination) / current_speed).ceiling
             leave_orbit
         end
         -- Travel
         check not is_stopped = not is_in_orbit end
         eta := (eta - 1).max (0)
-        if destination /= Void then
-            move_towards (destination, current_speed)
-        end
+        move_towards (destination, current_speed)
         -- Arrival
         if eta = 0 and not is_stopped then
             enter_orbit (destination)
         end
     end
 
+    set_eta (e: INTEGER) is
+    require
+        valid_eta: e >= 0
+    do
+        eta := e
+    ensure
+        eta = e
+    end
+
+    set_destination (d: STAR) is
+    do
+        destination := d
+    ensure
+        destination = d
+    end
+
+    set_owner (o: PLAYER) is
+    do
+        owner := o
+    ensure
+        owner = o
+    end
+
 feature {NONE} -- Creation
+
     make is
     do
         !!ships.make
@@ -156,16 +175,15 @@ feature {FLEET} -- Representation
     ships: SET[SHIP]
 
 invariant
-    orbiting_really_here: is_in_orbit implies distance_to (orbiting) = 0
+    orbiting_really_here: is_in_orbit implies distance_to (orbit_center) = 0
 
     reachable_destination:
         (is_in_orbit and destination /= Void)
     implies
-        speed (orbiting, destination) > 0
+        speed (orbit_center, destination) > 0
 
     nonnegative_speed: current_speed >= 0
     nonnegative_eta: eta >= 0
     stopped_iff_not_travelling: (destination = Void) = (current_speed = 0)
-    eta0_iff_not_travelling: (destination = Void) = (eta = 0)
 
 end -- class FLEET
