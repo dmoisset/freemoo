@@ -314,12 +314,13 @@ feature {NONE} -- Once features
 
 	cursor: ARRAY[IMAGE] is
 	local
-		a: FMA_FRAMESET
+		i: IMAGE_FMI
 	once
 		!!Result.make(1, 2)
-		!!a.make("client/fleet-view/cursor.fma")
-		Result.put(a.item, 2)
-		Result.put(create {SDL_IMAGE}.make_transparent(a.item.width, a.item.height), 1)
+		i := create {IMAGE_FMI}.make_from_file ("client/fleet-view/cursor.fmi")
+		Result.put(i, 2)
+		i.remove_alpha
+		Result.put(create {SDL_IMAGE}.make_transparent(i.width, i.height), 1)
 	end
 	 
 	size_index: INTEGER
