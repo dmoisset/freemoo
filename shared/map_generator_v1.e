@@ -137,11 +137,11 @@ feature {NONE} -- Name Generation
         file.disconnect
 
         -- Set star names
-            check enough_names: buffer.count >= (13+starcount) end
+            check enough_names: buffer.count >= starcount end
             check buffer.count = buffer.upper end -- Assumed below
         from until Result.count = starcount loop
             rand.next
-            index := rand.last_integer (buffer.count-13) + 13
+            index := rand.last_integer (buffer.count)
             Result.add_last (buffer.item (index))
             -- Remove used starname
             buffer.swap (index, buffer.upper)

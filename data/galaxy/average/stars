@@ -1,0 +1,12 @@
+# Probability for a star of being of a certain kind on an average galaxy
+#  BH  BW   W   Y   O   R  BR
+   40 105 145 136 144 404  26 
+# Probabilities for planet climates
+# toxic radiated   barren   desert   tundra    ocean    swamp     arid   terran     gaia
+      1        1        1        1        1        1        1        1        1        1 # Black hole
+    163      486      272       69        3        1        1        1        2        2 # Blue-white
+    166      368      271       60       43       17       10       26       32        7 # White
+    127      268      302       59       77       44       38       31       42       12 # Yellow
+    167      174      228       82       71       57       69       63       75       14 # Orange
+    162      129      497       30       66       22       23       25       40        6 # Red
+    208      292      100      200      100       20       20       20       30       10 # Brown

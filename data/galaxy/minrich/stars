@@ -1,0 +1,12 @@
+# Probability for a star of being of a certain kind on a mineral-rich galaxy
+#  BH  BW   W   Y   O   R  BR
+   30 185 220  97  89 372   7 
+# Probabilities for planet climates
+# toxic radiated   barren   desert   tundra    ocean    swamp     arid   terran     gaia
+      1        1        1        1        1        1        1        1        1        1 # Black hole
+    129      542      260       57        7        1        1        1        1        1 # Blue-white
+    132      339      345       50       45       20       22       14       30        3 # White
+    135      230      309       67       70       49       30       40       63        7 # Yellow
+    117      175      290       56      100       43       61       61       77       20 # Orange
+    174      140      452       41       87       28       20       18       37        3 # Red
+    208      292      100      200      100       20       20       20       30       10 # Brown

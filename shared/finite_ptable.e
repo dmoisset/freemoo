@@ -9,27 +9,23 @@ creation
 
 feature -- Creation
 
-    make (items: ARRAY [TUPLE [INTEGER, E]]) is
+    make is
         -- for each [p, x] in items, assign a weight of p to
         -- event x, i.e. P(x) = p/S, where S is the sum of first components
         -- of items.
-    require
-        items /= Void
-        items.count >= 1
-        -- forall i in items: i /= Void
-        -- forall i in items: i >= 0
-    local
-        i: ITERATOR [TUPLE [INTEGER, E]]
     do
-        probs := items
-        i := items.get_new_iterator
-        from
-            sum := 0
-            i.start
-        until i.is_off loop
-            sum := sum + i.item.first
-            i.next
-        end
+        !!probs.make (1, 0)
+    end
+
+feature -- Operations
+
+    add (e: E; p: INTEGER) is
+        -- add `e' to table with probability weight `p'
+    require
+        p >= 0
+    do
+        probs.add_last ([p, e])
+        sum := sum + p
     end
 
 feature -- Access
@@ -48,8 +44,6 @@ feature -- Access
             curs.next
         end
         Result := curs.item.second
-    ensure
-        Result /= Void
     end
 
 feature {NONE} -- Representation
@@ -59,8 +53,8 @@ feature {NONE} -- Representation
 
 invariant
     probs /= Void
-    probs.count >= 1
     -- forall i in probs: i /= Void
     -- forall i in probs: i.first >= 0
+    -- sum = sum of i.first for each i in probs
 
 end -- deferred class FINITE_PTABLE

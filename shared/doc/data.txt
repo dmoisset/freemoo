@@ -1,0 +1,29 @@
+DATA FILES
+
+GALAXY GENERATION DATA
+
+galaxy/starnames.txt: Names for non-homeworld starsystems. Each line contains a
+                      name.
+galaxy/sizes: Probabilities for star sizes. Sequence of integers for:
+              small, medium, large.
+galaxy/stars: attributes depending on star kind and not galaxy age. File
+              contains:
+              probability of having planet, one percentile int for each kind.
+              planet gravity probabilities, three weights (lowG, normmalG,
+              highG) for each kind
+              probabilities for mineral richness, 5 weights (ultrapoor...
+              ultrarich) for each kind
+              kinds range from blackhole to brown, in the order declared in
+              MAP_CONSTANTS
+galaxy/xxx/stars: attributes depending on galaxy age. File contains:
+                  Probability of each star color. A sequence of integers
+                  for blackhole...brown.
+                  Probability for planetary climate depending on star. There
+                  are lines for blackhole...brown. Each line contains a
+                  sequence of integers for toxic...gaia
+                  xxx may be: average, orgrich, minrich
+galaxy/planets: Probabilities for planets. File contains:
+                Probability for each planetary size. Sequence of integers
+                for tiny...huge
+                Probability for planetary kinds. Three ints for
+                asteriod...planet

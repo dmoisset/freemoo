@@ -1,0 +1,6 @@
+# Probability for size
+# tiny  small medium  large   huge
+   100    193    411    200     96
+# Probability for kind
+# asteroids gas_giant    planet
+        200       211       589  

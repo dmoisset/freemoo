@@ -1,0 +1,24 @@
+# Probability (percent) of having a planet in one orbit for each star color
+# BH BW  W  Y  O  R BR
+   0 52 38 60 69 38  5
+
+# Planet gravity probabilities
+#  low medium   high
+     1      1      1 # Blackhole
+    42    669    289 # Blue-white
+   106    701    193 # White
+   138    703    159 # Yellow
+   221    712     67 # Orange
+   296    662     42 # Red
+   136    773     91 # Brown
+
+# Planet mineral richness
+# upoor   poor normal   rich  urich
+      1      1      1      1      1 # Blackhole
+      1      1    397    416    185 # Blue-white
+      1    195    412    294     98 # White
+      1    303    404    207     85 # Yellow
+    104    402    390    103      1 # Orange
+    186    383    423      4      4 # Red
+     50    110    610    180     50 # Brown
+      

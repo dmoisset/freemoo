@@ -14,17 +14,15 @@ feature {NONE} -- Utililty functions
         probs /= Void
         max-min+1 = probs.count
     local
-        a: ARRAY [TUPLE [INTEGER, INTEGER]]
         k: INTEGER
     do
-        !!a.make (probs.lower, probs.upper)
+        !!Result.make
         from
             k := probs.lower
         until k > probs.upper loop
-            a.put ([probs @ k, k-probs.lower+min], k)
+            Result.add (k-probs.lower+min, probs @ k)
             k := k + 1
         end
-        !!Result.make (a)
     end
 
 feature {NONE} -- Star constants
