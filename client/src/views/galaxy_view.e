@@ -1,4 +1,4 @@
-class GALAXY_VIEW
+Class GALAXY_VIEW
     -- ews view for a GALAXY
 
 inherit
@@ -52,7 +52,7 @@ feature -- Access
         -- Zoom level
 
 feature -- Operations
-
+	
     set_zoom (value: INTEGER; x, y: INTEGER) is
         -- Change the zoom level to `value', fixed point on (`x', `y')
     local
@@ -155,6 +155,7 @@ feature -- Redefined features
     handle_event (event: EVENT) is
     local
         b: EVENT_MOUSE_BUTTON
+		m: EVENT_MOUSE_MOVE
     do
         Precursor (event)
         if not event.handled then
@@ -169,7 +170,12 @@ feature -- Redefined features
                 when 5 then zoom_out (b.x, b.y)
                 else do_nothing
                 end
-            end
+            else
+				m ?= event
+				if m /= Void and then fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected  then
+					check_fleet_trajectory(m.x, m.y)
+				end
+			end
         end
     end
 
@@ -188,8 +194,8 @@ feature {NONE} -- Redrawing
 
     draw_star (s: C_STAR) is
     local
-		  img: IMAGE -- star image
-        px, py: REAL -- projected star
+		img: IMAGE -- star image
+		px, py: REAL -- projected star
         lx, ly: INTEGER -- star label position
         lwidth: INTEGER -- star label width
         r: RECTANGLE
@@ -248,13 +254,24 @@ feature {NONE} -- Redrawing
 
 feature {NONE} -- Event handlers
 
+	cancel_trajectory_selection is
+	do
+		if trajectory_window /= Void then
+		-- remove is broken, we have to hide trajectory_window as well
+			trajectory_window.hide
+			trajectory_window.remove
+			trajectory_window := Void
+		end
+	end
+	
     create_fleet_view(f: C_FLEET) is
     local
         r: RECTANGLE
     do
         if fleet_window /= Void and then children.fast_has(fleet_window) then
-            r := star_window.location
+            r := fleet_window.location
             fleet_window.remove
+			cancel_trajectory_selection
         else
             r.set_with_size(10, 10, fleet_window_width, fleet_window_height)
         end
@@ -262,53 +279,40 @@ feature {NONE} -- Event handlers
             star_window.remove
         end
         !FLEET_VIEW!fleet_window.make(Current, r, f)
+		fleet_window.set_cancel_trajectory_selection_callback(agent cancel_trajectory_selection)
     end
 
     on_left_click (x, y: INTEGER) is
         -- Click on view, try to open a fleet or star window
     local
         i: ITERATOR[RECTANGLE]
-        found: BOOLEAN
         r: RECTANGLE
     do
-        from i := star_hotspots.get_new_iterator_on_items
-        until i.is_off or found loop
-            if i.item.has(x, y) then
-                if star_window /= Void and then children.fast_has(star_window) then
-                    r := star_window.location
-                    star_window.remove
-                else
-                    r.set_with_size(x, y, star_window_width, star_window_height)
-                    r := leave_visible(r)
-                end
-                if fleet_window /= Void and then children.fast_has(fleet_window) then
-                    fleet_window.remove
-                end
-                !STAR_VIEW!star_window.make (Current, r, model.stars @ (star_hotspots.fast_key_at(i.item)), model.server.game_status)
-                star_window.set_fleet_click_handler(agent create_fleet_view)
-                found := True
-            end
-            i.next
-        end
-        from i := fleet_hotspots.get_new_iterator_on_items
-        until i.is_off or found loop
-            if i.item.has(x, y) then
-                if fleet_window /= Void and then children.fast_has(fleet_window) then
-                    r := fleet_window.location
-                    fleet_window.remove
-                else
-                    r.set_with_size(x, y, fleet_window_width, fleet_window_height)
-                    r := leave_visible(r)
-                end
-                if star_window /= Void and then children.fast_has(star_window) then
-                    star_window.remove
-                end
-                !FLEET_VIEW!fleet_window.make (Current, r, model.fleets @ (fleet_hotspots.fast_key_at(i.item)))
-                --print("Habiendo estrellas la casa no se responsabiliza por hacer click en las flotas.%N")
-                found := True
-            end
-            i.next
-        end
+		i := xy_search(star_hotspots, x, y)
+		if not i.is_off then
+			if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
+				fleet_window.send_selection_to(star_hotspots.fast_key_at(i.item))
+			else
+				if star_window /= Void and then children.fast_has(star_window) then
+					r := star_window.location
+					star_window.remove
+				else
+					r.set_with_size(x, y, star_window_width, star_window_height)
+					r := leave_visible(r)
+				end
+				if fleet_window /= Void and then children.fast_has(fleet_window) then
+					fleet_window.remove
+					cancel_trajectory_selection
+				end
+				!STAR_VIEW!star_window.make (Current, r, model.stars @ (star_hotspots.fast_key_at(i.item)), model.server.game_status)
+				star_window.set_fleet_click_handler(agent create_fleet_view)
+			end
+		else
+			i := xy_search(fleet_hotspots, x, y)
+			if not i.is_off then
+				create_fleet_view(model.fleets @ (fleet_hotspots.fast_key_at(i.item)))
+			end
+		end
     end
 
     center_on (x, y: INTEGER) is
@@ -328,8 +332,66 @@ feature {NONE} -- Event handlers
             current_projection.dy.min (gborder).max (height - limit_y - gborder))
     end
 
+	check_fleet_trajectory (x, y: INTEGER) is
+	local
+		i: ITERATOR[RECTANGLE]
+		x1, y1, x2, y2, x3, y3: INTEGER
+		traj: SDL_LINE_IMAGE
+	do
+		i := xy_search(star_hotspots, x, y)
+		if not i.is_off then
+			if trajectory_window /= Void then
+				trajectory_window.remove
+			end
+			current_projection.project(fleet_window.model_position)
+			x1 := current_projection.x.rounded
+			y1 := current_projection.y.rounded
+			x2 := i.item.x + i.item.width // 2
+			y2 := i.item.y + i.item.height // 2
+			x3 := x1.min(x2)
+			y3 := y1.min(y2)
+			if x2 > x1 then
+				x2 := x2 - x1
+				x1 := 0
+			else
+				x1 := x1 - x2
+				x2 := 0
+			end
+			if y2 > y1 then
+				y2 := y2 - y1
+				y1 := 0
+			else
+				y1 := y1 - y2
+				y2 := 0
+			end
+			!!traj.make(x1, y1, x2, y2, 55, 155, 55)
+			traj.set_dash(trajectory_dash)
+			
+			!!trajectory_window.make(Current, x3, y3, traj)
+		end
+	end
+	
+
+	
 feature {NONE} -- Internal functions
 
+	xy_search(d: DICTIONARY[RECTANGLE, INTEGER]; x, y: INTEGER): ITERATOR[RECTANGLE] is
+		-- This function can be optimized with a new class with fast 
+		-- two-dimension search.  `fleet_hotspots' and 
+		-- `star_hotspots' and several other hotspot lists would be 
+		-- of this class.
+	do
+		from
+			Result := d.get_new_iterator_on_items
+		until
+			Result.is_off or else Result.item.has(x, y)
+		loop
+			Result.next
+		end
+	end
+	
+	
+	
     leave_visible(r: RECTANGLE): RECTANGLE is
         -- Return a rectangle with the same width and height of `r',
         -- but that if posible doesn't contain `r.x' and `r.y'
@@ -435,9 +497,12 @@ feature {NONE} -- Internal data
     star_window: STAR_VIEW
         -- Window used to display a system
 
-    fleet_window: WINDOW
+    fleet_window: FLEET_VIEW
         -- Window used to display a fleet
 
+	trajectory_window: WINDOW_IMAGE
+		-- Window used for doing fleet trajectory selection
+	
     blackholes_window: WINDOW
         -- Window for the blackholes
 
@@ -508,6 +573,13 @@ feature {NONE} -- Internal configuration and constants
     label_offset: INTEGER is 20
         -- pixels between star center and star name label center
 
+	trajectory_dash: ARRAY[INTEGER] is
+	once
+		!!Result.make(0, 1)
+		Result.put(5, 0)
+		Result.put(3, 1)
+	end
+	
     make_projs is
         -- Make diferent zoom.
         -- Zoom levels in progression 6 4 3 2

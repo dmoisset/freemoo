@@ -93,13 +93,52 @@ feature {NONE} -- Creation
 		  scrollbar.set_value(0)
 		  scrollbar.set_change_handler(agent scrollbar_handler)
 	 end
-	 
+
+feature {GALAXY_VIEW} -- Auxiliary for commanding
+
+	some_ships_selected: BOOLEAN is
+	do
+		Result := not fleet_selection.is_empty
+	end
+	
+	model_position: POSITIONAL is
+	do
+		Result := model
+	end
+
+	set_cancel_trajectory_selection_callback (p: PROCEDURE[ANY, TUPLE]) is
+	do
+		cancel_trajectory_selection_handler := p
+	end
+
+	send_selection_to(s: INTEGER) is
+	local
+		i: ITERATOR[SHIP]
+	do
+		print("Ships ")
+		from
+			i := fleet_selection.get_new_iterator
+		until
+			i.is_off
+		loop
+			print(i.item.id.to_string + ", ")
+			i.next
+		end
+		print("scooting off to " + s.to_string + "%N")
+	end
+	
 feature {NONE} -- Callbacks
-	 
+
+	cancel_trajectory_selection_handler: PROCEDURE[ANY, TUPLE]
+	
 	close is
 	do
+		if cancel_trajectory_selection_handler /= Void then
+            cancel_trajectory_selection_handler.call ([])
+        end
 		model.remove_view(Current)
 		model := Void
+		hide
 		remove
 	end
 	 
@@ -107,6 +146,9 @@ feature {NONE} -- Callbacks
 	do
 		if fleet_selection.has(sh) then
 			fleet_selection.remove(sh)
+			if fleet_selection.is_empty and then cancel_trajectory_selection_handler /= Void then
+				cancel_trajectory_selection_handler.call([])
+			end
 		else
 			fleet_selection.add(sh)
 		end
@@ -131,6 +173,9 @@ feature {NONE} -- Callbacks
 	select_none is
 	do
 		fleet_selection.clear
+		if cancel_trajectory_selection_handler /= Void then
+			cancel_trajectory_selection_handler.call([])
+		end
 		update_toggles
 		all_button.set_click_handler(agent select_all)
 	end
@@ -143,9 +188,9 @@ feature {NONE} -- Callbacks
 	 
 feature {NONE} -- Implementation
 	 
-	ships: ARRAY[SHIP]
-	 
 	fleet_selection: SET[SHIP]
+	 
+	ships: ARRAY[SHIP]
 	 
 	toggles: ARRAY[BUTTON_TOGGLE_IMAGE]
 	 
