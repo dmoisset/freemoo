@@ -52,7 +52,6 @@ feature -- Redefined features
             end 
             i.next
         end
-        print ("change%N")
     end
     
 feature {NONE} -- Implementation
