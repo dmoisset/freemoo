@@ -1,0 +1,41 @@
+
+SERVICES PROVIDED BY A FREEMOO SERVER:
+
+GAME STATUS
+  Name: "game_status"
+  Provided: immediatly after the connection or after "players_list"
+            until connection close
+  Description: rules of the server and basic status of the game. Note that
+               this service does not requires authentication.
+  Format: "ibbiiibbb", <<open_slots, finished, started,
+                        galaxy_size, galaxy_age, start_tech_level,
+                        tactical_combat, random_events, antaran_attacks>>
+
+PLAYERS LIST
+  Name: "players_list"
+  Provided: immediatly after the connection or after "game_status"
+            until connection close
+  Description: list of players logged in, and basic status info on each.
+  Format: "i" <<count>>, followed by sequence of
+          "siib", <<name, state, color_id, connected>>
+
+CHAT MESSAGES
+  Name: "chatroom"
+  Provided: when the Join-Accept is sent, until connection close
+  Description: messages from chat
+  Format: "iss", <<color, destinations, message_said>>
+          color can be 0 (server message)
+
+GALAXY
+  Name: "galaxy"
+  Provided: Before game_status.started is set
+  Description: Global galaxy map (star positions and colors)
+  Format: "i" <<count>>, followed by sequence of
+          "iii" <<x, y, color>>
+  
+SERVICE
+  Name: "name"
+  Provided: 
+  Description:
+  Format:
+

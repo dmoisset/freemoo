@@ -1,0 +1,35 @@
+NAQ (Not Answered Questions)
+
+1. Los movimientos de flota se hacen antes o después de la producción de los
+   planetas? Hay casos donde los resultados son distintos (por ejemplo,
+   un planeta que terminaría de construir algo en condiciones normales pero
+   no si está bloqueado, con una nave enemiga a punto de llegar y bloquear).
+
+2. Cuan permanente es el efecto del Radiation Shield sobre planetas Radiated.
+   En MOO2, cuando se construye un shield en un planeta rad., el planeta se
+   vuelve barren. Si el shield es destruido o vendido, el planeta vuelve
+   inmediatamente a radiated. Que pasa si se le hace terraforming a un planeta
+   radiated con escudo? se puede? que pasa si después se vende el escudo?
+
+3. Que sucede si varios jugadores están intentando establecer colonias en un
+   sistema a la vez? Quien tiene prioridad? Solución posible: preguntar a todos
+   a la vez. Si hay dos intentos simultaneos en un planeta, ninguno tiene
+   éxito (alternativa: uno al azar tiene éxito). En ese caso, que pasa con las
+   "colony bases" construidas? se guardan, se scrap'ean?
+
+4. Como se resuelven ataques simultáneos entre jugadores en un sistema?
+
+5. En que momento entran en efecto los resultados de transacciones
+   diplomáticas? (elaborate more on this).
+   
+6. Cuales son las posibilidades para tipos de estrella? (dependiendo de la
+   edad de la galaxia). Las posibilidades para cantidad de planetas (depende
+   del tipo de estrella? a ojo, las rojas tienen menos planetas). Las
+   posibilidades para tipos de planeta? (deppende del tipo de estrella;
+   ¿depende de la posición orbital?)
+
+7. Como se distribuyen los homeworlds en el mapa?
+
+8. Implementación de concurrencia en el final del turno
+
+9. more to come

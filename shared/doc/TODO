@@ -1,0 +1,5 @@
+- Terminar pasos de conexión de jugadores hasta el inicio del juego
+- Generar el mapa (MAP_GENERATOR)
+- Ciclar new_turn
+- Administracion de colonias y de flotas
+

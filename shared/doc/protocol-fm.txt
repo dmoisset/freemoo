@@ -1,0 +1,104 @@
+COMMUNICATION PROTOCOL - FREEMOO
+
+The protocol is an extension of SPP, with several extra messages.
+
+CLIENT MESSAGES
+
+32: Join to server. Log as new user into a server with open slots.
+33: Rejoin to server. Connect to server where client had logged previously
+    (and registered a user/password pair).
+34: Send setup info. Send a color, ruler name and race change request.
+35: Setup complete. Ready to begin game
+36: Chat. Say something to other(s) player.
+    
+  * Join
+
+  offset(bytes) name     type     Notes
+  0             msgtype  INTEGER  32
+  4             length   INTEGER  byte count in the rest of the packet,
+                                  not counting msgtype and length
+  8...          user     STRING   name of the user logging in
+  ...           password STRING   new password for the user
+
+  When the server receives one of these messages, it should answer with a
+  join-accept or join-reject message. See server messages for details.
+  This message is for creating a user account on the server.
+  
+  * Rejoin
+
+  offset(bytes) name     type     Notes
+  0             msgtype  INTEGER  32
+  4             length   INTEGER  byte count in the rest of the packet,
+                                  not counting msgtype and length
+  8...          user     STRING   name of the user logging in
+  ...           password STRING   Password for the user
+
+  See "Join" message for more info. This message is for logging into a server
+  where the user account is already created.
+
+  * Send setup
+
+  0             msgtype  INTEGER  34
+  4             length   INTEGER  byte count in the rest of the packet,
+                                  not counting msgtype and length
+  8             color    INTEGER  requested color
+  12            name     STRING   requested name of the ruler
+  ...           race     STRING   requested spec of the race
+
+  When the server receives one of these messages it updates the info and the
+  update arrives in one of the usual service info messages. The server can
+  ignore some or all of the requested values silently, but should always send
+  an update.
+
+  * Setup complete
+  
+  offset(bytes) name     type     Notes
+  0             msgtype  INTEGER  35
+  4             length   INTEGER  0
+
+  When the server receives this message the player is marked as ready. 
+  The client has nothing to do until the game status is updated to in_game
+
+  * Chat
+  
+  offset(bytes) name         type     Notes
+  0             msgtype      INTEGER  36
+  4             length       INTEGER  ?
+  8             destinations STRING   list of players who will receive message
+  ...           message      STRING   message said
+
+  Chat state is update for receiving clients
+
+SERVER MESSAGES
+
+32: Join-Accept. Login complete.
+33: Join-Reject. Login failed.
+    
+  * Join-Accept
+
+  offset(bytes) name     type     Notes
+  0             msgtype  INTEGER  32
+  4             length   INTEGER  0
+
+  This message is sent to a client which sent a Join or Rejoin message, when
+  it is allowed to join, after updting the player list.
+  
+  * Join-Reject
+
+  offset(bytes) name     type     Notes
+  0             msgtype  INTEGER  32
+  4             length   INTEGER  4
+  8             cause    INTEGER  cause of rejection
+
+  This message is sent to a client which sent a Join or Rejoin message, when
+  it is not allowed to join. Possible causes are:
+
+      0   Duplicate player (only answering "Join")
+      0   Unknown player (never joined, only answering Rejoin")
+      1   Password does not match (only answering "Rejoin")
+      2   No open slots (only answering "Join")
+      3   Game has finished
+      4   Access denied
+      5   Already logged in as some user
+      6   User already logged from somewhere else
+      255 Other error     

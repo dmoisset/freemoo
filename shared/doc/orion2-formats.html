@@ -1,0 +1,177 @@
+<HTML>
+<HEAD>
+   <TITLE>Master of Orion 2 file formats</TITLE>
+</HEAD>
+<BODY>
+<H1>Master of Orion 2 file formats</H1>
+
+<P>This is my collection of data about the file formats of the files of
+Master of Orion 2. I obtained them through reverse engineering, so the
+meaning of some fileds here and there are missing; anyway this is enough
+to interpret most of the data of this game.
+
+<P>Note: all integer formats are named after the TurboPascal/FreePascal 
+notation, i.e:
+<TABLE BORDER=1>
+   <TR><TD>Byte    </TD><TD>Unsigned 8-bits integer</TD></TR>
+   <TR><TD>Word    </TD><TD>Unsigned 16-bits integer</TD></TR>
+   <TR><TD>Cardinal</TD><TD>Signed 32-bits integer  </TD></TR>
+   <TR><TD>Array[a..b] of T</TD><TD>An array of elements of type T, with
+                                    indices greater than or equal to a and
+                                    smaller than or equal to b</TD></TR>
+</TABLE>
+<P>All data is stored in Intel endian inside MOO2 files. Numbers are in decimal
+unless prefixed with $ (hexadecimal).
+
+<A NAME="smk"><H2>SMK</H2>
+<P>These are smacker videos; Smacker is a propietary format. Check 
+<A HREF="http://www.radgametools.com">http://www.radgametools.com</A>, where 
+you can download software to convert them to standard formats (AVI with 
+several encodings, or MPEG-2 if you have the codec installed)
+
+<A NAME="lbx"><H2>LBX</H2>
+<P>".lbx" files are packages consisting of several unnamed files. Some files in
+the MOO2 distribution have extension .lbx but are actually smacker videos
+(see <A HREF="#smk">SMK</A> above), you can recognize them because they start
+with <TT>SMK2</TT>. Real lbx files have the following format:
+<TABLE BORDER=1>
+   <TR>
+      <TD><B>Offset</B></TD><TD><B>Type</B></TD><TD><B>Data</B></TD></TR>
+   <TR>
+      <TD>0</TD><TD>Word</TD><TD>fc = file count. Number of files inside
+                                 package</TD></TR>
+   <TR>
+      <TD>2</TD><TD>Word</TD><TD>$FEAD. I think it's just a magic ID</TD></TR>
+   <TR>
+      <TD>4</TD><TD>Cardinal</TD><TD>$0. magic? not sure</TD></TR>
+   <TR>
+      <TD>8</TD><TD>Array[0..fc] of Cardinal</TD>
+      <TD>offsets. For each file number (i) in [0..fc-1], its data is stored in 
+          the file at offsets [offsets[i]..offsets[i+1]-1]. Note that 
+          offsets[0]=$800 always, and offsets[fc]=size of lbx file.</TD></TR>
+   <TR>
+      <TD>$800</TD><TD>-</TD><TD>files, sequentially stored. `offsets'
+                                 determines where each one starts and ends</TD></TR>
+</TABLE>
+
+<P>Most of the data stored inside lbx files of MOO2 are:
+<UL>
+   <LI>Sound: in standard wave (.WAV) files
+   <LI>images/animations: in a format I call "mpi" (Microprose Image) described
+       below
+</UL>
+<P>There are also some text files and binary data spread around. Check unlbx.pp
+for an implementation of a unpacker.
+
+<A NAME="mpi"><H2>MPI</H2>
+
+<P>These files contain one or more images forming a looped animation. The file
+format is:
+<TABLE BORDER=1>
+   <TR>
+      <TD><B>Offset</B></TD><TD><B>Type</B></TD><TD><B>Data</B></TD></TR>
+   <TR>
+      <TD>0</TD><TD>Word</TD><TD>w = Image width in pixels</TD></TR>
+   <TR>
+      <TD>2</TD><TD>Word</TD><TD>h = Image height in pixels</TD></TR>
+   <TR>
+      <TD>4</TD><TD>Word</TD><TD>? (usually 0)</TD></TR>
+   <TR>
+      <TD>6</TD><TD>Word</TD><TD>imgcount = number of images in animation</TD></TR>
+   <TR>
+      <TD>8</TD><TD>Word</TD>
+      <TD>imgloop = index of the frame (counting from 0) where the animation 
+          loop starts</TD></TR>
+   <TR>
+      <TD>10</TD><TD>Word</TD><TD>? perhaps some flags?</TD></TR>
+   <TR>
+      <TD>12</TD><TD>Array[0..imgcount] of Cardinal</TD>
+      <TD>offsets. The i-th image (counting from 0) is stored at offset
+      offsets[i] through offsets[i+1]-1</TD></TR>
+   <TR>
+      <TD>12+4*(imgcount+1)</TD><TD><A HREF="#tpalette">TPalette</A></TD>
+      <TD>Palette, sometimes not present. If current offset=offsets[0], there is no
+          palette. </TD></TR>
+   <TR>
+      <TD>12+4*(imgcount+1)</TD><TD><A HREF="#tpalette">TPalette</A></TD>
+      <TD>Palette, sometimes not present. If current offset=offsets[0], there is no
+          palette. </TD></TR>
+   <TR>
+      <TD>offsets[0]</TD><TD>sequence of <A HREF="#tscanline">TScanline</A></TD>
+      <TD>First image, stored as a sequence of scanlines (check the format of
+          each scanline, they're not linearly stored)</TD></TR>
+   <TR>
+      <TD>offsets[1]</TD><TD>sequence of <A HREF="#tscanline">TScanline</A></TD>
+      <TD>Second image, and so on...</TD></TR>
+</TABLE>
+
+<A NAME="tpalette"><H3>TPalette</H3>
+<P>This structure represents a palette or palette segment:
+<TABLE BORDER=1>
+   <TR>
+      <TD><B>Offset</B></TD><TD><B>Type</B></TD><TD><B>Data</B></TD></TR>
+   <TR>
+      <TD>0</TD><TD>Word</TD><TD>palstart = index of the first color stored in the palette segment</TD></TR>
+   <TR>
+      <TD>2</TD><TD>Word</TD><TD>palsize = number of colors in the palette segment</TD></TR>
+   <TR>
+      <TD>4</TD><TD>Array[0..palsize-1] of Cardinal</TD>
+      <TD>list of colors. Each color is of the form $bbggrr00, where $rr, $gg and $bb
+          are the red, green and blue components of the color, in range $00..$3F</TD></TR>
+</TABLE>
+
+<A NAME="tscanline"><H3>TScanline</H3>
+<P>This structure represents a sequence of pixels of an image. Note that the
+first scanline of each image is a little different.
+<TABLE BORDER=1>
+   <TR>
+      <TD><B>Offset</B></TD><TD><B>Type</B></TD><TD><B>Data</B></TD></TR>
+   <TR>
+      <TD>0</TD><TD>Word</TD><TD>count = number of pixels</TD></TR>
+   <TR>
+      <TD>2</TD><TD>Word</TD><TD>offset = x or y displacement</TD></TR>
+   <TR>
+      <TD>4</TD><TD>Array[0..count*] of Byte</TD>
+      <TD>Pixel sequence<BR>* if count is odd, this field has count+1 bytes.
+          The value of the extra byte is ignored. The first scanline has not
+          this field</TD></TR>
+</TABLE>
+<P>When count is 0, offset indicates how many pixels below starts the next
+scanline in the image (usually 1, i.e, the next). Otherwise, offset
+indicates how many pixels to the right of the last pixel of the last scanline
+is the first pizel of this scanline.
+<P>The first scanline of an image has count=1 but no bytes of data; the offset
+value is the y coordinate where the image starts. Usually, the last scanline
+of an image has a count=0 and offset=1000 ($3E8)
+
+In pseudocode, the following algorithm reads an image
+<PRE>
+   frame = 0
+   while true do
+      seek offsets[frame]
+      get scanline with no data -- first scanline is special
+      x = 0
+      y = scanline.offset
+      while y < height -- when the last scanline is read, y grows in 1000 making y>height
+         get scanline
+         if scanline.count=0
+            x = 0
+            y = y+scanline.offset
+         else
+            x = x+scanline.offset
+            for i=0 to scanline.count-1
+               pixel[x, y] = palette[scanline[i]]
+               x = x+1
+            endfor
+         endif
+      endwhile
+      -- go to next frame
+      frame = frame + 1
+      if frame = imgcount then frame = imgloop
+   endwhile
+</PRE>
+
+<P>An mpi viewer is implemented in mpview.pp
+
+</BODY>
+<HTML>

@@ -1,0 +1,76 @@
+COMMUNICATION PROTOCOL (SPP: Service providing protocol)
+
+The protocol works like a subscription server. There is a single server that
+can support multiple clients. The server provides services, each one identified
+by an unique string id. Clients can connect to the server, and subscribe to
+services; services represent objects on the server. When a client subscribes,
+it receives a serialized version of the service (object); and each time the
+server-side object is updated, it sends to it(s) clients serialized info about
+what changed in it. A client can unsubscribe at any time. The server may send
+info about services no one has subscribed to; they should be ignored by the
+client.
+
+"Connection" between client and server involves a TCP connection. Any
+authentication needed is made using messages ignored by this protocol.
+
+Data sent between server and client is sent on a TCP channel (server port
+3002), and separated in packages. All packages have the format:
+
+offset(bytes) name    type     Notes
+0             msgtype INTEGER  a packet ID
+4             length  INTEGER  byte count in the rest of the packet,
+                               not counting msgtype and length
+8...          data    ?        packet payload
+
+INTEGERs are always 32-bit, sent in network order (most significant octet
+first)
+STRINGs are sent as an INTEGER (see above) containing length, and then a
+stream of characters
+
+For packages sent from the server, msgtype can be:
+0: Test value. messages of this type should be ignored and not used in real
+   cases.
+1: service offer. A new service is offered
+2: service removed. A service is no longer offered. That means that no one can
+   subscribe to it now; but clients already subscribed will keep receiving
+   messages from it.
+3-15: reserved
+16: subscription info: data sent from a service to its clients
+17-31: reserved
+32- : Other messages, should be ignored by the protocol
+
+For packages sent from the client, msgtype can be:
+0: Test value. messages of this type should be ignored and not used in real
+   cases.
+1: Subscribe to service
+2: Unsubscribe from service
+3-31: reserved
+32- : Other messages, should be ignored by the protocol
+
+MESSAGES
+
+* Service offer / subscribe:
+
+  offset(bytes) name    type     Notes
+  0             msgtype INTEGER  1
+  4             length  INTEGER  byte count in the rest of the packet,
+                                 not counting msgtype and length
+  8...          service STRING   service_id
+
+* Service removal / unsubscribe:
+
+  offset(bytes) name    type     Notes
+  0             msgtype INTEGER  2
+  4             length  INTEGER  byte count in the rest of the packet,
+                                 not counting msgtype and length
+  8...          service STRING   service_id
+
+* Service info:
+
+  offset(bytes) name    type     Notes
+  0             msgtype INTEGER  16
+  4             length  INTEGER  byte count in the rest of the packet,
+                                 not counting msgtype and length
+  8...          service STRING   service_id
+  ...           msg     STRING   service message
+
