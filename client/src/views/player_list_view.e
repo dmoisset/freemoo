@@ -71,7 +71,7 @@ feature {NONE} -- Widgets
 feature {NONE} -- Constants
 
     state_names: ARRAY [STRING] is
-    do
+    once
         !!Result.make (min_state, max_state)
         Result.put (l("Preparing"), st_setup)
         Result.put (l("Ready for game"), st_ready)
