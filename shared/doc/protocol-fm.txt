@@ -107,11 +107,16 @@ SERVER MESSAGES
   it is not allowed to join. Possible causes are:
 
       0   Duplicate player (only answering "Join")
-      0   Unknown player (never joined, only answering Rejoin")
+             Another player with the same name is already joined.
+      0   Unknown player (never joined, only answering "Rejoin")
+             Trying to rejoin but never joined first.
       1   Password does not match (only answering "Rejoin")
       2   No open slots (only answering "Join")
       3   Game has finished
       4   Access denied
+             Reserved for future use.
       5   Already logged in as some user
+             Trying to join/rejoin for a second time.
       6   User already logged from somewhere else
+             Trying to rejoin, but already joined.
       255 Other error     

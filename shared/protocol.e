@@ -22,6 +22,7 @@ feature -- Constants
     reject_cause_denied: INTEGER is 4
     reject_cause_relog: INTEGER is 5
     reject_cause_alreadylog: INTEGER is 6
-    reject_cause_last: INTEGER is 6
+
+    max_reject_cause: INTEGER is do Result := reject_cause_alreadylog end
 
 end -- class PROTOCOL

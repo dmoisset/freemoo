@@ -42,6 +42,8 @@ feature {NONE} -- Creation template
         else
             -- Fallback to dummy image
             init_representation (1)
+            width := 10
+            height := 10
             add_frame (0, create {SDL_SURFACE}.make (10, 10), 0, 0)
         end
         start

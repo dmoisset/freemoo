@@ -131,7 +131,7 @@ feature
 
     join_reject_causes: ARRAY [STRING] is
     once
-        !!Result.make (reject_cause_duplicate, reject_cause_last)
+        !!Result.make (reject_cause_duplicate, max_reject_cause)
         Result.put (l("Another player with that name is playing"), reject_cause_duplicate)
         Result.put (l("No room for more players"), reject_cause_noslots)
         Result.put (l("Game has finished"), reject_cause_finished)

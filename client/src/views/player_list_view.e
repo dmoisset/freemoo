@@ -6,8 +6,6 @@ inherit
     WINDOW
     rename
         make as window_make
-    redefine
-        redraw
     end
     GETTEXT
     PLAYER_CONSTANTS
@@ -21,56 +19,56 @@ feature {NONE} -- Creation
     make (w: WINDOW; where: RECTANGLE; new_model: C_PLAYER_LIST) is
         -- build widget as view of `new_model'
     do
+        !!labels.make (1, 0)
         window_make (w, where)
         set_model (new_model)
-        !!pic.make (width, height)
 
         -- Update gui
         on_model_change
     end
-
-feature {NONE} -- Internal
-
-    pic: SDL_IMAGE
 
 feature -- Redefined features
 
     on_model_change is
         -- Update gui
     local
-        a: ARRAY [STRING]
+        i: ITERATOR [STRING]
+        j: INTEGER
         p: C_PLAYER
-        i: INTEGER
         s: STRING
+        r: RECTANGLE
     do
-        !!pic.make_transparent (width, height)
-        a := model.names
-        from i := a.lower until i > a.upper loop
-            p := model @ (a @ i)
+        i := model.names.get_new_iterator
+        from
+            i.start
+            j := labels.lower
+        until i.is_off loop
+            p := model @ i.item
             s := p.name.twin
             s.append (": "+ state_names @ p.state)
             if p.connected then
                 s.add_first ('*')
             end
-            if display.default_font /= Void then
--- color adecuado
-                display.default_font.show_at (pic, 2, (i-1)*20+2, s)
+            if j > labels.upper then
+                r.set_with_size (2, (j-1)*20+2, width-4, 20)
+                labels.add_last (create {LABEL}.make (Current, r, ""))
+                labels.item (j).set_h_alignment (0)
             end
-            i := i + 1
+-- color adecuado
+            labels.item (j).set_text (s)
+            i.next
+            j := j + 1
         end
-
-        request_redraw_all
+        -- Remove remaining labels.
+        from until j > labels.upper loop
+            labels.item (j).remove
+            labels.remove (j)
+        end
     end
 
-    redraw (area: RECTANGLE) is
-    local
-        w: RECTANGLE
-    do
-        w.set_with_size (0, 0, width, height)
-        show_image (pic, 0, 0, w)
-        Precursor (area)
-    end
+feature {NONE} -- Widgets
 
+    labels: ARRAY [LABEL]
 
 feature {NONE} -- Constants
 
@@ -83,5 +81,9 @@ feature {NONE} -- Constants
         Result.put (l("Waiting"), st_waiting_turn_end)
         Result.put (l("Finished"), st_end_game)
     end
+
+invariant
+    labels /= Void
+    labels.lower = 1
 
 end -- PLAYER_LIST_VIEW
