@@ -87,7 +87,7 @@ feature {ANY}
         until i > 40 loop
             if it.item.kind /= kind_blackhole then
                 register (it.item, "star" + it.item.id.to_string)
-                cstar ?= cgalaxy.idmap @ it.item.id
+                cstar ?= cgalaxy.stars @ it.item.id
                 subscribe (cstar, "star" + it.item.id.to_string)
                 it.item.update_clients
             end

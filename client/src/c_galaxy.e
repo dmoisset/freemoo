@@ -11,7 +11,6 @@ inherit
     VIEW [C_STAR]
         rename on_model_change as on_star_change end
     SUBSCRIBER
-    IDMAP_ACCESS
 
 creation
     make
@@ -55,12 +54,12 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 newmsg.remove_first(s.used_serial_count)
                 ir ?= s.unserialized_form @ 1
                 id := ir
-                if idmap.has(id) then
-                    star ?= idmap @ id
+                if stars.has(id) then
+                    star ?= stars @ id
                 else
                     !!star.make_defaults
                     star.add_view (Current)
-                    idmap.put(star, id)
+                    star.set_id(id)
                 end
                 ir ?= s.unserialized_form @ 2
 -- Using .item below because of SE bug #152

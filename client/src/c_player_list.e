@@ -10,7 +10,6 @@ inherit
     end
     SUBSCRIBER
     MODEL
-    IDMAP_ACCESS
 
 creation
     make
@@ -51,12 +50,12 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             s.unserialize ("is", newmsg)
             pid ?= s.unserialized_form @ 1
             name ?= s.unserialized_form @ 2
-            if idmap.has (pid) then
-                p ?= idmap @ pid
-                    check p /= Void end
+            if has (name) then
+                p ?= Current @ name
+                    check p /= Void and p.id = pid end
             else
                 !!p.make (name)
-                idmap.add (p, pid)
+                p.set_id(id)
             end
             new_items.add (p, name)
             p.unserialize_from (newmsg)
