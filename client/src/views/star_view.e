@@ -199,7 +199,7 @@ feature -- Controls
         if p.type = type_gasgiant then
             set_planet_text ("Gas Giant (Uninhabitable)")
         else
-            set_planet_text (model.name + " " + roman @ p.orbit + "%N" +
+            set_planet_text (model.name + " " + roman @ orbit2planet_number(p.orbit) + "%N" +
                              plsize_names @ p.size + ", " +
                              climate_names @ p.climate + "%N" +
                              mineral_names @ p.mineral + "  " +
@@ -355,12 +355,23 @@ feature {NONE} -- Internal
     local
         x, y: DOUBLE
     do
---        y := 24.5 * (.49 + p.orbit * 0.51))
         y := br * (bi + p.orbit)
         x := y * xm
         y := cy - p.orbit.to_real.sin * y
         x := cx + p.orbit.to_real.cos * x
         Result := [x.rounded, y.rounded]
+    end
+
+    orbit2planet_number(orbit:INTEGER):INTEGER is
+    require
+        orbit.in_range(1, 5)
+    local
+        i: INTEGER
+    do
+        from i := 1 until i > orbit loop
+            if model.planets @ i /= Void then Result := Result + 1 end
+            i := i + 1
+        end
     end
 
 feature {NONE} -- Internal constants

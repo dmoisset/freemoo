@@ -17,54 +17,44 @@ feature {NONE} -- Creation
         int: INTEGER
         dash: ARRAY[INTEGER]
     do
-        !!pic1.make(x1, y1, x2, y2, r, g, b)
+        !!pic.make(x1, y1, x2, y2, r, g, b)
         !!dash.make(1, 2)
         int := 5
         dash.put(int, 1)
         int := 2
         dash.put(int, 2)
-        pic1.set_dash(dash)
-        pic2 := clone(pic1)
+        pic.set_dash(dash)
     end
 
 feature -- Inherited features
 
     item: IMAGE is
     do
-        if flag then
-            Result := pic1
-        else
-            Result := pic2
-        end
+        Result := pic
     end
 
     width: INTEGER is
     do
-        Result := pic1.width
+        Result := pic.width
     end
 
     height: INTEGER is
     do
-        Result := pic1.height
+        Result := pic.height
     end
 
     start is
     do
-        pic1.set_offset(0)
-        pic2.set_offset(0)
+        pic.set_offset(0)
     end
 
     next is
     do
-        pic1.set_offset(pic1.offset + 1)
-        pic2.set_offset(pic1.offset)
-        flag := not flag
+        pic.set_offset(pic.offset + 1)
     end
 
 feature {NONE} -- Inplementation
 
-    pic1, pic2: SDL_LINE_IMAGE
-
-    flag: BOOLEAN
+    pic: SDL_LINE_IMAGE
 
 end -- class ANIMATED_LINE
