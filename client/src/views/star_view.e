@@ -2,7 +2,6 @@ class STAR_VIEW
     -- ews view for a STAR
 
 inherit
-    VIEW[C_GAME_STATUS] -- Needs time to set planet position
     MAP_CONSTANTS
     WINDOW
         rename make as window_make
@@ -11,10 +10,6 @@ inherit
 creation
     make
 
-feature {NONE} -- Representation
-
-    star: C_STAR
-    
 feature {NONE} -- Creation
 
     make (w: WINDOW; where: RECTANGLE; s: C_STAR; new_status: C_GAME_STATUS) is
@@ -29,13 +24,14 @@ feature {NONE} -- Creation
         d: DRAG_HANDLE
     do
         window_make(w, where)
-        -- Register Primary model
+        -- Register on star
         star_changed_handler := agent star_changed
         star := s
         s.changed.connect (star_changed_handler)
-        -- Register Secondary model
+        -- Register on status
+        status_changed_handler := agent status_changed
         status := new_status
-        status.add_view(Current)
+        status.changed.connect (status_changed_handler)
         -- Drag Handle
         r.set_with_size(0, 0, 347, 45)
         !!d.make(Current, r)
@@ -72,7 +68,7 @@ feature {NONE} -- Callbacks
     close is
     do
         star.changed.disconnect (star_changed_handler)
-        status.remove_view (Current)
+        status.changed.disconnect (status_changed_handler)
         star := Void
         remove
     end
@@ -105,6 +101,17 @@ feature {NONE} -- Signal handlers
         s = star
     do
         on_model_change
+    end
+
+    status_changed_handler: PROCEDURE [ANY, TUPLE[C_GAME_STATUS]]
+
+    status_changed (s: C_GAME_STATUS) is
+    require
+       s = status
+    do
+       if star.has_info then
+           on_model_change
+       end
     end
 
     on_model_change is
@@ -463,6 +470,8 @@ feature -- Once data
 
 feature {NONE} -- Internal
 
+    star: C_STAR
+    
     status: C_GAME_STATUS
 
     dirty: BOOLEAN

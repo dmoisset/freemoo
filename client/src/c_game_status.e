@@ -9,7 +9,6 @@ inherit
         make
     end
     SUBSCRIBER
-    MODEL
 
 creation
     make
@@ -19,8 +18,12 @@ feature -- Creation
     make is
     do
         Precursor
-        make_model
+        create changed.make
     end
+
+feature -- Signals
+
+    changed: SIGNAL_1 [C_GAME_STATUS]
 
 feature {SERVICE_PROVIDER} -- Subscriber callback
 
@@ -40,7 +43,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         s.get_boolean; random_events := s.last_boolean
         s.get_boolean; antaran_attacks := s.last_boolean
         s.get_integer; date := s.last_integer
-        notify_views
+        changed.emit (Current)
     end
 
 end -- class C_GAME_STATUS

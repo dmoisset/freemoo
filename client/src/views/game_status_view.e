@@ -2,7 +2,6 @@ class GAME_STATUS_VIEW
     -- View for a GAME_STATUS (game rules)
 
 inherit
-    VIEW [C_GAME_STATUS]
     WINDOW
     rename
         make as window_make
@@ -12,17 +11,22 @@ inherit
 creation
     make
 
+feature {NONE} -- Representation
+
+   status: C_GAME_STATUS
+
 feature {NONE} -- Creation
 
-    make (w: WINDOW; where: RECTANGLE; new_model: C_GAME_STATUS) is
-        -- build widget as view of `new_model'
+    make (w: WINDOW; where: RECTANGLE; new_status: C_GAME_STATUS) is
+        -- build widget as view of `new_status'
     local
         a: ARRAY [STRING]
         i: INTEGER
         r: RECTANGLE
         tag: LABEL
     do
-        set_model (new_model)
+        status := new_status
+        status.changed.connect (agent update_status)
         window_make (w, where)
         a := <<"Open player slots",
                "Galaxy Size",
@@ -70,7 +74,7 @@ feature {NONE} -- Creation
         antarans.set_h_alignment (0)
 
         -- Update gui
-        on_model_change
+        update_status
     end
 
 feature {NONE} -- Internal
@@ -85,17 +89,17 @@ feature {NONE} -- Internal
 
 feature -- Redefined features
 
-    on_model_change is
+    update_status is
         -- Update gui
     do
-        open_slots.set_text (model.open_slots.to_string)
-        size.set_text (sizes @ model.galaxy_size)
-        age.set_text (ages @ model.galaxy_age)
-        tech.set_text (techs @ model.start_tech_level)
+        open_slots.set_text (status.open_slots.to_string)
+        size.set_text (sizes @ status.galaxy_size)
+        age.set_text (ages @ status.galaxy_age)
+        tech.set_text (techs @ status.start_tech_level)
 
-        tactical_combat.set_text (model.tactical_combat.to_string)
-        random_events.set_text (model.random_events.to_string)
-        antarans.set_text (model.antaran_attacks.to_string)
+        tactical_combat.set_text (status.tactical_combat.to_string)
+        random_events.set_text (status.random_events.to_string)
+        antarans.set_text (status.antaran_attacks.to_string)
     end
 
 feature {NONE} -- Constants
