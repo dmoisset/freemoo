@@ -319,7 +319,6 @@ feature {NONE} -- Once features
 		!!Result.make(1, 2)
 		i := create {IMAGE_FMI}.make_from_file ("client/fleet-view/cursor.fmi")
 		Result.put(i, 2)
-		i.remove_alpha
 		Result.put(create {SDL_IMAGE}.make_transparent(i.width, i.height), 1)
 	end
 	 
@@ -339,25 +338,25 @@ feature {NONE} -- Once features
 		Result.put(create{SDL_IMAGE}.make(bg_ns_width, bg_tot_height@4), 4)
 		
 		!!a.make("client/fleet-view/window-top-s.fma")
-		a.images.item(1).blit(Result @ 1, 0, 0)
+		a.images.item(1).show(Result @ 1, 0, 0)
 		!!a.make("client/fleet-view/window-top-ns.fma")
-		a.images.item(1).blit(Result @ 2, 0, 0)
-		a.images.item(1).blit(Result @ 3, 0, 0)
-		a.images.item(1).blit(Result @ 4, 0, 0)
+		a.images.item(1).show(Result @ 2, 0, 0)
+		a.images.item(1).show(Result @ 3, 0, 0)
+		a.images.item(1).show(Result @ 4, 0, 0)
 		  
 		!!a.make ("client/fleet-view/window-middle-s.fma")
-		a.images.item(1).blit(Result @ 1, 2, bg_top_height)
+		a.images.item(1).show(Result @ 1, 2, bg_top_height)
 		!!a.make ("client/fleet-view/window-middle-ns.fma")
-		a.images.item(1).blit(Result @ 2, 2, bg_top_height)
-		a.images.item(1).blit(Result @ 3, 2, bg_top_height)
-		a.images.item(1).blit(Result @ 4, 2, bg_top_height)
+		a.images.item(1).show(Result @ 2, 2, bg_top_height)
+		a.images.item(1).show(Result @ 3, 2, bg_top_height)
+		a.images.item(1).show(Result @ 4, 2, bg_top_height)
 		  
 		!!a.make ("client/fleet-view/window-bottom-s.fma")
-		a.images.item(1).blit(Result @ 1, 0, bg_bottom_y@1)
+		a.images.item(1).show(Result @ 1, 0, bg_bottom_y@1)
 		!!a.make ("client/fleet-view/window-bottom-ns.fma")
-		a.images.item(1).blit(Result @ 2, 0, bg_bottom_y@2)
-		a.images.item(1).blit(Result @ 3, 0, bg_bottom_y@3)
-		a.images.item(1).blit(Result @ 4, 0, bg_bottom_y@4)
+		a.images.item(1).show(Result @ 2, 0, bg_bottom_y@2)
+		a.images.item(1).show(Result @ 3, 0, bg_bottom_y@3)
+		a.images.item(1).show(Result @ 4, 0, bg_bottom_y@4)
 	end
 	 
 	ship_pics: ARRAY2[ARRAY2[ARRAY[IMAGE]]] is
@@ -379,6 +378,8 @@ feature {NONE} -- Once features
 	local
 		a: FMA_FRAMESET
 		imgs: ARRAY [IMAGE]
+		xoffset, yoffset: INTEGER
+		ship_and_cursor: IMAGE_COMPOSITE
 	do
 		if ship_pics.item(owner, creator) = Void then
 			ship_pics.put(create {ARRAY2[ARRAY[IMAGE]]}.make(1, 6, 0, 7), owner, creator)
@@ -391,10 +392,15 @@ feature {NONE} -- Once features
 			         size.to_string +
 			         pic.to_string +
 			         (owner - model.owner.min_color).to_string + ".fma")
-			imgs.put(create {IMAGE_OFFSET}.make(a.images @ 1, 15, 15), 1)
-			imgs.put(create {SDL_IMAGE}.make_transparent(cursor.item(1).width, cursor.item(1).height), 2)
-			cursor.item(2).blit(imgs @ 2, 0, 0)
-			a.images.item(1).blit(imgs @ 2, 15, 15)
+			xoffset := a.positions.item (1).x
+			yoffset := a.positions.item (1).y
+			imgs.put(create {IMAGE_OFFSET}.make (a.images @ 1,
+			                                     xoffset, yoffset),
+			         1)
+			create ship_and_cursor.make (cursor.item(1).width, cursor.item(1).height)
+			ship_and_cursor.add (a.images.item(1), xoffset, yoffset)
+			ship_and_cursor.add (cursor.item(2), 0, 0)
+			imgs.put(ship_and_cursor, 2)
 		end
 		if highlight then
 			result := ship_pics.item(owner, creator).item(size, pic).item(2)

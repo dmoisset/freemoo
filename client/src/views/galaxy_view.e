@@ -136,7 +136,7 @@ feature -- Redefined features
             -- Initialize cache
             !!cache.make (width, height)
             -- Initialize hotspots
-            background.blit_fast (cache, 0, 0)
+            background.show (cache, 0, 0)
             star_hotspots.clear
             from star_it := model.get_new_iterator_on_stars
             until star_it.is_off loop
@@ -211,7 +211,7 @@ feature {NONE} -- Redrawing
         r.set_with_size ((px - img.width / 2).rounded,
                     (py - img.height / 2).rounded, img.width, img.height)
         star_hotspots.add (r, s.id)
-        img.blit (cache, r.x, r.y)
+        img.show (cache, r.x, r.y)
         if s.has_info then
             lwidth := font.width_of (s.name)
             lx := (px - lwidth / 2).rounded
@@ -251,7 +251,7 @@ feature {NONE} -- Redrawing
 			r.set_with_size (px, py, img.width, img.height)
 		end
         fleet_hotspots.add (r, f.id)
-        img.blit(cache, r.x, r.y)
+        img.show(cache, r.x, r.y)
 
 
 
@@ -262,7 +262,7 @@ feature {NONE} -- Redrawing
 			else
 				traj.set_type(traj.traj_type_enemy)
 			end
-			traj.blit(cache, traj.showx, traj.showy)
+			traj.show(cache, traj.showx, traj.showy)
 		end
     end
 

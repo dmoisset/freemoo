@@ -181,20 +181,20 @@ feature -- Redefined features
             dirty := False
     -- Background
             !!cache.make (width, height)
-            background.blit(cache, 0, 0)
+            background.show(cache, 0, 0)
             if model.has_info then
     -- Sun
-                suns.item(model.kind - kind_min).blit(cache, 157, 120)
+                suns.item(model.kind - kind_min).show(cache, 157, 120)
     -- Orbits / Asteroid Fields
                 from ip := model.get_new_iterator_on_planets until ip.is_off loop
                     if ip.item /= Void then
                         i := ip.item.orbit
                         if ip.item.type = type_asteroids then
-                            asteroids.images.item(i).blit(cache,
+                            asteroids.images.item(i).show(cache,
                                 29 + asteroids.positions.item(i).x,
                                 59 + asteroids.positions.item(i).y)
                         else
-                            orbits.item(i).blit(cache, 29, 59)
+                            orbits.item(i).show(cache, 29, 59)
                         end
                     end
                     ip.next
@@ -203,7 +203,7 @@ feature -- Redefined features
                 from ip.start until ip.is_off loop
                     if ip.item /= Void and then ip.item.colony /= Void then
                         tuple := planet_pos (ip.item)
-                        colonies.item (ip.item.colony.owner.color).blit(cache, tuple.first - 15, tuple.second - 15)
+                        colonies.item (ip.item.colony.owner.color).show(cache, tuple.first - 15, tuple.second - 15)
                     end
                     ip.next
                 end
@@ -213,7 +213,7 @@ feature -- Redefined features
                 fleet_it := model.get_new_iterator_on_fleets
                 i := fleet_pic_firstx
             until fleet_it.is_off loop
-                fleets.item(fleet_it.item.owner.color).blit(cache, i, fleet_pic_y)
+                fleets.item(fleet_it.item.owner.color).show(cache, i, fleet_pic_y)
                 i := i + (fleets @ fleet_it.item.owner.color).width + fleet_pic_margin
                 fleet_it.next
             end
