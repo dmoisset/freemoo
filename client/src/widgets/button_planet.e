@@ -29,16 +29,20 @@ feature -- Redefined Features
         if not event.handled then
             e ?= event
             sview ?= parent
-            if e /= Void and then e.is_enter and then sview /= Void then
-                if planet.type = type_gasgiant then
-                    sview.set_planet_text ("Gas Giant (Uninhabitable)")
+            if e /= Void and then sview /= Void then
+                if e.is_enter then
+                    if planet.type = type_gasgiant then
+                        sview.set_planet_text ("Gas Giant (Uninhabitable)")
+                    else
+                        sview.set_planet_text (sview.model.name + " " +
+                                 roman @ planet.orbit + "%N" +
+                                 plsize_names @ planet.size + ", " +
+                                 climate_names @ planet.climate + "%N" +
+                                 mineral_names @ planet.mineral + "  " +
+                                 gravity_names @ planet.gravity)
+                    end
                 else
-                    sview.set_planet_text (sview.model.name + " " +
-                             roman @ planet.orbit + "%N" +
-                             plsize_names @ planet.size + ", " +
-                             climate_names @ planet.climate + "%N" +
-                             mineral_names @ planet.mineral + "  " +
-                             gravity_names @ planet.gravity)
+                    sview.set_planet_text ("")
                 end
                 event.set_handled
             end

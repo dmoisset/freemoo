@@ -179,7 +179,6 @@ feature -- Redefined features
                         i := i + 1
                     end
                     --print("%N")
-                    event.set_handled
                 end
             end
         end
