@@ -12,7 +12,7 @@ int main()
 /* Magic Number 36454c52 */
     fputc (0x52, fp);
     fputc (0x4c, fp);
-    fputc (0x45, fp);
+    fputc (0x41, fp);
     fputc (0x36, fp);
 
 /* File Count = 5 */

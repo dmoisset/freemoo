@@ -259,14 +259,6 @@ void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER 
 
 }
 
-
-
-
-
-
-
-
-
 /* Public Interface for loading FMI images */
 
 INTEGER load_img_plain8 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h)
@@ -322,16 +314,7 @@ INTEGER load_img_rle16 (FILE *f, SDL_Surface *s, INTEGER w, INTEGER h)
     return 0;
 }
 
-
-
-
-
-
-
-
-
-
-/* Utodetects type and size for FMI images */
+/* Autodetects type and size for FMI images */
 /* File isn't closed on exit */
 SDL_Surface *FMI_Load(FILE* fp)
 {
@@ -407,23 +390,23 @@ FMA_t *load_anim (FILE *f)
 
     switch(magic)
     {
-    case 0x38474d49:
+    case 0x38494e41:
 //        printf("Plain 8 bit images\n");
         loadpix = loadPixels_plain8;
         if (loadPalette(src, palette))
             return NULL;
         break;
-    case 0x38454c52:
+    case 0x38414c52:
 //        printf("RLE 8 bit images\n");
         loadpix = loadPixels_rle8;
         if (loadPalette(src, palette))
             return NULL;
         break;
-    case 0x36474d49:
+    case 0x36494e41:
 //        printf("Plain 16 bit images\n");
         loadpix = loadPixels_plain16;
         break;
-    case 0x36454c52:
+    case 0x36414c52:
 //        printf("RLE 16 bit images\n");
         loadpix = loadPixels_rle16;
         break;
@@ -444,6 +427,7 @@ FMA_t *load_anim (FILE *f)
     return answer;
 
 }
+
 
 /* Frees x, y & items (_not_ *items) */
 void free_FMA (FMA_t *anim)

@@ -9,10 +9,10 @@ int main()
     FILE *fp;
     fp = fopen ("animr8.fma", "w");
 
-/* Magic Number 38454c52 */
+/* Magic Number 38414c52 */
     fputc (0x52, fp);
     fputc (0x4c, fp);
-    fputc (0x45, fp);
+    fputc (0x41, fp);
     fputc (0x38, fp);
 
 /* Image Count = 5 */

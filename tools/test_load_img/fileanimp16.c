@@ -10,9 +10,9 @@ int main()
     fp = fopen ("animp16.fma", "w");
 
 /* Magic Number 36474d49 */
+    fputc (0x41, fp);
+    fputc (0x4e, fp);
     fputc (0x49, fp);
-    fputc (0x4d, fp);
-    fputc (0x47, fp);
     fputc (0x36, fp);
 
 /* Image Count = 5 */

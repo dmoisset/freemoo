@@ -9,10 +9,10 @@ int main()
     FILE *fp;
     fp = fopen ("animp8.fma", "w");
 
-/* Magic Number 38474d49 */
+/* Magic Number 38494e41 */
+    fputc (0x41, fp);
+    fputc (0x4e, fp);
     fputc (0x49, fp);
-    fputc (0x4d, fp);
-    fputc (0x47, fp);
     fputc (0x38, fp);
 
 /* Image Count = 5 */
