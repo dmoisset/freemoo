@@ -152,7 +152,7 @@ feature {NONE} -- Internal
                         until
                             f.is_off or else 
                             (f.item.owner = p.item.colony.owner and
-                             f.item.destination = Void
+                             f.item.destination = Void -- This will have to be changed when relocations are implemented
                             )
                         loop
                             f.next
