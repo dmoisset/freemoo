@@ -123,9 +123,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             fleet.set_eta (s.last_integer)
             s.get_integer
             if fleet.eta = 0 then
-                fleet.enter_orbit (stars @ s.last_integer);
--- FIXME: notify should be done by star when fleet is added
-                (stars @ s.last_integer).notify_views
+                fleet.enter_orbit (stars @ s.last_integer)
             else
                 fleet.set_destination (stars @ s.last_integer)
             end

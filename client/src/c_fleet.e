@@ -49,9 +49,7 @@ feature {NONE} -- Creation
             i := s.last_integer
                 check orbit_center = Void or orbit_center = server.galaxy.star_with_id (i) end
             if orbit_center = Void then
-                enter_orbit (server.galaxy.star_with_id (i)) ;
---FIXME: notification should be done when fleet is added
-                (server.galaxy.star_with_id (i)).notify_views
+                enter_orbit (server.galaxy.star_with_id (i))
             end
         end
         s.get_integer

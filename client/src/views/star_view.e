@@ -2,7 +2,6 @@ class STAR_VIEW
     -- ews view for a STAR
 
 inherit
-    VIEW[C_STAR]
     VIEW[C_GAME_STATUS] -- Needs time to set planet position
     MAP_CONSTANTS
     WINDOW
@@ -12,13 +11,17 @@ inherit
 creation
     make
 
+feature {NONE} -- Representation
+
+    star: C_STAR
+    
 feature {NONE} -- Creation
 
-    make (w: WINDOW; where: RECTANGLE; new_model: C_STAR; new_status: C_GAME_STATUS) is
-        -- build widget as view of `new_model'
+    make (w: WINDOW; where: RECTANGLE; s: C_STAR; new_status: C_GAME_STATUS) is
+        -- build widget as view of `s'
     require
         w /= Void
-        new_model /= Void
+        s /= Void
         new_status /= Void
     local
         a: FMA_FRAMESET
@@ -27,7 +30,9 @@ feature {NONE} -- Creation
     do
         window_make(w, where)
         -- Register Primary model
-        set_model(new_model)
+        star_changed_handler := agent star_changed
+        star := s
+        s.changed.connect (star_changed_handler)
         -- Register Secondary model
         status := new_status
         status.add_view(Current)
@@ -66,9 +71,9 @@ feature {NONE} -- Callbacks
 
     close is
     do
-        model.remove_view (Current)
+        star.changed.disconnect (star_changed_handler)
         status.remove_view (Current)
-        model := Void
+        star := Void
         remove
     end
 
@@ -91,12 +96,21 @@ feature {NONE} -- Callbacks
 
     fleet_click_handler: PROCEDURE[ANY, TUPLE[C_FLEET]]
 
-feature -- Effective features
+feature {NONE} -- Signal handlers
+
+    star_changed_handler: PROCEDURE [ANY, TUPLE[C_STAR]]
+
+    star_changed (s: C_STAR) is
+    require
+        s = star
+    do
+        on_model_change
+    end
 
     on_model_change is
         -- Update gui
     require
-        model /= Void
+        star /= Void
     local
         child: ITERATOR[WINDOW]
         fleet: ITERATOR[C_FLEET]
@@ -124,7 +138,7 @@ feature -- Effective features
         -- Generate hotspots
         fleet_hotspots.clear
         from
-            fleet := model.get_new_iterator_on_fleets
+            fleet := star.get_new_iterator_on_fleets
             i := 0
         until fleet.is_off
         loop
@@ -133,10 +147,10 @@ feature -- Effective features
             fleet.next
             i := i + 1
         end
-        if model.has_info then
+        if star.has_info then
         -- Show info for an known system
-            name_label.set_text("Star System " + model.name)
-            from ip := model.get_new_iterator_on_planets
+            name_label.set_text("Star System " + star.name)
+            from ip := star.get_new_iterator_on_planets
             until ip.is_off loop
                 planet := ip.item
                 if planet /= Void and then planet.type /= type_asteroids then
@@ -161,7 +175,7 @@ feature -- Effective features
         --Show info for an unexplored system
             name_label.set_text("Star System Unexplored")
             r.set_with_size (58, 95, 240, 130)
-            !!msg_label.make (Current, r, starmsgs @ model.kind)
+            !!msg_label.make (Current, r, starmsgs @ star.kind)
             msg_label.set_justify(false)
             msg_label.set_h_alignment (0.5)
             removable_children.add_last(msg_label)
@@ -182,11 +196,11 @@ feature -- Redefined features
     -- Background
             !!cache.make (width, height)
             background.show(cache, 0, 0)
-            if model.has_info then
+            if star.has_info then
     -- Sun
-                suns.item(model.kind - kind_min).show(cache, 157, 120)
+                suns.item(star.kind - kind_min).show(cache, 157, 120)
     -- Orbits / Asteroid Fields
-                from ip := model.get_new_iterator_on_planets until ip.is_off loop
+                from ip := star.get_new_iterator_on_planets until ip.is_off loop
                     if ip.item /= Void then
                         i := ip.item.orbit
                         if ip.item.type = type_asteroids then
@@ -210,7 +224,7 @@ feature -- Redefined features
             end
     -- Fleets
             from
-                fleet_it := model.get_new_iterator_on_fleets
+                fleet_it := star.get_new_iterator_on_fleets
                 i := fleet_pic_firstx
             until fleet_it.is_off loop
                 fleets.item(fleet_it.item.owner.color).show(cache, i, fleet_pic_y)
@@ -250,7 +264,7 @@ feature -- Redefined features
                     loop
                         if (it.item.has(b.x, b.y)) then
                             if fleet_click_handler /= Void then
-                                fleet_click_handler.call([model.fleet_with_id (fleet_hotspots.key_at(it.item))])
+                                fleet_click_handler.call([star.fleet_with_id (fleet_hotspots.key_at(it.item))])
                             end
                         end
                         it.next
@@ -261,7 +275,7 @@ feature -- Redefined features
                 if m /= Void then
                     angle := ((m.y - 136.5) * 1.88).atan2(m.x - 173.5)
                     from
-                        ip := model.get_new_iterator_on_planets
+                        ip := star.get_new_iterator_on_planets
                         a := False
                         i := 0
                     until ip.is_off or a loop
@@ -307,7 +321,7 @@ feature -- Controls
         if p.type = type_gasgiant then
             set_planet_text ("Gas Giant (Uninhabitable)")
         else
-            set_planet_text (model.name + " " + roman @ orbit2planet_number(p.orbit) + "%N" +
+            set_planet_text (star.name + " " + roman @ orbit2planet_number(p.orbit) + "%N" +
                              plsize_names @ p.size + ", " +
                              climate_names @ p.climate + "%N" +
                              mineral_names @ p.mineral + "  " +
@@ -481,12 +495,12 @@ feature {NONE} -- Internal
 
     orbit2planet_number(orbit:INTEGER):INTEGER is
     require
-        orbit.in_range(1, model.Max_planets)
+        orbit.in_range(1, star.Max_planets)
     local
         i: INTEGER
     do
         from i := 1 until i > orbit loop
-            if model.planet_at (i) /= Void then Result := Result + 1 end
+            if star.planet_at (i) /= Void then Result := Result + 1 end
             i := i + 1
         end
     end

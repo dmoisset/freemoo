@@ -4,8 +4,7 @@ class C_STAR
 
 inherit
     STAR
-        redefine make, make_defaults, fleet_type end
-    MODEL
+        redefine make, make_defaults, fleet_type, add_fleet end
     SUBSCRIBER
 
 creation
@@ -17,14 +16,12 @@ feature {NONE} -- Creation
     do
         Precursor (p, n, k, s)
         create changed.make
-        make_model
     end
 
     make_defaults is
     do
         Precursor
         create changed.make
-        make_model
     end
 
 feature {SERVICE_PROVIDER} -- Redefined features
@@ -71,7 +68,14 @@ feature {SERVICE_PROVIDER} -- Redefined features
             pcount := pcount + 1
         end
         changed.emit (Current)
-        notify_views
+    end
+
+feature -- Redefined features
+
+    add_fleet (f: like fleet_type) is
+    do
+        Precursor (f)
+        changed.emit (Current)
     end
 
 feature -- Accounting
