@@ -112,6 +112,8 @@ feature -- Operations
         special = newspecial
     end
 
+feature {COLONY}
+
     set_colony (newcolony: COLONY) is
     do
         colony := newcolony
