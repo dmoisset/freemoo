@@ -6,6 +6,7 @@ inherit
     J_CONSTANTS
     MAP_CONSTANTS
     PKG_USER
+    STRING_FORMATTER
 
 creation {ANY}
     make
@@ -57,7 +58,16 @@ feature {ANY}
         !!options.make
         options.parse_add ("galaxysize = huge")
         options.parse_add ("galaxyage = average")
-        !MAP_GENERATOR_FAST!mapgen.make (options)
+        from i := 1 until i > argument_count loop
+            options.parse_add (argument (i))
+            if options.status /= options.st_ok then
+                std_error.put_string(
+                    format (l("Invalid option: ~1~%N"), <<argument (i)>>)
+                )
+            end
+            i := i + 1
+        end
+                                                                                                                            !MAP_GENERATOR_FAST!mapgen.make (options)
         !!proj
 
         !!plist.make

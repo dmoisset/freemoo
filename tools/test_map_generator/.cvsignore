@@ -1,4 +1,8 @@
 test_map_generator
 test_map_generator.h
 test_map_generator.id
-test_map_generator1.c test_map_generator2.c test_map_generator3.c test_map_generator4.c
+test_map_generator[1-9].c
+test_map_generator_v2
+test_map_generator_v2.h
+test_map_generator_v2.id
+test_map_generator_v2[1-9].c

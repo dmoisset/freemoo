@@ -23,14 +23,14 @@ feature {NONE} -- Creation
         window_make(w, where)
         my_window := w
         !SDL_BITMAP_FONT!font.make ("small_font.png")
-        !ANIMATION_FMA_TRANSPARENT!a.make ("client/galaxy/galaxy_bg.fma")
+        !ANIMATION_FMA_TRANSPARENT!a.make ("client/galaxy-view/background.fma")
         !WINDOW_ANIMATED!w1.make (w, 0, 0, a)
         !!pics.make(kind_min, kind_max, stsize_min, stsize_max)
         from i := kind_min
         until i > kind_max loop
             from j := stsize_min
             until j > stsize_max loop
-                pics.put(create{ANIMATION_FMA_TRANSPARENT}.make("client/galaxy/star" +
+                pics.put(create{ANIMATION_FMA_TRANSPARENT}.make("client/galaxy-view/star" +
                  (i - kind_min).to_string + (j - stsize_min).to_string + ".fma"), i, j)
                 j := j + 1
             end
