@@ -113,8 +113,10 @@ feature -- Operations -- Game commands
     local
         s: SERIALIZER2
     do
+
         !!s.make
-        send_package (msgtype_save, s.serialized_form)
+-- FIXME: uncomment when anthony finishis changes about save
+--        send_package (msgtype_save, s.serialized_form)
     end
 
     move_fleet (f: FLEET; dest: STAR; ships: SET [SHIP]) is
