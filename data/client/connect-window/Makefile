@@ -1,4 +1,4 @@
-TARGETS=background.fma background.fmi connect-button-u.fmi \
+TARGETS=background.fmi connect-button-u.fmi \
         connect-button-p.fmi connect-button-d.fmi
 X2P=../../../tools/xcf2png/xcf2png.pl
 P2F=../../../tools/png2fmi/png2fmi
