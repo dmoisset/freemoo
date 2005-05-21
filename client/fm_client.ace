@@ -33,6 +33,7 @@ cluster
     -- Networking and utilities libs
     EIFINET: "${SmartEiffelDirectory}/lib_eifinet/"
     NETSERVICES: "${SmartEiffelDirectory}/lib_netservices/"
+--        default debug(yes) end
     UTILS: "${SmartEiffelDirectory}/lib_utils/"
     STORAGE: "${SmartEiffelDirectory}/lib_storage/"
     EWS: "${SmartEiffelDirectory}/lib_ews/"
@@ -46,7 +47,6 @@ external
 
     external_object_files: "src/C/net_thread.o src/C/img_loader.o ${SmartEiffelDirectory}/lib_ews/driver-sdl/C/driver-sdl.o"
 
-    external_lib: "SDL_image"
     external_lib: "eifinet"
 
 generate
