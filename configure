@@ -1,0 +1,121 @@
+#!/bin/sh
+
+echo
+echo "Configuring FreeMOO"
+echo
+
+check_lib(){
+echo -n "Checking for library $1... "
+    if [ -d "$SEDIR/lib_$1" ]; then
+        echo "ok"
+    else
+        echo "not found"
+        echo " Search was done at $SEDIR/lib_$1"
+        exit 1
+    fi
+}
+
+####################################################
+CONFIG=config
+rm -f "$CONFIG" configure.log
+touch "$CONFIG" || exit 1
+####################################################
+echo -n "Checking for SmartEiffel... "
+SECOMPILE="$(which se-compile 2>/dev/null)" || 
+SECOMPILE="$(which compile 2>/dev/null)"
+if [ -x "$SECOMPILE" ]; then
+    echo "$SECOMPILE"
+else
+    echo "not found."
+    echo "Please install SmartEiffel 1.1, http://smarteiffel.loria.fr/"
+    exit 1
+fi
+echo "SECOMPILE=\"$SECOMPILE\"" >>config
+####################################################
+echo -n "Checking for SmartEiffel version 1.1... "
+if "$SECOMPILE" -version| grep "^Release 1\.1.*Charlemagne" >/dev/null 2>&1; then
+    echo "ok"
+else
+    echo "not found."
+    echo -e "Your version is:"
+    "$SECOMPILE" -version| grep "^Release"
+    exit 1
+fi
+####################################################
+echo -n "Finding SmartEiffel path... "
+if [ -f "$(dirname $SmartEiffel)/../lib/kernel/general.e" ]; then
+    SEDIR=$(dirname $SmartEiffel)
+    SEDIR="$(dirname $SEDIR)"
+    echo "$SEDIR"
+elif [ -f "$HOME/.serc" ]; then
+    SEDIR="$(grep -m1 '^bin: ' ~/.serc)"
+    SEDIR="${SEDIR:5}"
+    SEDIR="$(dirname $SEDIR)"
+    echo "$SEDIR"
+elif [ -f "/etc/serc" ]; then
+    SEDIR="$(grep -m1 '^bin: ' /etc/serc)"
+    SEDIR="${SEDIR:5}"
+    SEDIR="$(dirname $SEDIR)"
+    echo "$SEDIR"
+elif [ -f "$(dirname $SECOMPILE)/../lib/kernel/general.e" ]; then
+    SEDIR="$(dirname $SECOMPILE)"
+    SEDIR="$(dirname $SEDIR)"
+    echo "$SEDIR"
+else
+    echo "not found."
+fi
+echo "SEDIR=\"$SEDIR\"" >>config
+####################################################
+check_lib xml_parser
+check_lib storage
+check_lib utils
+check_lib netservices
+check_lib eifinet
+check_lib ews
+####################################################
+echo -n "Testing eifinet C glue... "
+echo "int main;" >tmp.c
+if gcc tmp.c -leifinet -otmp.out >>configure.log 2>&1; then
+    echo "ok"
+    rm -f tmp.c tmp.out
+else
+    echo "failed."
+    echo " Check for errors in configure.log"
+    rm -f tmp.c tmp.out
+    exit 1
+fi
+####################################################
+echo -n "Checking for SDL... "
+echo "#include <SDL.h>" > tmp.c
+echo "int main;" >>tmp.c
+if ! [ -x $(which sdl-config) ]; then
+    echo "not found."
+    echo "sdl-config not in PATH"
+    rm -f tmp.c
+    exit 1
+elif ! gcc tmp.c -otmp.out $(sdl-config --cflags --libs) >>configure.log 2>&1; then
+    echo "failed."
+    echo " Check for errors in configure.log"
+    rm -f tmp.c tmp.out
+    exit 1
+else
+    echo "ok"
+    rm -f tmp.c tmp.out
+fi
+####################################################
+echo -n "Testing EWS C glue... "
+echo "int main;" >tmp.c
+if gcc tmp.c "$SEDIR/lib_ews/driver-sdl/C/driver-sdl.o" \
+   $(sdl-config --cflags --libs) -otmp.out >>configure.log 2>&1; then
+    echo "ok"
+    rm -f tmp.c tmp.out
+else
+    echo "failed."
+    echo " Check for errors in configure.log"
+    rm -f tmp.c tmp.out
+    exit 1
+fi
+####################################################
+echo "Configuration complete."
+echo
+exit 0
