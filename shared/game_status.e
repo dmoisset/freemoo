@@ -111,6 +111,55 @@ feature {STORAGE} -- Saving
 					 ["antaran_attacks", antaran_attacks]
 					 >>).get_new_iterator
 	end
+	
+feature {STORAGE} -- Retrieving
+    
+    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    do
+    end
+    
+    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    local
+	b: reference BOOLEAN
+	i: reference INTEGER
+    do
+	from
+	until elems.is_off 
+	loop
+	    if elems.item.first.is_equal("open_slots") then
+		i ?= elems.item.second
+		open_slots := i
+	    elseif elems.item.first.is_equal("started") then
+		b ?= elems.item.second
+		started := b
+	    elseif elems.item.first.is_equal("finished") then
+		b ?= elems.item.second
+		finished := b
+	    elseif elems.item.first.is_equal("date") then
+		i ?= elems.item.second
+		date := i
+	    elseif elems.item.first.is_equal("galaxy_size") then
+		i ?= elems.item.second
+		galaxy_size := i
+	    elseif elems.item.first.is_equal("galaxy_age") then
+		i ?= elems.item.second
+		galaxy_age := i
+	    elseif elems.item.first.is_equal("start_tech_level") then
+		i ?= elems.item.second
+		start_tech_level := i
+	    elseif elems.item.first.is_equal("tactical_combat") then
+		b ?= elems.item.second
+		tactical_combat := b
+	    elseif elems.item.first.is_equal("random_events") then
+		b ?= elems.item.second
+		random_events := b
+	    elseif elems.item.first.is_equal("antaran_attacks") then
+		b ?= elems.item.second
+		antaran_attacks := b
+	    end
+	    elems.next
+	end
+    end
 
 invariant
     started implies open_slots = 0

@@ -5,9 +5,11 @@ inherit
     rename
         make as player_make
     redefine
-        add_to_known_list
+        add_to_known_list, fields, make_from_storage
     end
     SERVICE
+    undefine
+	copy, is_equal
     redefine
         subscription_message
     end
@@ -88,6 +90,67 @@ feature -- Redefined features
     do
         Precursor (star)
         update_clients
+    end
+
+feature {STORAGE} -- Saving
+
+    get_class: STRING is "PLAYER"
+
+    fields: ITERATOR[TUPLE[STRING, ANY]] is
+    local
+	a: ARRAY[TUPLE[STRING, ANY]]
+    do
+	create a.make(1, 0)
+	a.add_last(["color", color])
+	a.add_last(["state", state])
+	a.add_last(["sees_all_ships", sees_all_ships])
+	a.add_last(["password", password])
+	add_to_fields(a, "colony", colonies.get_new_iterator_on_items)
+	add_to_fields(a, "knows_star", knows_star.get_new_iterator)
+	add_to_fields(a, "has_visited_star", has_visited_star.get_new_iterator)
+	Result := a.get_new_iterator
+    end
+    
+feature {STORAGE} -- Retrieving
+    
+    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    local
+	i: reference INTEGER
+	b: reference BOOLEAN
+	colony: COLONY
+	star: STAR
+    do
+	from
+	    colonies.clear
+	    knows_star.clear
+	    has_visited_star.clear
+	until elems.is_off loop
+	    if elems.item.first.is_equal("password") then
+		password ?= elems.item.second
+	    elseif elems.item.first.is_equal("color") then
+		i ?= elems.item.second
+		color := i
+	    elseif elems.item.first.is_equal("state") then
+		i ?= elems.item.second
+		state := i
+	    elseif elems.item.first.is_equal("sees_all_ships") then
+		b ?= elems.item.second
+		sees_all_ships := b
+	    elseif elems.item.first.is_equal("id") then
+		i ?= elems.item.second
+		id := i
+	    elseif elems.item.first.has_prefix("colony") then
+		colony ?= elems.item.second
+		colonies.add (colony, colony.id)
+	    elseif elems.item.first.has_prefix("knows_star") then
+		star ?= elems.item.second
+		knows_star.add(star)
+	    elseif elems.item.first.has_prefix("has_visited_star") then
+		star ?= elems.item.second
+		has_visited_star.add(star)
+	    end
+	    elems.next
+	end
     end
 
 end -- class S_PLAYER

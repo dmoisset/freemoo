@@ -5,7 +5,9 @@ inherit
     PLAYER
     rename make as player_make end
     SUBSCRIBER
+    undefine copy, is_equal end
     CLIENT
+    undefine copy, is_equal end
 
 creation
     make

@@ -86,6 +86,8 @@ feature -- Operations -- Login commands
 
     subscribe_init is
         -- subscribe to services provided on beginning
+    require 
+	player /= Void
     do
         subscribe (galaxy, "galaxy")
         subscribe (galaxy, player.id.to_string+":scanner")

@@ -19,6 +19,7 @@ feature {NONE} -- Valid options and values
         Result.put (ot_bool   , "tactical")
         Result.put (ot_bool   , "randomevs")
         Result.put (ot_bool   , "antarans")
+	Result.put (ot_string , "load")
     end
 
     enums: DICTIONARY [DICTIONARY [INTEGER, STRING], STRING] is

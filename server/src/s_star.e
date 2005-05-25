@@ -2,13 +2,16 @@ class S_STAR
 
 inherit
     UNIQUE_ID
+    undefine copy, is_equal end
     STAR
-        redefine
-            set_planet, set_special, set_name, make, make_defaults,
-            fleet_type
-        end
+    redefine
+	set_planet, set_special, set_name, make, make_defaults,
+	fleet_type
+    end
     SERVICE
-        redefine subscription_message end
+    undefine
+	copy, is_equal
+    redefine subscription_message end
 
 creation make, make_defaults
 

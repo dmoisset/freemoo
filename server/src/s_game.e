@@ -29,8 +29,8 @@ feature -- Operations
         players.add (p)
         status.fill_slot
     end
-
-feature {NONE} -- Internal
+    
+feature -- Things done when game is ready to play
 
     init_game is
     local
@@ -56,8 +56,10 @@ feature {NONE} -- Internal
         end
     end
 
+feature {NONE} -- Internal
+    
     fleet_type: S_FLEET
 
     star_type: S_STAR
-
+    
 end -- class S_GAME

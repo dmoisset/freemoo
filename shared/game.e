@@ -2,10 +2,10 @@ class GAME
     -- Main game class
 
 inherit
-	PLAYER_CONSTANTS
-	STORABLE
-	redefine dependents
-	end
+    PLAYER_CONSTANTS
+    STORABLE
+    redefine dependents
+    end
 
 feature {NONE} -- Creation
 
@@ -236,7 +236,7 @@ feature {NONE} -- Internal
         end
         galaxy.fleet_cleanup
     end
-
+    
     init_game is
         -- Called just before setting players state to playing for the
         -- first time
@@ -246,48 +246,77 @@ feature {NONE} -- Internal
 
 feature -- Saving
 
-	hash_code: INTEGER is
-	do
-		Result := Current.to_pointer.hash_code
-	end
+    hash_code: INTEGER is
+    do
+	Result := Current.to_pointer.hash_code
+    end
 		
 feature {STORAGE} -- Saving
 
-	get_class: STRING is "GAME"
-
-	fields: ITERATOR[TUPLE[STRING, ANY]] is
-	local
-		a: ARRAY[TUPLE[STRING, ANY]]
+   get_class: STRING is "GAME"
+   
+   fields: ITERATOR[TUPLE[STRING, ANY]] is
+      local
+	 a: ARRAY[TUPLE[STRING, ANY]]
+      do
+	 create a.make(1, 0)
+	 a.add_last(["status", status])
+	 a.add_last(["players", players])
+	 a.add_last(["galaxy", galaxy])
+	 Result := a.get_new_iterator
+      end
+   
+   dependents: ITERATOR[STORABLE] is
+      local
+	 a: ARRAY[STORABLE]
+      do
+	 create a.make(1, 0)
+	 a.add_last(status)
+	 a.add_last(players)
+	 a.add_last(galaxy)
+	 Result := a.get_new_iterator
+      end
+	
+feature {STORAGE} -- Operations - Retrieving
+    
+    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     do
-		create a.make(1, 0)
-		a.add_last(["status", status])
-		a.add_last(["players", players])
-		a.add_last(["galaxy", galaxy])
-		Result := a.get_new_iterator
+    end
+    
+    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    do
+	from 
+	until elems.is_off
+	loop
+	    if elems.item.first.is_equal("status") then
+		status ?= elems.item.second
+	    elseif elems.item.first.is_equal("players") then
+		players ?= elems.item.second
+	    elseif elems.item.first.is_equal("galaxy") then
+		galaxy ?= elems.item.second
+	    end
+	    elems.next
 	end
-
-	dependents: ITERATOR[STORABLE] is
-	local
-		a: ARRAY[STORABLE]
-	do
-		create a.make(1, 0)
-		a.add_last(status)
-		a.add_last(players)
-		a.add_last(galaxy)
-		Result := a.get_new_iterator
+	if galaxy = Void or players = Void or status = Void then
+	    print("game.e:  Called make_from_storage with nonsensical elems!")
 	end
-
+    end
+    
 feature {NONE} -- Saving
-
-	save is
-	local
-		st: STORAGE_XML
-	do
-		create st.make_with_filename("freeMOO_autosave_" + status.date.to_string
-									 + ".xml")
-		st.store(Current)
-	end
-
+   
+   save is
+      do
+	 save_with_filename("freeMOO_autosave_" + status.date.to_string + ".xml")
+      end
+   
+   save_with_filename(filename: STRING) is
+      local
+	 st: STORAGE_XML
+      do
+	 create st.make_with_filename(filename)
+	 st.store(Current)
+      end
+   
 feature {NONE} -- Internal
 
     fleet_type: FLEET

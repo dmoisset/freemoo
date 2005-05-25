@@ -344,29 +344,58 @@ feature -- Saving
 	
 feature {STORAGE} -- Saving
 
-	get_class: STRING is "GALAXY"
-
-	fields: ITERATOR[TUPLE[STRING, ANY]] is
+    get_class: STRING is "GALAXY"
+    
+    fields: ITERATOR[TUPLE[STRING, ANY]] is
+    local
+	a: ARRAY[TUPLE[STRING, ANY]]
+    do
+	create a.make(1, 0)
+	a.add_last(["limit", limit])
+	add_to_fields(a, "stars", stars.get_new_iterator_on_items)
+	add_to_fields(a, "fleets", fleets.get_new_iterator_on_items)
+	Result := a.get_new_iterator
+    end
+    
+    dependents: ITERATOR[STORABLE] is
+    local
+	a: ARRAY[STORABLE]
+    do
+	create a.make(1, 0)
+	a.add_last(limit)
+	add_dependents_to(a, stars.get_new_iterator_on_items)
+	add_dependents_to(a, fleets.get_new_iterator_on_items)
+	Result := a.get_new_iterator
+    end
+	
+feature {STORAGE} -- Retrieving
+    
+    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    do
+    end
+    
+    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
 	local
-		a: ARRAY[TUPLE[STRING, ANY]]
+	    star: like last_star
+	    fleet: like last_fleet
 	do
-		create a.make(1, 0)
-		a.add_last(["limit", limit])
-		add_to_fields(a, "stars", stars.get_new_iterator_on_items)
-		add_to_fields(a, "fleets", fleets.get_new_iterator_on_items)
-		Result := a.get_new_iterator
+	    from
+		stars.clear
+		fleets.clear
+	    until elems.is_off loop
+		if elems.item.first.is_equal("limit") then
+		    limit ?= elems.item.second
+		elseif elems.item.first.has_prefix("stars") then
+		    star ?= elems.item.second
+		    stars.add (star, star.id)
+		elseif elems.item.first.has_prefix("fleets") then
+		    fleet ?= elems.item.second
+		    fleets.add(fleet, fleet.id)
+		end
+		elems.next
+	    end
 	end
-
-	dependents: ITERATOR[STORABLE] is
-	local
-		a: ARRAY[STORABLE]
-	do
-		create a.make(1, 0)
-		a.add_last(limit)
-		add_to_dependents(a, stars.get_new_iterator_on_items)
-		add_to_dependents(a, fleets.get_new_iterator_on_items)
-		Result := a.get_new_iterator
-	end
+   
 	
 feature {NONE} -- Representation
 

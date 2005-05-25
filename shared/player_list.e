@@ -2,10 +2,10 @@ class PLAYER_LIST [P -> PLAYER]
 
 inherit
     PLAYER_CONSTANTS
-	STORABLE
-	redefine
-		dependents
-	end
+    STORABLE
+    redefine
+	dependents
+    end
 
 feature {NONE} -- Creation
 
@@ -140,22 +140,43 @@ feature -- Saving
 
 feature {STORAGE} -- Saving
 
-	get_class: STRING is "PLAYER_LIST"
+    get_class: STRING is "PLAYER_LIST"
+    
+    fields: ITERATOR[TUPLE[STRING, ANY]] is
+	local
+	    a: ARRAY[TUPLE[STRING, ANY]]
+	do
+	    create a.make (1,0)
+	    add_to_fields(a, "player", items.get_new_iterator_on_items)
+	    Result := a.get_new_iterator
+	end
+      
+    dependents: ITERATOR[STORABLE] is
+	do
+	    Result := items.get_new_iterator_on_items
+	end
 	
-	fields: ITERATOR[TUPLE[STRING, ANY]] is
-    local
-        a: ARRAY[TUPLE[STRING, ANY]]
+feature {STORAGE} -- Retrieving
+    
+    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     do
-		create a.make (1,0)
-        add_to_fields(a, "player", items.get_new_iterator_on_items)
-		Result := a.get_new_iterator
     end
 
-	dependents: ITERATOR[STORABLE] is
-	do
-		Result := items.get_new_iterator_on_items
+    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    local
+	player: P
+    do
+	from
+	    items.clear
+	until elems.is_off loop
+	    if elems.item.first.has_prefix("player") then
+		player ?= elems.item.second
+		items.add(player, player.name)
+	    end
+	    elems.next
 	end
-		
+    end
+    
 feature {NONE} -- Representation
 
     items: DICTIONARY [P, STRING]

@@ -79,10 +79,49 @@ feature {NONE} -- Internal
     net_initialize is
         -- Create all server attributes, publish them, etc.
     do
-        !!game.make_with_options (options)
+	if options.string_options.has("load") then
+	    load_game_from_file(options.string_options@"load")
+	else
+	    !!game.make_with_options (options)
+	end
         register (game.status, "game_status")
         register (game.players, "players_list")
     end
+    
+    load_game_from_file(filename: STRING) is
+    local
+	gme: S_GAME
+	ply: S_PLAYER
+	pln: PLANET
+	str: S_STAR
+	shp: SHIP
+	st: STORAGE_XML
+    do
+	create gme.make_with_options(options)
+	create ply.make("prototype", "")
+	create str.make_defaults
+	create pln.make_standard(str)
+	create st.make_with_filename(filename)
+	create shp.make(ply)
+	shp.set_id(666)
+	st.register(gme)
+	st.register(gme.galaxy)
+	st.register(gme.status)
+	st.register(gme.players)
+	st.register(ply)
+	st.register(gme.galaxy.limit)
+	st.register(str)
+	st.register(create {S_FLEET}.make)
+	st.register(pln)
+	st.register(create {COLONY}.make(pln, ply))
+	st.register(shp)
+	st.retrieve
+	game ?= st.retrieved
+    	game.init_game
+    end
+	
+	
+	
 
 feature -- Server attributes
 

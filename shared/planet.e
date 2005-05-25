@@ -1,12 +1,12 @@
 class PLANET
 
 inherit
-    ORBITING
-    MAP_CONSTANTS
-	STORABLE
-	redefine
-		dependents
-	end
+   ORBITING
+   MAP_CONSTANTS
+   STORABLE
+      redefine
+	 dependents
+      end
 
 creation make, make_standard
 
@@ -144,13 +144,6 @@ feature -- Access
 
     orbit: INTEGER
 
-feature -- Operations
-
-    add_ship (sh: SHIP) is
-    do
-        orbit_center.add_ship (sh)
-    end
-
 feature {STAR} -- To keep consistent orbits
     set_orbit (neworbit: INTEGER) is
     require
@@ -191,6 +184,48 @@ feature {STORAGE} -- Saving
 		Result := (<<colony, orbit_center>>).get_new_iterator
 	end
 	
+feature {STORAGE} -- Retrieving
+   
+    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    do
+    end
+    
+    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    local
+	i: reference INTEGER
+    do
+	from
+	until elems.is_off loop
+	    if elems.item.first.is_equal("colony") then
+		colony ?= elems.item.second
+	    elseif elems.item.first.is_equal("climate") then
+		i ?= elems.item.second
+		climate := i
+	    elseif elems.item.first.is_equal("mineral") then
+		i ?= elems.item.second
+		mineral := i
+	    elseif elems.item.first.is_equal("size") then
+		i ?= elems.item.second
+		size := i
+	    elseif elems.item.first.is_equal("gravity") then
+		i ?= elems.item.second
+		gravity := i
+	    elseif elems.item.first.is_equal("type") then
+		i ?= elems.item.second
+		type := i
+	    elseif elems.item.first.is_equal("special") then
+		i ?= elems.item.second
+		special := i
+	    elseif elems.item.first.is_equal("orbit") then
+		i ?= elems.item.second
+		orbit := i
+	    elseif elems.item.first.is_equal("orbit_center") then
+		orbit_center ?= elems.item.second
+	    end
+	    elems.next
+	end
+    end
+   
 invariant
     orbit_center /= Void
     climate.in_range (climate_min, climate_max)

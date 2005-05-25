@@ -3,7 +3,7 @@ class S_GALAXY
 inherit
     GALAXY
 	redefine make, last_star, last_fleet,
-		add_fleet, generate_scans
+		add_fleet, generate_scans, make_from_storage
 	end
 	SERVICE
 	redefine subscription_message end
@@ -165,5 +165,22 @@ feature -- Operations
             id.next
         end
     end
-
+    
+feature
+    
+    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    local
+	i: ITERATOR[S_FLEET]
+    do
+	Precursor(elems)
+	
+	from
+	    i := fleets.get_new_iterator_on_items
+	until
+	    i.is_off
+	loop
+	    server.register (i.item, "fleet" + i.item.id.to_string)
+	    i.next
+	end
+    end
 end -- S_GALAXY

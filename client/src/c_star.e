@@ -4,8 +4,10 @@ class C_STAR
 
 inherit
     STAR
-        redefine make, make_defaults, fleet_type, add_fleet end
+    redefine make, make_defaults, fleet_type, add_fleet end
     SUBSCRIBER
+    undefine copy, is_equal end
+	
 
 creation
     make, make_defaults

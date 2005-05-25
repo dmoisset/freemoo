@@ -54,9 +54,14 @@ feature
             -- Main connection loop
             start
             join
-            setup
-            play
-            cleanup
+	    if not server.has_joined then
+		rejoin
+	    end
+	    if server.has_joined then
+		setup
+		play
+		cleanup
+		end
         else
             print ("Connection failed.%N")
         end
@@ -93,6 +98,24 @@ feature
             print ("%N")
         else
             print ("Joined%N")
+        end
+    end
+
+    rejoin is
+        -- login failed, attempt to rejoin a started game
+    do
+        print ("Rejoining...%N")
+        server.rejoin (options.string_options @ "name",
+		       options.string_options @ "password")
+        from until server.has_joined or not server.is_joining loop
+            server.get_data (-1)
+        end
+        if not server.has_joined then
+            print ("Can't rejoin: ")
+            print (join_reject_causes @ server.join_reject_cause)
+            print ("%N")
+        else
+            print ("Rejoined%N")
         end
     end
 
@@ -137,6 +160,7 @@ feature
     once
         !!Result.make (reject_cause_duplicate, max_reject_cause)
         Result.put (l("Another player with that name is playing"), reject_cause_duplicate)
+	Result.put (l("Invalid Password"), reject_cause_password)
         Result.put (l("No room for more players"), reject_cause_noslots)
         Result.put (l("Game has finished"), reject_cause_finished)
         Result.put (l("Access denied"), reject_cause_denied)
