@@ -3,18 +3,12 @@ class COLONY
 inherit
     UNIQUE_ID
     select id end
-    STORABLE
-    rename
-	hash_code as id
-    redefine
-	dependents, primary_keys
-    end
 
 creation make
 
 feature {NONE} -- Creation
 
-    make (p: PLANET; o: PLAYER) is
+    make (p: like location; o: like owner) is
         -- Build `o' colony on planet `p'
     require
         p /= Void
@@ -43,6 +37,9 @@ feature -- Access
     owner: PLAYER
         -- Player that controls the colony
 
+    shipyard: SHIP
+        -- Placeholder for last built ship.  Game should come and fetch it.
+    
 feature -- Constants
 
     product_none,
@@ -62,16 +59,16 @@ feature -- Operations
 
     new_turn is
     local
-        sh: SHIP
+        sh: like shipyard
     do
         inspect
             producing
         when product_none then
             -- Nothing to do this turn
         when product_starship then
-            !STARSHIP!sh.make (owner)
+            !!sh.make (owner)
         when product_colony_ship then
-            !COLONY_SHIP!sh.make (owner)
+            !!sh.make (owner)
         end
         if sh /= Void then -- Ship produced
             shipyard := sh
@@ -99,7 +96,7 @@ feature -- Operations
 
 feature {GALAXY} -- Scanning
 
-	scan(alienfleet: FLEET; alienship: SHIP): BOOLEAN is
+	scan(alienfleet: FLEET; alienship: like shipyard): BOOLEAN is
 		-- Returns true if this colony picks up `alienship' with it's 
 		-- scanners.  `alienship' is part of `alienfleet'
 	require
@@ -133,72 +130,6 @@ feature {NONE} -- Auxiliary for scanning
 		scanner_range := 2
 	end
 	
-	
-feature -- Access
-
-    shipyard: SHIP
-        -- Placeholder for last built ship.  Game should come and fetch it.
-
-feature {STORAGE} -- Saving
-
-    get_class: STRING is "COLONY"
-	
-    fields: ITERATOR[TUPLE[STRING, ANY]] is
-    do
-	Result := (<<["producing", producing],
-		     ["owner", owner],
-		     ["location", location]
-		     >>).get_new_iterator
-    end
-    
-    primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
-    do
-	Result := (<<["id", id] >>).get_new_iterator
-    end
-    
-
-    dependents: ITERATOR[STORABLE] is
-    do
-	Result := (<<owner, location>>).get_new_iterator
-    end
-	
-feature {STORAGE} -- Retrieving
-    
-    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
-    local
-	i: reference INTEGER
-    do
-	from
-	until elems.is_off loop
-	    if elems.item.first.is_equal("id") then
-		i ?= elems.item.second
-		id := i
-	    end
-	    elems.next
-	end
-    end
-    
-    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
-    local
-	i: reference INTEGER
-    do
-	from
-	until elems.is_off loop
-	    if elems.item.first.is_equal("id") then
-		i ?= elems.item.second
-		id := i
-	    elseif elems.item.first.is_equal("producing") then
-		i ?= elems.item.second
-		producing := i
-	    elseif elems.item.first.is_equal("owner") then
-		owner ?= elems.item.second
-	    elseif elems.item.first.is_equal("location") then
-		location ?= elems.item.second
-	    end
-	    elems.next
-	end
-    end
-	 
 	
 invariant
     valid_producing: producing.in_range (product_min, product_max)

@@ -6,7 +6,7 @@ feature -- Access
     orbit_center: STAR
         -- Star being orbited by current
 
-    set_orbit_center(s:STAR) is
+    set_orbit_center(s:like orbit_center) is
     do
         orbit_center := s
     ensure

@@ -27,5 +27,5 @@ feature -- Access
 
     homeworlds: ARRAY [PLANET]
         -- Homeworld of each player, indexed by color
-
+    
 end -- class MAP_GENERATOR

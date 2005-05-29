@@ -2,11 +2,14 @@ class S_GALAXY
 	
 inherit
     GALAXY
-	redefine make, last_star, last_fleet,
-		add_fleet, generate_scans, make_from_storage
-	end
-	SERVICE
-	redefine subscription_message end
+    redefine make, last_star, last_fleet,
+	add_fleet, generate_scans, player_type, 
+	ship_type, colony_type
+    end
+    SERVICE
+    redefine subscription_message end
+    STORABLE
+    redefine dependents end
     SERVER
 	rename make as server_make end
 
@@ -35,7 +38,7 @@ feature -- Redefined features
         star: ITERATOR [like last_star]
         reading: like scanner
         fleet: ITERATOR [like last_fleet]
-        ship: ITERATOR [SHIP]
+        ship: ITERATOR [like ship_type]
     do
         !!s.make
         -- If first subscription to `service_id', add to `ids'
@@ -101,7 +104,7 @@ feature -- Redefined features
     build_fleet_message(new_fleets: like scanner; s: SERIALIZER2) is
         -- Serialize message sent for the ":new_fleets" in `s'
     local
-        it: ITERATOR[FLEET]
+        it: ITERATOR[like last_fleet]
     do
         s.add_integer (new_fleets.count)
         from
@@ -139,7 +142,7 @@ feature -- Access
 
 feature -- Operations
 
-    generate_scans (pl: ITERATOR [PLAYER]) is
+    generate_scans (pl: ITERATOR [like player_type]) is
     local
         scanname: STRING
     do
@@ -168,19 +171,75 @@ feature -- Operations
     
 feature
     
+
+feature -- Saving
+
+    hash_code: INTEGER is
+    do
+	Result := Current.to_pointer.hash_code
+    end
+	
+feature {STORAGE} -- Saving
+
+    get_class: STRING is "GALAXY"
+    
+    fields: ITERATOR[TUPLE[STRING, ANY]] is
+    local
+	a: ARRAY[TUPLE[STRING, ANY]]
+    do
+	create a.make(1, 0)
+	a.add_last(["limit", limit])
+	add_to_fields(a, "stars", stars.get_new_iterator_on_items)
+	add_to_fields(a, "fleets", fleets.get_new_iterator_on_items)
+	Result := a.get_new_iterator
+    end
+    
+    dependents: ITERATOR[STORABLE] is
+    local
+	a: ARRAY[STORABLE]
+    do
+	create a.make(1, 0)
+	a.add_last(limit)
+	add_dependents_to(a, stars.get_new_iterator_on_items)
+	add_dependents_to(a, fleets.get_new_iterator_on_items)
+	Result := a.get_new_iterator
+    end
+	
+feature {STORAGE} -- Retrieving
+    
+    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    do
+    end
+    
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-	i: ITERATOR[S_FLEET]
+	star: like last_star
+	fleet: like last_fleet
     do
-	Precursor(elems)
-	
 	from
-	    i := fleets.get_new_iterator_on_items
-	until
-	    i.is_off
-	loop
-	    server.register (i.item, "fleet" + i.item.id.to_string)
-	    i.next
+	    stars.clear
+	    fleets.clear
+	until elems.is_off loop
+	    if elems.item.first.is_equal("limit") then
+		limit ?= elems.item.second
+	    elseif elems.item.first.has_prefix("stars") then
+		star ?= elems.item.second
+		stars.add (star, star.id)
+	    elseif elems.item.first.has_prefix("fleets") then
+		fleet ?= elems.item.second
+		fleets.add(fleet, fleet.id)
+		server.register (fleet, "fleet" + fleet.id.to_string)
+	    end
+	    elems.next
 	end
     end
+    
+feature -- Anchors
+    
+    player_type: S_PLAYER
+    
+    colony_type: S_COLONY
+    
+    ship_type: S_SHIP
+    
 end -- S_GALAXY

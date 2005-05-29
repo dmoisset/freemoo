@@ -3,15 +3,8 @@ class FLEET
 
 inherit
     UNIQUE_ID
-	select id end
     POSITIONAL
     ORBITING
-	STORABLE
-	rename
-		hash_code as id
-	redefine
-		dependents, primary_keys
-	end
 
 creation
     make
@@ -55,7 +48,7 @@ feature -- Access
         Result := ships.has (sid)
     end
     
-    ship (sid: INTEGER): SHIP is
+    ship (sid: INTEGER): like ship_type is
         -- Ship in this fleet with id `sid'
     require
         has_ship (sid)
@@ -63,7 +56,7 @@ feature -- Access
         Result := ships @ sid
     end
     
-    get_new_iterator: ITERATOR[SHIP] is
+    get_new_iterator: ITERATOR[like ship_type] is
         -- Returns an iterator on the fleet's ships
     do
         Result:= ships.get_new_iterator_on_items
@@ -73,7 +66,7 @@ feature -- Access
 
 feature -- Operations
 
-    add_ship (s: SHIP) is
+    add_ship (s: like ship_type) is
         -- Add `s' to fleet
     do
         ships.put (s, s.id)
@@ -82,7 +75,7 @@ feature -- Operations
         has_ship (s.id)
     end
 
-    remove_ship (s: SHIP) is
+    remove_ship (s: like ship_type) is
         -- Remove `s' from fleet
     do
         ships.remove(s.id)
@@ -98,7 +91,7 @@ feature -- Operations
     end
 
 --other: like Current?
-    join (other: FLEET) is
+    join (other: like Current) is
         -- Join up with another fleet
     require
         other /= Void
@@ -111,7 +104,7 @@ feature -- Operations
         ship_count <= old ship_count + old other.ship_count
     end
 
-    split(sh: ITERATOR [SHIP]) is
+    split(sh: ITERATOR [like ship_type]) is
         -- Removes ships in`sh' from current fleet, and returns a 
         -- fleet with those ships, and the same
         -- `owner', `orbit_center', `destination' and `eta' as Current.
@@ -192,18 +185,18 @@ feature -- Operations
 
 feature -- Operations
 
-	copy_from (f: like Current) is
-		-- Copies all information from `f', except ship list
-	do
-		owner := f.owner
-		destination := f.destination
-		eta := f.eta
-		id := f.id
-		orbit_center := f.orbit_center
-		x := f.x
-		y := f.y
-		scanner_range := 0
-	end
+    copy_from (f: like Current) is
+	-- Copies all information from `f', except ship list
+    do
+	owner := f.owner
+	destination := f.destination
+	eta := f.eta
+	id := f.id
+	orbit_center := f.orbit_center
+	x := f.x
+	y := f.y
+	scanner_range := 0
+    end
 
     set_eta (e: INTEGER) is
     require
@@ -222,7 +215,7 @@ feature -- Operations
         d /= orbit_center implies destination = d
     end
 
-    set_owner (o: PLAYER) is
+    set_owner (o: like owner) is
     do
         owner := o
 		scanner_range := 0
@@ -232,39 +225,38 @@ feature -- Operations
 
 feature {GALAXY} -- Scanning
 
---alienfleet: like Current?
-	scan(alienfleet: FLEET; alienship: SHIP): BOOLEAN is
-		-- Returns true if this fleet picks up `alienship' with it's 
-		-- scanners.  `alienship' is part of `alienfleet'
-	require
-		alienfleet.has_ship(alienship.id)
-	do
-		if scanner_range = 0 then
-			recalculate_scanner_range
-		end
-		
-		if owner.sees_all_ships then
-			Result := true
-		else
-			if Current |-| alienfleet < scanner_range + alienship.size - alienship.ship_size_frigate then
-				Result := true
-			end
-		end
+    scan(alienfleet: like Current; alienship: like ship_type): BOOLEAN is
+	-- Returns true if this fleet picks up `alienship' with it's 
+	-- scanners.  `alienship' is part of `alienfleet'
+    require
+	alienfleet.has_ship(alienship.id)
+    do
+	if scanner_range = 0 then
+	    recalculate_scanner_range
 	end
+	
+	if owner.sees_all_ships then
+	    Result := true
+	else
+	    if Current |-| alienfleet < scanner_range + alienship.size - alienship.ship_size_frigate then
+		Result := true
+	    end
+	end
+    end
 	
 feature {NONE} -- Auxiliary for scanning
 
-	scanner_range: INTEGER
-		-- Scanner range considering all our fleet's modifiers.  
-		-- Should be reset to 0 after any modification (joining, 
-		-- splitting, leader assignment, etc.).
-	
-	recalculate_scanner_range is
-		-- Recalculates `scanner_range' considering all our modifiers.
-		-- Quite dumb for now...
-	do
-		scanner_range := 2
-	end
+    scanner_range: INTEGER
+	-- Scanner range considering all our fleet's modifiers.  
+	-- Should be reset to 0 after any modification (joining, 
+	-- splitting, leader assignment, etc.).
+    
+    recalculate_scanner_range is
+	-- Recalculates `scanner_range' considering all our modifiers.
+	-- Quite dumb for now...
+    do
+	scanner_range := 2
+    end
 	
 feature {NONE} -- Creation
 
@@ -287,103 +279,15 @@ feature {NONE} -- Internal
         Result >= 0
     end
 
-feature {STORAGE} -- Saving
-    
-    get_class: STRING is "FLEET"
-    
-    fields: ITERATOR[TUPLE[STRING, ANY]] is
-    local
-	a: ARRAY[TUPLE[STRING, ANY]]
-    do
-	create a.make(1, 0)
-	a.add_last(["x", x])
-	a.add_last(["y", y])
-	a.add_last(["orbit_center", orbit_center])
-	a.add_last(["owner", owner])
-	a.add_last(["destination", destination])
-	a.add_last(["eta", eta])
-	a.add_last(["current_speed", current_speed]) 
-	add_to_fields(a, "ship", ships.get_new_iterator_on_items)
-	Result := a.get_new_iterator
-    end
-    
-    primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
-    do
-	Result := (<<["id", id] >>).get_new_iterator
-    end
-    
-    dependents: ITERATOR[STORABLE] is
-    local
-	a: ARRAY[STORABLE]
-    do
-	create a.make(1, 0)
-	a.add_last(orbit_center)
-	a.add_last(owner)
-	a.add_last(destination)
-	add_dependents_to(a, ships.get_new_iterator_on_items)
-	Result := a.get_new_iterator
-    end
-    
-feature {STORAGE} -- Retrieving	
-    
-    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
-    local
-	i: reference INTEGER
-    do
-	from
-	until elems.is_off loop
-	    if elems.item.first.is_equal("id") then
-		i ?= elems.item.second
-		id := i
-	    end
-	    elems.next
-	end
-    end
-    
-    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
-    local
-	i: reference INTEGER
-	r: reference REAL
-	s: SHIP
-    do
-	from
-	    ships.clear
-	until elems.is_off loop
-	    if elems.item.first.is_equal("id") then
-		i ?= elems.item.second
-		id := i
-	    elseif elems.item.first.is_equal("x") then
-		r ?= elems.item.second
-		x := r
-	    elseif elems.item.first.is_equal("y") then
-		r ?= elems.item.second
-		y := r
-	    elseif elems.item.first.is_equal("orbit_center") then
-		orbit_center ?= elems.item.second
-	    elseif elems.item.first.is_equal("owner") then
-		owner ?= elems.item.second
-	    elseif elems.item.first.is_equal("destination") then
-		destination ?= elems.item.second
-	    elseif elems.item.first.is_equal("eta") then
-		i ?= elems.item.second
-		eta := i
-	    elseif elems.item.first.is_equal("current_speed") then
-		r ?= elems.item.second
-		current_speed := r
-	    elseif elems.item.first.has_prefix("ship") then
-		s ?= elems.item.second
-		ships.add (s, s.id)
-	    end
-	    elems.next
-	end
-    end
-	 
-   
 feature {FLEET} -- Representation
 
-    ships: DICTIONARY [SHIP, INTEGER]
+    ships: DICTIONARY [like ship_type, INTEGER]
         -- Ships, indexed by id
-
+    
+feature -- Anchors
+    
+    ship_type: SHIP    
+    
 invariant
     orbiting_really_here: is_in_orbit implies distance_to (orbit_center) = 0
 

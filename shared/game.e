@@ -3,9 +3,6 @@ class GAME
 
 inherit
     PLAYER_CONSTANTS
-    STORABLE
-    redefine dependents
-    end
 
 feature {NONE} -- Creation
 
@@ -161,7 +158,7 @@ feature -- Operations
         status.next_date
         if not end_condition then
             players.set_all_state (st_playing_turn)
-			save
+	    save
         else
             players.set_all_state (st_end_game)
             status.finish
@@ -180,7 +177,7 @@ feature {NONE} -- Internal
         -- Advance turn for colonies
     local
         s: ITERATOR [like star_type]
-        p: ITERATOR [PLANET]
+        p: ITERATOR [like planet_type]
         f: ITERATOR [like fleet_type]
         fleet: like fleet_type
     do
@@ -250,73 +247,13 @@ feature -- Saving
     do
 	Result := Current.to_pointer.hash_code
     end
-		
-feature {STORAGE} -- Saving
-
-   get_class: STRING is "GAME"
-   
-   fields: ITERATOR[TUPLE[STRING, ANY]] is
-      local
-	 a: ARRAY[TUPLE[STRING, ANY]]
-      do
-	 create a.make(1, 0)
-	 a.add_last(["status", status])
-	 a.add_last(["players", players])
-	 a.add_last(["galaxy", galaxy])
-	 Result := a.get_new_iterator
-      end
-   
-   dependents: ITERATOR[STORABLE] is
-      local
-	 a: ARRAY[STORABLE]
-      do
-	 create a.make(1, 0)
-	 a.add_last(status)
-	 a.add_last(players)
-	 a.add_last(galaxy)
-	 Result := a.get_new_iterator
-      end
-	
-feature {STORAGE} -- Operations - Retrieving
     
-    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+feature {NONE} -- Internal - Saving
+    
+    save is
     do
     end
     
-    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
-    do
-	from 
-	until elems.is_off
-	loop
-	    if elems.item.first.is_equal("status") then
-		status ?= elems.item.second
-	    elseif elems.item.first.is_equal("players") then
-		players ?= elems.item.second
-	    elseif elems.item.first.is_equal("galaxy") then
-		galaxy ?= elems.item.second
-	    end
-	    elems.next
-	end
-	if galaxy = Void or players = Void or status = Void then
-	    print("game.e:  Called make_from_storage with nonsensical elems!")
-	end
-    end
-    
-feature {NONE} -- Saving
-   
-   save is
-      do
-	 save_with_filename("freeMOO_autosave_" + status.date.to_string + ".xml")
-      end
-   
-   save_with_filename(filename: STRING) is
-      local
-	 st: STORAGE_XML
-      do
-	 create st.make_with_filename(filename)
-	 st.store(Current)
-      end
-   
 feature {NONE} -- Internal
 
     fleet_type: FLEET
@@ -324,7 +261,10 @@ feature {NONE} -- Internal
 
     star_type: STAR
         -- Just an anchor for typing of stars
-
+    
+    planet_type: PLANET
+	-- Just an anchor for typing of planets
+    
 invariant
     map_generator /= Void
 

@@ -173,7 +173,7 @@ feature {NONE} -- Operations
     local
         fleet: S_FLEET
         destination: S_STAR
-        ships: SET [SHIP]
+        ships: SET [S_SHIP]
         i, count: INTEGER
     do
         -- Unserialize

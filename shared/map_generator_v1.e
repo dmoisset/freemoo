@@ -179,11 +179,12 @@ feature {NONE} -- Planet Generation
         loop
             rand.next
             if rand.last_integer (100) <= planet_prob @ (star.kind) then
-                !!planet.make (star, planet_sizes.random_item,
-                planet_climates.item (star.kind).random_item,
-                planet_minerals.item (star.kind).random_item,
-                planet_gravs.item (star.kind).random_item,
-                planet_types.random_item, plspecial_nospecial)
+		planet := star.create_planet
+		planet.set_size(planet_sizes.random_item)
+		planet.set_climate(planet_climates.item(star.kind).random_item)
+		planet.set_mineral(planet_minerals.item(star.kind).random_item)
+		planet.set_gravity(planet_gravs.item(star.kind).random_item)
+		planet.set_type(planet_types.random_item)
                 star.set_planet (planet, i)
             end
             i := i + 1
@@ -196,17 +197,21 @@ feature {NONE} -- Planet Generation
         orion: PLANET
     do
         orion_system := galaxy.closest_star_to_or_within (center, 8, dont_touch)
-        !!orion.make (orion_system, plsize_huge, climate_gaia,
-                      mnrl_ultrarich, grav_normalg, type_planet,
-                      plspecial_nospecial)
+	orion := orion_system.create_planet
+	orion.set_size(plsize_huge)
+	orion.set_climate(climate_gaia)
+	orion.set_mineral(mnrl_ultrarich)
+	orion.set_gravity(grav_normalg)
+	orion.set_type(type_planet)
+	orion.set_special(plspecial_nospecial)
         rand.next
 		
         orion_system.set_planet (orion, rand.last_integer (orion_system.Max_planets))
         orion_system.set_special (stspecial_orion)
-		from
-		until orion_system.kind /= kind_blackhole
-		loop orion_system.set_kind(star_kinds.random_item)
-		end
+	from
+	until orion_system.kind /= kind_blackhole
+	loop orion_system.set_kind(star_kinds.random_item)
+	end
         orion_system.set_name ("Orion")
         dont_touch.add (orion_system)
     end
@@ -238,18 +243,22 @@ feature {NONE} -- Planet Generation
         until i.is_off loop
             hmworldpos := walk_point (step * done + offset)
             hmworld_system := galaxy.closest_star_to (hmworldpos, dont_touch)
-            !!hmworld.make (hmworld_system, plsize_medium,
-                            climate_terran, mnrl_abundant, grav_normalg,
-                            type_planet, plspecial_nospecial)
+	    hmworld := hmworld_system.create_planet
+	    hmworld.set_size(plsize_medium)
+	    hmworld.set_climate(climate_terran)
+	    hmworld.set_mineral(mnrl_abundant)
+	    hmworld.set_gravity(grav_normalg)
+	    hmworld.set_type(type_planet)
+	    hmworld.set_special(plspecial_nospecial)
             rand.next
             hmworld_system.set_planet (hmworld, rand.last_integer (hmworld_system.Max_planets))
             hmworld_system.set_name (hmworldnams.item (i.item.color))
-			from
-			until hmworld_system.kind /= kind_blackhole
-			loop hmworld_system.set_kind(star_kinds.random_item)
-			end
--- should be create {COLONY}, but it doesn't work
-            !!newcol.make (hmworld, i.item)
+	    from
+	    until hmworld_system.kind /= kind_blackhole
+	    loop hmworld_system.set_kind(star_kinds.random_item)
+	    end
+	    -- should be create {COLONY}, but it doesn't work
+	    newcol := hmworld.create_colony(i.item)
             i.item.add_to_known_list (hmworld_system)
             i.item.add_to_visited_list (hmworld_system)
             done := done + 1
@@ -362,7 +371,7 @@ feature{NONE} -- Internal Constants
 
     mindelta: REAL is 2.5
     maxdelta: REAL is 5
-
+    
 invariant
     size /= Void
     limit /= Void

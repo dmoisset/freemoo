@@ -1,9 +1,5 @@
 class GALAXY
 
-inherit
-	STORABLE
-	redefine dependents end
-	
 creation
     make
 
@@ -22,60 +18,60 @@ feature -- Access
     limit: COORDS
         -- Outermost corner of galaxy, opposite to (0, 0)
 
-    scanner (player: PLAYER): ARRAY [like last_fleet] is
+    scanner (player: like player_type): ARRAY [like last_fleet] is
         -- All fleets detected by `player' (not including their own)
     local
-        alienship: ITERATOR[SHIP]
+        alienship: ITERATOR[like ship_type]
         alienfleet, ownfleet: ITERATOR [like last_fleet]
-        owncolony: ITERATOR[COLONY]
+        owncolony: ITERATOR[like colony_type]
         ships_detected, detected: BOOLEAN
         fleet: like last_fleet
     do
---		print("Scanner for player " + player.id.to_string)
-		!!Result.with_capacity(0,1)
-		from
-			alienfleet := fleets.get_new_iterator_on_items
-		until alienfleet.is_off loop
-			ships_detected := false
-			if alienfleet.item.owner /= player then
-				from alienship := alienfleet.item.get_new_iterator
-				until alienship.is_off loop
-					detected := false
-					from ownfleet := fleets.get_new_iterator_on_items
-					until ownfleet.is_off or detected loop
-						if ownfleet.item.owner = player and then ownfleet.item.scan(alienfleet.item, alienship.item) then
-							detected := true
-							if not ships_detected then
-								ships_detected := true
-								!!fleet.make
-								fleet.copy_from(alienfleet.item)
+	--		print("Scanner for player " + player.id.to_string)
+	!!Result.with_capacity(0,1)
+	from
+	    alienfleet := fleets.get_new_iterator_on_items
+	until alienfleet.is_off loop
+	    ships_detected := false
+	    if alienfleet.item.owner /= player then
+		from alienship := alienfleet.item.get_new_iterator
+		until alienship.is_off loop
+		    detected := false
+		    from ownfleet := fleets.get_new_iterator_on_items
+		    until ownfleet.is_off or detected loop
+			if ownfleet.item.owner = player and then ownfleet.item.scan(alienfleet.item, alienship.item) then
+			    detected := true
+			    if not ships_detected then
+				ships_detected := true
+				!!fleet.make
+				fleet.copy_from(alienfleet.item)
                             end
-							fleet.add_ship(alienship.item)
-						end
-						ownfleet.next
-					end
-					from owncolony := player.colonies.get_new_iterator_on_items
-					until owncolony.is_off or detected loop
-						if owncolony.item.scan(alienfleet.item, alienship.item) then
-							detected := true
-							if not ships_detected then
-								ships_detected := true
-								!!fleet.make
-								fleet.copy_from(alienfleet.item)
-							end
-							fleet.add_ship(alienship.item)
-						end
-						owncolony.next
-					end
-					alienship.next
-				end
-				if ships_detected then
-					Result.add_last(fleet)
-				end
+			    fleet.add_ship(alienship.item)
 			end
-			alienfleet.next
+			ownfleet.next
+		    end
+		    from owncolony := player.colonies.get_new_iterator_on_items
+		    until owncolony.is_off or detected loop
+			if owncolony.item.scan(alienfleet.item, alienship.item) then
+			    detected := true
+			    if not ships_detected then
+				ships_detected := true
+				!!fleet.make
+				fleet.copy_from(alienfleet.item)
+			    end
+			    fleet.add_ship(alienship.item)
+			end
+			owncolony.next
+		    end
+		    alienship.next
 		end
---		print(" picks up " + Result.count.to_string + " alien fleets%N")
+		if ships_detected then
+		    Result.add_last(fleet)
+		end
+	    end
+	    alienfleet.next
+	end
+	--		print(" picks up " + Result.count.to_string + " alien fleets%N")
     end
 
     scans: DICTIONARY [ARRAY [like last_fleet], INTEGER]
@@ -181,7 +177,7 @@ feature -- Access -- fleet list
 
 feature -- Operations
 
-    generate_scans (pl: ITERATOR [PLAYER]) is
+    generate_scans (pl: ITERATOR [like player_type]) is
         -- Store in `scans' current scanner for all players in `pl'
     require
         pl /= Void
@@ -213,7 +209,7 @@ feature -- Operations
         fleets.remove (f.id)
     end
 
-    fleet_orders (fleet: like last_fleet; destination: like last_star; ships: SET[SHIP]) is
+    fleet_orders (fleet: like last_fleet; destination: like last_star; ships: SET[like ship_type]) is
         -- Set fleet orders of `fleet', sending its `ships' toward 
         -- `destination'
     require
@@ -334,68 +330,6 @@ feature {MAP_GENERATOR} -- Generation
     ensure
         limit = l
     end
-
-feature -- Saving
-
-	hash_code: INTEGER is
-	do
-		Result := Current.to_pointer.hash_code
-	end
-	
-feature {STORAGE} -- Saving
-
-    get_class: STRING is "GALAXY"
-    
-    fields: ITERATOR[TUPLE[STRING, ANY]] is
-    local
-	a: ARRAY[TUPLE[STRING, ANY]]
-    do
-	create a.make(1, 0)
-	a.add_last(["limit", limit])
-	add_to_fields(a, "stars", stars.get_new_iterator_on_items)
-	add_to_fields(a, "fleets", fleets.get_new_iterator_on_items)
-	Result := a.get_new_iterator
-    end
-    
-    dependents: ITERATOR[STORABLE] is
-    local
-	a: ARRAY[STORABLE]
-    do
-	create a.make(1, 0)
-	a.add_last(limit)
-	add_dependents_to(a, stars.get_new_iterator_on_items)
-	add_dependents_to(a, fleets.get_new_iterator_on_items)
-	Result := a.get_new_iterator
-    end
-	
-feature {STORAGE} -- Retrieving
-    
-    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
-    do
-    end
-    
-    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
-	local
-	    star: like last_star
-	    fleet: like last_fleet
-	do
-	    from
-		stars.clear
-		fleets.clear
-	    until elems.is_off loop
-		if elems.item.first.is_equal("limit") then
-		    limit ?= elems.item.second
-		elseif elems.item.first.has_prefix("stars") then
-		    star ?= elems.item.second
-		    stars.add (star, star.id)
-		elseif elems.item.first.has_prefix("fleets") then
-		    fleet ?= elems.item.second
-		    fleets.add(fleet, fleet.id)
-		end
-		elems.next
-	    end
-	end
-   
 	
 feature {NONE} -- Representation
 
@@ -404,7 +338,15 @@ feature {NONE} -- Representation
 
     fleets: DICTIONARY [like last_fleet, INTEGER]
         -- All fleets in space
-
+    
+feature -- Anchors
+    
+    ship_type: SHIP
+    
+    colony_type: COLONY
+    
+    player_type: PLAYER
+    
 invariant
     stars /= Void
     fleets /= Void

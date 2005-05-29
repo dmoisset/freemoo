@@ -1,16 +1,21 @@
 class S_STAR
 
 inherit
-    UNIQUE_ID
-    undefine copy, is_equal end
     STAR
-    redefine
-	set_planet, set_special, set_name, make, make_defaults,
-	fleet_type
-    end
-    SERVICE
     undefine
 	copy, is_equal
+    redefine
+	set_planet, set_special, set_name, make, make_defaults,
+	fleet_type, planet_type
+    end
+    STORABLE
+    rename
+	hash_code as id
+    redefine
+	dependents, primary_keys, copy, is_equal
+    end
+    SERVICE
+    undefine copy, is_equal
     redefine subscription_message end
 
 creation make, make_defaults
@@ -34,7 +39,7 @@ feature -- Redefined Features
     subscription_message (service_id: STRING): STRING is
     local
         s: SERIALIZER2
-        i: ITERATOR [PLANET]
+        i: ITERATOR [like planet_type]
     do
         !!s.make
         -- Setup id upon first subscription
@@ -62,7 +67,7 @@ feature -- Redefined Features
 
 feature {MAP_GENERATOR} -- Redefined
 
-    set_planet (newplanet: PLANET; orbit: INTEGER) is
+    set_planet (newplanet: like planet_type; orbit: INTEGER) is
     do
         Precursor(newplanet, orbit)
         update_clients
@@ -94,8 +99,118 @@ feature -- Operations
         end
     end
 
+feature -- Operations
+    
+    copy(other: like Current) is
+    do
+	standard_copy(other)
+	planets := clone(other.planets)
+	fleets := clone(other.fleets)
+    end
+    
+    is_equal(other: like Current): BOOLEAN is
+    do
+	Result := id = other.id
+    end
+    
+feature {STORAGE} -- Saving
+
+    get_class: STRING is "STAR"
+    
+    fields: ITERATOR[TUPLE[STRING, ANY]] is
+    local
+	a: ARRAY[TUPLE[STRING, ANY]]
+    do
+	create a.make(1, 0)
+	a.add_last(["name", name])
+	a.add_last(["kind", kind])
+	a.add_last(["size", size])
+	a.add_last(["special", special])
+	a.add_last(["x", x])
+	a.add_last(["y", y])
+	add_to_fields(a, "planet", planets.get_new_iterator)
+	add_to_fields(a, "fleet", fleets.get_new_iterator_on_items)
+	Result := a.get_new_iterator
+    end
+    
+    primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
+    do
+	Result := (<<["id", id] >>).get_new_iterator
+    end
+    
+    dependents: ITERATOR[STORABLE] is
+    local
+	a: ARRAY[STORABLE]
+    do
+	a := clone(planets)
+	add_dependents_to(a, fleets.get_new_iterator_on_items)
+	Result := a.get_new_iterator
+    end
+    
+feature {STORAGE} -- Retrieving
+   
+    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    local
+	i: reference INTEGER
+    do
+	from
+	until elems.is_off loop
+	    if elems.item.first.is_equal("id") then
+		i ?= elems.item.second
+		id := i
+	    end
+	    elems.next
+	end
+    end
+    
+    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    local
+	n: INTEGER
+	i: reference INTEGER
+	r: reference REAL
+	planet: like planet_type
+	fleet: like fleet_type
+    do
+	from
+	    planets.set_all_with(Void)
+	    fleets.clear
+	until elems.is_off loop
+	    if elems.item.first.is_equal("name") then
+		name ?= elems.item.second
+	    elseif elems.item.first.is_equal("kind") then
+		i ?= elems.item.second
+		kind := i
+	    elseif elems.item.first.is_equal("size") then
+		i ?= elems.item.second
+		size := i
+	    elseif elems.item.first.is_equal("special") then
+		i ?= elems.item.second
+		special := i
+	    elseif elems.item.first.is_equal("x") then
+		r ?= elems.item.second
+		x := r
+	    elseif elems.item.first.is_equal("y") then
+		r ?= elems.item.second
+		y := r
+	    elseif elems.item.first.is_equal("id") then
+		i ?= elems.item.second
+		id := i
+	    elseif elems.item.first.has_prefix("planet") then
+		n := elems.item.first.last.value
+		planet ?= elems.item.second
+		planets.put (planet, n + 1)
+	    elseif elems.item.first.has_prefix("fleet") then
+		fleet ?= elems.item.second
+		fleets.add(fleet, fleet.id)
+	    end
+	    elems.next
+	end
+    end
+
 feature {NONE} -- Internal
 
     fleet_type: S_FLEET
+    
+    planet_type: S_PLANET
     
 end -- class S_STAR

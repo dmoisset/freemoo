@@ -3,16 +3,12 @@ class PLANET
 inherit
    ORBITING
    MAP_CONSTANTS
-   STORABLE
-      redefine
-	 dependents
-      end
 
 creation make, make_standard
 
 feature {NONE} -- Creation
 
-    make_standard (star: STAR) is
+    make_standard (star: like orbit_center) is
         -- New planet orbiting `s'
     require
         star /= Void
@@ -30,7 +26,7 @@ feature {NONE} -- Creation
     end
 
 
-    make (star: STAR; newsize, newclimate, newmnrl, newgrav, newtype, newspecial: INTEGER) is
+    make (star: like orbit_center; newsize, newclimate, newmnrl, newgrav, newtype, newspecial: INTEGER) is
         -- New planet orbiting `s'
     require
         star /= Void
@@ -118,7 +114,7 @@ feature -- Operations
 
 feature {COLONY}
 
-    set_colony (newcolony: COLONY) is
+    set_colony (newcolony: like colony) is
     do
         colony := newcolony
     ensure
@@ -153,79 +149,16 @@ feature {STAR} -- To keep consistent orbits
     ensure
         orbit = neworbit
     end
-
-feature -- Saving
-
-	hash_code: INTEGER is
-	do
-		Result := Current.to_pointer.hash_code
-	end
-
-feature {STORAGE} -- Saving
-
-	get_class: STRING is "PLANET"
-	
-	fields: ITERATOR[TUPLE[STRING, ANY]] is
-	do
-		Result := (<<["colony", colony],
-					 ["climate", climate],
-					 ["mineral", mineral],
-					 ["size", size],
-					 ["gravity", gravity],
-					 ["type", type],
-					 ["special", special],
-					 ["orbit", orbit]
-					 ["orbit_center", orbit_center]
-					 >>).get_new_iterator
-	end
-
-	dependents: ITERATOR[STORABLE] is
-	do
-		Result := (<<colony, orbit_center>>).get_new_iterator
-	end
-	
-feature {STORAGE} -- Retrieving
-   
-    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    
+feature -- Factory methods
+    
+    create_colony(p: PLAYER): like colony is
+    require p /= Void
     do
+	create Result.make(Current, p)
     end
     
-    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
-    local
-	i: reference INTEGER
-    do
-	from
-	until elems.is_off loop
-	    if elems.item.first.is_equal("colony") then
-		colony ?= elems.item.second
-	    elseif elems.item.first.is_equal("climate") then
-		i ?= elems.item.second
-		climate := i
-	    elseif elems.item.first.is_equal("mineral") then
-		i ?= elems.item.second
-		mineral := i
-	    elseif elems.item.first.is_equal("size") then
-		i ?= elems.item.second
-		size := i
-	    elseif elems.item.first.is_equal("gravity") then
-		i ?= elems.item.second
-		gravity := i
-	    elseif elems.item.first.is_equal("type") then
-		i ?= elems.item.second
-		type := i
-	    elseif elems.item.first.is_equal("special") then
-		i ?= elems.item.second
-		special := i
-	    elseif elems.item.first.is_equal("orbit") then
-		i ?= elems.item.second
-		orbit := i
-	    elseif elems.item.first.is_equal("orbit_center") then
-		orbit_center ?= elems.item.second
-	    end
-	    elems.next
-	end
-    end
-   
+    
 invariant
     orbit_center /= Void
     climate.in_range (climate_min, climate_max)

@@ -92,9 +92,9 @@ feature {NONE} -- Internal
     local
 	gme: S_GAME
 	ply: S_PLAYER
-	pln: PLANET
+	pln: S_PLANET
 	str: S_STAR
-	shp: SHIP
+	shp: S_SHIP
 	st: STORAGE_XML
     do
 	create gme.make_with_options(options)
@@ -113,7 +113,7 @@ feature {NONE} -- Internal
 	st.register(str)
 	st.register(create {S_FLEET}.make)
 	st.register(pln)
-	st.register(create {COLONY}.make(pln, ply))
+	st.register(create {S_COLONY}.make(pln, ply))
 	st.register(shp)
 	st.retrieve
 	game ?= st.retrieved
