@@ -96,17 +96,17 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         s.get_integer
         count := s.last_integer
         !!new_fleets.make
-		from fleet_it := fleets.get_new_iterator_on_items
-		until fleet_it.is_off
-		loop
-			if fleet_it.item.owner = server.player then
-				new_fleets.add(fleet_it.item, fleet_it.item.id)
-				if fleet_it.item.orbit_center /= Void and then fleet_it.item.destination = Void then
-					fleet_it.item.orbit_center.add_fleet (fleet_it.item)
-				end
-			end
-			fleet_it.next
+	from fleet_it := fleets.get_new_iterator_on_items
+	until fleet_it.is_off
+	loop
+	    if fleet_it.item.owner = server.player then
+		new_fleets.add(fleet_it.item, fleet_it.item.id)
+		if fleet_it.item.orbit_center /= Void and then fleet_it.item.destination = Void then
+		    fleet_it.item.orbit_center.add_fleet (fleet_it.item)
 		end
+	    end
+	    fleet_it.next
+	end
 
         from until count = 0 loop
             !!fleet.make
@@ -129,7 +129,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             s.get_integer -- Ship count
             shipcount := s.last_integer
             fleet.unserialize_from (s)
-            new_fleets.add(fleet, fleet.id)
+            new_fleets.put(fleet, fleet.id)
             from until shipcount = 0 loop
                 !!ship.make (fleet.owner)
                 s.get_integer

@@ -97,25 +97,27 @@ feature {NONE} -- Creation
 
 feature {GALAXY_VIEW} -- Auxiliary for commanding
 
-	some_ships_selected: BOOLEAN is
-	do
-		Result := not fleet_selection.is_empty
+    some_ships_selected: BOOLEAN is
+    do
+	Result := not fleet_selection.is_empty
+    end
+    
+    model_position: POSITIONAL is
+    do
+	Result := fleet
+    end
+    
+    set_cancel_trajectory_selection_callback (p: PROCEDURE[ANY, TUPLE]) is
+    do
+	cancel_trajectory_selection_handler := p
+    end
+    
+    send_selection_to(s: STAR) is
+    do
+	if fleet.owner = server.player then
+	    server.move_fleet(fleet, s, fleet_selection)
 	end
-	
-	model_position: POSITIONAL is
-	do
-		Result := fleet
-	end
-
-	set_cancel_trajectory_selection_callback (p: PROCEDURE[ANY, TUPLE]) is
-	do
-		cancel_trajectory_selection_handler := p
-	end
-
-	send_selection_to(s: STAR) is
-	do
-		server.move_fleet(fleet, s, fleet_selection)
-	end
+    end
 	
 feature {NONE} -- Callbacks
 
