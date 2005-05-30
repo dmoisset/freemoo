@@ -2,12 +2,8 @@ class S_FLEET
 
 inherit
     SERVICE
-    undefine
-	copy, is_equal
     redefine subscription_message end
     FLEET
-    undefine
-	copy, is_equal
     redefine
 	set_destination, add_ship, split, move,
 	join, clear_ships, orbit_center, owner, ship_type
