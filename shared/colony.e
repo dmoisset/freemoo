@@ -2,7 +2,6 @@ class COLONY
 
 inherit
     UNIQUE_ID
-    select id end
 
 creation make
 
