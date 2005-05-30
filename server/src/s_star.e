@@ -192,9 +192,6 @@ feature {STORAGE} -- Retrieving
 	    elseif elems.item.first.is_equal("y") then
 		r ?= elems.item.second
 		y := r
-	    elseif elems.item.first.is_equal("id") then
-		i ?= elems.item.second
-		id := i
 	    elseif elems.item.first.has_prefix("planet") then
 		n := elems.item.first.last.value
 		planet ?= elems.item.second
