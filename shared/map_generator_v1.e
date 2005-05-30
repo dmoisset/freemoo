@@ -185,6 +185,7 @@ feature {NONE} -- Planet Generation
 		planet.set_mineral(planet_minerals.item(star.kind).random_item)
 		planet.set_gravity(planet_gravs.item(star.kind).random_item)
 		planet.set_type(planet_types.random_item)
+		planet.set_special(plspecial_nospecial)
                 star.set_planet (planet, i)
             end
             i := i + 1
@@ -257,7 +258,6 @@ feature {NONE} -- Planet Generation
 	    until hmworld_system.kind /= kind_blackhole
 	    loop hmworld_system.set_kind(star_kinds.random_item)
 	    end
-	    -- should be create {COLONY}, but it doesn't work
 	    newcol := hmworld.create_colony(i.item)
             i.item.add_to_known_list (hmworld_system)
             i.item.add_to_visited_list (hmworld_system)
