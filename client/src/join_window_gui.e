@@ -37,6 +37,9 @@ feature {NONE} -- Creation
         r.set_with_size (297, 332, 125, 20)
         !!password.make (Current, r)
         password.enable_text_hiding
+        
+        name.set_next_in_tab_order (password)
+        password.set_next_in_tab_order (name)
 
         r.set_with_size (120, 350, 400, 25)
         !!status_label.make (Current, r, "Join as new player or rejoin as existing one.")

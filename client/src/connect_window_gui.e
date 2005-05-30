@@ -31,6 +31,9 @@ feature {NONE} -- Creation
         !!port_entry.make (background, r)
         port_entry.set_text ("3002")
 
+        host_entry.set_next_in_tab_order (port_entry)
+        port_entry.set_next_in_tab_order (host_entry)
+
         -- Make buttons
         !BUTTON_IMAGE!connect_button.make (background, 220, 250,
             create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-u.fmi"),
