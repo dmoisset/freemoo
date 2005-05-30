@@ -202,9 +202,6 @@ feature {STORAGE} -- Retrieving
 	    elseif elems.item.first.is_equal("sees_all_ships") then
 		b ?= elems.item.second
 		sees_all_ships := b
-	    elseif elems.item.first.is_equal("id") then
-		i ?= elems.item.second
-		id := i
 	    elseif elems.item.first.has_prefix("colony") then
 		colony ?= elems.item.second
 		colonies.add (colony, colony.id)
