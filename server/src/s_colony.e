@@ -67,10 +67,7 @@ feature {STORAGE} -- Retrieving
     do
 	from
 	until elems.is_off loop
-	    if elems.item.first.is_equal("id") then
-		i ?= elems.item.second
-		id := i
-	    elseif elems.item.first.is_equal("producing") then
+	    if elems.item.first.is_equal("producing") then
 		i ?= elems.item.second
 		producing := i
 	    elseif elems.item.first.is_equal("owner") then
