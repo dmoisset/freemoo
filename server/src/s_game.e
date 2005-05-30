@@ -33,13 +33,12 @@ feature -- Operations
         status.fill_slot
     end
     
-feature -- Things done when game is ready to play
-
     init_game is
     local
         i: ITERATOR [S_PLAYER]
         j: ITERATOR [like star_type]
     do
+        -- This feature is public because it must be called when loading a game
         Precursor
         -- Register galaxy
         server.register (galaxy, "galaxy")
