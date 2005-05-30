@@ -75,6 +75,11 @@ feature -- Access
     connection: SPP_SERVER_CONNECTION
         -- Conection to client
 
+    is_equal(other: like Current): BOOLEAN is
+    do
+	Result := id = other.id
+    end
+    
 feature -- Redefined features
 
     subscription_message (service_id: STRING): STRING is
@@ -114,11 +119,6 @@ feature -- Operations
 	colonies := clone(other.colonies)
 	knows_star := clone(other.knows_star)
 	has_visited_star := clone(other.has_visited_star)
-    end
-    
-    is_equal(other: like Current): BOOLEAN is
-    do
-	Result := id = other.id
     end
     
 feature {STORAGE} -- Saving
