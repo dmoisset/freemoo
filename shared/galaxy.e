@@ -177,7 +177,7 @@ feature -- Access -- fleet list
 
 feature -- Operations
 
-    generate_scans (pl: ITERATOR [like player_type]) is
+    generate_scans (pl: ITERATOR [PLAYER]) is
         -- Store in `scans' current scanner for all players in `pl'
     require
         pl /= Void
@@ -342,8 +342,6 @@ feature {NONE} -- Representation
 feature -- Anchors
     
     ship_type: SHIP
-    
-    player_type: PLAYER
     
 invariant
     stars /= Void

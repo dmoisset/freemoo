@@ -3,8 +3,7 @@ class S_GALAXY
 inherit
     GALAXY
     redefine make, last_star, last_fleet,
-	add_fleet, generate_scans, player_type, 
-	ship_type
+	add_fleet, generate_scans, ship_type
     end
     SERVICE
     redefine subscription_message end
@@ -142,7 +141,7 @@ feature -- Access
 
 feature -- Operations
 
-    generate_scans (pl: ITERATOR [like player_type]) is
+    generate_scans (pl: ITERATOR [PLAYER]) is
     local
         scanname: STRING
     do
@@ -235,8 +234,6 @@ feature {STORAGE} -- Retrieving
     end
     
 feature -- Anchors
-    
-    player_type: S_PLAYER
     
     ship_type: S_SHIP
     
