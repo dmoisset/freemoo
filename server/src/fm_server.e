@@ -104,17 +104,18 @@ feature {NONE} -- Internal
 	create st.make_with_filename(filename)
 	create shp.make(ply)
 	shp.set_id(666)
-	st.register(gme)
-	st.register(gme.galaxy)
-	st.register(gme.status)
-	st.register(gme.players)
-	st.register(ply)
-	st.register(gme.galaxy.limit)
-	st.register(str)
-	st.register(create {S_FLEET}.make)
-	st.register(pln)
-	st.register(create {S_COLONY}.make(pln, ply))
-	st.register(shp)
+	-- Register class prototypes
+	st.register(gme)                              -- S_GAME
+	st.register(gme.galaxy)                       -- S_GALAXY
+	st.register(gme.status)                       -- S_GAME_STATUS
+	st.register(gme.players)                      -- S_PLAYER_LIST
+	st.register(ply)                              -- S_PLAYER
+	st.register(gme.galaxy.limit)                 -- COORDS
+	st.register(str)                              -- S_STAR
+	st.register(create {S_FLEET}.make)            -- S_FLEET
+	st.register(pln)                              -- S_PLANET
+	st.register(create {S_COLONY}.make(pln, ply)) -- S_COLONY
+	st.register(shp)                              -- S_SHIP
 	st.retrieve
 	game ?= st.retrieved
     	game.init_game
