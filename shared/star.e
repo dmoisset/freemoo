@@ -25,12 +25,12 @@ feature -- Access
 
     Max_planets: INTEGER is 5
 
-    get_new_iterator_on_planets: ITERATOR [like planet_type] is
+    get_new_iterator_on_planets: ITERATOR [like planet_at] is
     do
         Result := planets.get_new_iterator
     end
 
-    planet_at (orbit: INTEGER): like planet_type is
+    planet_at (orbit: INTEGER): PLANET is
     do
         Result := planets @ orbit
     end
@@ -87,7 +87,7 @@ feature -- Operations on fleets
     
 feature -- Operations on star system
 
-    set_planet (newplanet: like planet_type; orbit: INTEGER) is
+    set_planet (newplanet: like planet_at; orbit: INTEGER) is
     require
         newplanet /= Void
         orbit.in_range (1, Max_planets)
@@ -139,7 +139,7 @@ feature -- Operations on star system
     
 feature -- Factory Methods
     
-    create_planet: like planet_type is
+    create_planet: like planet_at is
     do
 	create Result.make_standard(Current)
     end
@@ -183,7 +183,7 @@ feature {NONE} -- Creation
     
 feature {STAR} -- Representation
 
-    planets: ARRAY [like planet_type]
+    planets: ARRAY [like planet_at]
         -- planets orbiting, from inner to outer orbit
         -- has Void at empty orbits
 
@@ -194,9 +194,6 @@ feature {NONE} -- Internal
 
     fleet_type: FLEET
         -- Anchor for type declarations.
-    
-    planet_type: PLANET
-	-- Anchor for type declarations.
     
 invariant
     valid_kind: kind.in_range (kind_min, kind_max)

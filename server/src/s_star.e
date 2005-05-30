@@ -6,7 +6,7 @@ inherit
 	copy, is_equal
     redefine
 	set_planet, set_special, set_name, make, make_defaults,
-	fleet_type, planet_type
+	fleet_type, planet_at
     end
     STORABLE
     rename
@@ -39,7 +39,7 @@ feature -- Redefined Features
     subscription_message (service_id: STRING): STRING is
     local
         s: SERIALIZER2
-        i: ITERATOR [like planet_type]
+        i: ITERATOR [like planet_at]
     do
         !!s.make
         -- Setup id upon first subscription
@@ -65,9 +65,14 @@ feature -- Redefined Features
         Result := s.serialized_form
     end
 
+    planet_at (orbit: INTEGER): S_PLANET is
+    do
+        Result := planets @ orbit
+    end
+
 feature {MAP_GENERATOR} -- Redefined
 
-    set_planet (newplanet: like planet_type; orbit: INTEGER) is
+    set_planet (newplanet: like planet_at; orbit: INTEGER) is
     do
         Precursor(newplanet, orbit)
         update_clients
@@ -168,7 +173,7 @@ feature {STORAGE} -- Retrieving
 	n: INTEGER
 	i: reference INTEGER
 	r: reference REAL
-	planet: like planet_type
+	planet: like planet_at
 	fleet: like fleet_type
     do
 	from
@@ -207,7 +212,5 @@ feature {STORAGE} -- Retrieving
 feature {NONE} -- Internal
 
     fleet_type: S_FLEET
-    
-    planet_type: S_PLANET
     
 end -- class S_STAR
