@@ -11,7 +11,7 @@ inherit
     redefine
 	set_destination, add_ship, split, move,
 	join, clear_ships, orbit_center, owner, ship_type
-    select id end
+	end
     STORABLE
     rename
 	hash_code as id
@@ -174,10 +174,7 @@ feature {STORAGE} -- Retrieving
 	from
 	    ships.clear
 	until elems.is_off loop
-	    if elems.item.first.is_equal("id") then
-		i ?= elems.item.second
-		id := i
-	    elseif elems.item.first.is_equal("x") then
+	    if elems.item.first.is_equal("x") then
 		r ?= elems.item.second
 		x := r
 	    elseif elems.item.first.is_equal("y") then
