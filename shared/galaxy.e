@@ -18,7 +18,7 @@ feature -- Access
     limit: COORDS
         -- Outermost corner of galaxy, opposite to (0, 0)
 
-    scanner (player: like player_type): ARRAY [like last_fleet] is
+    scanner (player: PLAYER): ARRAY [like last_fleet] is
         -- All fleets detected by `player' (not including their own)
     local
         alienship: ITERATOR[like ship_type]
@@ -342,8 +342,6 @@ feature {NONE} -- Representation
 feature -- Anchors
     
     ship_type: SHIP
-    
-    colony_type: COLONY
     
     player_type: PLAYER
     
