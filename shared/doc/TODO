@@ -19,3 +19,12 @@ chat
 updates incrementales
 Revision general de código
 teclas rápidas en la interfaz (en especial TAB, ENTER)
+
+Compilacion:
+- hacer que xtract mande las cosas a un directorio separado
+- agregar makefiles para tools
+- eliminar dependencia de freepascal
+- hay archivos .c ejecutables
+- test map generator depende de jegl
+- extract no revisa presencia de los lbx (si no estan, "funciona")
+- problemas con xcf2png

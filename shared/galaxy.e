@@ -23,7 +23,7 @@ feature -- Access
     local
         alienship: ITERATOR[like ship_type]
         alienfleet, ownfleet: ITERATOR [like last_fleet]
-        owncolony: ITERATOR[like colony_type]
+        owncolony: ITERATOR[COLONY]
         ships_detected, detected: BOOLEAN
         fleet: like last_fleet
     do

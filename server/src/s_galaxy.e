@@ -4,7 +4,7 @@ inherit
     GALAXY
     redefine make, last_star, last_fleet,
 	add_fleet, generate_scans, player_type, 
-	ship_type, colony_type
+	ship_type
     end
     SERVICE
     redefine subscription_message end
@@ -237,8 +237,6 @@ feature {STORAGE} -- Retrieving
 feature -- Anchors
     
     player_type: S_PLAYER
-    
-    colony_type: S_COLONY
     
     ship_type: S_SHIP
     
