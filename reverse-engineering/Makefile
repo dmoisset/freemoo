@@ -7,7 +7,7 @@ include ../config
 all: $(TARGETS)
 extra: $(XTARGETS)
 
-unlbx: unlbx.ace *.e
+%: %.ace *.e
 	$(SECOMPILE) $<
 	strip $@
         
