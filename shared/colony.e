@@ -64,6 +64,7 @@ feature -- Operations
             producing
         when product_none then
             -- Nothing to do this turn
+--FIXME: ship created should change type depending on `producing'
         when product_starship then
             !!sh.make (owner)
         when product_colony_ship then
