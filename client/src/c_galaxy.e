@@ -129,7 +129,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             s.get_integer -- Ship count
             shipcount := s.last_integer
             fleet.unserialize_from (s)
-            new_fleets.put(fleet, fleet.id)
+            new_fleets.add(fleet, fleet.id) -- If you change this from `add' to `put', explain why
             from until shipcount = 0 loop
                 !!ship.make (fleet.owner)
                 s.get_integer
