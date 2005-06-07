@@ -20,14 +20,20 @@ feature {STORAGE} -- Saving
     
     get_class: STRING is "SHIP"
     
+    fields_array: ARRAY[TUPLE[STRING, ANY]] is
+	-- Array for `fields'
+    do
+	Result :=<<["creator", creator],
+		   ["owner", owner],
+		   ["size", size],
+		   ["picture", picture],
+		   ["is_stealthy", is_stealthy]
+		   >>
+    end
+    
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     do
-	Result := (<<["creator", creator],
-		     ["owner", owner],
-		     ["size", size],
-		     ["picture", picture],
-		     ["is_stealthy", is_stealthy]
-		     >>).get_new_iterator
+	Result := fields_array.get_new_iterator
     end
     
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
@@ -62,9 +68,10 @@ feature {STORAGE} -- Retrieving
     local
 	b: reference BOOLEAN
 	i: reference INTEGER
+	unknown_tag: BOOLEAN
     do
 	from
-	until elems.is_off loop
+	until elems.is_off or unknown_tag loop
 	    if elems.item.first.is_equal("creator") then
 		creator ?= elems.item.second
 	    elseif elems.item.first.is_equal("owner") then
@@ -78,8 +85,12 @@ feature {STORAGE} -- Retrieving
 	    elseif elems.item.first.is_equal("is_stealthy") then
 		b ?= elems.item.second
 		is_stealthy := b
+	    else
+		unknown_tag := true
 	    end
-	    elems.next
+	    if not unknown_tag then
+		elems.next
+	    end
 	end
     end
 	 

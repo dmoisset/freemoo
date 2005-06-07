@@ -58,20 +58,18 @@ feature -- Operations
 
     new_turn is
     local
-        sh: like shipyard
+        stsh: like create_starship
     do
         inspect
             producing
         when product_none then
             -- Nothing to do this turn
---FIXME: ship created should change type depending on `producing'
         when product_starship then
-            !!sh.make (owner)
+            stsh := create_starship
+	    stsh.set_name("Enterprise")
+	    shipyard := stsh
         when product_colony_ship then
-            !!sh.make (owner)
-        end
-        if sh /= Void then -- Ship produced
-            shipyard := sh
+	    shipyard := create_colony_ship
         end
     end
 
@@ -92,7 +90,21 @@ feature -- Operations
     ensure
         shipyard = Void
     end
-
+    
+    create_colony_ship:COLONY_SHIP is
+        -- Build a colony ship with proper dynamic type.
+        -- Store it into `shipyard'
+    do
+	create Result.make(owner)
+    end
+    
+    create_starship: STARSHIP is
+        -- Build a starship with proper dynamic type.
+        -- Store it into `shipyard'
+    do
+	create Result.make(owner)
+    end
+   
 
     serialize_on (s: SERIALIZER2) is
     do
@@ -110,24 +122,24 @@ feature -- Operations
 
 feature {GALAXY} -- Scanning
 
-	scan(alienfleet: FLEET; alienship: like shipyard): BOOLEAN is
-		-- Returns true if this colony picks up `alienship' with it's 
-		-- scanners.  `alienship' is part of `alienfleet'
-	require
-		alienfleet.has_ship(alienship.id)
-	do
-		if scanner_range = 0 then
-			recalculate_scanner_range
-		end
-		
-		if owner.is_telepathic then
-			Result := true
-		else
-			if location.orbit_center |-| alienfleet < scanner_range + alienship.size - alienship.ship_size_frigate then
-				Result := true
-			end
-		end
+    scan(alienfleet: FLEET; alienship: like shipyard): BOOLEAN is
+	-- Returns true if this colony picks up `alienship' with it's 
+	-- scanners.  `alienship' is part of `alienfleet'
+    require
+	alienfleet.has_ship(alienship.id)
+    do
+	if scanner_range = 0 then
+	    recalculate_scanner_range
 	end
+	
+	if owner.is_telepathic then
+	    Result := true
+	else
+	    if location.orbit_center |-| alienfleet < scanner_range + alienship.size - alienship.ship_size_frigate then
+		Result := true
+	    end
+	end
+    end
 	
 	
 feature {NONE} -- Auxiliary for scanning
