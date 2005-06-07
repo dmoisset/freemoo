@@ -112,7 +112,7 @@ feature -- Operations
         special = newspecial
     end
 
-feature {COLONY}
+feature
 
     set_colony (newcolony: like colony) is
     do

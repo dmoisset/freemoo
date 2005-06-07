@@ -11,6 +11,7 @@ feature {NONE} -- Creation
         !!stars.make
         !!fleets.make
         !!scans.make
+	!!enemy_colony_knowledge.make
     end
 
 feature -- Access
@@ -73,9 +74,50 @@ feature -- Access
 	end
 	--		print(" picks up " + Result.count.to_string + " alien fleets%N")
     end
-
+    
+    calculate_enemy_colony_knowledge(player: PLAYER): SET[COLONY] is
+	-- All enemy colonies known by `player'
+    local
+	c: ITERATOR[COLONY]
+	f: ITERATOR[FLEET]
+	p: ITERATOR[PLANET]
+    do
+	create Result.make
+	if enemy_colony_knowledge.has(player.id) then
+	    from 
+		c := (enemy_colony_knowledge @ (player.id)).get_new_iterator
+	    until c.is_off loop
+		if c.item.location.colony /= Void then
+		    Result.add(c.item)
+		end
+		c.next
+	    end
+	end
+	from
+	    f := fleets.get_new_iterator_on_items
+	until f.is_off loop
+	    if f.item.orbit_center /= Void and f.item.owner = player then
+		from
+		    p := f.item.orbit_center.get_new_iterator_on_planets
+		until p.is_off loop
+		    if p.item /= Void and then p.item.colony /= Void and then p.item.colony.owner /= player then
+			Result.add(p.item.colony)
+		    end
+		    p.next
+		end
+	    end
+	    f.next
+	end
+    end
+	
     scans: DICTIONARY [ARRAY [like last_fleet], INTEGER]
         -- Fleets scanned by each player
+    
+    enemy_colony_knowledge: DICTIONARY [SET [COLONY], INTEGER]
+	-- Enemy colonies known by each player.
+	-- Eventually should be changed for something that contains
+	-- all visible information, to show the colonies as each player 
+	-- knew them.
 
 feature -- Access -- star list
 
@@ -189,7 +231,20 @@ feature -- Operations
             pl.next
         end
     end
-
+    
+    generate_colony_knowledge (pl: ITERATOR [PLAYER]) is
+	-- Store in `enemy_colony_knowledge' current knowledge of 
+	-- enemy colonies for all players in `pl'
+    require
+	pl /= Void
+    do
+	from
+	until pl.is_off loop
+	    enemy_colony_knowledge.put(calculate_enemy_colony_knowledge(pl.item), pl.item.id)
+	    pl.next
+	end
+    end
+    
     add_fleet (new_fleet: like last_fleet) is
     require
         new_fleet /= Void
@@ -229,6 +284,9 @@ feature -- Operations
             add_fleet (f)
         else
             f.set_destination (destination)
+	    if f.destination /= Void then
+		f.recalculate_eta
+	    end
         end
         if f.orbit_center /= Void then
             join_fleets (f.orbit_center)

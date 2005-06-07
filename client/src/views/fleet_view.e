@@ -39,62 +39,69 @@ feature {NONE} -- Creation
     end
 	 
 	 
-	 make_widgets is
-	 local
-		  b: BUTTON_IMAGE
-		  r: RECTANGLE
-		  bt: BUTTON_TOGGLE_IMAGE
-		  skip, hpos, vpos: INTEGER
-	 do
-		  -- Drag Handle
-		  r.set_with_size (1, 0, bg_ns_width, bg_top_height)
-		  !!drag.make (Current, r)
-		  
-		  -- All
-		  !!all_button.make(Current, all_button_x, all_button_y@1, all_button_img @ 1, all_button_img @ 1, all_button_img @ 2)
-		  all_button.set_click_handler (agent select_all)
-		  
-		  -- Close
-		  !!close_button.make (1, 2)
-		  !!b.make (Current, buttons_x, buttons_y@1, close_button_img.item(1, 1), close_button_img.item(1, 1), close_button_img.item(1, 2))
-		  b.set_click_handler (agent close)
-		  close_button.put(b, 1)
-		  !!b.make (Current, buttons_x, buttons_y@1, close_button_img.item(2, 1), close_button_img.item(2, 1), close_button_img.item(2, 2))
-		  b.set_click_handler (agent close)
-		  close_button.put(b, 2)
-		  
-		  -- Toggles
-		  !!toggles.make(0, 8)
-		  from skip := toggles.lower
-				hpos := 14
-				vpos := 38
-		  until
-				skip > toggles.upper
-		  loop
-				!!bt.make(Current, hpos, vpos, cursor @ 1, cursor @ 1, cursor @ 2, cursor @ 2, cursor @ 2, cursor @ 1)
-				toggles.put(bt, skip)
-				bt.set_active(true)
-				hpos := hpos + 58
-				if hpos > 150 then
-					 hpos := 14
-					 vpos := vpos + 56
-				end
-				skip := skip + 1
-		  end
-		  
-		  -- Scrollbar
-		  r.set_with_size(191, 42, 15, 158)
-		  !!scrollbar.make(Current, r, create {SDL_SOLID_IMAGE}.make(0, 0, 30, 30, 250))
-		  scrollbar.set_first_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 1, scrollbar_img @ 2)
-		  scrollbar.set_second_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 4, scrollbar_img @ 5)
-		  scrollbar.set_limits(0, (fleet.ship_count - 1) // 3 + 1, 0)
-		  scrollbar.set_increments(1, 3)
-		  r.set_with_size(2, 28, 9, 100)
-		  scrollbar.set_trough(r)
-		  scrollbar.set_value(0)
-		  scrollbar.set_change_handler(agent scrollbar_handler)
-	 end
-
+    make_widgets is
+    local
+	b: BUTTON_IMAGE
+	r: RECTANGLE
+	bt: BUTTON_TOGGLE_IMAGE
+	skip, hpos, vpos: INTEGER
+    do
+	-- Drag Handle
+	r.set_with_size (1, 0, bg_ns_width, bg_top_height)
+	!!drag.make (Current, r)
+	
+	-- Info Label
+	r.set_with_size(info_label_x, all_button_y@1, info_label_width, info_label_height)
+	!!info_label.make(Current, r, "")
+	if fleet.eta /= 0 then
+	    info_label.set_text("ETA: " + fleet.eta.to_string + " turns")
+	end
+	
+	-- All
+	!!all_button.make(Current, all_button_x, all_button_y@1, all_button_img @ 1, all_button_img @ 1, all_button_img @ 2)
+	all_button.set_click_handler (agent select_all)
+	
+	-- Close
+	!!close_button.make (1, 2)
+	!!b.make (Current, buttons_x, buttons_y@1, close_button_img.item(1, 1), close_button_img.item(1, 1), close_button_img.item(1, 2))
+	b.set_click_handler (agent close)
+	close_button.put(b, 1)
+	!!b.make (Current, buttons_x, buttons_y@1, close_button_img.item(2, 1), close_button_img.item(2, 1), close_button_img.item(2, 2))
+	b.set_click_handler (agent close)
+	close_button.put(b, 2)
+	
+	-- Toggles
+	!!toggles.make(0, 8)
+	from skip := toggles.lower
+	    hpos := 14
+	    vpos := 38
+	until
+	    skip > toggles.upper
+	loop
+	    !!bt.make(Current, hpos, vpos, cursor @ 1, cursor @ 1, cursor @ 2, cursor @ 2, cursor @ 2, cursor @ 1)
+	    toggles.put(bt, skip)
+	    bt.set_active(true)
+	    hpos := hpos + 58
+	    if hpos > 150 then
+		hpos := 14
+		vpos := vpos + 56
+	    end
+	    skip := skip + 1
+	end
+	
+	-- Scrollbar
+	r.set_with_size(191, 42, 15, 158)
+	!!scrollbar.make(Current, r, create {SDL_SOLID_IMAGE}.make(0, 0, 30, 30, 250))
+	scrollbar.set_first_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 1, scrollbar_img @ 2)
+	scrollbar.set_second_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 4, scrollbar_img @ 5)
+	scrollbar.set_limits(0, (fleet.ship_count - 1) // 3 + 1, 0)
+	scrollbar.set_increments(1, 3)
+	r.set_with_size(2, 28, 9, 100)
+	scrollbar.set_trough(r)
+	scrollbar.set_value(0)
+	scrollbar.set_change_handler(agent scrollbar_handler)
+    end
+    
 feature {GALAXY_VIEW} -- Auxiliary for commanding
 
     some_ships_selected: BOOLEAN is
@@ -192,6 +199,8 @@ feature {NONE} -- Implementation
 		-- A Bar that Scrolls.
 	 
 	all_button: BUTTON_IMAGE
+	
+	info_label: LABEL
 	 
 	close_button: ARRAY[BUTTON_IMAGE]
 	 
@@ -285,6 +294,10 @@ feature {NONE} -- Internal features
 		
 		r.set_with_size(all_button_x, all_button_y@size_index, all_button.width, all_button.height)
 		all_button.move(r)
+		
+		r.set_with_size(info_label_x, all_button_y@size_index, info_label_width, info_label_height)
+		info_label.move(r)
+		
 		close_button.item(size_index.min(2)).show
 		close_button.item(size_index.min(2) \\ 2 + 1).hide
 	end
@@ -322,6 +335,12 @@ feature {NONE} -- Signal Handler
 		update_window_size
 		select_none
 		update_toggles
+		if fleet.eta /= 0 then
+		    info_label.set_text("ETA: " + fleet.eta.to_string + " turns")
+		else
+		    info_label.set_text("")
+		end
+
 		if fleet.ship_count = 0 then close end
 	end
 	 
@@ -510,8 +529,12 @@ feature {NONE} -- Numeric and Layout Constants
 		  Result.put(272, 4)
 	 end
 	 
-	 all_button_x: INTEGER is 16
+	 info_label_x: INTEGER is 80
+	 info_label_width: INTEGER is 80
+	 info_label_height: INTEGER is 24
 	 
+	 all_button_x: INTEGER is 16
+ 
 	 all_button_y: ARRAY[INTEGER] is
 	 once
 		  !!Result.make(1, 4)

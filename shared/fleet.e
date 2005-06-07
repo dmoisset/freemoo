@@ -24,9 +24,19 @@ feature -- Access
 
     destination: like orbit_center
         -- Star where to which the fleet is traveling, or Void if none
-
+    
+    current_speed: REAL
+	-- Represents distance traveled by Current in one turn.
+	-- Current_speed should be recalculated each time ships join 
+	-- or leave the fleet, calling recalculate_current_speed.  
+	-- It represents the fleet's base traveling speed, and is the 
+	-- minimum of the fleet's ships' traveling speeds, plus modifiers
+    
     eta: INTEGER
         -- Estimated time of arrival when traveling, 0 when not
+	-- Should be recalculated each time the fleet receives new 
+	-- orders calling recalculate_eta, and each time a turn 
+	-- passes (substracting one)
 
     is_stopped: BOOLEAN is
         -- is stopped?
@@ -70,16 +80,18 @@ feature -- Operations
         -- Add `s' to fleet
     do
         ships.put (s, s.id)
-		scanner_range := 0
+	scanner_range := 0
+	recalculate_current_speed
     ensure
         has_ship (s.id)
     end
-
+    
     remove_ship (s: like ship_type) is
         -- Remove `s' from fleet
     do
         ships.remove(s.id)
-		scanner_range := 0
+	scanner_range := 0
+	recalculate_current_speed
     ensure
         not has_ship(s.id)
     end
@@ -90,7 +102,6 @@ feature -- Operations
         scanner_range := 0
     end
 
---other: like Current?
     join (other: like Current) is
         -- Join up with another fleet
     require
@@ -99,6 +110,7 @@ feature -- Operations
         other.ships.do_all (agent ships.put (?, ?))
         other.clear_ships
         scanner_range := 0
+	recalculate_current_speed
     ensure
         ship_count >= old ship_count
         ship_count <= old ship_count + old other.ship_count
@@ -125,7 +137,9 @@ feature -- Operations
             splitted_fleet.add_ship(sh.item)
             sh.next
         end
-		scanner_range := 0
+	scanner_range := 0
+	recalculate_current_speed
+	splitted_fleet.recalculate_current_speed
     ensure
         same_fleet: (splitted_fleet.eta = eta) and 
                     (splitted_fleet.owner = owner) and
@@ -143,7 +157,6 @@ feature -- Operations
         move_to (star)
         orbit_center := star
         eta := 0
-        current_speed := 0
         destination := Void
         orbit_center.add_fleet (Current)
     ensure
@@ -165,15 +178,14 @@ feature -- Operations
     do
         -- Departure
         if is_in_orbit and not is_stopped then
-            current_speed := speed (orbit_center, destination)
-            eta := ((orbit_center |-| destination) / current_speed).ceiling
+	    recalculate_eta
             leave_orbit
         end
         -- Travel
-            check not is_stopped = not is_in_orbit end
-        eta := (eta - 1).max (0)
+	check not is_stopped = not is_in_orbit end
         if destination /= Void then
             move_towards (destination, current_speed)
+	    eta := (eta - 1).max(0)
         end
         -- Arrival
         if eta = 0 and not is_stopped then
@@ -206,7 +218,25 @@ feature -- Operations
     ensure
         eta = e
     end
-
+    
+    recalculate_eta is
+    require
+	not is_stopped
+	current_speed > 0
+    do
+	eta := ((Current |-| destination) / current_speed).ceiling
+    ensure
+	valid_eta: eta >= 0
+    end
+    
+    recalculate_current_speed is
+    -- Very dumb for now.
+    do
+	current_speed := 1.0
+    ensure
+	current_speed > 0
+    end
+    
     set_destination (d: like destination) is
     do
         destination := d
@@ -264,19 +294,7 @@ feature {NONE} -- Creation
     do
         make_unique_id
         !!ships.make
-    end
-
-feature {NONE} -- Internal
-
-    current_speed: REAL
-        -- Current travel speed, 0 if in orbit
-
-    speed (origin, dest: STAR): REAL is
-        -- Travel speed from `origin' to `dest'
-    do
-        Result := 1.0
-    ensure
-        Result >= 0
+	current_speed := 1.0
     end
 
 feature {FLEET} -- Representation
@@ -290,14 +308,7 @@ feature -- Anchors
     
 invariant
     orbiting_really_here: is_in_orbit implies distance_to (orbit_center) = 0
-
-    reachable_destination:
-        (is_in_orbit and destination /= Void)
-    implies
-        speed (orbit_center, destination) > 0
-
     nonnegative_speed: current_speed >= 0
     nonnegative_eta: eta >= 0
-    is_stopped implies current_speed = 0
-
+    positive_speed: current_speed > 0
 end -- class FLEET

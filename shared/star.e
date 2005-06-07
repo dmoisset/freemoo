@@ -201,6 +201,7 @@ invariant
     name /= Void
     planets /= Void
     planets.count = Max_planets
+    planets.lower = 1
     special.in_range (stspecial_min, stspecial_max)
 
 end -- class STAR

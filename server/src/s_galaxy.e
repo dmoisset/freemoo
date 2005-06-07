@@ -3,7 +3,7 @@ class S_GALAXY
 inherit
     GALAXY
     redefine make, last_star, last_fleet,
-	add_fleet, generate_scans, ship_type
+	add_fleet, generate_scans, generate_colony_knowledge, ship_type
     end
     SERVICE
     redefine subscription_message end
@@ -36,6 +36,8 @@ feature -- Redefined features
         id: INTEGER
         star: ITERATOR [like last_star]
         reading: like scanner
+	colonies: SET[COLONY]
+	colony: ITERATOR[COLONY]
         fleet: ITERATOR [like last_fleet]
         ship: ITERATOR [like ship_type]
     do
@@ -94,6 +96,20 @@ feature -- Redefined features
                 fleet.next
             end
             build_fleet_message (reading, s)
+        elseif service_id.has_suffix(":enemy_colonies") and then
+               service_id.substring(1, service_id.count - 15).is_integer then
+            -- Per player "n:enemy_colonies" service
+            id := service_id.substring(1, service_id.count - 15).to_integer
+            colonies := enemy_colony_knowledge @ id
+            s.add_integer (colonies.count)
+            from
+                colony := colonies.get_new_iterator
+            until colony.is_off loop
+                s.add_tuple (<<colony.item.location.orbit_center.id,
+			       colony.item.location.orbit,
+			       colony.item.owner.id>>)
+                colony.next
+            end
         else
             check unexpected_service_id: False end
         end
@@ -156,7 +172,22 @@ feature -- Operations
             pl.next
         end
     end
-
+    
+    generate_colony_knowledge (pl: ITERATOR [PLAYER]) is
+    local
+	service_name: STRING
+    do
+	Precursor (pl)
+	-- same idea as generate_scans
+	from pl.start until pl.is_off loop
+	    service_name := pl.item.id.to_string + ":enemy_colonies"
+	    if ids.has(service_name) then
+		send_message(service_name, subscription_message(service_name))
+	    end
+	    pl.next
+	end
+    end
+    
     update_clients is
     local
         id: ITERATOR[STRING]

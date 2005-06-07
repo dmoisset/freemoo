@@ -86,7 +86,8 @@ feature -- Redefined features
     local
         serv_id: STRING
         s: SERIALIZER2
-        i: ITERATOR [like star_type]
+        star_it: ITERATOR [like star_type]
+	col_it: ITERATOR [COLONY]
     do
         !!s.make
         -- Validate service_id
@@ -95,11 +96,25 @@ feature -- Redefined features
             serv_id.remove_prefix("player")
             if serv_id.is_integer and then serv_id.to_integer = id then
                 s.add_integer (knows_star.count)
-                i := knows_star.get_new_iterator
-                from i.start until i.is_off loop
-                    s.add_integer (i.item.id)
-                    i.next
+		s.add_integer (has_visited_star.count)
+		s.add_integer (colonies.count)
+                star_it := knows_star.get_new_iterator
+                from star_it.start until star_it.is_off loop
+                    s.add_integer (star_it.item.id)
+                    star_it.next
                 end
+                star_it := has_visited_star.get_new_iterator
+                from star_it.start until star_it.is_off loop
+                    s.add_integer (star_it.item.id)
+                    star_it.next
+                end
+		col_it := colonies.get_new_iterator_on_items
+		from col_it.start until col_it.is_off loop
+		    s.add_integer (col_it.item.location.orbit_center.id)
+		    s.add_integer (col_it.item.location.orbit)
+		    col_it.item.serialize_on(s)
+		    col_it.next
+		end
             end
         end
         Result := s.serialized_form

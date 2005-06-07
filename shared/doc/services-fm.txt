@@ -24,8 +24,8 @@ GALAXY
   Name: "galaxy"
   Provided: Before game_status.started is set
   Description: Global galaxy map (star positions and colors)
-  Format: "rri" <<limit.x, limit.y, count>>, followed by sequence of
-          "oiirr" <<id, kind, size, x, y>>
+  Format: "rri" <<limit.x, limit.y, star_count>>, then many
+          "iiirr" <<id, kind, size, x, y>>, one for each star
 
 STAR
   Name: "star"+id (id is a digit sequence = star_id) 
@@ -39,15 +39,20 @@ FLEET
   Provided: Before reporting fleet on scanner or new_fleets.
   Description: Full fleet description
   Format: "iiiiirr" <<owner, eta, orbiting, destination, ships.count, x, y>>, and
-            "iii" <<id, size, picture>> (for each ship of the fleet)
+          "iii" <<id, size, picture>> (for each ship of the fleet)
   `orbiting' and `destination may be -1, which means "none".
 
 PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
   Provided: Before game_status.started is set
   Description: Detailed player description
-  Format: "i" <<count>, followed by a sequence of
-             "i" <<star_id>> (this is the known_stars list)
+  Format: "iii" <<knows_stars, visited_stars, colony_count>,
+                 followed by a sequence of
+          "i" <<star_id>>
+                 (this is the known_star list), followed by a sequence of
+          "i" <<star_id>>
+                 (this is the visited_star list), followed by a sequence of
+          "iiii" <<star_id, orbit, colony_id, producing>>
 
 SCANNER
   Name: n+":scanner" (n is a digit sequence = player id)
@@ -56,9 +61,16 @@ SCANNER
                 owned by n.
   Format: "i" <<count>>, followed by a sequence of
           "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
-            "ii" <<size, picture>> (for each ship of the fleet)
+          "ii" <<size, picture>> (for each ship of the fleet)
   when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
   the fleet is travelling to `destination'
+
+ENEMY COLONIES
+  Name: n + ":enemy_colonies" (n is a digit sequence = player id)
+  Provided: Before game_status.started is set
+  Descriptions: List of known enemy colonies for player n.
+  Format: "i" <<count>>, followed by a sequence of
+          "iii" <<star_id, orbit, owner_id>>, one for each enemy colony.
 
 TURN SUMMARY
   Name: n+":turn_summary" (n is a digit sequence = player id)

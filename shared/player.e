@@ -10,6 +10,7 @@ feature {NONE} -- Creation
     do
         set_state (st_setup)
         set_color (min_color)
+	fuel_range := 3
         !!colonies.make
         !!knows_star.make
         !!has_visited_star.make
@@ -51,7 +52,10 @@ feature -- Access
 feature -- Special abilities
 
     sees_all_ships: BOOLEAN
-
+    
+    
+feature -- Query
+	
 feature {PLAYER_LIST} -- Operations
 
     set_state (new_state: INTEGER) is
@@ -70,6 +74,15 @@ feature {PLAYER_LIST} -- Operations
         color := new_color
     ensure
         color = new_color
+    end
+    
+    set_fuel_range (new_range: REAL) is
+    require
+	new_range > 0
+    do
+	fuel_range := new_range
+    ensure
+	fuel_range = new_range
     end
     
 feature {COLONY} -- Operations

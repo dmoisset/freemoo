@@ -155,6 +155,7 @@ feature -- Operations
         -- Bombardment/ground combat
         -- Colonization
         galaxy.generate_scans (players.get_new_iterator)
+	galaxy.generate_colony_knowledge(players.get_new_iterator)
         status.next_date
         if not end_condition then
             players.set_all_state (st_playing_turn)
@@ -239,6 +240,7 @@ feature {NONE} -- Internal
         -- first time
     do
         galaxy.generate_scans (players.get_new_iterator)
+	galaxy.generate_colony_knowledge (players.get_new_iterator)
     end
 
 feature -- Saving

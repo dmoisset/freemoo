@@ -46,6 +46,7 @@ feature -- Operations
         i := players.get_new_iterator
         from i.start until i.is_off loop
             server.register (galaxy, i.item.id.to_string+":scanner")
+	    server.register (galaxy, i.item.id.to_string+":enemy_colonies")
             server.register (galaxy, i.item.id.to_string+":new_fleets")
             server.register (i.item, "player"+i.item.id.to_string)
             i.next

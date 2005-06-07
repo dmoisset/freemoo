@@ -92,6 +92,7 @@ feature -- Operations -- Login commands
         subscribe (galaxy, "galaxy")
         subscribe (galaxy, player.id.to_string+":scanner")
         subscribe (galaxy, player.id.to_string+":new_fleets")
+	subscribe (galaxy, player.id.to_string+":enemy_colonies")
         subscribe (player, "player"+player.id.to_string)
     end
 
