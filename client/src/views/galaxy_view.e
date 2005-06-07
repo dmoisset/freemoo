@@ -194,11 +194,11 @@ feature -- Redefined features
                 else do_nothing
                 end
             else
-				m ?= event
-				if m /= Void and then fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected  then
-					check_fleet_trajectory(m.x, m.y)
-				end
-			end
+		m ?= event
+		if m /= Void and then fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected  then
+		    check_fleet_trajectory(m.x, m.y)
+		end
+	    end
         end
     end
 
@@ -336,34 +336,38 @@ feature {NONE} -- Event handlers
     local
         i: ITERATOR[RECTANGLE]
         r: RECTANGLE
+	dest: STAR
     do
-		i := star_hotspots.item_at_xy(x, y)
-		if not i.is_off then
-			if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
-				fleet_window.send_selection_to(galaxy.star_with_id (star_hotspots.fast_key_at(i.item)))
-			else
-				if star_window /= Void and then children.fast_has(star_window) then
-					r := star_window.location
-					star_window.remove
-				else
-					r.set_with_size(x, y, star_window_width, star_window_height)
-					r := leave_visible(r)
-				end
-				if fleet_window /= Void and then children.fast_has(fleet_window) then
-					fleet_window.remove
-					cancel_trajectory_selection
-				end
-				!STAR_VIEW!star_window.make (Current, r,
-					galaxy.star_with_id (star_hotspots.fast_key_at(i.item)),
-					galaxy.server.game_status)
-				star_window.set_fleet_click_handler(agent create_fleet_view)
-			end
-		else
-			i := fleet_hotspots.item_at_xy(x, y)
-			if not i.is_off then
-				create_fleet_view(galaxy.fleet_with_id (fleet_hotspots.fast_key_at(i.item)))
-			end
+	i := star_hotspots.item_at_xy(x, y)
+	if not i.is_off then
+	    if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
+		dest := galaxy.star_with_id (star_hotspots.fast_key_at(i.item))
+		if galaxy.server.player.is_in_range(dest) then
+		    fleet_window.send_selection_to(dest)
 		end
+	    else
+		if star_window /= Void and then children.fast_has(star_window) then
+		    r := star_window.location
+		    star_window.remove
+		else
+		    r.set_with_size(x, y, star_window_width, star_window_height)
+		    r := leave_visible(r)
+		end
+		if fleet_window /= Void and then children.fast_has(fleet_window) then
+		    fleet_window.remove
+		    cancel_trajectory_selection
+		end
+		!STAR_VIEW!star_window.make (Current, r,
+					     galaxy.star_with_id (star_hotspots.fast_key_at(i.item)),
+					     galaxy.server.game_status)
+		star_window.set_fleet_click_handler(agent create_fleet_view)
+	    end
+	else
+	    i := fleet_hotspots.item_at_xy(x, y)
+	    if not i.is_off then
+		create_fleet_view(galaxy.fleet_with_id (fleet_hotspots.fast_key_at(i.item)))
+	    end
+	end
     end
 
     center_on (x, y: INTEGER) is
@@ -384,23 +388,29 @@ feature {NONE} -- Event handlers
             current_projection.dy.min (gborder).max (height - limit_y - gborder))
     end
 
-	check_fleet_trajectory (x, y: INTEGER) is
-	local
-		i: ITERATOR[RECTANGLE]
-		traj: TRAJECTORY
-	do
-		i := star_hotspots.item_at_xy(x, y)
-		if not i.is_off then
-			if trajectory_window /= Void then
-				trajectory_window.remove
-			end
-			!!traj.with_projection (galaxy.star_with_id (star_hotspots.fast_key_at (i.item)), fleet_window.model_position, current_projection)
-			traj.set_type(traj.traj_type_select_ok)
-			!!trajectory_window.make(Current, traj.showx, traj.showy, traj)
-			trajectory_window.send_behind(fleet_window)
-		end
+    check_fleet_trajectory (x, y: INTEGER) is
+    local
+	i: ITERATOR[RECTANGLE]
+	traj: TRAJECTORY
+	dest: STAR
+    do
+	i := star_hotspots.item_at_xy(x, y)
+	if not i.is_off then
+	    if trajectory_window /= Void then
+		trajectory_window.remove
+	    end
+	    dest := galaxy.star_with_id(star_hotspots.fast_key_at(i.item))
+	    !!traj.with_projection (dest, fleet_window.model_position, current_projection)
+	    if galaxy.server.player.is_in_range(dest) then
+		traj.set_type(traj.traj_type_select_ok)
+	    else
+		traj.set_type(traj.traj_type_unreachable)
+	    end
+	    !!trajectory_window.make(Current, traj.showx, traj.showy, traj)
+	    trajectory_window.send_behind(fleet_window)
 	end
-	
+    end
+    
 
 	
 feature {NONE} -- Internal functions

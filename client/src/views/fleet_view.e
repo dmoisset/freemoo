@@ -125,10 +125,10 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
 	    server.move_fleet(fleet, s, fleet_selection)
 	end
     end
-	
+
 feature {NONE} -- Callbacks
 
-	cancel_trajectory_selection_handler: PROCEDURE[ANY, TUPLE]
+    cancel_trajectory_selection_handler: PROCEDURE[ANY, TUPLE]
 	
     close is
     do

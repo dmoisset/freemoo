@@ -120,7 +120,7 @@ feature {GALAXY} -- Scanning
 			recalculate_scanner_range
 		end
 		
-		if owner.sees_all_ships then
+		if owner.is_telepathic then
 			Result := true
 		else
 			if location.orbit_center |-| alienfleet < scanner_range + alienship.size - alienship.ship_size_frigate then

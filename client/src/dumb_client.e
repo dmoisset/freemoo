@@ -61,7 +61,7 @@ feature
 		setup
 		play
 		cleanup
-		end
+	    end
         else
             print ("Connection failed.%N")
         end
@@ -187,8 +187,18 @@ feature -- Incredibly smart AI
                     j.next
                 end
                 if not ll.is_empty then
-                    s := server.galaxy.get_new_iterator_on_stars
-                    server.move_fleet (i.item, s.item, ll)
+		    from                    
+			s := server.galaxy.get_new_iterator_on_stars
+		    until 
+			s.is_off or 
+			    (server.player.is_in_range(s.item) and
+			     s.item /= i.item.orbit_center)
+		    loop
+			s.next
+		    end
+		    if not s.is_off then
+			server.move_fleet (i.item, s.item, ll)
+		    end
                 else
                     print ("Fleet empty? ")
                     print (i.item.id)

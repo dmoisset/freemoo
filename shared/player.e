@@ -10,7 +10,7 @@ feature {NONE} -- Creation
     do
         set_state (st_setup)
         set_color (min_color)
-	fuel_range := 3
+	fuel_range := 4.0
         !!colonies.make
         !!knows_star.make
         !!has_visited_star.make
@@ -51,10 +51,29 @@ feature -- Access
 
 feature -- Special abilities
 
-    sees_all_ships: BOOLEAN
+    is_telepathic: BOOLEAN
+    
+    fuel_range: REAL
     
     
 feature -- Query
+    
+    is_in_range(p: POSITIONAL): BOOLEAN is
+	-- Can our ships reach p with our current fuel range?
+    require
+	p /= Void
+    local
+	it: ITERATOR[COLONY]
+    do
+	from
+	    it := colonies.get_new_iterator_on_items
+	until it.is_off or Result = True loop
+	    if it.item.location.orbit_center |-| p < fuel_range then
+		Result := True
+	    end
+	    it.next
+	end
+    end
 	
 feature {PLAYER_LIST} -- Operations
 

@@ -45,6 +45,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 	planet: PLANET
     do
         !!s.start (msg)
+	s.get_boolean
+	is_telepathic := s.last_boolean
+	s.get_real
+	fuel_range := s.last_real
         s.get_integer
 	knows_count := s.last_integer
 	s.get_integer
