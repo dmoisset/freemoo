@@ -74,6 +74,24 @@ feature -- Access
 
     splitted_fleet: like Current
 
+    
+    eta_at(dest: POSITIONAL):INTEGER is
+	-- Estimate a time of arrival at `dest'
+    require
+	dest /= Void
+	current_speed > 0
+    do
+	Result := ((Current |-| dest) / current_speed).ceiling
+    end
+    
+    can_receive_orders: BOOLEAN is
+	-- Can this fleet receive new orders at the moment?
+	-- In the future it should check owner's modifiers, advances 
+	-- at destination, and other stuff.
+    do
+	Result := is_in_orbit
+    end
+    
 feature -- Operations
 
     add_ship (s: like ship_type) is
@@ -184,6 +202,9 @@ feature -- Operations
         -- Travel
 	check not is_stopped = not is_in_orbit end
         if destination /= Void then
+	    -- This should evolve in to a more complex calculation
+	    -- Involving modifiers like nebulae, or enemies' 
+	    -- Ariadna Rings.
             move_towards (destination, current_speed)
 	    eta := (eta - 1).max(0)
         end
@@ -224,7 +245,7 @@ feature -- Operations
 	not is_stopped
 	current_speed > 0
     do
-	eta := ((Current |-| destination) / current_speed).ceiling
+	eta := eta_at(destination)
     ensure
 	valid_eta: eta >= 0
     end

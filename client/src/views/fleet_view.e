@@ -121,7 +121,7 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
     
     send_selection_to(s: STAR) is
     do
-	if fleet.owner = server.player then
+	if fleet.owner = server.player and fleet.can_receive_orders then
 	    server.move_fleet(fleet, s, fleet_selection)
 	end
     end
