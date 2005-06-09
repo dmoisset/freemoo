@@ -21,4 +21,36 @@ feature -- Constants
     max_color: INTEGER is 7
         -- Maximum possible `color'
 
+feature -- Constants
+    
+    race_homeworlds: DICTIONARY[STRING, STRING] is
+    once
+        create Result.make
+        Result.add("Sol", "Human")
+        Result.add("Draconis", "Elerian")
+        Result.add("Cryslon", "Silicoid")
+        Result.add("Mentar", "Psilon")
+        Result.add("Altair", "Alkari")
+        Result.add("Nazin", "Darlok")
+        Result.add("Gnol", "Gnolam")
+        Result.add("Kholdan", "Klackon")
+        Result.add("Meklon", "Meklar")
+        Result.add("Sssla", "Sakkra")
+        Result.add("Ursa", "Bulrathi")
+    end
+
+
+    color_names: DICTIONARY[STRING, INTEGER] is
+    once
+        create Result.make
+        Result.add("Yellow", min_color)
+        Result.add("Red", min_color + 1)
+        Result.add("Green", min_color + 2)
+        Result.add("Blue", min_color + 3)
+        Result.add("Brown", min_color + 4)
+        Result.add("Black", min_color + 5)
+        Result.add("White", min_color + 6)
+        Result.add("Polkadot", min_color + 7)
+    end
+
 end -- class PLAYER_CONSTANTS

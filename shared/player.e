@@ -11,6 +11,7 @@ feature {NONE} -- Creation
         set_state (st_setup)
         set_color (min_color)
 	fuel_range := 4.0
+	race_name := ""
         !!colonies.make
         !!knows_star.make
         !!has_visited_star.make
@@ -35,6 +36,16 @@ feature -- Access
     has_visited_star: SET[like star_type]
         -- Stars visited by this player
     
+    race_name: STRING
+	-- The name of the empire
+    
+    fuel_range: REAL
+	-- Distance our ships can travel from our colonies
+    
+feature -- Racial modifiers
+    
+    is_omniscient: BOOLEAN
+
 feature -- Access
 
     --
@@ -48,12 +59,6 @@ feature -- Access
 
     state: INTEGER
         -- State on the game
-
-feature -- Special abilities
-
-    is_telepathic: BOOLEAN
-    
-    fuel_range: REAL
     
     
 feature -- Query

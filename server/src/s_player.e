@@ -95,7 +95,8 @@ feature -- Redefined features
             !!serv_id.copy(service_id)
             serv_id.remove_prefix("player")
             if serv_id.is_integer and then serv_id.to_integer = id then
-		s.add_boolean(is_telepathic)
+		s.add_string(race_name)
+		s.add_boolean(is_omniscient)
 		s.add_real(fuel_range)
                 s.add_integer (knows_star.count)
 		s.add_integer (has_visited_star.count)
@@ -149,7 +150,8 @@ feature {STORAGE} -- Saving
 	create a.make(1, 0)
 	a.add_last(["color", color])
 	a.add_last(["state", state])
-	a.add_last(["is_telepathic", is_telepathic])
+	a.add_last(["race_name", race_name])
+	a.add_last(["is_omniscient", is_omniscient])
 	a.add_last(["password", password])
 	add_to_fields(a, "colony", colonies.get_new_iterator_on_items)
 	add_to_fields(a, "knows_star", knows_star.get_new_iterator)
@@ -213,12 +215,14 @@ feature {STORAGE} -- Retrieving
 	    elseif elems.item.first.is_equal("color") then
 		i ?= elems.item.second
 		color := i
+	    elseif elems.item.first.is_equal("race_name") then
+		race_name ?= elems.item.second
 	    elseif elems.item.first.is_equal("state") then
 		i ?= elems.item.second
 		state := i
-	    elseif elems.item.first.is_equal("is_telepathic") then
+	    elseif elems.item.first.is_equal("is_omniscient") then
 		b ?= elems.item.second
-		is_telepathic := b
+		is_omniscient := b
 	    elseif elems.item.first.has_prefix("colony") then
 		colony ?= elems.item.second
 		colonies.add (colony, colony.id)

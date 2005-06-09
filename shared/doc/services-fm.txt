@@ -46,7 +46,7 @@ PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
   Provided: Before game_status.started is set
   Description: Detailed player description
-  Format: "briii" <<is_telepathic, fuel_range, knows_stars,
+  Format: "sbriii" <<race_name, is_telepathic, fuel_range, knows_stars,
                     visited_stars, colony_count>, followed by a sequence of
           "i" <<star_id>>
                  (this is the known_star list), followed by a sequence of

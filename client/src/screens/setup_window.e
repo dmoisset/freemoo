@@ -72,7 +72,31 @@ feature {NONE} -- Custom widgets
     do
         !!player_list.make (Current, where, server.player_list)
     end
-
+    
+    
+    new_radiogroups(races_where, color_where: RECTANGLE) is
+    local
+    	bup, bdown: IMAGE_FMI
+	it: ITERATOR[STRING]
+    do
+	!!bup.make_from_file("client/setup-window/radio-button-u.fmi")
+	!!bdown.make_from_file("client/setup-window/radio-button-d.fmi")
+	
+	!!race_name_group.make(Current, races_where, bup, bdown)
+	from it := server.race_homeworlds.get_new_iterator_on_keys
+	until it.is_off loop
+	    race_name_group.add_option(it.item)
+	    it.next
+	end
+	
+	!!color_group.make(Current, color_where, bup, bdown)
+	from it := server.race_homeworlds.get_new_iterator_on_items
+	until it.is_off loop
+	    color_group.add_option(it.item)
+	    it.next
+	end
+    end
+    
 --    new_custom_flag_view: GTK_WIDGET is
 --    do
 --        !!flag_viewer.make (server.player_list)
