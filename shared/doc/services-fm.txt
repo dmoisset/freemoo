@@ -46,18 +46,38 @@ PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
   Provided: Before game_status.started is set
   Description: Detailed player description
-  Format: "sbriii" <<race_name, is_telepathic, fuel_range, knows_stars,
+  Format: "riii" <<fuel_range, knows_stars,
                     visited_stars, colony_count>, followed by a sequence of
           "i" <<star_id>>
                  (this is the known_star list), followed by a sequence of
           "i" <<star_id>>
                  (this is the visited_star list), followed by a sequence of
-          "iiii" <<star_id, orbit, colony_id, producing>>
+          "iii" <<star_id, orbit, colony_id>>
+
+COLONY
+  Name: "colony"+id (id is a digit sequesnce = colony.id)
+  Provided: Before reporting colony on player.
+  Description: Detailed colony description.
+  Format: "i" <<producing>>
+
+RACE
+  Name: "race"+id (id is a digit sequence = race.id)
+  Provided: Before game_status.started is set
+  Description: Detailed description of the player's race.
+  Format: "ssiiiiiiiiiibiibbbbbbbbbbbbbbbb" <<name, homeworld_name,
+		  population_growth, farming_bonus, industry_bonus,
+		  science_bonus, money_bonus, ship_defense_bonus,
+		  ship_attack_bonus, ground_combat_bonus, spying_bonus,
+		  government, large_homeworld, homeworld_gravity,
+		  homeworld_richness, ancient_artifacts, aquatic,
+		  subterranean, cybernetic, lithovore, repulsive, charismatic,
+		  uncreative, creative, tolerant, fantastic_trader,
+		  telepathic, lucky, omniscient, stealthy, transdimensional>>
 
 SCANNER
   Name: n+":scanner" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
-  Descriptions: List of detected fleets for player n, not including fleets
+  Description: List of detected fleets for player n, not including fleets
                 owned by n.
   Format: "i" <<count>>, followed by a sequence of
           "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and

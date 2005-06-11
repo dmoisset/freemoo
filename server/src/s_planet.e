@@ -48,8 +48,13 @@ feature {STORAGE} -- Saving
 	end
 
 	dependents: ITERATOR[STORABLE] is
+	local
+		a: ARRAY[STORABLE]
 	do
-		Result := (<<colony, orbit_center>>).get_new_iterator
+		create a.make(1,0)
+		a.add_last(colony)
+		a.add_last(orbit_center)
+		Result := a.get_new_iterator
 	end
 	
 feature {STORAGE} -- Retrieving

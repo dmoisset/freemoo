@@ -229,11 +229,11 @@ feature {NONE} -- Planet Generation
         newcol: COLONY
     do
         hmworldnams := <<"Color 1 Homeworld", "Color 2 Homeworld",
-        "Color 3 Homeworld", "Color 4 Homeworld", "Color 5 Homeworld"
-        "Color 6 Homeworld", "Color 7 Homeworld", "Color 8 Homeworld">>
+						 "Color 3 Homeworld", "Color 4 Homeworld", "Color 5 Homeworld"
+						 "Color 6 Homeworld", "Color 7 Homeworld", "Color 8 Homeworld">>
         -- player colors star with 0
         hmworldnams.reindex (0)
--- Get this out.  Should be race homeworld names
+		-- Get this out.  Should be race homeworld names
         step := perimeter / players.count
         rand.next
         offset := rand.last_real * step
@@ -244,21 +244,21 @@ feature {NONE} -- Planet Generation
         until i.is_off loop
             hmworldpos := walk_point (step * done + offset)
             hmworld_system := galaxy.closest_star_to (hmworldpos, dont_touch)
-	    hmworld := hmworld_system.create_planet
-	    hmworld.set_size(plsize_medium)
-	    hmworld.set_climate(climate_terran)
-	    hmworld.set_mineral(mnrl_abundant)
-	    hmworld.set_gravity(grav_normalg)
-	    hmworld.set_type(type_planet)
-	    hmworld.set_special(plspecial_nospecial)
+			hmworld := hmworld_system.create_planet
+			hmworld.set_size(plsize_medium)
+			hmworld.set_climate(climate_terran)
+			hmworld.set_mineral(mnrl_abundant)
+			hmworld.set_gravity(grav_normalg)
+			hmworld.set_type(type_planet)
+			hmworld.set_special(plspecial_nospecial)
             rand.next
             hmworld_system.set_planet (hmworld, rand.last_integer (hmworld_system.Max_planets))
             hmworld_system.set_name (hmworldnams.item (i.item.color))
-	    from
-	    until hmworld_system.kind /= kind_blackhole
-	    loop hmworld_system.set_kind(star_kinds.random_item)
-	    end
-	    newcol := hmworld.create_colony(i.item)
+			from
+			until hmworld_system.kind /= kind_blackhole
+			loop hmworld_system.set_kind(star_kinds.random_item)
+			end
+			newcol := hmworld.create_colony(i.item)
             i.item.add_to_known_list (hmworld_system)
             i.item.add_to_visited_list (hmworld_system)
             done := done + 1
@@ -266,7 +266,7 @@ feature {NONE} -- Planet Generation
             i.next
         end
     end
-
+	
 feature -- Operation
 
     generate (galaxy: GALAXY; players: PLAYER_LIST [PLAYER]) is

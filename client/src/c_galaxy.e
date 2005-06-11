@@ -81,7 +81,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 		count: INTEGER
 		orbit: INTEGER
 		s: UNSERIALIZER
-		colony: COLONY
+		colony: C_COLONY
 		star: STAR
 		planet: PLANET
 		owner: PLAYER

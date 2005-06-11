@@ -4,7 +4,7 @@ class C_STAR
 
 inherit
     STAR
-    redefine make, make_defaults, fleet_type, add_fleet end
+    redefine make, make_defaults, fleet_type, add_fleet, planet_type end
     SUBSCRIBER
 
 creation
@@ -43,7 +43,7 @@ feature {SERVICE_PROVIDER} -- Redefined features
             s.get_integer; orbit := s.last_integer
             todays_planets.add(orbit)
             if (planets @ orbit) = Void then
-                set_planet(create{PLANET}.make_standard (Current), orbit)
+                set_planet(create{C_PLANET}.make_standard (Current), orbit)
             end
             s.get_integer
             planets.item(orbit).set_size (s.last_integer + plsize_min)
@@ -77,7 +77,7 @@ feature -- Redefined features
         Precursor (f)
         changed.emit (Current)
     end
-
+	
 feature -- Accounting
 
     has_info: BOOLEAN
@@ -91,4 +91,6 @@ feature {NONE} -- Internal
 
     fleet_type: C_FLEET
 
+	planet_type: C_PLANET
+	
 end -- class C_STAR

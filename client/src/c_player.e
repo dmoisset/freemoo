@@ -3,7 +3,9 @@ class C_PLAYER
 
 inherit
     PLAYER
-    rename make as player_make end
+    rename 
+		make as player_make
+	redefine colony_type end
     SUBSCRIBER
     CLIENT
 
@@ -38,48 +40,45 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
     local
         s: UNSERIALIZER
         knows_count, visited_count, colony_count: INTEGER
-	orbit: INTEGER
+		orbit: INTEGER
         star: C_STAR
-        old_list: like knows_star
-	colony: COLONY
-	planet: PLANET
+        old_knows: like knows_star
+		old_colonies: like colonies
+		colony: C_COLONY
+		planet: C_PLANET
     do
         !!s.start (msg)
-	s.get_string
-	race_name := s.last_string
-	s.get_boolean
-	is_omniscient := s.last_boolean
-	s.get_real
-	fuel_range := s.last_real
+		s.get_real
+		fuel_range := s.last_real
         s.get_integer
-	knows_count := s.last_integer
-	s.get_integer
-	visited_count := s.last_integer
-	s.get_integer
-	colony_count := s.last_integer
+		knows_count := s.last_integer
+		s.get_integer
+		visited_count := s.last_integer
+		s.get_integer
+		colony_count := s.last_integer
         from
-            old_list := clone (knows_star)
+            old_knows := clone (knows_star)
             knows_star.clear
         until knows_count = 0 loop
             s.get_integer
             if server.galaxy.has_star (s.last_integer) then
                 star := server.galaxy.star_with_id (s.last_integer)
                 knows_star.add (star)
-                if not old_list.has (star) then 
+                if not old_knows.has (star) then 
                     -- We do the above check to avoid network overhead
                     -- Not doing iit implies we re-suscribe to the star service for
                     -- ALL stars
                     star.subscribe (server, "star"+star.id.to_string)
                 else
-                    old_list.remove (star)
+                    old_knows.remove (star)
                 end
             else
-                print ("c_player::on_message() - Warning: server reported that we know an star that isn%'t!%N")
+                print ("c_player::on_message() - Warning: server reported that we know a star that isn%'t!%N")
             end
             knows_count := knows_count - 1
         end
-	-- Assumption: A player never forgets about a star:
-	check old_list.is_empty end
+		-- Assumption: A player never forgets about a star:
+		check old_knows.is_empty end
         from
         until visited_count = 0 loop
             s.get_integer
@@ -91,39 +90,50 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             end
             visited_count := visited_count - 1
         end
-	
-	from
-	until colony_count = 0 loop
-	    s.get_integer
+		from
+            old_colonies := clone (colonies)
+            colonies.clear
+        until colony_count = 0 loop
+            s.get_integer
             if server.galaxy.has_star (s.last_integer) then
                 star := server.galaxy.star_with_id (s.last_integer)
-		s.get_integer
-		orbit := s.last_integer
-		planet := star.planet_at(orbit)
-		if planet = Void then
-		    -- Probably star information is on it's way, just
-		    -- make do with what we have.
-		    star.set_planet(create{PLANET}.make_standard (star), orbit)
-		    planet := star.planet_at(orbit)
-		end
-
-		if planet.colony = Void then
-		    create colony.make(planet, Current)
-		else
-		    colony := planet.colony
-		end
-		colony.unserialize_from(s)
-	    else
-                print ("c_player::on_message() - Warning: server reported that we've got a colony on a star!%N")
+				s.get_integer
+				orbit := s.last_integer
+				planet := star.planet_at(orbit)
+				if planet = Void then
+					-- Probably star information is on it's way, just
+					-- make do with what we have.
+					star.set_planet(create{C_PLANET}.make_standard (star), orbit)
+					planet := star.planet_at(orbit)
+				end
+				s.get_integer
+				if planet.colony = Void then
+					create colony.make(planet, Current)
+					colony.set_id(s.last_integer)
+				else
+					colony := planet.colony
+					check colony.id = s.last_integer end
+				end
+				colonies.add (colony, colony.id)
+                if not old_colonies.has (colony.id) then 
+                    colony.subscribe (server, "colony"+colony.id.to_string)
+                else
+                    old_colonies.remove (colony.id)
+                end
+            else
+                print ("c_player::on_message() - Warning: server reported that we have a colony on a star that isn%'t!%N")
             end
-	    
-	    colony_count := colony_count - 1
-	end
+            colony_count := colony_count - 1
+        end
     end
-
+	
 feature -- Access
-
+	
     connected: BOOLEAN
         -- Player has a connection to the server
-
+	
+feature -- Anchors
+	
+	colony_type: C_COLONY
+	
 end -- class C_PLAYER

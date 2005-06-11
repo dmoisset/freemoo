@@ -1,5 +1,10 @@
 class RACE
-
+	
+inherit
+	UNIQUE_ID
+	
+creation make
+	
 feature -- Access -- General
 
     name: STRING
@@ -120,7 +125,93 @@ feature -- Access -- government dependant
     do
         Result := government /= government_democracy
     end
-
+	
+feature -- Operations
+	
+	set_attribute(attr: STRING) is
+		-- General setter.  Can receive strings describing the attribute 
+		-- to set.
+	require
+		attr /= Void
+	local
+		key, value: STRING
+		eqpos: INTEGER
+	do
+		eqpos := attr.first_index_of('=')
+		if eqpos /= 0 then
+			key := attr.substring(1, eqpos - 1)
+			value := attr.substring(eqpos, attr.count)
+		else
+			key := attr
+			value := "True"
+		end
+		if key.is_equal("population_growth") and then value.is_integer then
+			population_growth := value.to_integer
+		elseif key.is_equal("farming_bonus") and then value.is_integer then
+			farming_bonus := value.to_integer
+		elseif key.is_equal("industry_bonus") and then value.is_integer then
+			industry_bonus := value.to_integer		
+		elseif key.is_equal("science_bonus") and then value.is_integer then
+			science_bonus := value.to_integer
+		elseif key.is_equal("money_bonus") and then value.is_integer then
+			money_bonus := value.to_integer
+		elseif key.is_equal("ship_defense_bonus") and then value.is_integer then
+			ship_defense_bonus := value.to_integer
+		elseif key.is_equal("ship_attack_bonus") and then value.is_integer then
+			ship_attack_bonus := value.to_integer
+		elseif key.is_equal("ground_combat_bonus") and then value.is_integer then
+			ground_combat_bonus := value.to_integer
+		elseif key.is_equal("spying_bonus") and then value.is_integer then
+			spying_bonus := value.to_integer
+		elseif key.is_equal("government") and then value.is_equal("feudal") then
+			government := government_feudal
+		elseif key.is_equal("government") and then value.is_equal("dictatorship") then
+			government := government_dictatorship
+		elseif key.is_equal("government") and then value.is_equal("democracy") then
+			government := government_democracy
+		elseif key.is_equal("government") and then value.is_equal("unification") then
+			government := government_unification
+		elseif key.is_equal("large_homeworld") and then value.is_boolean then
+			large_homeworld := value.to_boolean
+		elseif key.is_equal("homeworld_gravity") and then value.is_integer then
+			homeworld_gravity := value.to_integer
+		elseif key.is_equal("homeworld_richness") and then value.is_integer then
+			homeworld_richness := value.to_integer
+		elseif key.is_equal("ancient_artifacts") and then value.is_boolean then
+			ancient_artifacts := value.to_boolean
+		elseif key.is_equal("aquatic") and then value.is_boolean then
+			aquatic := value.to_boolean
+		elseif key.is_equal("subterranean") and then value.is_boolean then
+			subterranean := value.to_boolean
+		elseif key.is_equal("cybernetic") and then value.is_boolean then
+			cybernetic := value.to_boolean
+		elseif key.is_equal("lithovore") and then value.is_boolean then
+			lithovore := value.to_boolean
+		elseif key.is_equal("repulsive") and then value.is_boolean then
+			repulsive := value.to_boolean
+		elseif key.is_equal("charismatic") and then value.is_boolean then
+			charismatic := value.to_boolean
+		elseif key.is_equal("uncreative") and then value.is_boolean then
+			uncreative := value.to_boolean
+		elseif key.is_equal("tolerant") and then value.is_boolean then
+			tolerant := value.to_boolean
+		elseif key.is_equal("fantastic_trader") and then value.is_boolean then
+			fantastic_trader := value.to_boolean
+		elseif key.is_equal("telepathic") and then value.is_boolean then
+			telepathic := value.to_boolean
+		elseif key.is_equal("lucky") and then value.is_boolean then
+			lucky := value.to_boolean
+		elseif key.is_equal("omniscient") and then value.is_boolean then
+			omniscient := value.to_boolean
+		elseif key.is_equal("stealthy") and then value.is_boolean then
+			stealthy := value.to_boolean
+		elseif key.is_equal("transdimensional") and then value.is_boolean then
+			transdimensional := value.to_boolean
+		else
+			check invalid_option: false end		
+		end
+	end
+	
 feature -- Access -- Special
 
     large_homeworld: BOOLEAN
@@ -138,11 +229,22 @@ feature -- Access -- Special
     aquatic, subterranean, cybernetic, lithovore, repulsive,
     charismatic, uncreative, creative, tolerant, fantastic_trader,
     telepathic, lucky, omniscient, stealthy, transdimensional: BOOLEAN
-    
+
+feature {NONE} -- Creation
+	
+	make is
+	do
+		make_unique_id
+		government := government_dictatorship
+		name := ""
+	end
+
 invariant
     government.in_range (government_feudal, government_unification)
     ship_cost_bonus <= 3 -- Otherwise ships would have negative cost    
     not (creative and uncreative)
     not (charismatic and repulsive)
-    
+	not (lithovore and cybernetic)
+    homeworld_gravity.in_range(-1, 1)
+    homeworld_richness.in_range(-2, 2)
 end -- class RACE

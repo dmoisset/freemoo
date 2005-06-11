@@ -240,7 +240,7 @@ feature {NONE} -- Internal
         -- first time
     do
         galaxy.generate_scans (players.get_new_iterator)
-	galaxy.generate_colony_knowledge (players.get_new_iterator)
+		galaxy.generate_colony_knowledge (players.get_new_iterator)
     end
 
 feature -- Saving

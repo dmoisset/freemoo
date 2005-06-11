@@ -3,17 +3,41 @@ class S_COLONY
 inherit
     COLONY
     redefine 
-	owner, location, shipyard, create_colony_ship, create_starship
-    end
+		owner, location, shipyard, create_colony_ship, create_starship, 
+		new_turn, set_producing
+	end
     STORABLE
     rename
 	hash_code as id
     redefine
 	dependents, primary_keys
     end
+	SERVICE
+	redefine subscription_message end
     
 creation make
     
+feature -- Service related
+	
+    update_clients is
+    do
+        -- Check to avoid updates on initialization
+        if registry /= Void then
+            send_message ("colony" + id.to_string, subscription_message ("colony" + id.to_string))
+        end
+    end
+	
+	subscription_message (service_id: STRING): STRING is
+    local
+        s: SERIALIZER2
+    do
+        !!s.make
+		s.add_integer(producing - product_min)
+        Result := s.serialized_form
+    end
+	
+
+	
 feature -- Redefined features
     
     location: S_PLANET
@@ -35,14 +59,26 @@ feature -- Redefined features
     do
 	create Result.make(owner)
     end
-   
+	
+	new_turn is
+	do
+		Precursor
+		update_clients
+	end
+	
+	set_producing(newproducing: INTEGER) is
+	do
+		Precursor(newproducing)
+		update_clients
+	end
+	
 feature {STORAGE} -- Saving
 
     get_class: STRING is "COLONY"
 	
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     do
-	Result := (<<["producing", producing],
+	Result := (<<["producing", producing-product_min],
 		     ["owner", owner],
 		     ["location", location]
 		     >>).get_new_iterator

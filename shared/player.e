@@ -10,8 +10,8 @@ feature {NONE} -- Creation
     do
         set_state (st_setup)
         set_color (min_color)
-	fuel_range := 4.0
-	race_name := ""
+		fuel_range := 4.0
+		!!race.make
         !!colonies.make
         !!knows_star.make
         !!has_visited_star.make
@@ -36,16 +36,12 @@ feature -- Access
     has_visited_star: SET[like star_type]
         -- Stars visited by this player
     
-    race_name: STRING
-	-- The name of the empire
-    
     fuel_range: REAL
-	-- Distance our ships can travel from our colonies
-    
-feature -- Racial modifiers
-    
-    is_omniscient: BOOLEAN
-
+		-- Distance our ships can travel from our colonies
+	
+	race: RACE
+		-- The race this player rules
+	
 feature -- Access
 
     --
@@ -68,7 +64,7 @@ feature -- Query
     require
 	p /= Void
     local
-	it: ITERATOR[COLONY]
+	it: ITERATOR[like colony_type]
     do
 	from
 	    it := colonies.get_new_iterator_on_items
@@ -148,6 +144,7 @@ feature -- Anchors
     star_type: STAR
 
 invariant
+	race /= Void
     valid_state: state.in_range (min_state, max_state)
     valid_color: color.in_range (min_color, max_color)
 
