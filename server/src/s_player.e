@@ -7,7 +7,7 @@ inherit
     undefine
 		copy, is_equal
     redefine
-        add_to_known_list, colony_type, star_type
+        add_to_known_list, colony_type, star_type, race
     select id end
     STORABLE
     rename
@@ -31,6 +31,8 @@ feature -- Redefined Features
     
     star_type: S_STAR
     
+	race: S_RACE
+
 feature {NONE} -- Creation
 	
     make (new_name, new_password: STRING) is
@@ -149,6 +151,7 @@ feature {STORAGE} -- Saving
 		a.add_last(["color", color])
 		a.add_last(["state", state])
 		a.add_last(["password", password])
+		a.add_last(["race", race])
 		add_to_fields(a, "colony", colonies.get_new_iterator_on_items)
 		add_to_fields(a, "knows_star", knows_star.get_new_iterator)
 		add_to_fields(a, "has_visited_star", has_visited_star.get_new_iterator)
@@ -167,6 +170,7 @@ feature {STORAGE} -- Saving
 		a: ARRAY[STORABLE]
     do
 		create a.make(1, 0)
+		a.add_last(race)
 		add_dependents_to(a, colonies.get_new_iterator_on_items)
 		knows_star.do_all(agent a.add_last)
 		has_visited_star.do_all(agent a.add_last)
@@ -213,6 +217,8 @@ feature {STORAGE} -- Retrieving
 			elseif elems.item.first.is_equal("state") then
 				i ?= elems.item.second
 				state := i
+			elseif elems.item.first.is_equal("race") then
+				race ?= elems.item.second
 			elseif elems.item.first.has_prefix("colony") then
 				colony ?= elems.item.second
 				colonies.add (colony, colony.id)
