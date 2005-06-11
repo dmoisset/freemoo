@@ -25,19 +25,12 @@ feature {NONE} -- Creation
     local
         i: INTEGER
         s: UNSERIALIZER
-        it: ITERATOR[PLAYER]
         shipcount: INTEGER
         sh: SHIP
     do
         !!s.start (msg)
         s.get_integer
-        from it := server.player_list.get_new_iterator until
-            it.item.id = s.last_integer
-        loop
-            it.next
-        end
-        owner := it.item
-        set_owner (owner)
+        set_owner (server.player_list.item_id (s.last_integer))
         s.get_integer
         set_eta (s.last_integer)
         s.get_integer

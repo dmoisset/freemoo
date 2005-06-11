@@ -133,7 +133,6 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         owner: PLAYER
         fleet: C_FLEET
         ship: SHIP
-        it: ITERATOR[PLAYER]
         star_it: ITERATOR[STAR]
         fleet_it: ITERATOR[like last_fleet]
     do
@@ -162,12 +161,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         from until count = 0 loop
             !!fleet.make
             s.get_integer
-            from it := server.player_list.get_new_iterator until
-                it.item.id = s.last_integer
-            loop
-                it.next
-            end
-            owner := it.item
+            owner := server.player_list.item_id (s.last_integer)
             fleet.set_owner (owner)
             s.get_integer
             fleet.set_eta (s.last_integer)
