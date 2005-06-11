@@ -87,9 +87,9 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 		owner: PLAYER
 		star_it: ITERATOR[STAR]
 		planet_it: ITERATOR[PLANET]
-		player_it: ITERATOR[PLAYER]
 	do
 		!!s.start (msg)
+		-- Remove all _enemy_ colonies
 		from star_it := stars.get_new_iterator_on_items until
 			star_it.is_off
 		loop
@@ -118,12 +118,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 				planet := star.planet_at(orbit)
 			end
 			s.get_integer
-			from player_it := server.player_list.get_new_iterator until
-				player_it.item.id = s.last_integer
-			loop
-				player_it.next
-			end
-			owner := player_it.item
+			owner := server.player_list.item_id (s.last_integer)
 			create colony.make(planet, owner)
 			count := count - 1
 		end

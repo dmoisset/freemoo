@@ -29,14 +29,30 @@ feature -- Access
         Result = items @ key
     end
 
-    names: ARRAY [STRING] is
-    obsolete "If you want to iterate over a PLAYER_LIST, use get_new_iterator"
+    has_id (id: INTEGER): BOOLEAN is
     local
-        sort: COLLECTION_SORTER [STRING]
+        player: ITERATOR[P]
     do
-        !!Result.make (1, 0)
-        items.key_map_in (Result)
-        sort.sort (Result)
+        from player := get_new_iterator until player.is_off or Result loop
+            Result := player.item.id = id
+            player.next
+        end
+    end
+
+    item_id (id: INTEGER): P is
+    require
+        has_id (id)
+    local
+        player: ITERATOR[P]
+    do
+        from player := get_new_iterator until
+            player.item.id = id
+        loop
+            player.next
+        end
+        Result := player.item
+    ensure
+        Result.id = id
     end
 
     count: INTEGER is
