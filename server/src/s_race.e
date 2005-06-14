@@ -43,11 +43,12 @@ feature
 		  population_growth, farming_bonus, industry_bonus,
 		  science_bonus, money_bonus, ship_defense_bonus,
 		  ship_attack_bonus, ground_combat_bonus, spying_bonus,
-		  government-government_feudal, large_homeworld, homeworld_gravity,
+		  government-government_feudal, homeworld_size, homeworld_gravity,
 		  homeworld_richness, ancient_artifacts, aquatic,
 		  subterranean, cybernetic, lithovore, repulsive, charismatic,
 		  uncreative, creative, tolerant, fantastic_trader,
-		  telepathic, lucky, omniscient, stealthy, transdimensional>>)
+		  telepathic, lucky, omniscient, stealthy, transdimensional, 
+		  warlord>>)
 		Result := s.serialized_form
 	end
 	
@@ -73,7 +74,7 @@ feature {STORAGE} -- Saving
 		a.add_last(["ground_combat_bonus", ground_combat_bonus])
 		a.add_last(["spying_bonus", spying_bonus])
 		a.add_last(["government", government - government_feudal])
-		a.add_last(["large_homeworld", large_homeworld])
+		a.add_last(["homeworld_size", homeworld_size])
 		a.add_last(["homeworld_gravity", homeworld_gravity])
 		a.add_last(["homeworld_richness", homeworld_richness])
 		a.add_last(["ancient_artifacts", ancient_artifacts])
@@ -92,6 +93,7 @@ feature {STORAGE} -- Saving
 		a.add_last(["omniscient", omniscient])
 		a.add_last(["stealthy", stealthy])
 		a.add_last(["transdimensional", transdimensional])
+		a.add_last(["warlord", warlord])
 		Result := a.get_new_iterator
 	end
     
@@ -159,9 +161,9 @@ feature {STORAGE} -- Retrieving
 			elseif elems.item.first.is_equal("government") then
 				i ?= elems.item.second
 				government := i + government_feudal
-			elseif elems.item.first.is_equal("large_homeworld") then
-				b ?= elems.item.second
-				large_homeworld := b
+			elseif elems.item.first.is_equal("homeworld_size") then
+				i ?= elems.item.second
+				homeworld_size := i
 			elseif elems.item.first.is_equal("homeworld_gravity") then
 				i ?= elems.item.second
 				homeworld_gravity := i

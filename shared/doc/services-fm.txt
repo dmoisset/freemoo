@@ -64,15 +64,15 @@ RACE
   Name: "race"+id (id is a digit sequence = race.id)
   Provided: Before game_status.started is set
   Description: Detailed description of the player's race.
-  Format: "ssiiiiiiiiiibiibbbbbbbbbbbbbbbb" <<name, homeworld_name,
+  Format: "ssiiiiiiiiiiiiibbbbbbbbbbbbbbbbb" <<name, homeworld_name,
 		  population_growth, farming_bonus, industry_bonus,
 		  science_bonus, money_bonus, ship_defense_bonus,
 		  ship_attack_bonus, ground_combat_bonus, spying_bonus,
-		  government, large_homeworld, homeworld_gravity,
+		  government, homeworld_size, homeworld_gravity,
 		  homeworld_richness, ancient_artifacts, aquatic,
 		  subterranean, cybernetic, lithovore, repulsive, charismatic,
 		  uncreative, creative, tolerant, fantastic_trader,
-		  telepathic, lucky, omniscient, stealthy, transdimensional>>
+		  telepathic, lucky, omniscient, stealthy, transdimensional, warlord>>
 
 SCANNER
   Name: n+":scanner" (n is a digit sequence = player id)

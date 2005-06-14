@@ -171,8 +171,8 @@ feature -- Operations
 			government := government_democracy
 		elseif key.is_equal("government") and then value.is_equal("unification") then
 			government := government_unification
-		elseif key.is_equal("large_homeworld") and then value.is_boolean then
-			large_homeworld := value.to_boolean
+		elseif key.is_equal("homeworld_size") and then value.is_integer then
+			homeworld_size := value.to_integer
 		elseif key.is_equal("homeworld_gravity") and then value.is_integer then
 			homeworld_gravity := value.to_integer
 		elseif key.is_equal("homeworld_richness") and then value.is_integer then
@@ -214,21 +214,24 @@ feature -- Operations
 	
 feature -- Access -- Special
 
-    large_homeworld: BOOLEAN
+    homeworld_size: INTEGER
+		-- -2 for tiny, -1 for small, 0 for normal, +1 for large, +2 for huge.
+		-- (easy to add to size constants from MAP_CONSTANTS)
 
     homeworld_gravity: INTEGER
         -- -1 for low, 0 for normal, +1 for high
         -- (easy to add to gravity constants from MAP_CONSTANTS)
 
     homeworld_richness: INTEGER
-        -- -1 for poor, 0 for normal, +1 for rich
+        -- -2 for UP, -1 for poor, 0 for normal, +1 for rich, +2 for UR
         -- (easy to add to richness constants from MAP_CONSTANTS)
 
     ancient_artifacts: BOOLEAN
 
     aquatic, subterranean, cybernetic, lithovore, repulsive,
     charismatic, uncreative, creative, tolerant, fantastic_trader,
-    telepathic, lucky, omniscient, stealthy, transdimensional: BOOLEAN
+    telepathic, lucky, omniscient, stealthy, transdimensional, 
+	warlord: BOOLEAN
 
 feature {NONE} -- Creation
 	
@@ -247,4 +250,5 @@ invariant
 	not (lithovore and cybernetic)
     homeworld_gravity.in_range(-1, 1)
     homeworld_richness.in_range(-2, 2)
+	homeworld_size.in_range(-2, 2)
 end -- class RACE

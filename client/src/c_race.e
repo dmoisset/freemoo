@@ -36,8 +36,8 @@ feature
 		spying_bonus := s.last_integer
 		s.get_integer 
 		government := s.last_integer + government_feudal
-		s.get_boolean
-		large_homeworld := s.last_boolean
+		s.get_integer
+		homeworld_size := s.last_integer
 		s.get_integer
 		homeworld_gravity := s.last_integer
 		s.get_integer
@@ -73,7 +73,9 @@ feature
 		s.get_boolean
 		stealthy := s.last_boolean
 		s.get_boolean
-		transdimentional := s.last_boolean
+		transdimensional := s.last_boolean
+		s.get_boolean
+		warlord := s.last_boolean
 	end
 
 
