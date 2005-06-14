@@ -22,23 +22,6 @@ feature -- Constants
         -- Maximum possible `color'
 
 feature -- Constants
-    
-    race_homeworlds: DICTIONARY[STRING, STRING] is
-    once
-        create Result.make
-        Result.add("Sol", "Human")
-        Result.add("Draconis", "Elerian")
-        Result.add("Cryslon", "Silicoid")
-        Result.add("Mentar", "Psilon")
-        Result.add("Altair", "Alkari")
-        Result.add("Nazin", "Darlok")
-        Result.add("Gnol", "Gnolam")
-        Result.add("Kholdan", "Klackon")
-        Result.add("Meklon", "Meklar")
-        Result.add("Sssla", "Sakkra")
-        Result.add("Ursa", "Bulrathi")
-    end
-
 
     color_names: DICTIONARY[STRING, INTEGER] is
     once

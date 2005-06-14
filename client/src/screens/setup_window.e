@@ -76,37 +76,28 @@ feature {NONE} -- Custom widgets
     
     new_radiogroups(races_where, color_where: RECTANGLE) is
     local
+		ratts: RACE_ATTRIBUTES
     	bup, bdown: IMAGE_FMI
-	it: ITERATOR[STRING]
+		it: ITERATOR[STRING]
     do
-	!!bup.make_from_file("client/setup-window/radio-button-u.fmi")
-	!!bdown.make_from_file("client/setup-window/radio-button-d.fmi")
-	
-	!!race_name_group.make(Current, races_where, bup, bdown)
-	from it := server.race_homeworlds.get_new_iterator_on_keys
-	until it.is_off loop
-	    race_name_group.add_option(it.item)
-	    it.next
-	end
-	
-	!!color_group.make(Current, color_where, bup, bdown)
-	from it := server.race_homeworlds.get_new_iterator_on_items
-	until it.is_off loop
-	    color_group.add_option(it.item)
-	    it.next
-	end
+		create ratts.make
+		create bup.make_from_file("client/setup-window/radio-button-u.fmi")
+		create bdown.make_from_file("client/setup-window/radio-button-d.fmi")
+		
+		create race_name_group.make(Current, races_where, bup, bdown)
+		from it := ratts.race_names.get_new_iterator
+		until it.is_off loop
+			race_name_group.add_option(it.item)
+			it.next
+		end
+		race_name_group.add_option("Custom")
+		
+		create color_group.make(Current, color_where, bup, bdown)
+		from it := server.color_names.get_new_iterator_on_items
+		until it.is_off loop
+			color_group.add_option(it.item)
+			it.next
+		end
     end
-    
---    new_custom_flag_view: GTK_WIDGET is
---    do
---        !!flag_viewer.make (server.player_list)
---        Result := flag_viewer.widget
---    end
---
---    new_custom_chat: GTK_WIDGET is
---    do
---        print ("Not implemented%N")
---        !GTK_LABEL!Result.make ("chat")
---    end
-
+	
 end -- class SETUP_WINDOW

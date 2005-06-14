@@ -14,38 +14,38 @@ feature {NONE} -- Creation
         r, s: RECTANGLE
     do
         Precursor (w, where)
-
+		
         !!a.make ("client/connect-window/background.fma")
         !!background.make (Current, 0, 0, a.images @ 1)
         !!background.make (Current, 0, 0,
-            create {IMAGE_FMI}.make_from_file ("client/setup-window/background.fmi"))
-
+						   create {IMAGE_FMI}.make_from_file ("client/setup-window/background.fmi"))
+		
         r.set_with_size (75, 100, 235, 175)
         new_player_list (r)
-
+		
         r.set_with_size (144, 307, 163, 20)
         !!ruler_name.make (Current, r)
-
-	r.set_with_size(320, 100, 135, 175)
-	s.set_with_size(455, 100, 135, 175)
-	new_radiogroups(r, s)
+		
+		r.set_with_size(455, 100, 135, 275)
+		s.set_with_size(320, 100, 135, 175)
+		new_radiogroups(r, s)
         
-	!BUTTON_IMAGE!start_button.make (Current, 75, 350,
-            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-u.fmi"),
-            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-p.fmi"),
-            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-d.fmi")
-            )
+		!BUTTON_IMAGE!start_button.make (Current, 75, 350,
+										 create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-u.fmi"),
+										 create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-p.fmi"),
+										 create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-d.fmi")
+										 )
         start_button.set_click_handler (agent start_game)
-
+		
         !BUTTON_IMAGE!disconnect_button.make (Current, 295, 350,
-            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-u.fmi"),
-            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-p.fmi"),
-            create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-d.fmi")
-            )
+											  create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-u.fmi"),
+											  create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-p.fmi"),
+											  create {IMAGE_FMI}.make_from_file ("client/connect-window/connect-button-d.fmi")
+											  )
         disconnect_button.set_click_handler (agent disconnect)
-
+		
     end
-
+	
 feature {NONE} -- Widgets
 
     player_list: PLAYER_LIST_VIEW
