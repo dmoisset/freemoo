@@ -1,4 +1,4 @@
-class PLAYER_CONSTANTS
+expanded class PLAYER_CONSTANTS
 
 feature {NONE} -- Constants
 
