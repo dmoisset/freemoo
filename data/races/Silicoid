@@ -1,0 +1,25 @@
+# Race description
+The Silicoids are crystalline beings that are lithovores, eating minerals instead of food.  They  are environmentally tolerant but suffer from half the standard population growth rate.  Silcoids are also repulsive, incapable of effectively comprehending the nature  of other beings, making it extremely difficult to negotiate with other races and doubling the cost of hiring legendary officers and leaders. They have a dictatorial form of government.
+
+# Homeworld name suggestion
+Cryslon
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Crystous
+Sandebar
+Igneus Maximus
+Quorzom
+Krakatoa
+Vorkronoa
+Geode
+Sedimin
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+population_growth=-50
+lithovore
+repulsive
+tolerant
+government=dictatorship
+.
+

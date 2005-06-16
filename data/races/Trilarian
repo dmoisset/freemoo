@@ -1,0 +1,23 @@
+# Race description
+Trilarians are aquatic based life forms and as such they treat all tundra and swamp worlds as ocean and ocean and terrans as gaias. Their homeworld is an ocean world and therefore can support more colonists and  grows 3 food per farmer. Trilarians are also trans-dimensional and can fold space with their minds, increasing the speed of their ships on the galactic map by 2 parsecs per turn and increasing their combat speed by 4.  Trilarians have a dictatorial form of government.
+
+# Homeworld name suggestion
+Trilar
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Aquailis
+Klirr
+Cress
+Everial
+Oraborus
+Llorian
+Wavya
+Calibar
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+aquatic
+transdimensional
+government=dictatorship
+.
+

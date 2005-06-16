@@ -1,0 +1,22 @@
+# Race description
+The Alkari are an avian race which have descended from great flying reptiles.  Alkari pilots are reared from a young age on the dynamics of 3-dimensional motion.  As a result the  Alkari boast superior pilots, gaining a +50 defensive bonus in space combat. Furthermore,  the Alkari homeworld was once colonized by the Orions, and still possesses ancient artifacts. The Alkari have a dictatorial government.
+
+# Homeworld name suggestion
+Altair
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Ariel
+Heggira
+Tavua Preet
+Tak Tochno
+Saguaro Ty
+Peerik Kree
+Voreet Zry
+Karaaw Hrik
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+ship_defense_bonus=50
+ancient_artifacts
+government=dictatorship
+.

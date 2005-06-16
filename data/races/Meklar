@@ -1,0 +1,22 @@
+# Race description
+The Meklars are a cybernetic race that have become extremely dependent on their  cybernetic exoskeletons, to the point that their bodies have atrophied to small fragile  frames.  Unlike other races, Meklars consume 1/2 production and 1/2 food each, rounded  up. Their cybernetic interfaces allow them to completely repair their ships  after combat. In addition 10% of their ship's structure and 5% of their ship's internal  systems are repaired each round of combat. Meklar factory workers produce +2 production each. Meklars have a dictatorial form of government.
+
+# Homeworld name suggestion
+Meklon
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+QX-537
+THX-1137
+CZK-21
+Cog Primus
+911-C4S
+M3-850T
+INT-986
+RSW-242
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+industry_bonus=2
+cybernetic
+government=dictatorship
+.

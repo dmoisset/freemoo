@@ -1,0 +1,24 @@
+# Race description
+The Psilons are a delicate race of brilliant researchers from a Low-G home world. Each Psilon scientist produces 2 more research than the galactic norm. In  addition, the Psilons are very creative, and they never ignore a potential  avenue of research. Thus, all technologies are available to their scientists. Their large home world doesn't hurt either. They are ruled by a Dictatorship.
+
+# Homeworld name suggestion
+Mentar
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Psiros
+Amios
+Tssha
+Erga Uticus
+Menz Agitat
+Ekar Orgit
+Kelvan
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+science_bonus=2
+homeworld_gravity=-1
+homeworld_size=1
+creative
+government=dictatorship
+.
+

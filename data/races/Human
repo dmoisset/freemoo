@@ -1,0 +1,21 @@
+# Race description
+Humans are the most charismatic deal makers of the game.  They gain a +50% diplomacy  bonus when dealing with other races and pay half price to hire legendary officers and  leaders. Humans are the only race with a democratic form of government.
+
+# Homeworld name suggestion
+Sol
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Durash IV
+Strader
+Reid
+Alexander
+Bladrov II
+Lasitus
+Caesar
+Sargon
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+charismatic
+government=democracy
+.

@@ -1,0 +1,26 @@
+# Race description
+The Klackons are an insectoid people who are completely satisfied with their life.  Their hive  mind allows communication to pass swiftly and effectively, with each worker acting with  great conviction, operating as one. As a result, Klackons are the only race with a unified  government. In addition, Klackons are extremely industrious workers, adding +1 to both  their food and industry production. Unfortunately,they are uncreative and have  great difficulty in coming up with new technologies.
+
+# Homeworld name suggestion
+Kholdan
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Ixitixl
+Ezixl
+Virzixl
+Kaviq
+Qurtirqul
+K'kalak
+Kikitik
+Kaxal
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+farming_bonus=1
+industry_bonus=1
+homeworld_size=1
+uncreative
+government=unification
+.
+
+

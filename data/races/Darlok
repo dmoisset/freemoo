@@ -1,0 +1,23 @@
+# Race description
+The Darlok people are shape shifters, who can assume almost any humanoid form.  As a  result, all Darlok spies gain a +20 bonus to any spy mission.  Furthermore, Darloks have  the ability to render their ships invisible to long range detection.  They have a dictatorial  form of government.
+
+# Homeworld name suggestion
+Nazin
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Narzina
+Vale
+Ember
+Greymoran
+Mysvaleer
+Shador
+Morfane
+Darquan
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+spying_bonus=20
+stealthy
+government=dictatorship
+.
+

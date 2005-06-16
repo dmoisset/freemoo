@@ -1,0 +1,24 @@
+# Race description
+The Mrrshan are a cat-like race with keen senses, giving them  a +50 to hit bonus to all of  their ship beam attacks. The Mrrshan possess a strict warrior code and are warlords by  nature, doubling the start, rate and maximum number of troops and armor that can be  stationed on a planet. Furthermore, they increase the level of their crew and their legendary officers and leaders by one. They have a mineral rich homeworld and a dictatorial form of government.
+
+# Homeworld name suggestion
+Fieras
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Darquan
+Miamar
+Fargul
+Parasha Vrrn
+Harrava Ril
+Yarrala Hrrsh
+Torfang
+Marupa
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+ship_offense_bonus=50
+homeworld_richness=1
+warlord
+government=dictatorship
+.
+

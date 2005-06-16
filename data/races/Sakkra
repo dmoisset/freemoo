@@ -1,0 +1,26 @@
+# Race description
+The Sakkra are a race of reptiles with impressive regenerative capabilities.   As a result, their population grows at twice the normal rate.  They are  subterranean, living both under and above the surface of a planet, increasing  the maximum population a planet can support by twice the planet's size. The Sakkra  are very good at agriculture giving them a bonus of +1 food per farmer, but somewhat  inept at spying with a -10 to all spying activities. The Sakkra come from a  large home world and have a feudal form of government.
+
+# Homeworld name suggestion
+Sssla
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Dynalon
+Seurak
+Tyran
+Dactylus
+Guanar
+Sarezaear
+Ragazor
+Hissa
+Sauron
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+population_growth=100
+farming_bonus=1
+spying_bonus=-10
+subterranean
+homeworld_size=1
+government=feudal
+.

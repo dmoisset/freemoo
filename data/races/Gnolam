@@ -1,0 +1,24 @@
+# Race description
+The Gnolams are a dwarf-like people, with a society that focuses almost exclusively on  monetary gains.  As a result, the Gnolams are fantastic traders, doubling the gains they  make from trade treaties.  The capitalistic nature of the Gnolam is so intense that each  Gnolam generates a bonus of +1 BC per  population. Gnolams are lucky, and will never be  affected by random disasters, and are more likely to be affected by good events.  The  Gnolams are small in stature and come from a Low-G homeworld and suffer from significant  industry and farming penalties on normal and heavy-G worlds, as well as having a  -10 penalty to all ground combat engagements. Gnolams have a dictatorial form of government.
+
+# Homeworld name suggestion
+Gnol
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Dolgran
+Trant
+Trorn
+Bortis
+Gnorm
+Navolok
+Volm
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+money_bonus=1
+homeworld_gravity=-1
+fantastic_trader
+lucky
+government=dictatorship
+.
+

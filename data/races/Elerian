@@ -1,0 +1,25 @@
+# Race description
+The Elerian people are humanoid, with strong angular facial features, almost elf-like. They  follow an order of female mystics that are omniscient and know about all of the planets  when the game begins, and can always sense the presence of enemy fleets, regardless of  range. Furthermore, the mystics can see slightly into the future giving them tactical  advantages in space combat, adding +20 to their offense and +25 to their defense. The greatest  of the Elerian mystics are telepathic, allowing them to mind control and automatically  capture undefended enemy worlds and gain immediate use of captured ships. In addition, their  telepathic ability grants the Elerians +10% to all spy actions. Elerians have a feudal form  of government.
+
+# Homeworld name suggestion
+Draconis
+
+# Ruler names suggestions.  The list of names is terminated with a line containing a single '.'
+Fireblade
+Greywind
+Laurel
+Erethia
+Yarasi
+Myranmar
+Berylia
+Ellowyn
+.
+
+# Modifiers.  The list is terminated with a line containing a single '.'
+ship_defense_bonus=25
+ship_offense_bonus=20
+telepathic
+omniscient
+government=feudal
+.
+
