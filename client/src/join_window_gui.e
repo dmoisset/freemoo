@@ -39,7 +39,9 @@ feature {NONE} -- Creation
         password.enable_text_hiding
         
         name.set_next_in_tab_order (password)
+        name.set_default_action(agent password.grab)
         password.set_next_in_tab_order (name)
+        password.set_default_action (agent join)
 
         r.set_with_size (120, 350, 400, 25)
         !!status_label.make (Current, r, "Join as new player or rejoin as existing one.")
