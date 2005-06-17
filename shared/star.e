@@ -35,56 +35,6 @@ feature -- Access
         Result := planets @ orbit
     end
 
-    has_fleet (fid: INTEGER): BOOLEAN is
-    do
-        Result := fleets.has (fid)
-    end
-
-    fleet_with_id (fid: INTEGER): like fleet_type is
-    require
-        has_fleet (fid)
-    do
-        Result := fleets @ fid
-    end
-
-    fleet_count: INTEGER is
-    do
-        Result := fleets.count
-    end
-
-    get_new_iterator_on_fleets: ITERATOR [like fleet_type] is
-    do
-        Result := fleets.get_new_iterator_on_items
-    end
-    
-feature -- Operations on fleets
-
-    add_fleet (f: like fleet_type) is
-    require
-        f.orbit_center = Current
-    do
-        fleets.add (f, f.id)
-    end
-
-    remove_fleet (f: like fleet_type) is
-    require
-        has_fleet (f.id)
-    do
-        fleets.remove (f.id)
-    end
-
-    store_fleets_in (buffer: COLLECTION [like fleet_type]) is
-    require
-        buffer /= Void
-    do
-        fleets.item_map_in (buffer)
-    end
-
-    clear_fleets is
-    do
-        fleets.clear
-    end
-    
 feature -- Operations on star system
 
     set_planet (newplanet: like planet_type; orbit: INTEGER) is
@@ -141,7 +91,7 @@ feature -- Factory Methods
     
     create_planet: like planet_type is
     do
-	create Result.make_standard(Current)
+        create Result.make_standard(Current)
     end
     
     
@@ -154,7 +104,6 @@ feature {NONE} -- Creation
         name := ""
         size := stsize_min
         !!planets.make (1, Max_planets)
-        !!fleets.make
         special := stspecial_nospecial
     end
 
@@ -171,7 +120,6 @@ feature {NONE} -- Creation
         kind := k
         size := s
         !!planets.make (1, Max_planets)
-        !!fleets.make
         special := stspecial_nospecial
     ensure
         distance_to (p) = 0
@@ -187,17 +135,11 @@ feature {STAR} -- Representation
         -- planets orbiting, from inner to outer orbit
         -- has Void at empty orbits
 
-    fleets: DICTIONARY [like fleet_type, INTEGER]
-        -- Subset of galaxy's `fleets', containing fleets that orbit this star.
-	
 feature {NONE} -- Internal
-
-    fleet_type: FLEET
-        -- Anchor for type declarations.
     
-	planet_type: PLANET
-		-- Anchor for type declarations.
-	
+    planet_type: PLANET
+        -- Anchor for type declarations.
+
 invariant
     valid_kind: kind.in_range (kind_min, kind_max)
     valid_size: size.in_range (stsize_min, stsize_max)

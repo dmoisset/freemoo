@@ -155,11 +155,11 @@ feature -- Operations
         -- Bombardment/ground combat
         -- Colonization
         galaxy.generate_scans (players.get_new_iterator)
-	galaxy.generate_colony_knowledge(players.get_new_iterator)
+        galaxy.generate_colony_knowledge(players.get_new_iterator)
         status.next_date
         if not end_condition then
             players.set_all_state (st_playing_turn)
-	    save
+            save
         else
             players.set_all_state (st_end_game)
             status.finish
@@ -190,12 +190,12 @@ feature {NONE} -- Internal
                     p.item.colony.new_turn
                     if p.item.colony.shipyard /= Void then
                         from
-                            f := s.item.get_new_iterator_on_fleets
+                            f := galaxy.get_new_iterator_on_fleets
                         until
                             f.is_off or else 
                             (f.item.owner = p.item.colony.owner and
-                             f.item.destination = Void -- This will have to be changed when relocations are implemented
-                            )
+                             f.item.orbit_center = s.item and
+                             f.item.destination = Void)
                         loop
                             f.next
                         end
@@ -240,14 +240,14 @@ feature {NONE} -- Internal
         -- first time
     do
         galaxy.generate_scans (players.get_new_iterator)
-		galaxy.generate_colony_knowledge (players.get_new_iterator)
+        galaxy.generate_colony_knowledge (players.get_new_iterator)
     end
 
 feature -- Saving
 
     hash_code: INTEGER is
     do
-	Result := Current.to_pointer.hash_code
+        Result := Current.to_pointer.hash_code
     end
     
 feature {NONE} -- Internal - Saving
@@ -265,7 +265,7 @@ feature {NONE} -- Internal
         -- Just an anchor for typing of stars
     
     planet_type: PLANET
-	-- Just an anchor for typing of planets
+        -- Just an anchor for typing of planets
     
 invariant
     map_generator /= Void

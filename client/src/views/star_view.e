@@ -5,18 +5,19 @@ inherit
     MAP_CONSTANTS
     WINDOW
         rename make as window_make
-        redefine redraw, handle_event end
+        redefine redraw, handle_event, remove end
 
 creation
     make
 
 feature {NONE} -- Creation
 
-    make (w: WINDOW; where: RECTANGLE; s: C_STAR; new_status: C_GAME_STATUS) is
+    make (w: WINDOW; where: RECTANGLE; s: C_STAR; new_status: C_GAME_STATUS; g: C_GALAXY) is
         -- build widget as view of `s'
     require
         w /= Void
         s /= Void
+        g /= Void
         new_status /= Void
     local
         a: FMA_FRAMESET
@@ -35,13 +36,11 @@ feature {NONE} -- Creation
         -- Drag Handle
         r.set_with_size(0, 0, 347, 45)
         !!d.make(Current, r)
---        d.set_pre_drag (agent disable_animations)
-  --      d.set_post_drag (agent enable_animations)
         -- Close Button
         !!a.make ("client/star-view/close-button.fma")
         !BUTTON_IMAGE!close_button.make (Current, 262, 235,
             a.images @ 1, a.images @ 1, a.images @ 2)
-        close_button.set_click_handler (agent close)
+        close_button.set_click_handler (agent remove)
         -- Name label
         r.set_with_size (11, 13, 320, 28)
         !!name_label.make (Current, r, "")
@@ -49,8 +48,10 @@ feature {NONE} -- Creation
         r.set_with_size (15, 50, 310, 100)
         !!planet_label.make (Current, r, "")
         !!removable_children.make(1, 0)
-        -- Fleet hotspots
-        !!fleet_hotspots.make
+        -- Fleetsorbiting view
+        r.set_with_size(20, 239, 170, 14)
+        !!fleets_orbiting.make(Current, r, star, g)
+
         on_model_change
     end
 
@@ -62,16 +63,9 @@ feature {NONE} -- Widgets
 
     planet_label: MULTILINE_LABEL
 
+    fleets_orbiting: ORBITING_FLEETS_VIEW
 
 feature {NONE} -- Callbacks
-
-    close is
-    do
-        star.changed.disconnect (star_changed_handler)
-        status.changed.disconnect (status_changed_handler)
-        star := Void
-        remove
-    end
 
     enable_animations is
     do
@@ -89,8 +83,6 @@ feature {NONE} -- Callbacks
     do
         print ("Not Yet Implemented%N")
     end
-
-    fleet_click_handler: PROCEDURE[ANY, TUPLE[C_FLEET]]
 
 feature {NONE} -- Signal handlers
 
@@ -120,11 +112,9 @@ feature {NONE} -- Signal handlers
         star /= Void
     local
         child: ITERATOR[WINDOW]
-        fleet: ITERATOR[C_FLEET]
         wa: WINDOW_ANIMATED
         msg_label: MULTILINE_LABEL
         button: BUTTON_PLANET
-        i: INTEGER
         planet: PLANET
         ani: ANIMATION_FMA
         r: RECTANGLE
@@ -142,22 +132,11 @@ feature {NONE} -- Signal handlers
             end
             child.next
         end
-        -- Generate hotspots
-        fleet_hotspots.clear
-        from
-            fleet := star.get_new_iterator_on_fleets
-            i := 0
-        until fleet.is_off
-        loop
-            r.set_with_size(fleet_pic_firstx + i * (fleet_pic_width + fleet_pic_margin), fleet_pic_y, fleet_pic_width, fleet_pic_height)
-            fleet_hotspots.add (r, fleet.item.id)
-            fleet.next
-            i := i + 1
-        end
         if star.has_info then
         -- Show info for an known system
             name_label.set_text("Star System " + star.name)
-            from ip := star.get_new_iterator_on_planets
+            from
+                ip := star.get_new_iterator_on_planets
             until ip.is_off loop
                 planet := ip.item
                 if planet /= Void and then planet.type /= type_asteroids then
@@ -191,11 +170,18 @@ feature {NONE} -- Signal handlers
 
 feature -- Redefined features
 
+    remove is
+    do
+        star.changed.disconnect (star_changed_handler)
+        status.changed.disconnect (status_changed_handler)
+        star := Void
+        Precursor
+    end
+
     redraw(r: RECTANGLE) is
     local
         tuple: TUPLE[INTEGER, INTEGER]
         i: INTEGER
-        fleet_it: ITERATOR[C_FLEET]
         ip: ITERATOR[PLANET]
     do
         if dirty then
@@ -229,15 +215,6 @@ feature -- Redefined features
                     ip.next
                 end
             end
-    -- Fleets
-            from
-                fleet_it := star.get_new_iterator_on_fleets
-                i := fleet_pic_firstx
-            until fleet_it.is_off loop
-                fleets.item(fleet_it.item.owner.color).show(cache, i, fleet_pic_y)
-                i := i + (fleets @ fleet_it.item.owner.color).width + fleet_pic_margin
-                fleet_it.next
-            end
         end
         show_image(cache, 0, 0, r)
         Precursor(r)
@@ -245,13 +222,11 @@ feature -- Redefined features
 
     handle_event(event: EVENT) is
     local
-        b: EVENT_MOUSE_BUTTON
         m: EVENT_MOUSE_MOVE
         i: INTEGER
         tick: EVENT_TIMER
         x, y, angle: DOUBLE
         a: BOOLEAN
-        it: ITERATOR[RECTANGLE]
         ip: ITERATOR[PLANET]
     do
         if handle_ticks then
@@ -262,47 +237,30 @@ feature -- Redefined features
         end
         Precursor(event)
         if not event.handled then
-            b ?= event
-            if b /= Void then
-                event.set_handled
-                if b.button = 1 and not b.state then
-                    from it := fleet_hotspots.get_new_iterator_on_items
-                    until it.is_off
-                    loop
-                        if (it.item.has(b.x, b.y)) then
-                            if fleet_click_handler /= Void then
-                                fleet_click_handler.call([star.fleet_with_id (fleet_hotspots.key_at(it.item))])
-                            end
-                        end
-                        it.next
+            m ?= event
+            if m /= Void then
+                angle := ((m.y - 136.5) * 1.88).atan2(m.x - 173.5)
+                from
+                    ip := star.get_new_iterator_on_planets
+                    a := False
+                    i := 0
+                until ip.is_off or a loop
+                    if ip.item /= Void and then ip.item.type = type_asteroids then
+                        y := br * (bi + i)
+                        x := y * xm
+                        y := cy + angle.sin * y
+                        x := cx + angle.cos * x
+                        a := (x - m.x).abs < 4 and then (y - m.y).abs < 4
                     end
+                    i := i + 1
+                    ip.next
                 end
-            else
-                m ?= event
-                if m /= Void then
-                    angle := ((m.y - 136.5) * 1.88).atan2(m.x - 173.5)
-                    from
-                        ip := star.get_new_iterator_on_planets
-                        a := False
-                        i := 0
-                    until ip.is_off or a loop
-                        if ip.item /= Void and then ip.item.type = type_asteroids then
-                            y := br * (bi + i)
-                            x := y * xm
-                            y := cy + angle.sin * y
-                            x := cx + angle.cos * x
-                            a := (x - m.x).abs < 4 and then (y - m.y).abs < 4
-                        end
-                        i := i + 1
-                        ip.next
-                    end
-                    if a /= in_asteroid_field then
-                        in_asteroid_field := a
-                        if in_asteroid_field then
-                            set_planet_text (asteroid_msg)
-                        else
-                            set_planet_text ("")
-                        end
+                if a /= in_asteroid_field then
+                    in_asteroid_field := a
+                    if in_asteroid_field then
+                        set_planet_text (asteroid_msg)
+                    else
+                        set_planet_text ("")
                     end
                 end
             end
@@ -318,7 +276,7 @@ feature -- Controls
 
     set_fleet_click_handler (p: PROCEDURE[ANY, TUPLE[C_FLEET]]) is
     do
-        fleet_click_handler := p
+        fleets_orbiting.set_fleet_click_handler(p)
     end
 
     enter_planet (p: PLANET) is
@@ -390,20 +348,6 @@ feature -- Once data
         from i := 0
         until i > 7 loop
             !!a.make("client/star-view/colony" + i.to_string + ".fma")
-            Result.put(a.images @ 1, i)
-            i := i + 1
-        end
-    end
-
-    fleets: ARRAY[IMAGE] is
-    local
-        i: INTEGER
-        a: FMA_FRAMESET
-    once
-        !!Result.make(0, 7)
-        from i := 0
-        until i > 7 loop
-            !!a.make("client/star-view/fleet" + i.to_string + ".fma")
             Result.put(a.images @ 1, i)
             i := i + 1
         end
@@ -483,8 +427,6 @@ feature {NONE} -- Internal
     removable_children: ARRAY[WINDOW]
         -- Child windows that will be removed on every on_model_change
 
-    fleet_hotspots: DICTIONARY[RECTANGLE, INTEGER]
-
     in_asteroid_field: BOOLEAN
         -- True when mouse pointer is inside asteroid field
 
@@ -525,12 +467,6 @@ feature {NONE} -- Internal constants
 
     di: REAL is .2    -- date increment, amount to increase orbit position
                       -- each turn, in radians
-
-    fleet_pic_firstx: INTEGER is 20
-    fleet_pic_margin: INTEGER is 5
-    fleet_pic_y: INTEGER is 239
-    fleet_pic_width: INTEGER is 17
-    fleet_pic_height: INTEGER is 14
 
     roman: ARRAY[STRING] is
     once

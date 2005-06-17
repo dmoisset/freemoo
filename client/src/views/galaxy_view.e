@@ -58,13 +58,13 @@ feature -- Access
         -- Zoom level
 
 feature -- Operations
-	
+
     set_zoom (value: INTEGER; x, y: INTEGER) is
         -- Change the zoom level to `value', fixed point on (`x', `y')
     local
         posx, posy: REAL
     do
-		cancel_trajectory_selection
+        cancel_trajectory_selection
         get_limits
         -- Note: This assumes projections w/o rotations
         if limit_x > 0 and limit_y > 0 and projs.valid_index (zoom) then
@@ -178,7 +178,7 @@ feature -- Redefined features
     handle_event (event: EVENT) is
     local
         b: EVENT_MOUSE_BUTTON
-		m: EVENT_MOUSE_MOVE
+        m: EVENT_MOUSE_MOVE
     do
         Precursor (event)
         if not event.handled then
@@ -194,11 +194,11 @@ feature -- Redefined features
                 else do_nothing
                 end
             else
-		m ?= event
-		if m /= Void and then fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected  then
-		    check_fleet_trajectory(m.x, m.y)
-		end
-	    end
+                m ?= event
+                if m /= Void and then fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected  then
+                    check_fleet_trajectory(m.x, m.y)
+                end
+            end
         end
     end
 
@@ -217,8 +217,8 @@ feature {NONE} -- Redrawing
 
     draw_star (s: C_STAR) is
     local
-		img: IMAGE -- star image
-		px, py: REAL -- projected star
+        img: IMAGE -- star image
+        px, py: REAL -- projected star
         lx, ly: INTEGER -- star label position
         lwidth: INTEGER -- star label width
         r: RECTANGLE
@@ -242,47 +242,47 @@ feature {NONE} -- Redrawing
             end
         end
     end
-	
+
     draw_fleet (f: FLEET) is
     local
         img: IMAGE -- fleet image
         px, py: INTEGER -- projected fleet
-		dx, pos: INTEGER -- offsetting
+        dx, pos: INTEGER -- offsetting
         r: RECTANGLE
-		traj: TRAJECTORY
+        traj: TRAJECTORY
     do
         current_projection.project(f)
         img := fleet_pics.item(f.owner.color, zoom)
-		px := (current_projection.x - img.width / 2).rounded
-		py := (current_projection.y - img.height / 2).rounded
+        px := (current_projection.x - img.width / 2).rounded
+        py := (current_projection.y - img.height / 2).rounded
         if f.orbit_center /= Void then
-			if f.destination = Void then dx := 1 else dx := -1 end
-			from
-				pos := fleet_offsets_x.lower
-				r.set_with_size(px + dx * fleet_offset_size@zoom * fleet_offsets_x@pos, py - fleet_offset_size@zoom * fleet_offsets_y@pos, img.width, img.height)
-			until
-				pos = fleet_offsets_x.upper or fleet_hotspots.fast_occurrences(r) = 0
-			loop
-				pos := pos + 1
-				r.set_with_size(px + dx * fleet_offset_size@zoom * fleet_offsets_x@pos, py - fleet_offset_size@zoom * fleet_offsets_y@pos, img.width, img.height)
-			end
-		else
-			r.set_with_size (px, py, img.width, img.height)
-		end
+            if f.destination = Void then dx := 1 else dx := -1 end
+            from
+                pos := fleet_offsets_x.lower
+                r.set_with_size(px + dx * fleet_offset_size@zoom * fleet_offsets_x@pos, py - fleet_offset_size@zoom * fleet_offsets_y@pos, img.width, img.height)
+            until
+                pos = fleet_offsets_x.upper or fleet_hotspots.fast_occurrences(r) = 0
+            loop
+                pos := pos + 1
+                r.set_with_size(px + dx * fleet_offset_size@zoom * fleet_offsets_x@pos, py - fleet_offset_size@zoom * fleet_offsets_y@pos, img.width, img.height)
+            end
+        else
+            r.set_with_size (px, py, img.width, img.height)
+        end
         fleet_hotspots.add (r, f.id)
         img.show(cache, r.x, r.y)
 
 
 
-		if f.destination /= Void then
-			!!traj.with_projection(f, f.destination, current_projection)
-			if f.owner = galaxy.server.player then
-				traj.set_type(traj.traj_type_normal)
-			else
-				traj.set_type(traj.traj_type_enemy)
-			end
-			traj.show(cache, traj.showx, traj.showy)
-		end
+        if f.destination /= Void then
+            !!traj.with_projection(f, f.destination, current_projection)
+            if f.owner = galaxy.server.player then
+                traj.set_type(traj.traj_type_normal)
+            else
+                traj.set_type(traj.traj_type_enemy)
+            end
+            traj.show(cache, traj.showx, traj.showy)
+        end
     end
 
     draw_blackhole (s: STAR) is
@@ -303,16 +303,16 @@ feature {NONE} -- Redrawing
 
 feature {NONE} -- Event handlers
 
-	cancel_trajectory_selection is
-	do
-		if trajectory_window /= Void then
-		-- remove is broken, we have to hide trajectory_window as well
-			trajectory_window.hide
-			trajectory_window.remove
-			trajectory_window := Void
-		end
-	end
-	
+    cancel_trajectory_selection is
+    do
+        if trajectory_window /= Void then
+        -- remove is broken, we have to hide trajectory_window as well
+            trajectory_window.hide
+            trajectory_window.remove
+            trajectory_window := Void
+        end
+    end
+
     create_fleet_view(f: C_FLEET) is
     local
         r: RECTANGLE
@@ -320,7 +320,7 @@ feature {NONE} -- Event handlers
         if fleet_window /= Void and then children.fast_has(fleet_window) then
             r := fleet_window.location
             fleet_window.remove
-			cancel_trajectory_selection
+            cancel_trajectory_selection
         else
             r.set_with_size(10, 10, fleet_window_width, fleet_window_height)
         end
@@ -328,7 +328,7 @@ feature {NONE} -- Event handlers
             star_window.remove
         end
         !FLEET_VIEW!fleet_window.make(Current, r, f)
-		fleet_window.set_cancel_trajectory_selection_callback(agent cancel_trajectory_selection)
+        fleet_window.set_cancel_trajectory_selection_callback(agent cancel_trajectory_selection)
     end
 
     on_left_click (x, y: INTEGER) is
@@ -336,44 +336,44 @@ feature {NONE} -- Event handlers
     local
         i: ITERATOR[RECTANGLE]
         r: RECTANGLE
-	dest: STAR
+        dest: STAR
     do
-	i := star_hotspots.item_at_xy(x, y)
-	if not i.is_off then
-	    if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
-		dest := galaxy.star_with_id (star_hotspots.fast_key_at(i.item))
-		if galaxy.server.player.is_in_range(dest) then
-		    fleet_window.send_selection_to(dest)
-		end
-	    else
-		if star_window /= Void and then children.fast_has(star_window) then
-		    r := star_window.location
-		    star_window.remove
-		else
-		    r.set_with_size(x, y, star_window_width, star_window_height)
-		    r := leave_visible(r)
-		end
-		if fleet_window /= Void and then children.fast_has(fleet_window) then
-		    fleet_window.remove
-		    cancel_trajectory_selection
-		end
-		!STAR_VIEW!star_window.make (Current, r,
-					     galaxy.star_with_id (star_hotspots.fast_key_at(i.item)),
-					     galaxy.server.game_status)
-		star_window.set_fleet_click_handler(agent create_fleet_view)
-	    end
-	else
-	    i := fleet_hotspots.item_at_xy(x, y)
-	    if not i.is_off then
-		create_fleet_view(galaxy.fleet_with_id (fleet_hotspots.fast_key_at(i.item)))
-	    end
-	end
+        i := star_hotspots.item_at_xy(x, y)
+        if not i.is_off then
+            if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
+                dest := galaxy.star_with_id (star_hotspots.fast_key_at(i.item))
+                if galaxy.server.player.is_in_range(dest) then
+                    fleet_window.send_selection_to(dest)
+                end
+            else
+                if star_window /= Void and then children.fast_has(star_window) then
+                    r := star_window.location
+                    star_window.remove
+                else
+                    r.set_with_size(x, y, star_window_width, star_window_height)
+                    r := leave_visible(r)
+                end
+                if fleet_window /= Void and then children.fast_has(fleet_window) then
+                    fleet_window.remove
+                    cancel_trajectory_selection
+                end
+                !STAR_VIEW!star_window.make (Current, r,
+                                             galaxy.star_with_id (star_hotspots.fast_key_at(i.item)),
+                                             galaxy.server.game_status, galaxy)
+                star_window.set_fleet_click_handler(agent create_fleet_view)
+            end
+        else
+            i := fleet_hotspots.item_at_xy(x, y)
+            if not i.is_off then
+                create_fleet_view(galaxy.fleet_with_id (fleet_hotspots.fast_key_at(i.item)))
+            end
+        end
     end
 
     center_on (x, y: INTEGER) is
         -- Scroll to set center on `x', `y'
     do
-		cancel_trajectory_selection
+        cancel_trajectory_selection
         current_projection.translate (width // 2 - x, height // 2 - y)
         normalize_position
         refresh
@@ -390,34 +390,34 @@ feature {NONE} -- Event handlers
 
     check_fleet_trajectory (x, y: INTEGER) is
     local
-	i: ITERATOR[RECTANGLE]
-	traj: TRAJECTORY
-	dest: STAR
+        i: ITERATOR[RECTANGLE]
+        traj: TRAJECTORY
+        dest: STAR
     do
-	i := star_hotspots.item_at_xy(x, y)
-	if not i.is_off then
-	    if trajectory_window /= Void then
-		trajectory_window.remove
-	    end
-	    dest := galaxy.star_with_id(star_hotspots.fast_key_at(i.item))
-	    !!traj.with_projection (dest, fleet_window.model_position, current_projection)
-	    if galaxy.server.player.is_in_range(dest) then
-		traj.set_type(traj.traj_type_select_ok)
-	    else
-		traj.set_type(traj.traj_type_unreachable)
-	    end
-	    !!trajectory_window.make(Current, traj.showx, traj.showy, traj)
-	    trajectory_window.send_behind(fleet_window)
-	end
+        i := star_hotspots.item_at_xy(x, y)
+        if not i.is_off then
+            if trajectory_window /= Void then
+                trajectory_window.remove
+            end
+            dest := galaxy.star_with_id(star_hotspots.fast_key_at(i.item))
+            !!traj.with_projection (dest, fleet_window.model_position, current_projection)
+            if galaxy.server.player.is_in_range(dest) then
+                traj.set_type(traj.traj_type_select_ok)
+            else
+                traj.set_type(traj.traj_type_unreachable)
+            end
+            !!trajectory_window.make(Current, traj.showx, traj.showy, traj)
+            trajectory_window.send_behind(fleet_window)
+        end
     end
     
 
-	
+
 feature {NONE} -- Internal functions
 
-	traj_x, traj_y: INTEGER
+    traj_x, traj_y: INTEGER
 
-	traj_image: SDL_LINE_IMAGE
+    traj_image: SDL_LINE_IMAGE
 
     leave_visible(r: RECTANGLE): RECTANGLE is
         -- Return a rectangle with the same width and height of `r',
@@ -514,10 +514,10 @@ feature {NONE} -- Internal data
     limit_x, limit_y: REAL
         -- Projected galaxy limit
 
-	oldlimit: POSITIONAL
-		-- Memorizes model's last limit, to not regenerate 
-		-- projections unless necessary
-	
+    oldlimit: POSITIONAL
+        -- Memorizes model's last limit, to not regenerate 
+        -- projections unless necessary
+
     background: SDL_IMAGE
         -- View background
 
@@ -531,9 +531,9 @@ feature {NONE} -- Internal data
     fleet_window: FLEET_VIEW
         -- Window used to display a fleet
 
-	trajectory_window: WINDOW_IMAGE
-		-- Window used for doing fleet trajectory selection
-	
+    trajectory_window: WINDOW_IMAGE
+        -- Window used for doing fleet trajectory selection
+
     blackholes_window: WINDOW
         -- Window for the blackholes
 
@@ -604,29 +604,28 @@ feature {NONE} -- Internal configuration and constants
     label_offset: INTEGER is 20
         -- pixels between star center and star name label center
 
-	fleet_offset_size: ARRAY[INTEGER] is
-		-- pixels fleets are offset from star center and one from 
-		-- another
-	once
-		Result := <<2, 3, 4, 6>>
-		Result.reindex(0)
-	end
+    fleet_offset_size: ARRAY[INTEGER] is
+        -- pixels fleets are offset from star center and one from 
+        -- another
+    once
+        Result := <<2, 3, 4, 6>>
+        Result.reindex(0)
+    end
 
-	fleet_offsets_x: ARRAY[INTEGER] is
-	once
-		Result := << 3,  5,  6,  7,  7,  7,  6,  5,  3,  1,
-					 2,  4, 6, 7, 8, 9, 9, 9, 9, 9, 9, 9,
-					 9, 8, 7, 6, 4, 2>>
-	end
+    fleet_offsets_x: ARRAY[INTEGER] is
+    once
+        Result := << 3, 5, 6, 7, 7, 7, 6, 5, 3, 1,
+                     2, 4, 6, 7, 8, 9, 9, 9, 9, 9, 9, 9,
+                     9, 8, 7, 6, 4, 2>>
+    end
 
-	fleet_offsets_y: ARRAY[INTEGER] is
-	once
-		Result := << 5,  4,  3,  2,  0, -2, -3, -4, -5, -5,
-					 7, 7, 6, 5, 4,  3,  2,  1,  0,  -1, -2, -3, -4,
-					 -4, -5, -6, -7, -7>>
-	end
-		
-	
+    fleet_offsets_y: ARRAY[INTEGER] is
+    once
+        Result := << 5,  4,  3,  2,  0, -2, -3, -4, -5, -5,
+                     7,  7,  6,  5,  4,  3,  2,  1,  0, -1, -2, -3, -4,
+                    -4, -5, -6, -7, -7>>
+    end
+
     make_projs is
         -- Make diferent zoom.
         -- Zoom levels in progression 6 4 3 2

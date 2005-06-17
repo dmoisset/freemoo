@@ -76,53 +76,53 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         map_change.emit (Current)
     end
 
-	unpack_enemy_colonies_message (msg: STRING) is
-	local
-		count: INTEGER
-		orbit: INTEGER
-		s: UNSERIALIZER
-		colony: C_COLONY
-		star: STAR
-		planet: PLANET
-		owner: PLAYER
-		star_it: ITERATOR[STAR]
-		planet_it: ITERATOR[PLANET]
-	do
-		!!s.start (msg)
-		-- Remove all _enemy_ colonies
-		from star_it := stars.get_new_iterator_on_items until
-			star_it.is_off
-		loop
-			from planet_it := star_it.item.get_new_iterator_on_planets until
-				planet_it.is_off
-			loop
-				if planet_it.item /= Void and then planet_it.item.colony /= Void and then planet_it.item.colony.owner /= server.player then
-					planet_it.item.set_colony(Void)
-				end
-				planet_it.next
-			end
-			star_it.next
-		end
-		s.get_integer
-		count := s.last_integer
-		from until count = 0 loop
-			s.get_integer
-			star := stars @ (s.last_integer)
-			s.get_integer
-			orbit := s.last_integer
-			planet := star.planet_at(orbit)
-			if planet = Void then 
-				-- Probably we're just arriving at star.  Complete 
-				-- information for the planet shall arrive shortly.
-				star.set_planet(create{PLANET}.make_standard (star), orbit)
-				planet := star.planet_at(orbit)
-			end
-			s.get_integer
-			owner := server.player_list.item_id (s.last_integer)
-			create colony.make(planet, owner)
-			count := count - 1
-		end
-	end
+    unpack_enemy_colonies_message (msg: STRING) is
+    local
+        count: INTEGER
+        orbit: INTEGER
+        s: UNSERIALIZER
+        colony: C_COLONY
+        star: STAR
+        planet: PLANET
+        owner: PLAYER
+        star_it: ITERATOR[STAR]
+        planet_it: ITERATOR[PLANET]
+    do
+        !!s.start (msg)
+        -- Remove all _enemy_ colonies
+        from star_it := stars.get_new_iterator_on_items until
+            star_it.is_off
+        loop
+            from planet_it := star_it.item.get_new_iterator_on_planets until
+                planet_it.is_off
+            loop
+                if planet_it.item /= Void and then planet_it.item.colony /= Void and then planet_it.item.colony.owner /= server.player then
+                    planet_it.item.set_colony(Void)
+                end
+                planet_it.next
+            end
+            star_it.next
+        end
+        s.get_integer
+        count := s.last_integer
+        from until count = 0 loop
+            s.get_integer
+            star := stars @ (s.last_integer)
+            s.get_integer
+            orbit := s.last_integer
+            planet := star.planet_at(orbit)
+            if planet = Void then 
+                -- Probably we're just arriving at star.  Complete 
+                -- information for the planet shall arrive shortly.
+                star.set_planet(create{PLANET}.make_standard (star), orbit)
+                planet := star.planet_at(orbit)
+            end
+            s.get_integer
+            owner := server.player_list.item_id (s.last_integer)
+            create colony.make(planet, owner)
+            count := count - 1
+        end
+    end
     
     
     unpack_scanner_message (msg: STRING) is
@@ -133,30 +133,20 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         owner: PLAYER
         fleet: C_FLEET
         ship: SHIP
-        star_it: ITERATOR[STAR]
         fleet_it: ITERATOR[like last_fleet]
     do
         !!s.start (msg)
-        from star_it := stars.get_new_iterator_on_items
-        until star_it.is_off
-        loop
-            star_it.item.clear_fleets
-            star_it.next
-        end
         s.get_integer
         count := s.last_integer
         !!new_fleets.make
-	from fleet_it := fleets.get_new_iterator_on_items
-	until fleet_it.is_off
-	loop
-	    if fleet_it.item.owner = server.player then
-		new_fleets.add(fleet_it.item, fleet_it.item.id)
-		if fleet_it.item.orbit_center /= Void and then fleet_it.item.destination = Void then
-		    fleet_it.item.orbit_center.add_fleet (fleet_it.item)
-		end
-	    end
-	    fleet_it.next
-	end
+        from fleet_it := fleets.get_new_iterator_on_items
+        until fleet_it.is_off
+        loop
+            if fleet_it.item.owner = server.player then
+                new_fleets.add(fleet_it.item, fleet_it.item.id)
+            end
+            fleet_it.next
+        end
 
         from until count = 0 loop
             !!fleet.make

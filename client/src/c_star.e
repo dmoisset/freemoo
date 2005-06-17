@@ -4,7 +4,7 @@ class C_STAR
 
 inherit
     STAR
-    redefine make, make_defaults, fleet_type, add_fleet, planet_type end
+    redefine make, make_defaults, planet_type end
     SUBSCRIBER
 
 creation
@@ -70,14 +70,6 @@ feature {SERVICE_PROVIDER} -- Redefined features
         changed.emit (Current)
     end
 
-feature -- Redefined features
-
-    add_fleet (f: like fleet_type) is
-    do
-        Precursor (f)
-        changed.emit (Current)
-    end
-	
 feature -- Accounting
 
     has_info: BOOLEAN
@@ -89,8 +81,6 @@ feature -- Signals
 
 feature {NONE} -- Internal
 
-    fleet_type: C_FLEET
+    planet_type: C_PLANET
 
-	planet_type: C_PLANET
-	
 end -- class C_STAR
