@@ -35,6 +35,21 @@ feature -- Access
         Result := planets @ orbit
     end
 
+    has_colonizable_planet: BOOLEAN is
+        -- Does this star have a colonizable planet?
+    local
+        i: INTEGER
+    do
+        from
+            i := 1
+        until i > Max_planets or Result loop
+            Result := planets @ i /= Void and then
+                      (planets @ i).type = (planets @ i).type_planet and then
+                      (planets @ i).colony = Void
+            i := i + 1
+        end
+    end
+
 feature -- Operations on star system
 
     set_planet (newplanet: like planet_type; orbit: INTEGER) is

@@ -91,6 +91,19 @@ feature -- Access
     do
         Result := is_in_orbit
     end
+
+    can_colonize: BOOLEAN is
+        -- Can this fleet colonize a planet?
+    local
+        it: ITERATOR[SHIP]
+    do
+        from
+            it := ships.get_new_iterator_on_items
+        until
+            it.is_off or else it.item.can_colonize
+        loop it.next end
+        Result := not it.is_off
+    end
     
 feature -- Operations
 

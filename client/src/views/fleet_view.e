@@ -47,28 +47,48 @@ feature {NONE} -- Creation
         skip, hpos, vpos: INTEGER
     do
         -- Drag Handle
-        r.set_with_size (1, 0, bg_ns_width, bg_top_height)
+        r.set_with_size (1, 0, bg_tot_width@1, bg_top_height)
         !!drag.make (Current, r)
 
         -- Info Label
-        r.set_with_size(info_label_x, all_button_y@1, info_label_width, info_label_height)
+        r.set_with_size(info_label_x, all_button_y@1, info_label_width,
+                        info_label_height)
         !!info_label.make(Current, r, "")
         if fleet.eta /= 0 then
             info_label.set_text("ETA: " + fleet.eta.to_string + " turns")
         end
 
         -- All
-        !!all_button.make(Current, all_button_x, all_button_y@1, all_button_img @ 1, all_button_img @ 1, all_button_img @ 2)
+        !!all_button.make(Current, all_button_x, all_button_y@1,
+                          all_button_img @ 1, all_button_img @ 1,
+                          all_button_img @ 2)
         all_button.set_click_handler (agent select_all)
 
         -- Close
         !!close_button.make (1, 2)
-        !!b.make (Current, buttons_x, buttons_y@1, close_button_img.item(1, 1), close_button_img.item(1, 1), close_button_img.item(1, 2))
+        !!b.make (Current, buttons_x, buttons_y@1, close_button_img.item(1, 1),
+                  close_button_img.item(1, 1), close_button_img.item(1, 2))
         b.set_click_handler (agent remove)
         close_button.put(b, 1)
-        !!b.make (Current, buttons_x, buttons_y@1, close_button_img.item(2, 1), close_button_img.item(2, 1), close_button_img.item(2, 2))
+        !!b.make (Current, buttons_x, buttons_y@1, close_button_img.item(2, 1),
+                  close_button_img.item(2, 1), close_button_img.item(2, 2))
         b.set_click_handler (agent remove)
         close_button.put(b, 2)
+
+        -- Colonize
+        !!colonize_button.make (1, 2)
+        !!b.make (Current, buttons_x, buttons_y@1,
+                  colonize_button_img.item(1, 1),
+                  colonize_button_img.item(1, 1),
+                  colonize_button_img.item(1, 2))
+        b.set_click_handler (agent colonize)
+        colonize_button.put(b, 1)
+        !!b.make (Current, buttons_x, buttons_y@1,
+                  colonize_button_img.item(2, 1),
+                  colonize_button_img.item(2, 1),
+                  colonize_button_img.item(2, 2))
+        b.set_click_handler (agent colonize)
+        colonize_button.put(b, 2)
 
         -- Toggles
         !!toggles.make(0, 8)
@@ -78,7 +98,8 @@ feature {NONE} -- Creation
         until
             skip > toggles.upper
         loop
-            !!bt.make(Current, hpos, vpos, cursor @ 1, cursor @ 1, cursor @ 2, cursor @ 2, cursor @ 2, cursor @ 1)
+            !!bt.make(Current, hpos, vpos, cursor @ 1, cursor @ 1, cursor @ 2,
+                      cursor @ 2, cursor @ 2, cursor @ 1)
             toggles.put(bt, skip)
             bt.set_active(true)
             hpos := hpos + 58
@@ -132,7 +153,8 @@ feature {NONE} -- Callbacks
     do
         if fleet_selection.has(sh) then
             fleet_selection.remove(sh)
-            if fleet_selection.is_empty and then cancel_trajectory_selection_handler /= Void then
+            if fleet_selection.is_empty and then
+               cancel_trajectory_selection_handler /= Void then
                 cancel_trajectory_selection_handler.call([])
             end
         else
@@ -171,6 +193,10 @@ feature {NONE} -- Callbacks
         update_toggles
     end
 
+    colonize is
+    do
+        print("Not Yet Implemented%N")
+    end
 
 feature {NONE} -- Implementation
 
@@ -192,6 +218,8 @@ feature {NONE} -- Implementation
     info_label: LABEL
 
     close_button: ARRAY[BUTTON_IMAGE]
+
+    colonize_button: ARRAY[BUTTON_IMAGE]
 
 feature -- Redefined features
 
@@ -256,7 +284,6 @@ feature {NONE} -- Internal features
             end
         end
     end
-        
 
     update_toggles is
         -- Show or hide toggle-buttons, and activate or deactivate 
@@ -297,38 +324,64 @@ feature {NONE} -- Internal features
         end
     end
 
-
     update_window_size is
         -- Re-dimension window checking ship number in fleet
     local
         r: RECTANGLE
+        show_colonize_button: BOOLEAN
+        b: BUTTON_IMAGE
+        button_h, window_h, button_idx: INTEGER
     do
-        if fleet.ship_count <= 9 then
-            size_index := (fleet.ship_count - 1) // 3 + 2
-            scrollbar.hide
-            r.set_with_size(0, 0, bg_ns_width, bg_top_height)
-            drag.move(r)
-            r.set_with_size(buttons_x, buttons_y@size_index, close_button.item(2).width, close_button.item(2).height)
-            close_button.item(2).move(r)
-            r.set_with_size(location.x, location.y.min(parent.height - bg_tot_height@size_index), bg_ns_width, bg_tot_height@size_index)
-            move(r)
-        else
-            size_index := 1
-            scrollbar.show
-            r.set_with_size(0, 0, bg_s_width, bg_top_height)
-            drag.move(r)
-            r.set_with_size(location.x.min(parent.width - bg_s_width), location.y.min(parent.height-bg_tot_height@size_index), bg_s_width, bg_tot_height@size_index)
-            move(r)
+        if fleet.can_colonize and then
+           fleet.orbit_center /= Void and then
+           fleet.orbit_center.has_colonizable_planet and then
+           fleet.destination = Void then
+            show_colonize_button := True
         end
 
-        r.set_with_size(all_button_x, all_button_y@size_index, all_button.width, all_button.height)
+        size_index := ((fleet.ship_count - 1) // 3 + 1).min(4)
+        button_idx := (size_index.max(3) \\ 2) + 1
+
+        if size_index < 4 then
+            scrollbar.hide
+        else
+            scrollbar.show
+        end
+
+        r.set_with_size(0, 0, bg_tot_width@size_index, bg_top_height)
+        drag.move(r)
+
+        button_h := 0
+            
+        if show_colonize_button then
+            r.set_with_size(buttons_x, buttons_y@size_index,
+                            colonize_button.item(button_idx).width,
+                            colonize_button.item(button_idx).height)
+            colonize_button.item(button_idx).move(r)
+            button_h := button_h + colonize_button.item(button_idx).height
+            colonize_button.item(button_idx).show
+            colonize_button.item((button_idx \\ 2) + 1).hide
+        end
+
+        r.set_with_size(buttons_x, (buttons_y@size_index) + button_h,
+                        close_button.item(button_idx).width,
+                        close_button.item(button_idx).height)
+        close_button.item(button_idx).move(r)
+        close_button.item(button_idx).show
+        close_button.item((button_idx \\ 2) + 1).hide
+
+        window_h := bg_tot_height@size_index + button_h + close_button.item(button_idx).height
+        r.set_with_size(location.x, location.y.min(window_h),
+                        bg_tot_width@size_index, window_h)
+        move(r)
+
+        r.set_with_size(all_button_x, all_button_y@size_index,
+                        all_button.width, all_button.height)
         all_button.move(r)
 
-        r.set_with_size(info_label_x, all_button_y@size_index, info_label_width, info_label_height)
+        r.set_with_size(info_label_x, all_button_y@size_index,
+                        info_label_width, info_label_height)
         info_label.move(r)
-
-        close_button.item(size_index.min(2)).show
-        close_button.item(size_index.min(2) \\ 2 + 1).hide
     end
 
 
@@ -390,32 +443,34 @@ feature {NONE} -- Once features
     background: ARRAY[IMAGE] is
     local
         a: FMA_FRAMESET
+        i: INTEGER
     once
         !!Result.make(1, 4)
-        Result.put(create{SDL_IMAGE}.make(bg_s_width, bg_tot_height@1), 1)
-        Result.put(create{SDL_IMAGE}.make(bg_ns_width, bg_tot_height@2), 2)
-        Result.put(create{SDL_IMAGE}.make(bg_ns_width, bg_tot_height@3), 3)
-        Result.put(create{SDL_IMAGE}.make(bg_ns_width, bg_tot_height@4), 4)
+        from i := 1 until i > 4 loop
+            Result.put(create{SDL_IMAGE}.make(bg_tot_width@i,
+                                              bg_tot_height@i), i)
+            i := i + 1
+        end
 
-        !!a.make("client/fleet-view/window-top-s.fma")
-        a.images.item(1).show(Result @ 1, 0, 0)
         !!a.make("client/fleet-view/window-top-ns.fma")
+        a.images.item(1).show(Result @ 1, 0, 0)
         a.images.item(1).show(Result @ 2, 0, 0)
         a.images.item(1).show(Result @ 3, 0, 0)
+        !!a.make("client/fleet-view/window-top-s.fma")
         a.images.item(1).show(Result @ 4, 0, 0)
 
-        !!a.make ("client/fleet-view/window-middle-s.fma")
-        a.images.item(1).show(Result @ 1, 2, bg_top_height)
         !!a.make ("client/fleet-view/window-middle-ns.fma")
+        a.images.item(1).show(Result @ 1, 2, bg_top_height)
         a.images.item(1).show(Result @ 2, 2, bg_top_height)
         a.images.item(1).show(Result @ 3, 2, bg_top_height)
+        !!a.make ("client/fleet-view/window-middle-s.fma")
         a.images.item(1).show(Result @ 4, 2, bg_top_height)
 
-        !!a.make ("client/fleet-view/window-bottom-s.fma")
-        a.images.item(1).show(Result @ 1, 0, bg_bottom_y@1)
         !!a.make ("client/fleet-view/window-bottom-ns.fma")
+        a.images.item(1).show(Result @ 1, 0, bg_bottom_y@1)
         a.images.item(1).show(Result @ 2, 0, bg_bottom_y@2)
         a.images.item(1).show(Result @ 3, 0, bg_bottom_y@3)
+        !!a.make ("client/fleet-view/window-bottom-s.fma")
         a.images.item(1).show(Result @ 4, 0, bg_bottom_y@4)
     end
 
@@ -507,6 +562,27 @@ feature {NONE} -- Once features
         end
     end
 
+    colonize_button_img: ARRAY2[IMAGE] is
+    local
+        j, i: INTEGER
+        a: FMA_FRAMESET
+        file_names: ARRAY[STRING]
+    once
+        !!Result.make (1, 2, 1, 2)
+        file_names := <<"client/fleet-view/colonize-button-s.fma", "client/fleet-view/colonize-button-ns.fma">>
+        from j := 1
+        until j > 2
+        loop
+            !!a.make (file_names @ j)
+            from i := 1
+            until i > 2 loop
+                Result.put (a.images @ i, j, i)
+                i := i + 1
+            end
+            j := j + 1
+        end
+    end
+
     --Scrollbar:
     --1 & 2 is up button, both up and down
     --3 is the trough
@@ -531,26 +607,31 @@ feature {NONE} -- Numeric and Layout Constants
 
     bg_top_height: INTEGER is 35
 
-    bg_ns_width: INTEGER is 196
-
-    bg_s_width: INTEGER is 217
-
     bg_bottom_y: ARRAY[INTEGER] is
     once
         !!Result.make(1, 4)
-        Result.put(204, 1)
-        Result.put(90, 2)
-        Result.put(147, 3)
+        Result.put(90, 1)
+        Result.put(147, 2)
+        Result.put(204, 3)
         Result.put(204, 4)
     end
 
     bg_tot_height: ARRAY[INTEGER] is
     once
         !!Result.make(1, 4)
-        Result.put(272, 1)
-        Result.put(158, 2)
-        Result.put(215, 3)
-        Result.put(272, 4)
+        Result.put(127, 1)
+        Result.put(184, 2)
+        Result.put(241, 3)
+        Result.put(241, 4)
+    end
+
+    bg_tot_width: ARRAY[INTEGER] is
+    once
+        !!Result.make(1, 4)
+        Result.put(196, 1)
+        Result.put(196, 2)
+        Result.put(196, 3)
+        Result.put(217, 4)
     end
 
     info_label_x: INTEGER is 80
@@ -562,9 +643,9 @@ feature {NONE} -- Numeric and Layout Constants
     all_button_y: ARRAY[INTEGER] is
     once
         !!Result.make(1, 4)
-        Result.put(208, 1)
-        Result.put(94, 2)
-        Result.put(151, 3)
+        Result.put(94, 1)
+        Result.put(151, 2)
+        Result.put(208, 3)
         Result.put(208, 4)
     end
 
@@ -573,11 +654,10 @@ feature {NONE} -- Numeric and Layout Constants
     buttons_y: ARRAY[INTEGER] is
     once
         !!Result.make(1, 4)
-        Result.put(243, 1)
-        Result.put(129, 2)
-        Result.put(185, 3)
+        Result.put(129, 1)
+        Result.put(185, 2)
+        Result.put(243, 3)
         Result.put(243, 4)
     end
 
 end -- class FLEET_VIEW
-
