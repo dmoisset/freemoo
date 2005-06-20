@@ -31,7 +31,7 @@ feature {NONE} -- Creation
 
     set_starship_attributes is
     do
-        ship_type := 2
+        ship_type := ship_type_starship
     end
 
 end -- class STARSHIP

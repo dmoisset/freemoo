@@ -3,7 +3,7 @@ class S_COLONY
 inherit
     COLONY
     redefine 
-        owner, location, shipyard, create_colony_ship, create_starship, 
+        owner, location, shipyard, ship_factory,
         new_turn, set_producing
     end
     STORABLE
@@ -44,20 +44,8 @@ feature -- Redefined features
     owner: S_PLAYER
     
     shipyard: S_SHIP
-    
-    create_colony_ship: S_COLONY_SHIP is
-        -- Build a colony ship with proper dynamic type.
-        -- Store it into `shipyard'
-    do
-        create Result.make(owner)
-    end
-    
-    create_starship: S_STARSHIP is
-        -- Build a starship with proper dynamic type.
-        -- Store it into `shipyard'
-    do
-        create Result.make(owner)
-    end
+
+    ship_factory: S_SHIP_FACTORY
 
     new_turn is
     do

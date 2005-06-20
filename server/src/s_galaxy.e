@@ -79,7 +79,7 @@ feature -- Redefined features
                 s.add_integer (fleet.item.ship_count)
                 fleet.item.serialize_on (s)
                 from ship := fleet.item.get_new_iterator until ship.is_off loop
-                    s.add_integer (ship.item.ship_type)
+                    s.add_integer (ship.item.ship_type - ship.item.ship_type_min)
                     ship.item.serialize_on(s)
                     ship.next
                 end
@@ -188,7 +188,7 @@ feature -- Operations
             pl.next
         end
     end
-    
+
     update_clients is
     local
         id: ITERATOR[STRING]

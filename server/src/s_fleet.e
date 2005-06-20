@@ -46,7 +46,7 @@ feature -- Redefined features
         s.add_integer(ship_count)
         serialize_on(s)
         from i := get_new_iterator until i.is_off loop
-            s.add_tuple(<<i.item.id, i.item.ship_type>>)
+            s.add_tuple(<<i.item.id, i.item.ship_type - i.item.ship_type_min>>)
             i.item.serialize_on(s)
             i.next
         end

@@ -4,7 +4,7 @@ inherit
     S_SHIP
     redefine
         creator, fields_array, make_from_storage, serialize_on,
-        subscription_message, make
+        subscription_message, make, get_class
     end
     STARSHIP
     undefine
@@ -34,7 +34,9 @@ feature
     end
 
 feature
-    
+
+    get_class: STRING is "STARSHIP"
+
     fields_array: ARRAY[TUPLE[STRING, ANY]] is
     do
         Result := Precursor

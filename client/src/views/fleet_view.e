@@ -329,7 +329,6 @@ feature {NONE} -- Internal features
     local
         r: RECTANGLE
         show_colonize_button: BOOLEAN
-        b: BUTTON_IMAGE
         button_h, window_h, button_idx: INTEGER
     do
         if fleet.can_colonize and then
@@ -351,8 +350,6 @@ feature {NONE} -- Internal features
         r.set_with_size(0, 0, bg_tot_width@size_index, bg_top_height)
         drag.move(r)
 
-        button_h := 0
-            
         if show_colonize_button then
             r.set_with_size(buttons_x, buttons_y@size_index,
                             colonize_button.item(button_idx).width,
@@ -361,6 +358,9 @@ feature {NONE} -- Internal features
             button_h := button_h + colonize_button.item(button_idx).height
             colonize_button.item(button_idx).show
             colonize_button.item((button_idx \\ 2) + 1).hide
+        else
+            colonize_button.item(1).hide
+            colonize_button.item(2).hide
         end
 
         r.set_with_size(buttons_x, (buttons_y@size_index) + button_h,
@@ -370,11 +370,6 @@ feature {NONE} -- Internal features
         close_button.item(button_idx).show
         close_button.item((button_idx \\ 2) + 1).hide
 
-        window_h := bg_tot_height@size_index + button_h + close_button.item(button_idx).height
-        r.set_with_size(location.x, location.y.min(window_h),
-                        bg_tot_width@size_index, window_h)
-        move(r)
-
         r.set_with_size(all_button_x, all_button_y@size_index,
                         all_button.width, all_button.height)
         all_button.move(r)
@@ -382,6 +377,11 @@ feature {NONE} -- Internal features
         r.set_with_size(info_label_x, all_button_y@size_index,
                         info_label_width, info_label_height)
         info_label.move(r)
+
+        window_h := bg_tot_height@size_index + button_h + close_button.item(button_idx).height
+        r.set_with_size(location.x, location.y.min(window_h),
+                        bg_tot_width@size_index, window_h)
+        move(r)
     end
 
 

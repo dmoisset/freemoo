@@ -4,7 +4,7 @@ class C_FLEET
 
 inherit
     FLEET
-    redefine make, ship_type end
+    redefine make, ship_type, orbit_center, owner end
     SUBSCRIBER
     CLIENT
 
@@ -28,6 +28,7 @@ feature {NONE} -- Creation
         shipcount: INTEGER
         sh: C_SHIP
         old_ships: like ships
+        factory: C_SHIP_FACTORY
     do
         !!s.start (msg)
         s.get_integer
@@ -56,18 +57,17 @@ feature {NONE} -- Creation
         old_ships := clone(ships)
         ships.clear
         if shipcount = 0 then server.galaxy.remove_fleet (Current) end
+        create factory
         from until shipcount = 0 loop
             s.get_integer
             ship_id := s.last_integer
             s.get_integer
-            shtype := s.last_integer
+            shtype := s.last_integer + factory.ship_type_min
             if has_ship(s.last_integer) then
                 sh := old_ships.at(s.last_integer)
             else
-                inspect shtype
-                   when 1 then !C_COLONY_SHIP!sh.make(owner)
-                   when 2 then !C_STARSHIP!sh.make(owner)
-                end
+                factory.create_by_type(shtype, owner)
+                sh := factory.last_ship
                 sh.set_id(ship_id)
                 server.subscribe(sh, "ship" + sh.id.to_string)
             end
@@ -78,9 +78,13 @@ feature {NONE} -- Creation
         changed.emit (Current)
     end
 
-feature
+feature -- Redefined anchors
 
     ship_type: C_SHIP
+
+    orbit_center: C_STAR
+
+    owner: C_PLAYER
 
 feature -- Signals
 

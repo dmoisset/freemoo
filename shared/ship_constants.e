@@ -13,4 +13,11 @@ feature
     ship_size_min: INTEGER is do Result := ship_size_frigate end
     ship_size_max: INTEGER is do Result := ship_size_doomstar end
 
+    ship_type_starship: INTEGER is unique
+    ship_type_colony_ship: INTEGER is unique
+        -- Allowed types for ships.
+    
+    ship_type_min: INTEGER is do Result := ship_type_starship end
+    ship_type_max: INTEGER is do Result := ship_type_colony_ship end
+
 end -- class SHIP_CONSTANTS

@@ -54,8 +54,6 @@ feature -- Operations
 
 feature {STORAGE} -- Saving
 
-    get_class: STRING is "SHIP"
-
     fields_array: ARRAY[TUPLE[STRING, ANY]] is
         -- Array for `fields'
     do

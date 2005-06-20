@@ -19,6 +19,7 @@ feature {NONE} -- Creation
         p.set_colony (Current)
         owner := o
         o.add_colony (Current)
+        create ship_factory
     ensure
         location = p
         p.colony = Current
@@ -38,6 +39,9 @@ feature -- Access
 
     shipyard: SHIP
         -- Placeholder for last built ship.  Game should come and fetch it.
+
+    ship_factory: SHIP_FACTORY
+        -- Abstract factory for ships
     
 feature -- Constants
 
@@ -57,20 +61,19 @@ feature -- Constants
 feature -- Operations
 
     new_turn is
-    local
-        stsh: like create_starship
     do
         inspect
             producing
         when product_none then
             -- Nothing to do this turn
         when product_starship then
-            stsh := create_starship
-            stsh.set_name("Enterprise")
-            shipyard := stsh
+            ship_factory.create_starship(owner)
+            ship_factory.last_starship.set_name("Enterprise")
+            shipyard := ship_factory.last_starship
             set_producing(product_colony_ship)
         when product_colony_ship then
-            shipyard := create_colony_ship
+            ship_factory.create_colony_ship(owner)
+            shipyard := ship_factory.last_colony_ship
             set_producing(product_starship)
         end
     end
@@ -93,20 +96,6 @@ feature -- Operations
         shipyard = Void
     end
     
-    create_colony_ship:COLONY_SHIP is
-        -- Build a colony ship with proper dynamic type.
-        -- Store it into `shipyard'
-    do
-        create Result.make(owner)
-    end
-    
-    create_starship: STARSHIP is
-        -- Build a starship with proper dynamic type.
-        -- Store it into `shipyard'
-    do
-        create Result.make(owner)
-    end
-
     serialize_on (s: SERIALIZER2) is
     do
         s.add_tuple (<<id, producing - product_min>>)

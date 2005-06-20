@@ -70,6 +70,7 @@ feature -- Modifiers
 
 invariant
     size.in_range(ship_size_min, ship_size_max)
+    ship_type.in_range(ship_type_min, ship_type_max)
     fuel_range > 0
     creator /= Void
     owner /= Void

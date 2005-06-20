@@ -79,50 +79,45 @@ feature {NONE} -- Internal
     net_initialize is
         -- Create all server attributes, publish them, etc.
     do
-	if options.string_options.has("load") then
-	    load_game_from_file(options.string_options@"load")
-	else
-	    !!game.make_with_options (options)
-	end
+        if options.string_options.has("load") then
+            load_game_from_file(options.string_options@"load")
+        else
+            !!game.make_with_options (options)
+        end
         register (game.status, "game_status")
         register (game.players, "players_list")
     end
     
     load_game_from_file(filename: STRING) is
     local
-	gme: S_GAME
-	ply: S_PLAYER
-	pln: S_PLANET
-	str: S_STAR
-	shp: S_SHIP
-	st: STORAGE_XML
+        gme: S_GAME
+        ply: S_PLAYER
+        pln: S_PLANET
+        str: S_STAR
+        st: STORAGE_XML
     do
-	create gme.make_with_options(options)
-	create ply.make("prototype", "")
-	create str.make_defaults
-	create pln.make_standard(str)
-	create st.make_with_filename(filename)
-	create shp.make(ply)
-	shp.set_id(666)
-	-- Register class prototypes
-	st.register(gme)                              -- S_GAME
-	st.register(gme.galaxy)                       -- S_GALAXY
-	st.register(gme.status)                       -- S_GAME_STATUS
-	st.register(gme.players)                      -- S_PLAYER_LIST
-	st.register(ply)                              -- S_PLAYER
-	st.register(gme.galaxy.limit)                 -- COORDS
-	st.register(str)                              -- S_STAR
-	st.register(create {S_FLEET}.make)            -- S_FLEET
-	st.register(pln)                              -- S_PLANET
-	st.register(create {S_COLONY}.make(pln, ply)) -- S_COLONY
-	st.register(shp)                              -- S_SHIP
-	st.retrieve
-	game ?= st.retrieved
-    	game.init_game
+        create gme.make_with_options(options)
+        create ply.make("prototype", "")
+        create str.make_defaults
+        create pln.make_standard(str)
+        create st.make_with_filename(filename)
+        -- Register class prototypes
+        st.register(gme)                              -- S_GAME
+        st.register(gme.galaxy)                       -- S_GALAXY
+        st.register(gme.status)                       -- S_GAME_STATUS
+        st.register(gme.players)                      -- S_PLAYER_LIST
+        st.register(ply)                              -- S_PLAYER
+        st.register(gme.galaxy.limit)                 -- COORDS
+        st.register(str)                              -- S_STAR
+        st.register(create {S_FLEET}.make)            -- S_FLEET
+        st.register(pln)                              -- S_PLANET
+        st.register(create {S_COLONY}.make(pln, ply)) -- S_COLONY
+        st.register(create {S_STARSHIP}.make(ply))    -- S_STARSHIP
+        st.register(create {S_COLONY_SHIP}.make(ply)) -- S_COLONY_SHIP
+        st.retrieve
+        game ?= st.retrieved
+        game.init_game
     end
-	
-	
-	
 
 feature -- Server attributes
 

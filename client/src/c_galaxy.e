@@ -6,7 +6,7 @@ class C_GALAXY
 inherit
     CLIENT
     GALAXY
-        redefine last_star, last_fleet, make, add_fleet end
+        redefine last_star, last_fleet, make, add_fleet, ship_type end
     SUBSCRIBER
 
 creation
@@ -130,9 +130,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         new_fleets: like fleets
         count, shipcount: INTEGER
         s: UNSERIALIZER
-        owner: PLAYER
+        owner: C_PLAYER
         fleet: C_FLEET
         ship: C_SHIP
+        factory: C_SHIP_FACTORY
         fleet_it: ITERATOR[like last_fleet]
     do
         !!s.start (msg)
@@ -165,12 +166,12 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             shipcount := s.last_integer
             fleet.unserialize_from (s)
             new_fleets.add(fleet, fleet.id) -- If you change this from `add' to `put', explain why
+            !!factory
             from until shipcount = 0 loop
                 s.get_integer
-                inspect s.last_integer
-                    when 1 then !C_COLONY_SHIP!ship.make (fleet.owner)
-                    when 2 then !C_STARSHIP!ship.make(fleet.owner)
-                end
+                factory.create_by_type(s.last_integer + factory.ship_type_min,
+                                       fleet.owner)
+                ship := factory.last_ship
                 ship.unserialize_from(s)
                 shipcount := shipcount - 1
                 fleet.add_ship(ship)
@@ -206,6 +207,8 @@ feature -- Redefined features
     
     last_fleet: C_FLEET
 
+    ship_type: C_SHIP
+
     add_fleet(new_fleet: like last_fleet) is
     do
         fleets.add(new_fleet, new_fleet.id)
@@ -231,5 +234,6 @@ feature -- Redefined features
     do
         star_change.emit (star)
     end
-    
+
+
 end -- class C_GALAXY
