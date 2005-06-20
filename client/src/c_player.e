@@ -4,8 +4,8 @@ class C_PLAYER
 inherit
     PLAYER
     rename 
-		make as player_make
-	redefine colony_type end
+        make as player_make
+    redefine colony_type end
     SUBSCRIBER
     CLIENT
 
@@ -40,22 +40,22 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
     local
         s: UNSERIALIZER
         knows_count, visited_count, colony_count: INTEGER
-		orbit: INTEGER
+        orbit: INTEGER
         star: C_STAR
         old_knows: like knows_star
-		old_colonies: like colonies
-		colony: C_COLONY
-		planet: C_PLANET
+        old_colonies: like colonies
+        colony: C_COLONY
+        planet: C_PLANET
     do
         !!s.start (msg)
-		s.get_real
-		fuel_range := s.last_real
+        s.get_real
+        fuel_range := s.last_real
         s.get_integer
-		knows_count := s.last_integer
-		s.get_integer
-		visited_count := s.last_integer
-		s.get_integer
-		colony_count := s.last_integer
+        knows_count := s.last_integer
+        s.get_integer
+        visited_count := s.last_integer
+        s.get_integer
+        colony_count := s.last_integer
         from
             old_knows := clone (knows_star)
             knows_star.clear
@@ -77,8 +77,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             end
             knows_count := knows_count - 1
         end
-		-- Assumption: A player never forgets about a star:
-		check old_knows.is_empty end
+        -- Assumption: A player never forgets about a star:
+        check old_knows.is_empty end
         from
         until visited_count = 0 loop
             s.get_integer
@@ -90,31 +90,31 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             end
             visited_count := visited_count - 1
         end
-		from
+        from
             old_colonies := clone (colonies)
             colonies.clear
         until colony_count = 0 loop
             s.get_integer
             if server.galaxy.has_star (s.last_integer) then
                 star := server.galaxy.star_with_id (s.last_integer)
-				s.get_integer
-				orbit := s.last_integer
-				planet := star.planet_at(orbit)
-				if planet = Void then
-					-- Probably star information is on it's way, just
-					-- make do with what we have.
-					star.set_planet(create{C_PLANET}.make_standard (star), orbit)
-					planet := star.planet_at(orbit)
-				end
-				s.get_integer
-				if planet.colony = Void then
-					create colony.make(planet, Current)
-					colony.set_id(s.last_integer)
-				else
-					colony := planet.colony
-					check colony.id = s.last_integer end
-				end
-				colonies.add (colony, colony.id)
+                s.get_integer
+                orbit := s.last_integer
+                planet := star.planet_at(orbit)
+                if planet = Void then
+                    -- Probably star information is on it's way, just
+                    -- make do with what we have.
+                    star.set_planet(create{C_PLANET}.make_standard (star), orbit)
+                    planet := star.planet_at(orbit)
+                end
+                s.get_integer
+                if planet.colony = Void then
+                    create colony.make(planet, Current)
+                    colony.set_id(s.last_integer)
+                else
+                    colony := planet.colony
+                    check colony.id = s.last_integer end
+                end
+                colonies.add (colony, colony.id)
                 if not old_colonies.has (colony.id) then 
                     colony.subscribe (server, "colony"+colony.id.to_string)
                 else
@@ -126,14 +126,14 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             colony_count := colony_count - 1
         end
     end
-	
+
 feature -- Access
-	
+
     connected: BOOLEAN
         -- Player has a connection to the server
-	
+
 feature -- Anchors
-	
-	colony_type: C_COLONY
-	
+
+    colony_type: C_COLONY
+
 end -- class C_PLAYER

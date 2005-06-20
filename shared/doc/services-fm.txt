@@ -37,10 +37,22 @@ STAR
 FLEET
   Name: "fleet"+id (id is a digit sequence = fleet_id) 
   Provided: Before reporting fleet on scanner or new_fleets.
-  Description: Full fleet description
-  Format: "iiiiirr" <<owner, eta, orbiting, destination, ships.count, x, y>>, and
-          "iii" <<id, size, picture>> (for each ship of the fleet)
+  Description: Abridged fleet description.
+  Format: "iiiiirr" <<owner_id, eta, orbiting, destination, ships_count, x, y>>,
+          followed by a sequence of
+          "ii<msg>" <<id, ship_type, ...>> for each ship of the fleet.
+            <msg> depends of the type of the ship:
+                starships: "iii" <<creator_id, size, picture>>
+                colony ships: "i" <<creator_id>>
   `orbiting' and `destination may be -1, which means "none".
+
+SHIP
+  Name: "ship"+id (id is a digit sequence = ship_id)
+  Provided: Before reporting ship on fleet.
+  Description: Full ship description.
+  Format: Format depends of the type of ship.
+                starships: "srb" <<name, fuel_range, is_stealthy>>
+                colony ships: "b" <<is_stealthy>>
 
 PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
@@ -65,14 +77,14 @@ RACE
   Provided: Before game_status.started is set
   Description: Detailed description of the player's race.
   Format: "ssiiiiiiiiiiiiibbbbbbbbbbbbbbbbb" <<name, homeworld_name,
-		  population_growth, farming_bonus, industry_bonus,
-		  science_bonus, money_bonus, ship_defense_bonus,
-		  ship_attack_bonus, ground_combat_bonus, spying_bonus,
-		  government, homeworld_size, homeworld_gravity,
-		  homeworld_richness, ancient_artifacts, aquatic,
-		  subterranean, cybernetic, lithovore, repulsive, charismatic,
-		  uncreative, creative, tolerant, fantastic_trader,
-		  telepathic, lucky, omniscient, stealthy, transdimensional, warlord>>
+          population_growth, farming_bonus, industry_bonus,
+          science_bonus, money_bonus, ship_defense_bonus,
+          ship_attack_bonus, ground_combat_bonus, spying_bonus,
+          government, homeworld_size, homeworld_gravity,
+          homeworld_richness, ancient_artifacts, aquatic,
+          subterranean, cybernetic, lithovore, repulsive, charismatic,
+          uncreative, creative, tolerant, fantastic_trader,
+          telepathic, lucky, omniscient, stealthy, transdimensional, warlord>>
 
 SCANNER
   Name: n+":scanner" (n is a digit sequence = player id)
@@ -81,7 +93,11 @@ SCANNER
                 owned by n.
   Format: "i" <<count>>, followed by a sequence of
           "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
-          "ii" <<size, picture>> (for each ship of the fleet)
+          "i<msg>" <<ship_type, ...>> for each ship of the fleet.
+            <msg> depends of the type of the ship:
+                starships: "iii" <<creator_id, size, picture>>
+                colony ships: "i" <<creator_id>>
+
   when `eta'=0, the fleet is in orbit around `destination', when `eta'/=0,
   the fleet is travelling to `destination'
 

@@ -4,7 +4,7 @@ class C_FLEET
 
 inherit
     FLEET
-    redefine make end
+    redefine make, ship_type end
     SUBSCRIBER
     CLIENT
 
@@ -23,10 +23,11 @@ feature {NONE} -- Creation
         -- Action when `msg' arrives from `provider''s service `service'
         -- Only `service' expected is "fleet"+id
     local
-        i: INTEGER
+        i, ship_id, shtype: INTEGER
         s: UNSERIALIZER
         shipcount: INTEGER
-        sh: SHIP
+        sh: C_SHIP
+        old_ships: like ships
     do
         !!s.start (msg)
         s.get_integer
@@ -36,8 +37,8 @@ feature {NONE} -- Creation
         s.get_integer
         if is_in_orbit then
 -- Check if necessary to do a notify_views on orbit_center
-			leave_orbit
-		end
+            leave_orbit
+        end
         if s.last_integer /= -1 then
             i := s.last_integer
                 check orbit_center = Void or orbit_center = server.galaxy.star_with_id (i) end
@@ -52,21 +53,34 @@ feature {NONE} -- Creation
         s.get_integer
         shipcount := s.last_integer
         unserialize_from (s) -- Position
+        old_ships := clone(ships)
         ships.clear
         if shipcount = 0 then server.galaxy.remove_fleet (Current) end
         from until shipcount = 0 loop
-            !!sh.make(owner)
             s.get_integer
-            sh.set_id (s.last_integer)
+            ship_id := s.last_integer
             s.get_integer
-            sh.set_size (s.last_integer)
-            s.get_integer
-            sh.set_picture(s.last_integer)
+            shtype := s.last_integer
+            if has_ship(s.last_integer) then
+                sh := old_ships.at(s.last_integer)
+            else
+                inspect shtype
+                   when 1 then !C_COLONY_SHIP!sh.make(owner)
+                   when 2 then !C_STARSHIP!sh.make(owner)
+                end
+                sh.set_id(ship_id)
+                server.subscribe(sh, "ship" + sh.id.to_string)
+            end
+            sh.unserialize_from(s)
+            add_ship(sh)
             shipcount := shipcount - 1
-            add_ship (sh)
         end
         changed.emit (Current)
     end
+
+feature
+
+    ship_type: C_SHIP
 
 feature -- Signals
 

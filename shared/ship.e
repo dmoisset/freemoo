@@ -12,11 +12,13 @@ creation make
 feature {NONE} -- Creation
 
     make(p: like creator) is
+    require p /= Void
     do
         creator := p
         owner := p
         size := 1
         picture := 0
+        fuel_range := 1.0
         make_unique_id
     end
 
@@ -33,6 +35,9 @@ feature -- Access
 
     picture: INTEGER
         -- icon for ship
+
+    ship_type: INTEGER
+        -- An Identifier for different type of ships.
 
 feature -- Operations
 
@@ -54,8 +59,19 @@ feature -- Operations
 
 feature -- Modifiers
     is_stealthy: BOOLEAN
-  
+
+    can_colonize: BOOLEAN
+        -- True for colony ships
+
+    fuel_range: REAL
+        -- Relative to players base fuel range:
+        --   1 for normal ships
+        --   1.5 for extra fuel tanks or colony ships
+
 invariant
     size.in_range(ship_size_min, ship_size_max)
+    fuel_range > 0
+    creator /= Void
+    owner /= Void
 
 end -- class SHIP

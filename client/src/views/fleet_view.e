@@ -231,6 +231,33 @@ feature -- Redefined features
 
 feature {NONE} -- Internal features
 
+    set_info_default is
+    -- Show some random information in the little information box
+    do
+        if fleet.eta /= 0 then
+            info_label.set_text("ETA: " + fleet.eta.to_string + " turns")
+        else
+            info_label.set_text("")
+        end
+    end
+
+    set_info_shipname(s: SHIP) is
+    require
+        s /= Void
+    local
+        st: STARSHIP
+    do
+        if s.can_colonize then
+            info_label.set_text("Colony ship")
+        else
+            st ?= s
+            if st /= Void then
+                info_label.set_text(st.name)
+            end
+        end
+    end
+        
+
     update_toggles is
         -- Show or hide toggle-buttons, and activate or deactivate 
         -- accordingly
@@ -260,6 +287,8 @@ feature {NONE} -- Internal features
                 toggles.item(i).set_pressed_active_image(i1)
                 toggles.item(i).show
                 toggles.item(i).set_click_handler(agent toggle_ship_selection(ship))
+                toggles.item(i).set_on_enter_handler(agent set_info_shipname(ship))
+                toggles.item(i).set_on_exit_handler(agent set_info_default)
                 toggles.item(i).set_active(fleet_selection.has(ship))
             else
                 toggles.item(i).hide
@@ -335,11 +364,7 @@ feature {NONE} -- Signal Handler
         update_window_size
         select_none
         update_toggles
-        if fleet.eta /= 0 then
-            info_label.set_text("ETA: " + fleet.eta.to_string + " turns")
-        else
-            info_label.set_text("")
-        end
+        set_info_default
 
         if fleet.ship_count = 0 then remove end
     end

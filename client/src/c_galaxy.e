@@ -132,7 +132,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         s: UNSERIALIZER
         owner: PLAYER
         fleet: C_FLEET
-        ship: SHIP
+        ship: C_SHIP
         fleet_it: ITERATOR[like last_fleet]
     do
         !!s.start (msg)
@@ -166,11 +166,12 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             fleet.unserialize_from (s)
             new_fleets.add(fleet, fleet.id) -- If you change this from `add' to `put', explain why
             from until shipcount = 0 loop
-                !!ship.make (fleet.owner)
                 s.get_integer
-                ship.set_size (s.last_integer)
-                s.get_integer
-                ship.set_picture (s.last_integer)
+                inspect s.last_integer
+                    when 1 then !C_COLONY_SHIP!ship.make (fleet.owner)
+                    when 2 then !C_STARSHIP!ship.make(fleet.owner)
+                end
+                ship.unserialize_from(s)
                 shipcount := shipcount - 1
                 fleet.add_ship(ship)
             end

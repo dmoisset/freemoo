@@ -96,6 +96,9 @@ feature -- Operations
 
     add_ship (s: like ship_type) is
         -- Add `s' to fleet
+    require
+        s /= Void
+        owner /= Void implies s.owner = owner
     do
         ships.put (s, s.id)
         scanner_range := 0

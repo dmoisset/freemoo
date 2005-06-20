@@ -3,8 +3,24 @@ class COLONY_SHIP
 
 inherit
     SHIP
+    redefine make end
 
 creation
     make
+
+feature {NONE} -- Creation
+
+    make(p: like creator) is
+    do
+        Precursor(p)
+        set_colony_ship_attributes
+    end
+
+    set_colony_ship_attributes is
+    do
+        ship_type := 1
+        can_colonize := True
+        fuel_range := 1.5
+    end
 
 end -- class COLONY_SHIP

@@ -5,14 +5,14 @@ inherit
     redefine subscription_message end
     FLEET
     redefine
-	set_destination, add_ship, split, move,
-	join, clear_ships, orbit_center, owner, ship_type
-	end
+        set_destination, add_ship, split, move,
+        join, clear_ships, orbit_center, owner, ship_type
+    end
     STORABLE
     rename
-	hash_code as id
+        hash_code as id
     redefine
-	dependents, primary_keys, copy, is_equal
+        dependents, primary_keys, copy, is_equal
     end
 
 creation make
@@ -46,7 +46,8 @@ feature -- Redefined features
         s.add_integer(ship_count)
         serialize_on(s)
         from i := get_new_iterator until i.is_off loop
-            s.add_tuple(<<i.item.id, i.item.size, i.item.picture>>)
+            s.add_tuple(<<i.item.id, i.item.ship_type>>)
+            i.item.serialize_on(s)
             i.next
         end
         Result := s.serialized_form
@@ -98,13 +99,13 @@ feature -- Operations
     
     copy(other: like Current) is
     do
-	standard_copy(other)
-	ships := clone(other.ships)
+        standard_copy(other)
+        ships := clone(other.ships)
     end
     
     is_equal(other: like Current): BOOLEAN is
     do
-	Result := id = other.id
+        Result := id = other.id
     end
     
 
@@ -114,88 +115,88 @@ feature {STORAGE} -- Saving
     
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     local
-	a: ARRAY[TUPLE[STRING, ANY]]
+        a: ARRAY[TUPLE[STRING, ANY]]
     do
-	create a.make(1, 0)
-	a.add_last(["x", x])
-	a.add_last(["y", y])
-	a.add_last(["orbit_center", orbit_center])
-	a.add_last(["owner", owner])
-	a.add_last(["destination", destination])
-	a.add_last(["eta", eta])
-	a.add_last(["current_speed", current_speed]) 
-	add_to_fields(a, "ship", ships.get_new_iterator_on_items)
-	Result := a.get_new_iterator
+        create a.make(1, 0)
+        a.add_last(["x", x])
+        a.add_last(["y", y])
+        a.add_last(["orbit_center", orbit_center])
+        a.add_last(["owner", owner])
+        a.add_last(["destination", destination])
+        a.add_last(["eta", eta])
+        a.add_last(["current_speed", current_speed]) 
+        add_to_fields(a, "ship", ships.get_new_iterator_on_items)
+        Result := a.get_new_iterator
     end
     
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
-	Result := (<<["id", id] >>).get_new_iterator
+        Result := (<<["id", id] >>).get_new_iterator
     end
     
     dependents: ITERATOR[STORABLE] is
     local
-	a: ARRAY[STORABLE]
+        a: ARRAY[STORABLE]
     do
-	create a.make(1, 0)
-	a.add_last(orbit_center)
-	a.add_last(owner)
-	a.add_last(destination)
-	add_dependents_to(a, ships.get_new_iterator_on_items)
-	Result := a.get_new_iterator
+        create a.make(1, 0)
+        a.add_last(orbit_center)
+        a.add_last(owner)
+        a.add_last(destination)
+        add_dependents_to(a, ships.get_new_iterator_on_items)
+        Result := a.get_new_iterator
     end
     
 feature {STORAGE} -- Retrieving	
     
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-	i: reference INTEGER
+        i: reference INTEGER
     do
-	from
-	until elems.is_off loop
-	    if elems.item.first.is_equal("id") then
-		i ?= elems.item.second
-		id := i
-	    end
-	    elems.next
-	end
+        from
+        until elems.is_off loop
+            if elems.item.first.is_equal("id") then
+                i ?= elems.item.second
+                id := i
+            end
+            elems.next
+        end
     end
     
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-	i: reference INTEGER
-	r: reference REAL
-	s: like ship_type
+        i: reference INTEGER
+        r: reference REAL
+        s: like ship_type
     do
-	from
-	    ships.clear
-	until elems.is_off loop
-	    if elems.item.first.is_equal("x") then
-		r ?= elems.item.second
-		x := r
-	    elseif elems.item.first.is_equal("y") then
-		r ?= elems.item.second
-		y := r
-	    elseif elems.item.first.is_equal("orbit_center") then
-		orbit_center ?= elems.item.second
-	    elseif elems.item.first.is_equal("owner") then
-		owner ?= elems.item.second
-	    elseif elems.item.first.is_equal("destination") then
-		destination ?= elems.item.second
-	    elseif elems.item.first.is_equal("eta") then
-		i ?= elems.item.second
-		eta := i
-	    elseif elems.item.first.is_equal("current_speed") then
-		r ?= elems.item.second
-		current_speed := r
-	    elseif elems.item.first.has_prefix("ship") then
-		s ?= elems.item.second
-		ships.add (s, s.id)
-	    end
-	    elems.next
-	end
+        from
+            ships.clear
+        until elems.is_off loop
+            if elems.item.first.is_equal("x") then
+                r ?= elems.item.second
+                x := r
+            elseif elems.item.first.is_equal("y") then
+                r ?= elems.item.second
+                y := r
+            elseif elems.item.first.is_equal("orbit_center") then
+                orbit_center ?= elems.item.second
+            elseif elems.item.first.is_equal("owner") then
+                owner ?= elems.item.second
+            elseif elems.item.first.is_equal("destination") then
+                destination ?= elems.item.second
+            elseif elems.item.first.is_equal("eta") then
+                i ?= elems.item.second
+                eta := i
+            elseif elems.item.first.is_equal("current_speed") then
+                r ?= elems.item.second
+                current_speed := r
+            elseif elems.item.first.has_prefix("ship") then
+                s ?= elems.item.second
+                ships.add (s, s.id)
+            end
+            elems.next
+        end
     end
-	 
+
 feature {NONE} -- Internal
 
     update_clients is

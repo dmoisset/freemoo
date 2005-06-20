@@ -1,11 +1,10 @@
-class C_COLONY
-
+class C_SHIP
 inherit
-    COLONY
+    SHIP
     SUBSCRIBER
+    CLIENT
 
-creation
-    make
+creation make
 
 feature
 
@@ -15,8 +14,14 @@ feature
         s: UNSERIALIZER
     do
         !!s.start (msg)
-        s.get_integer
-        producing := s.last_integer + product_min
+        s.get_boolean
+        is_stealthy := s.last_boolean
     end
 
-end -- class C_COLONY
+    unserialize_from (s: UNSERIALIZER) is
+    do
+        s.get_integer
+        creator := server.player_list.item_id(s.last_integer)
+    end
+
+end -- class C_SHIP

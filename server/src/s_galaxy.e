@@ -79,7 +79,8 @@ feature -- Redefined features
                 s.add_integer (fleet.item.ship_count)
                 fleet.item.serialize_on (s)
                 from ship := fleet.item.get_new_iterator until ship.is_off loop
-                    s.add_tuple (<<ship.item.size, ship.item.picture>>)
+                    s.add_integer (ship.item.ship_type)
+                    ship.item.serialize_on(s)
                     ship.next
                 end
                 fleet.next
