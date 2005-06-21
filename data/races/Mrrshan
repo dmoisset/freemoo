@@ -16,9 +16,11 @@ Marupa
 .
 
 # Modifiers.  The list is terminated with a line containing a single '.'
-ship_offense_bonus=50
+ship_attack_bonus=50
 homeworld_richness=1
 warlord
 government=dictatorship
 .
 
+# Picture suggestion
+9

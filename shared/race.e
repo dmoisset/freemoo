@@ -15,6 +15,8 @@ feature -- Access -- General
     homeworld_name: STRING
         -- Default homeworld name
 
+    picture: INTEGER
+
 feature -- Access -- Bonuses
 
     population_growth: INTEGER
@@ -126,6 +128,27 @@ feature -- Access -- government dependant
         Result := government /= government_democracy
     end
 
+feature -- Access -- Special
+
+    homeworld_size: INTEGER
+        -- -2 for tiny, -1 for small, 0 for normal, +1 for large, +2 for huge.
+        -- (easy to add to size constants from MAP_CONSTANTS)
+
+    homeworld_gravity: INTEGER
+        -- -1 for low, 0 for normal, +1 for high
+        -- (easy to add to gravity constants from MAP_CONSTANTS)
+
+    homeworld_richness: INTEGER
+        -- -2 for UP, -1 for poor, 0 for normal, +1 for rich, +2 for UR
+        -- (easy to add to richness constants from MAP_CONSTANTS)
+
+    ancient_artifacts: BOOLEAN
+
+    aquatic, subterranean, cybernetic, lithovore, repulsive,
+    charismatic, uncreative, creative, tolerant, fantastic_trader,
+    telepathic, lucky, omniscient, stealthy, transdimensional, 
+    warlord: BOOLEAN
+
 feature -- Operations
 
     set_attribute(attr: STRING) is
@@ -140,7 +163,7 @@ feature -- Operations
         eqpos := attr.first_index_of('=')
         if eqpos /= 0 then
             key := attr.substring(1, eqpos - 1)
-            value := attr.substring(eqpos, attr.count)
+            value := attr.substring(eqpos + 1, attr.count)
         else
             key := attr
             value := "True"
@@ -193,6 +216,8 @@ feature -- Operations
             charismatic := value.to_boolean
         elseif key.is_equal("uncreative") and then value.is_boolean then
             uncreative := value.to_boolean
+        elseif key.is_equal("creative") and then value.is_boolean then
+            creative := value.to_boolean
         elseif key.is_equal("tolerant") and then value.is_boolean then
             tolerant := value.to_boolean
         elseif key.is_equal("fantastic_trader") and then value.is_boolean then
@@ -207,31 +232,119 @@ feature -- Operations
             stealthy := value.to_boolean
         elseif key.is_equal("transdimensional") and then value.is_boolean then
             transdimensional := value.to_boolean
+        elseif key.is_equal("warlord") and then value.is_boolean then
+            warlord := value.to_boolean
+        elseif key.is_equal("picture") and then value.is_integer then
+            picture := value.to_integer
         else
             check invalid_option: false end
         end
     end
 
-feature -- Access -- Special
+    set_name(new_name: STRING) is
+    do
+        name := new_name
+    ensure
+        name = new_name
+    end
 
-    homeworld_size: INTEGER
-        -- -2 for tiny, -1 for small, 0 for normal, +1 for large, +2 for huge.
-        -- (easy to add to size constants from MAP_CONSTANTS)
+    set_homeworld_name(new_homeworld: STRING) is
+    do
+        homeworld_name := new_homeworld
+    ensure
+        homeworld_name = new_homeworld
+    end
 
-    homeworld_gravity: INTEGER
-        -- -1 for low, 0 for normal, +1 for high
-        -- (easy to add to gravity constants from MAP_CONSTANTS)
+    set_picture(new_pic: INTEGER) is
+    do
+        picture := new_pic
+    ensure
+        picture = new_pic
+    end
 
-    homeworld_richness: INTEGER
-        -- -2 for UP, -1 for poor, 0 for normal, +1 for rich, +2 for UR
-        -- (easy to add to richness constants from MAP_CONSTANTS)
+    serialize_on(s: SERIALIZER2) is
+    do
+        s.add_tuple(<<name, homeworld_name, picture, 
+          population_growth, farming_bonus, industry_bonus,
+          science_bonus, money_bonus, ship_defense_bonus,
+          ship_attack_bonus, ground_combat_bonus, spying_bonus,
+          government-government_feudal, homeworld_size, homeworld_gravity,
+          homeworld_richness, ancient_artifacts, aquatic,
+          subterranean, cybernetic, lithovore, repulsive, charismatic,
+          uncreative, creative, tolerant, fantastic_trader,
+          telepathic, lucky, omniscient, stealthy, transdimensional, 
+          warlord>>)
+    end
 
-    ancient_artifacts: BOOLEAN
-
-    aquatic, subterranean, cybernetic, lithovore, repulsive,
-    charismatic, uncreative, creative, tolerant, fantastic_trader,
-    telepathic, lucky, omniscient, stealthy, transdimensional, 
-    warlord: BOOLEAN
+    unserialize_from(s: UNSERIALIZER) is
+    do
+        s.get_string
+        name := s.last_string
+        s.get_string
+        homeworld_name := s.last_string
+        s.get_integer
+        picture := s.last_integer
+        s.get_integer
+        population_growth := s.last_integer
+        s.get_integer
+        farming_bonus := s.last_integer
+        s.get_integer
+        industry_bonus := s.last_integer
+        s.get_integer
+        science_bonus := s.last_integer
+        s.get_integer
+        money_bonus := s.last_integer
+        s.get_integer 
+        ship_defense_bonus := s.last_integer
+        s.get_integer 
+        ship_attack_bonus := s.last_integer
+        s.get_integer 
+        ground_combat_bonus := s.last_integer
+        s.get_integer 
+        spying_bonus := s.last_integer
+        s.get_integer 
+        government := s.last_integer + government_feudal
+        s.get_integer
+        homeworld_size := s.last_integer
+        s.get_integer
+        homeworld_gravity := s.last_integer
+        s.get_integer
+        homeworld_richness := s.last_integer
+        s.get_boolean
+        ancient_artifacts := s.last_boolean
+        s.get_boolean
+        aquatic := s.last_boolean
+        s.get_boolean
+        subterranean := s.last_boolean
+        s.get_boolean
+        cybernetic := s.last_boolean
+        s.get_boolean
+        lithovore := s.last_boolean
+        s.get_boolean
+        repulsive := s.last_boolean
+        s.get_boolean
+        charismatic := s.last_boolean
+        s.get_boolean
+        uncreative := s.last_boolean
+        s.get_boolean
+        creative := s.last_boolean
+        s.get_boolean
+        tolerant := s.last_boolean
+        s.get_boolean
+        fantastic_trader := s.last_boolean
+        s.get_boolean
+        telepathic := s.last_boolean
+        s.get_boolean
+        lucky := s.last_boolean
+        s.get_boolean
+        omniscient := s.last_boolean
+        s.get_boolean
+        stealthy := s.last_boolean
+        s.get_boolean
+        transdimensional := s.last_boolean
+        s.get_boolean
+        warlord := s.last_boolean
+    end
 
 feature {NONE} -- Creation
 
@@ -251,4 +364,5 @@ invariant
     homeworld_gravity.in_range(-1, 1)
     homeworld_richness.in_range(-2, 2)
     homeworld_size.in_range(-2, 2)
+    name /= Void
 end -- class RACE

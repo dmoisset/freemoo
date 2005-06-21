@@ -17,9 +17,11 @@ Ellowyn
 
 # Modifiers.  The list is terminated with a line containing a single '.'
 ship_defense_bonus=25
-ship_offense_bonus=20
+ship_attack_bonus=20
 telepathic
 omniscient
 government=feudal
 .
 
+# Picture suggestion
+4

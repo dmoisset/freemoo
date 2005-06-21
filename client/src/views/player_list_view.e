@@ -48,7 +48,11 @@ feature {NONE} -- Representation
             i.start
             j := labels.lower
         until i.is_off loop
-            s := i.item.name.twin
+            if i.item.state = st_ready then
+                s := i.item.ruler_name + " (" + i.item.race.name + ", " + color_names@ (i.item.color) + ")"
+            else
+                s := i.item.name.twin
+            end
             s.append (": "+ state_names @ i.item.state)
             if i.item.connected then
                 s.add_first ('*')

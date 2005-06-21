@@ -47,19 +47,30 @@ feature {NONE} -- Creation
     local
         r: RECTANGLE
         p: PLAYER_CONSTANTS
-        i: ITERATOR [STRING]
+        i, j: ITERATOR [STRING]
         b: RADIO_BUTTON_IMAGE
         bup, bdown: IMAGE_FMI
     do
         create bup.make_from_file("client/setup-window/radio-button-u.fmi")
         create bdown.make_from_file("client/setup-window/radio-button-d.fmi")
-        create races.make
+        create race_attributes.make
+        create races.make(1, 0)
         -- Races
         create race.make
         r.set_with_size (320, 100, 135, 15)
         from
-            i := races.race_names.get_new_iterator
+            i := race_attributes.race_names.get_new_iterator
         until i.is_off loop
+            races.add_last(create{RACE}.make)
+            races.last.set_name(i.item)
+            races.last.set_picture(race_attributes.pictures.at(i.item))
+            races.last.set_homeworld_name(race_attributes.homeworlds.at(i.item))
+            from
+                j := race_attributes.specials.at(i.item).get_new_iterator
+            until j.is_off loop
+                races.last.set_attribute(j.item)
+                j.next
+            end
             create b.make_with_label (Current, r, bup, bdown, i.item, race)
             r.translate (0, 18)
             i.next
@@ -68,7 +79,7 @@ feature {NONE} -- Creation
         create color.make
         r.set_with_size(455, 100, 135, 15)
         from
-            i := p.color_names.get_new_iterator_on_items
+            i := p.color_names.get_new_iterator
         until i.is_off loop
             create b.make_with_label (Current, r, bup, bdown, i.item, color)
             r.translate (0, 18)
@@ -86,7 +97,9 @@ feature {NONE} -- Widgets
     race: RADIO_GROUP
     color: RADIO_GROUP
 
-    races: RACE_ATTRIBUTES
+    race_attributes: RACE_ATTRIBUTES
+
+    races: ARRAY[RACE]
 
     new_player_list (where: RECTANGLE) is deferred end
     new_flag_view (where: RECTANGLE) is deferred end

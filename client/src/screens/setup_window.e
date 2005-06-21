@@ -40,7 +40,9 @@ feature {NONE} -- Callbacks
 
     start_game is
     do
-        server.set_ready
+        if race.index /= 0 and color.index /= 0 then
+            server.set_ready(ruler_name.text, races@ (race.index), color.index - 1)
+        end
     end
 
     disconnect is

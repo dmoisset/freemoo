@@ -10,11 +10,12 @@ feature {NONE} -- Creation
     do
         set_state (st_setup)
         set_color (min_color)
-		fuel_range := 4.0
-		!!race.make
+        fuel_range := 4.0
+        !!race.make
         !!colonies.make
         !!knows_star.make
         !!has_visited_star.make
+        ruler_name := ""
     ensure
         state = st_setup
     end
@@ -37,11 +38,15 @@ feature -- Access
         -- Stars visited by this player
     
     fuel_range: REAL
-		-- Distance our ships can travel from our colonies
-	
-	race: RACE
-		-- The race this player rules
-	
+        -- Distance our ships can travel from our colonies
+
+    ruler_name: STRING
+
+    money: INTEGER
+
+    race: RACE
+        -- The race this player rules
+
 feature -- Access
 
     --
@@ -60,22 +65,22 @@ feature -- Access
 feature -- Query
     
     is_in_range(p: POSITIONAL): BOOLEAN is
-	-- Can our ships reach p with our current fuel range?
+        -- Can our ships reach p with our current fuel range?
     require
-	p /= Void
+        p /= Void
     local
-	it: ITERATOR[like colony_type]
+        it: ITERATOR[like colony_type]
     do
-	from
-	    it := colonies.get_new_iterator_on_items
-	until it.is_off or Result = True loop
-	    if it.item.location.orbit_center |-| p < fuel_range then
-		Result := True
-	    end
-	    it.next
-	end
+        from
+            it := colonies.get_new_iterator_on_items
+        until it.is_off or Result = True loop
+            if it.item.location.orbit_center |-| p < fuel_range then
+                Result := True
+            end
+            it.next
+        end
     end
-	
+
 feature {PLAYER_LIST} -- Operations
 
     set_state (new_state: INTEGER) is
@@ -95,16 +100,34 @@ feature {PLAYER_LIST} -- Operations
     ensure
         color = new_color
     end
+
+    set_ruler_name(new_ruler_name: STRING) is
+    require
+        new_ruler_name /= Void
+    do
+        ruler_name := new_ruler_name
+    ensure
+        ruler_name = new_ruler_name
+    end
     
     set_fuel_range (new_range: REAL) is
     require
-	new_range > 0
+        new_range > 0
     do
-	fuel_range := new_range
+        fuel_range := new_range
     ensure
-	fuel_range = new_range
+        fuel_range = new_range
     end
-    
+
+    set_race(new_race: like race) is
+    require
+        new_race /= Void
+    do
+        race := new_race
+    ensure
+        race = new_race
+    end
+
 feature {COLONY} -- Operations
 
     add_colony (colony: like colony_type) is
@@ -136,7 +159,7 @@ feature {MAP_GENERATOR, FLEET}
     do
         has_visited_star.add (star)
     end
-	
+
 feature -- Anchors
     
     colony_type: COLONY
@@ -144,8 +167,8 @@ feature -- Anchors
     star_type: STAR
 
 invariant
-	race /= Void
+    race /= Void
+    ruler_name /= Void
     valid_state: state.in_range (min_state, max_state)
     valid_color: color.in_range (min_color, max_color)
-
 end -- class PLAYER

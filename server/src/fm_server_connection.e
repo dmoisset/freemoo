@@ -50,7 +50,7 @@ feature -- Redefined features
             pass := u.last_string
             rejoin (user, pass)
         when msgtype_start then
-            start
+            start(u)
         when msgtype_turn then
             u.get_boolean
             next_turn (u.last_boolean)
@@ -139,8 +139,14 @@ feature {NONE} -- Operations: joining
         end
     end
 
-    start is
+    start(u: UNSERIALIZER) is
         -- player ready to start game
+    local
+        ruler_name: STRING
+        color: INTEGER
+        race: S_RACE
+        it: ITERATOR[S_PLAYER]
+        bad_setup: BOOLEAN
     do
         if player = Void then
             std_error.put_string (l("Client error. Player asked to start without logging in first%N"))
@@ -148,7 +154,34 @@ feature {NONE} -- Operations: joining
             std_error.put_string (format(l("Client error. Player ~1~ asked to start being in an invalid state.%N"),
                               <<player.name>>))
         else
-            server.game.set_player_ready (player)
+            u.get_integer
+            color := u.last_integer
+            u.get_string
+            ruler_name := u.last_string
+            !!race.make
+            race.unserialize_from(u)
+            from
+                it := server.game.players.get_new_iterator
+            until
+                it.is_off or bad_setup
+            loop
+                if it.item.state >= st_ready and then
+                     (it.item.ruler_name.is_equal(ruler_name) or
+                      it.item.race.picture = race.picture or
+                      it.item.race.name.is_equal(race.name) or
+                      it.item.color = color) then
+                    std_error.put_string(l("Client error?  Ruler name, picture, race name or color already taken."))
+                    bad_setup := True
+                end
+                it.next
+            end
+            if not bad_setup then
+                player.set_ruler_name(ruler_name)
+                player.set_color(color)
+                player.set_race(race)
+                server.game.players.update_clients
+                server.game.set_player_ready (player)
+            end
         end
     end
 

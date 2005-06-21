@@ -23,17 +23,10 @@ feature -- Constants
 
 feature -- Constants
 
-    color_names: DICTIONARY[STRING, INTEGER] is
+    color_names: ARRAY[STRING] is
     once
-        create Result.make
-        Result.add("Yellow", min_color)
-        Result.add("Red", min_color + 1)
-        Result.add("Green", min_color + 2)
-        Result.add("Blue", min_color + 3)
-        Result.add("Brown", min_color + 4)
-        Result.add("Black", min_color + 5)
-        Result.add("White", min_color + 6)
-        Result.add("Polkadot", min_color + 7)
+        Result := <<"Red", "Yellow", "Green", "White", "Blue", "Brown", "Violet", "Orange">>
+        Result.reindex(0)
     end
 
 end -- class PLAYER_CONSTANTS

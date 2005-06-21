@@ -7,7 +7,7 @@ inherit
     undefine
         copy, is_equal
     redefine
-        add_to_known_list, colony_type, star_type, race
+        add_to_known_list, colony_type, star_type, race, set_ruler_name, set_race, set_color
     select id end
     STORABLE
     rename
@@ -56,6 +56,24 @@ feature -- Operations
         connection = new_connection
     end
 
+    set_ruler_name(new_ruler_name: STRING) is
+    do
+        Precursor(new_ruler_name)
+        update_clients
+    end
+
+    set_race(new_race: like race) is
+    do
+        Precursor(new_race)
+        update_clients
+    end
+
+    set_color(new_color: INTEGER) is
+    do
+        Precursor(new_color)
+        update_clients
+    end
+
     update_clients is
     do
         -- Check to avoid updates on initialization
@@ -65,8 +83,19 @@ feature -- Operations
     end
 
     serialize_on (s: SERIALIZER2) is
+    local
+        rlname, rcname: STRING
+        race_picture: INTEGER
     do
-        s.add_tuple (<<id, name, state, color, connection/=Void>>)
+        if ruler_name /= Void then rlname := ruler_name else rlname := "" end
+        if race /= Void then
+            race_picture := race.picture
+            if race.name /= Void then rcname := race.name else rcname := "" end
+        else
+            race_picture := 0
+        end
+        s.add_tuple (<<id, name, rlname, rcname, race_picture, color, state,
+                       connection /= Void>>)
     end
 
 feature -- Access
@@ -97,6 +126,8 @@ feature -- Redefined features
             !!serv_id.copy(service_id)
             serv_id.remove_prefix("player")
             if serv_id.is_integer and then serv_id.to_integer = id then
+                s.add_string(ruler_name)
+                s.add_integer(money)
                 s.add_real(fuel_range)
                 s.add_integer (knows_star.count)
                 s.add_integer (has_visited_star.count)
@@ -148,6 +179,8 @@ feature {STORAGE} -- Saving
         a: ARRAY[TUPLE[STRING, ANY]]
     do
         create a.make(1, 0)
+        a.add_last(["ruler_name", ruler_name])
+        a.add_last(["money", money])
         a.add_last(["color", color])
         a.add_last(["state", state])
         a.add_last(["password", password])
@@ -209,7 +242,12 @@ feature {STORAGE} -- Retrieving
             knows_star.clear
             has_visited_star.clear
         until elems.is_off loop
-            if elems.item.first.is_equal("password") then
+            if elems.item.first.is_equal("ruler_name") then
+                ruler_name ?= elems.item.second
+            elseif elems.item.first.is_equal("money") then
+                i ?= elems.item.second
+                money := i
+            elseif elems.item.first.is_equal("password") then
                 password ?= elems.item.second
             elseif elems.item.first.is_equal("color") then
                 i ?= elems.item.second

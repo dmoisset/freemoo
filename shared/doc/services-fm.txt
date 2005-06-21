@@ -18,7 +18,7 @@ PLAYERS LIST
             until connection close
   Description: list of players logged in, and basic status info on each.
   Format: "i" <<count>>, followed by sequence of
-          "isiib", <<id, name, state, color, connected>>
+          "isssiiib", <<id, name, ruler_name, race_name, race_picture, color, state, connected>>
 
 GALAXY
   Name: "galaxy"
@@ -58,7 +58,7 @@ PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
   Provided: Before game_status.started is set
   Description: Detailed player description
-  Format: "riii" <<fuel_range, knows_stars,
+  Format: "siriii" <<ruler_name, money, fuel_range, knows_stars,
                     visited_stars, colony_count>, followed by a sequence of
           "i" <<star_id>>
                  (this is the known_star list), followed by a sequence of
@@ -76,7 +76,7 @@ RACE
   Name: "race"+id (id is a digit sequence = race.id)
   Provided: Before game_status.started is set
   Description: Detailed description of the player's race.
-  Format: "ssiiiiiiiiiiiiibbbbbbbbbbbbbbbbb" <<name, homeworld_name,
+  Format: "ssiiiiiiiiiiiiiibbbbbbbbbbbbbbbbb" <<name, homeworld_name, picture,
           population_growth, farming_bonus, industry_bonus,
           science_bonus, money_bonus, ship_defense_bonus,
           ship_attack_bonus, ground_combat_bonus, spying_bonus,

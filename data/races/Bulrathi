@@ -16,9 +16,11 @@ Monch
 .
 
 # Modifiers.  The list is terminated with a line containing a single '.'
-ship_offense_bonus=20
+ship_attack_bonus=20
 ground_combat_bonus=10
 homeworld_gravity=1
 government=dictatorship
 .
 
+# Picture suggestion
+2

@@ -67,10 +67,15 @@ feature -- Operations -- Login commands
         is_joining
     end
 
-    set_ready is
+    set_ready(ruler_name: STRING; race: RACE; color: INTEGER) is
         -- Notify server that player is ready to begin
+    local
+        s: SERIALIZER2
     do
-        send_package (msgtype_start, "")
+        !!s.make
+        s.add_tuple(<<color, ruler_name>>)
+        race.serialize_on(s)
+        send_package (msgtype_start, s.serialized_form)
     end
 
     subscribe_base is
@@ -87,12 +92,12 @@ feature -- Operations -- Login commands
     subscribe_init is
         -- subscribe to services provided on beginning
     require 
-	player /= Void
+        player /= Void
     do
         subscribe (galaxy, "galaxy")
         subscribe (galaxy, player.id.to_string+":scanner")
         subscribe (galaxy, player.id.to_string+":new_fleets")
-	subscribe (galaxy, player.id.to_string+":enemy_colonies")
+        subscribe (galaxy, player.id.to_string+":enemy_colonies")
         subscribe (player, "player"+player.id.to_string)
     end
 

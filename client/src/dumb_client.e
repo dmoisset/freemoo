@@ -54,14 +54,14 @@ feature
             -- Main connection loop
             start
             join
-	    if not server.has_joined then
-		rejoin
-	    end
-	    if server.has_joined then
-		setup
-		play
-		cleanup
-	    end
+            if not server.has_joined then
+                rejoin
+            end
+            if server.has_joined then
+                setup
+                play
+                cleanup
+            end
         else
             print ("Connection failed.%N")
         end
@@ -106,7 +106,7 @@ feature
     do
         print ("Rejoining...%N")
         server.rejoin (options.string_options @ "name",
-		       options.string_options @ "password")
+                       options.string_options @ "password")
         from until server.has_joined or not server.is_joining loop
             server.get_data (-1)
         end
@@ -124,9 +124,14 @@ feature
         -- etc.) and start of game
     require
         must_have_joined: server.has_joined
+    local
+        race: RACE
     do
         print ("Starting game...%N")
-        server.set_ready
+        !!race.make
+        race.set_homeworld_name("Never Never Land")
+        race.set_name("Dimwits")
+        server.set_ready("The Bad Gui", race, 0)
         print ("Waiting for other players...%N")
         from until
             server.game_status.started
@@ -160,7 +165,7 @@ feature
     once
         !!Result.make (reject_cause_duplicate, max_reject_cause)
         Result.put (l("Another player with that name is playing"), reject_cause_duplicate)
-	Result.put (l("Invalid Password"), reject_cause_password)
+        Result.put (l("Invalid Password"), reject_cause_password)
         Result.put (l("No room for more players"), reject_cause_noslots)
         Result.put (l("Game has finished"), reject_cause_finished)
         Result.put (l("Access denied"), reject_cause_denied)
@@ -187,18 +192,18 @@ feature -- Incredibly smart AI
                     j.next
                 end
                 if not ll.is_empty then
-		    from                    
-			s := server.galaxy.get_new_iterator_on_stars
-		    until 
-			s.is_off or else
-			    (server.player.is_in_range(s.item) and
-			     s.item /= i.item.orbit_center)
-		    loop
-			s.next
-		    end
-		    if not s.is_off then
-			server.move_fleet (i.item, s.item, ll)
-		    end
+                    from                    
+                        s := server.galaxy.get_new_iterator_on_stars
+                    until 
+                        s.is_off or else
+                            (server.player.is_in_range(s.item) and
+                             s.item /= i.item.orbit_center)
+                    loop
+                        s.next
+                    end
+                    if not s.is_off then
+                        server.move_fleet (i.item, s.item, ll)
+                    end
                 else
                     print ("Fleet empty? ")
                     print (i.item.id)

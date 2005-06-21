@@ -28,8 +28,14 @@ feature -- Operations
     unserialize_from (s: UNSERIALIZER) is
         -- Update from `s'.
     do
-        s.get_integer; set_state (s.last_integer)
+        if race = Void then
+            !!race.make
+        end
+        s.get_string; set_ruler_name(s.last_string)
+        s.get_string; race.set_name(s.last_string)
+        s.get_integer; race.set_picture(s.last_integer)
         s.get_integer; set_color (s.last_integer)
+        s.get_integer; set_state (s.last_integer)
         s.get_boolean; connected := s.last_boolean
     end
 
@@ -48,6 +54,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         planet: C_PLANET
     do
         !!s.start (msg)
+        s.get_string
+        ruler_name := s.last_string
+        s.get_integer
+        money := s.last_integer
         s.get_real
         fuel_range := s.last_real
         s.get_integer
