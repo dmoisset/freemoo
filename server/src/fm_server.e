@@ -114,6 +114,7 @@ feature {NONE} -- Internal
         st.register(create {S_COLONY}.make(pln, ply)) -- S_COLONY
         st.register(create {S_STARSHIP}.make(ply))    -- S_STARSHIP
         st.register(create {S_COLONY_SHIP}.make(ply)) -- S_COLONY_SHIP
+        st.register(create {S_RACE}.make)
         st.retrieve
         game ?= st.retrieved
         game.init_game

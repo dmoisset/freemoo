@@ -38,6 +38,8 @@ feature -- Operations
         i: ITERATOR [S_PLAYER]
         j: ITERATOR [like star_type]
         p: ITERATOR [like planet_type]
+        f: ITERATOR [like fleet_type]
+        s: ITERATOR [S_SHIP]
     do
         -- This feature is public because it must be called when loading a game
         Precursor
@@ -65,6 +67,18 @@ feature -- Operations
                 p.next
             end
             j.next
+        end
+        -- Register fleets and ships
+        from
+            f := galaxy.get_new_iterator_on_fleets
+        until f.is_off loop
+            from
+                s := f.item.get_new_iterator
+            until s.is_off loop
+                server.register(s.item, "ship" + s.item.id.to_string)
+                s.next
+            end
+            f.next
         end
     end
 

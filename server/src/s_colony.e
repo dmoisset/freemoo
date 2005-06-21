@@ -108,7 +108,7 @@ feature {STORAGE} -- Retrieving
         until elems.is_off loop
             if elems.item.first.is_equal("producing") then
                 i ?= elems.item.second
-                producing := i
+                producing := i + product_min
             elseif elems.item.first.is_equal("owner") then
                 owner ?= elems.item.second
             elseif elems.item.first.is_equal("location") then

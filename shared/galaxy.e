@@ -289,6 +289,7 @@ feature -- Operations
         end
         if f.orbit_center /= Void then
             join_fleets (f.orbit_center)
+            fleet_cleanup
         end
     end
 
@@ -341,17 +342,11 @@ feature -- Operations
         !!dead.make
         from i := fleets.get_new_iterator_on_items until i.is_off loop
             if i.item.ship_count = 0 then
-                dead.add (i.item)
+                dead.add(i.item)
             end
             i.next
         end
-        from i := dead.get_new_iterator until i.is_off loop
-            fleets.remove (i.item.id)
-            if i.item.is_in_orbit then
-                i.item.leave_orbit -- To remove from star
-            end
-            i.next
-        end
+        dead.do_all(agent remove_fleet)
     end
 
 feature {NONE} -- Auxiliar

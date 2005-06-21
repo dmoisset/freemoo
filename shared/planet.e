@@ -155,7 +155,7 @@ feature -- Factory methods
     create_colony(p: PLAYER): like colony is
     require p /= Void
     do
-	create Result.make(Current, p)
+        create Result.make(Current, p)
     end
     
     
