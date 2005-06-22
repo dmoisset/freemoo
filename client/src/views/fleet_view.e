@@ -158,6 +158,20 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
         end
     end
 
+    set_info_eta(dest: STAR) is
+    require
+        dest /= Void
+    do
+        info_label.set_text("ETA: " + fleet.eta_at(dest).to_string + " turns")
+    end
+
+    set_info_distance(dest: STAR) is
+    require
+        dest /= Void
+    do
+        info_label.set_text(fleet.distance_to(dest).rounded.to_string + " Parsecs")
+    end
+
 feature {NONE} -- Callbacks
 
     toggle_ship_selection(sh: SHIP) is

@@ -11,6 +11,24 @@ feature -- Access
         Result >= 0
     end
 
+    lies_between(o1, o2: POSITIONAL): BOOLEAN is
+        -- Do you pass close to Current when going from `o1'  to `o2'?
+    local
+        a: REAL
+    do
+        if is_approx(o1.x, o2.x) then
+            Result := (o1.x - x).abs < 1 and then
+                      ((o1.y < y and y < o2.y) or (o2.y < y and y < o1.y))
+        elseif is_approx(o1.y, o2.y) then
+            Result := (o1.y - y).abs < 1 and then
+                      ((o1.x < x and x < o2.x) or (o2.x < x and x < o1.x))
+        else
+            a := (o1.y - o2.y) / (o1.x - o2.x)
+            -- Don't have time for this now
+            Result := False
+        end
+    end
+    
 feature -- Operations
 
     move_to (other: POSITIONAL) is

@@ -403,8 +403,10 @@ feature {NONE} -- Event handlers
             !!traj.with_projection (dest, fleet_window.model_position, current_projection)
             if galaxy.server.player.is_in_range(dest) then
                 traj.set_type(traj.traj_type_select_ok)
+                fleet_window.set_info_eta(dest)
             else
                 traj.set_type(traj.traj_type_unreachable)
+                fleet_window.set_info_distance(dest)
             end
             !!trajectory_window.make(Current, traj.showx, traj.showy, traj)
             trajectory_window.send_behind(fleet_window)
