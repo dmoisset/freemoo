@@ -179,13 +179,13 @@ feature {NONE} -- Planet Generation
         loop
             rand.next
             if rand.last_integer (100) <= planet_prob @ (star.kind) then
-		planet := star.create_planet
-		planet.set_size(planet_sizes.random_item)
-		planet.set_climate(planet_climates.item(star.kind).random_item)
-		planet.set_mineral(planet_minerals.item(star.kind).random_item)
-		planet.set_gravity(planet_gravs.item(star.kind).random_item)
-		planet.set_type(planet_types.random_item)
-		planet.set_special(plspecial_nospecial)
+                planet := star.create_planet
+                planet.set_size(planet_sizes.random_item)
+                planet.set_climate(planet_climates.item(star.kind).random_item)
+                planet.set_mineral(planet_minerals.item(star.kind).random_item)
+                planet.set_gravity(planet_gravs.item(star.kind).random_item)
+                planet.set_type(planet_types.random_item)
+                planet.set_special(plspecial_nospecial)
                 star.set_planet (planet, i)
             end
             i := i + 1
@@ -198,28 +198,29 @@ feature {NONE} -- Planet Generation
         orion: PLANET
     do
         orion_system := galaxy.closest_star_to_or_within (center, 8, dont_touch)
-	orion := orion_system.create_planet
-	orion.set_size(plsize_huge)
-	orion.set_climate(climate_gaia)
-	orion.set_mineral(mnrl_ultrarich)
-	orion.set_gravity(grav_normalg)
-	orion.set_type(type_planet)
-	orion.set_special(plspecial_nospecial)
+        orion := orion_system.create_planet
+        orion.set_size(plsize_huge)
+        orion.set_climate(climate_gaia)
+        orion.set_mineral(mnrl_ultrarich)
+        orion.set_gravity(grav_normalg)
+        orion.set_type(type_planet)
+        orion.set_special(plspecial_nospecial)
         rand.next
-		
+
         orion_system.set_planet (orion, rand.last_integer (orion_system.Max_planets))
         orion_system.set_special (stspecial_orion)
-	from
-	until orion_system.kind /= kind_blackhole
-	loop orion_system.set_kind(star_kinds.random_item)
-	end
+        from
+        until
+            orion_system.kind /= kind_blackhole
+        loop
+            orion_system.set_kind(star_kinds.random_item)
+        end
         orion_system.set_name ("Orion")
         dont_touch.add (orion_system)
     end
 
     place_homeworlds(galaxy: GALAXY; players: PLAYER_LIST[PLAYER]) is
     local
-        hmworldnams: ARRAY[STRING]
         i: ITERATOR [PLAYER]
         hmworldpos: COORDS
         step, offset: REAL
@@ -228,12 +229,6 @@ feature {NONE} -- Planet Generation
         hmworld: PLANET
         newcol: COLONY
     do
-        hmworldnams := <<"Color 1 Homeworld", "Color 2 Homeworld",
-						 "Color 3 Homeworld", "Color 4 Homeworld", "Color 5 Homeworld"
-						 "Color 6 Homeworld", "Color 7 Homeworld", "Color 8 Homeworld">>
-        -- player colors star with 0
-        hmworldnams.reindex (0)
-		-- Get this out.  Should be race homeworld names
         step := perimeter / players.count
         rand.next
         offset := rand.last_real * step
@@ -244,21 +239,29 @@ feature {NONE} -- Planet Generation
         until i.is_off loop
             hmworldpos := walk_point (step * done + offset)
             hmworld_system := galaxy.closest_star_to (hmworldpos, dont_touch)
-			hmworld := hmworld_system.create_planet
-			hmworld.set_size(plsize_medium)
-			hmworld.set_climate(climate_terran)
-			hmworld.set_mineral(mnrl_abundant)
-			hmworld.set_gravity(grav_normalg)
-			hmworld.set_type(type_planet)
-			hmworld.set_special(plspecial_nospecial)
+            hmworld := hmworld_system.create_planet
+            hmworld.set_size(plsize_medium + i.item.race.homeworld_size)
+            if i.item.race.aquatic then
+                hmworld.set_climate(climate_ocean)
+            else
+                hmworld.set_climate(climate_terran)
+            end
+            hmworld.set_mineral(mnrl_abundant + i.item.race.homeworld_richness)
+            hmworld.set_gravity(grav_normalg + i.item.race.homeworld_gravity)
+            hmworld.set_type(type_planet)
+            if i.item.race.ancient_artifacts then
+                hmworld.set_special(plspecial_artifacts)
+            else
+                hmworld.set_special(plspecial_nospecial)
+            end
             rand.next
             hmworld_system.set_planet (hmworld, rand.last_integer (hmworld_system.Max_planets))
-            hmworld_system.set_name (hmworldnams.item (i.item.color))
-			from
-			until hmworld_system.kind /= kind_blackhole
-			loop hmworld_system.set_kind(star_kinds.random_item)
-			end
-			newcol := hmworld.create_colony(i.item)
+            hmworld_system.set_name (i.item.race.homeworld_name)
+            from
+            until hmworld_system.kind /= kind_blackhole
+            loop hmworld_system.set_kind(star_kinds.random_item)
+            end
+            newcol := hmworld.create_colony(i.item)
             i.item.add_to_known_list (hmworld_system)
             i.item.add_to_visited_list (hmworld_system)
             done := done + 1
@@ -266,7 +269,7 @@ feature {NONE} -- Planet Generation
             i.next
         end
     end
-	
+
 feature -- Operation
 
     generate (galaxy: GALAXY; players: PLAYER_LIST [PLAYER]) is
@@ -303,6 +306,7 @@ feature -- Operation
         print ("Placing HomeWorlds%N")
         !!homeworlds.make (1, players.count)
         place_homeworlds (galaxy, players)
+        add_omniscient_knowledge(galaxy, players)
     end
 
 feature {NONE} -- Implementation

@@ -23,6 +23,30 @@ feature -- Operations
         homeworlds.count = players.count
     end
 
+    add_omniscient_knowledge(galaxy: GALAXY; players: PLAYER_LIST[PLAYER]) is
+    local
+        pl: ITERATOR[PLAYER]
+        st: ITERATOR[STAR]
+    do
+        from
+            pl := players.get_new_iterator
+        until
+            pl.is_off
+        loop
+            if pl.item.race.omniscient then
+                from
+                    st := galaxy.get_new_iterator_on_stars
+                until
+                    st.is_off
+                loop
+                    pl.item.add_to_known_list(st.item)
+                    st.next
+                end
+            end
+            pl.next
+        end
+    end
+
 feature -- Access
 
     homeworlds: ARRAY [PLANET]
