@@ -272,8 +272,6 @@ feature {NONE} -- Redrawing
         fleet_hotspots.add (r, f.id)
         img.show(cache, r.x, r.y)
 
-
-
         if f.destination /= Void then
             !!traj.with_projection(f, f.destination, current_projection)
             if f.owner = galaxy.server.player then
