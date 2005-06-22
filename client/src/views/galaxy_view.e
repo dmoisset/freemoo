@@ -222,6 +222,7 @@ feature {NONE} -- Redrawing
         lx, ly: INTEGER -- star label position
         lwidth: INTEGER -- star label width
         r: RECTANGLE
+        text: STRING
     do
         current_projection.project(s)
         px := current_projection.x
@@ -231,12 +232,17 @@ feature {NONE} -- Redrawing
                     (py - img.height / 2).rounded, img.width, img.height)
         star_hotspots.add (r, s.id)
         img.show (cache, r.x, r.y)
-        if s.has_info then
-            lwidth := font.width_of (s.name)
+        if galaxy.server.player.has_visited_star.has(s) then
+            text := s.name
+        elseif galaxy.server.player.knows_star.has(s) then
+            text := "(" + s.name + ")"
+        end
+        if text /= Void then
+            lwidth := font.width_of (text)
             lx := (px - lwidth / 2).rounded
             ly := label_offset+(py - font.height / 2).rounded
             if lx < width and ly < height then
-                font.show_at(cache, lx, ly, s.name)
+                font.show_at(cache, lx, ly, text)
                 r.set_with_size(lx - 1, ly, lwidth, font.height)
                 paint (r, s)
             end
