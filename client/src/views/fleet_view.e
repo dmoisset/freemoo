@@ -36,6 +36,7 @@ feature {NONE} -- Creation
         !!fleet_selection.make
 
         fleet_changed (fleet)
+        select_all
     end
  
  
@@ -46,8 +47,18 @@ feature {NONE} -- Creation
         bt: BUTTON_TOGGLE_IMAGE
         skip, hpos, vpos: INTEGER
     do
-        -- Drag Handle
         r.set_with_size (1, 0, bg_tot_width@1, bg_top_height)
+        -- Title Label
+        if fleet.owner /= Void and then
+           fleet.owner.race /= Void and then
+           fleet.owner.race.name /= Void then
+            !!title_label.make(Current, r, fleet.owner.race.name + " Fleet")
+        else
+            !!title_label.make(Current, r, "Fleet")
+        end
+        title_label.set_v_alignment(0.65)
+
+        -- Drag Handle
         !!drag.make (Current, r)
 
         -- Info Label
@@ -166,13 +177,15 @@ feature {NONE} -- Callbacks
     local
         si: ITERATOR[SHIP]
     do
-        from
-            si := fleet.get_new_iterator
-        until
-            si.is_off
-        loop
-            fleet_selection.add(si.item)
-            si.next
+        if fleet.can_receive_orders and fleet.owner = server.player then
+            from
+                si := fleet.get_new_iterator
+            until
+                si.is_off
+            loop
+                fleet_selection.add(si.item)
+                si.next
+            end
         end
         update_toggles
         all_button.set_click_handler(agent select_none)
@@ -209,6 +222,8 @@ feature {NONE} -- Implementation
     toggles: ARRAY[BUTTON_TOGGLE_IMAGE]
 
     drag: DRAG_HANDLE
+
+    title_label: LABEL
 
     scrollbar: V_SCROLLBAR
         -- A Bar that Scrolls.
@@ -279,7 +294,7 @@ feature {NONE} -- Internal features
             info_label.set_text("Colony ship")
         else
             st ?= s
-            if st /= Void then
+            if st /= Void and then st.name /= Void then
                 info_label.set_text(st.name)
             end
         end
@@ -292,7 +307,9 @@ feature {NONE} -- Internal features
         i: INTEGER
         ship: SHIP
         i1, i2: IMAGE
+        commandable_fleet: BOOLEAN
     do
+        commandable_fleet := fleet.owner = server.player and then fleet.can_receive_orders
         from i := 0
         until i = 9
         loop
@@ -302,18 +319,25 @@ feature {NONE} -- Internal features
                                    ship.creator.color,
                                    ship.size,
                                    ship.picture, false)
-                i2 := get_ship_pic(fleet.owner.color,
-                                   ship.creator.color,
-                                   ship.size,
-                                   ship.picture, true)
                 toggles.item(i).set_normal_image(i1)
                 toggles.item(i).set_prelight_image(i1)
-                toggles.item(i).set_pressed_image(i2)
-                toggles.item(i).set_normal_active_image(i2)
-                toggles.item(i).set_prelight_active_image(i2)
                 toggles.item(i).set_pressed_active_image(i1)
+                if commandable_fleet then
+                    i2 := get_ship_pic(fleet.owner.color,
+                                       ship.creator.color,
+                                       ship.size,
+                                       ship.picture, true)
+                    toggles.item(i).set_pressed_image(i2)
+                    toggles.item(i).set_normal_active_image(i2)
+                    toggles.item(i).set_prelight_active_image(i2)
+                    toggles.item(i).set_click_handler(agent toggle_ship_selection(ship))
+                else
+                    toggles.item(i).set_pressed_image(i1)
+                    toggles.item(i).set_normal_active_image(i1)
+                    toggles.item(i).set_prelight_active_image(i1)
+                    toggles.item(i).set_click_handler(Void)
+                end
                 toggles.item(i).show
-                toggles.item(i).set_click_handler(agent toggle_ship_selection(ship))
                 toggles.item(i).set_on_enter_handler(agent set_info_shipname(ship))
                 toggles.item(i).set_on_exit_handler(agent set_info_default)
                 toggles.item(i).set_active(fleet_selection.has(ship))
@@ -349,6 +373,7 @@ feature {NONE} -- Internal features
 
         r.set_with_size(0, 0, bg_tot_width@size_index, bg_top_height)
         drag.move(r)
+        title_label.move(r)
 
         if show_colonize_button then
             r.set_with_size(buttons_x, buttons_y@size_index,
@@ -378,9 +403,10 @@ feature {NONE} -- Internal features
                         info_label_width, info_label_height)
         info_label.move(r)
 
-        window_h := bg_tot_height@size_index + button_h + close_button.item(button_idx).height
-        r.set_with_size(location.x, location.y.min(window_h),
-                        bg_tot_width@size_index, window_h)
+        window_h := bg_tot_height @ size_index + button_h + close_button.item(button_idx).height
+        r.set_with_size(location.x.min(parent.width - bg_tot_width @ size_index),
+                        location.y.min(parent.height - window_h),
+                        bg_tot_width @ size_index, window_h)
         move(r)
     end
 
