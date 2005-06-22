@@ -7,7 +7,8 @@ inherit
     undefine
         copy, is_equal
     redefine
-        add_to_known_list, colony_type, star_type, race, set_ruler_name, set_race, set_color
+        add_to_known_list, add_to_visited_list, colony_type,
+        star_type, race, set_ruler_name, set_race, set_color
     select id end
     STORABLE
     rename
@@ -155,6 +156,12 @@ feature -- Redefined features
     end
 
     add_to_known_list (star: like star_type) is
+    do
+        Precursor (star)
+        update_clients
+    end
+
+    add_to_visited_list (star: like star_type) is
     do
         Precursor (star)
         update_clients
