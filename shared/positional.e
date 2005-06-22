@@ -11,21 +11,20 @@ feature -- Access
         Result >= 0
     end
 
-    lies_between(o1, o2: POSITIONAL): BOOLEAN is
-        -- Do you pass close to Current when going from `o1'  to `o2'?
+    distance_to_segment(o1, o2: POSITIONAL): REAL is
+        -- How close to Current do you pass when going from `o1'  to `o2'?
     local
-        a: REAL
+        x2, y2: REAL
     do
+        
         if is_approx(o1.x, o2.x) then
-            Result := (o1.x - x).abs < 1 and then
-                      ((o1.y < y and y < o2.y) or (o2.y < y and y < o1.y))
+            Result := (o1.x - x).abs
         elseif is_approx(o1.y, o2.y) then
-            Result := (o1.y - y).abs < 1 and then
-                      ((o1.x < x and x < o2.x) or (o2.x < x and x < o1.x))
+            Result := (o1.y - y).abs
         else
-            a := (o1.y - o2.y) / (o1.x - o2.x)
-            -- Don't have time for this now
-            Result := False
+            x2 := o2.x - o1.x
+            y2 := o2.y - o1.y
+            Result := (x2*(y - o1.y)-(x - o1.x)*y2).abs / ((x2*x2+y2*y2).sqrt).to_real
         end
     end
     

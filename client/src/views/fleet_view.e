@@ -15,7 +15,7 @@ inherit
 creation
     make
 
-feature {NONE} -- Representation
+feature -- Representation
 
     fleet: C_FLEET
 
@@ -170,6 +170,11 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
         dest /= Void
     do
         info_label.set_text(fleet.distance_to(dest).rounded.to_string + " Parsecs")
+    end
+
+    set_info_black_hole is
+    do
+        info_label.set_text("Blackhole blocks!")
     end
 
 feature {NONE} -- Callbacks
@@ -674,8 +679,8 @@ feature {NONE} -- Numeric and Layout Constants
         Result.put(217, 4)
     end
 
-    info_label_x: INTEGER is 80
-    info_label_width: INTEGER is 80
+    info_label_x: INTEGER is 72
+    info_label_width: INTEGER is 110
     info_label_height: INTEGER is 24
 
     all_button_x: INTEGER is 16

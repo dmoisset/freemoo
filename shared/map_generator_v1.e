@@ -370,7 +370,7 @@ feature {NONE} -- Implementation
 feature{NONE} -- Internal Constants
 
     mindelta: REAL is 2.5
-    maxdelta: REAL is 5
+    maxdelta: REAL is 4
     
 invariant
     size /= Void

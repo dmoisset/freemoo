@@ -194,6 +194,26 @@ feature -- Access -- star list
 
     last_star: STAR
 
+    exists_black_hole_between(s1, s2: POSITIONAL): BOOLEAN is
+    require
+        s1 /= Void
+        s2 /= Void
+    local
+        sit: ITERATOR[STAR]
+        trip: REAL
+    do
+        from
+            sit := get_new_iterator_on_stars
+        until sit.is_off or Result loop
+            if sit.item.kind = sit.item.kind_blackhole and then
+               sit.item.distance_to_segment(s1, s2) < 1.0 then
+                trip := s1 |-| s2
+                Result := sit.item.distance_to(s1) < trip and then
+                          sit.item.distance_to(s2) < trip
+            end
+            sit.next
+        end
+    end
 feature -- Access -- fleet list
 
     get_new_iterator_on_fleets: ITERATOR [like last_fleet] is

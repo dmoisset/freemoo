@@ -399,7 +399,10 @@ feature {NONE} -- Event handlers
             end
             dest := galaxy.star_with_id(star_hotspots.fast_key_at(i.item))
             !!traj.with_projection (dest, fleet_window.model_position, current_projection)
-            if galaxy.server.player.is_in_range(dest) then
+            if galaxy.exists_black_hole_between(fleet_window.fleet, dest) then
+                traj.set_type(traj.traj_type_unreachable)
+                fleet_window.set_info_black_hole
+            elseif galaxy.server.player.is_in_range(dest) then
                 traj.set_type(traj.traj_type_select_ok)
                 fleet_window.set_info_eta(dest)
             else
