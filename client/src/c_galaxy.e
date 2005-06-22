@@ -114,7 +114,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             if planet = Void then 
                 -- Probably we're just arriving at star.  Complete 
                 -- information for the planet shall arrive shortly.
-                star.set_planet(create{PLANET}.make_standard (star), orbit)
+                star.set_planet(create{C_PLANET}.make_standard (star), orbit)
                 planet := star.planet_at(orbit)
             end
             s.get_integer

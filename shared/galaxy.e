@@ -79,34 +79,60 @@ feature -- Access
         -- All enemy colonies known by `player'
     local
         c: ITERATOR[COLONY]
-        f: ITERATOR[FLEET]
+        f: ITERATOR[like last_fleet]
         p: ITERATOR[PLANET]
+        s: ITERATOR[like last_star]
     do
         create Result.make
-        if enemy_colony_knowledge.has(player.id) then
-            from 
-                c := (enemy_colony_knowledge @ (player.id)).get_new_iterator
-            until c.is_off loop
-                if c.item.location.colony /= Void then
-                    Result.add(c.item)
-                end
-                c.next
-            end
-        end
-        from
-            f := fleets.get_new_iterator_on_items
-        until f.is_off loop
-            if f.item.orbit_center /= Void and f.item.owner = player then
+        if player.race.omniscient then
+            -- Omniscient races simply know everything
+            from
+                s := get_new_iterator_on_stars
+            until
+                s.is_off
+            loop
                 from
-                    p := f.item.orbit_center.get_new_iterator_on_planets
-                until p.is_off loop
-                    if p.item /= Void and then p.item.colony /= Void and then p.item.colony.owner /= player then
+                    p := s.item.get_new_iterator_on_planets
+                until
+                    p.is_off
+                loop
+                    if p.item /= Void and then
+                       p.item.colony /= Void and then
+                       p.item.colony.owner /= player then
                         Result.add(p.item.colony)
                     end
                     p.next
                 end
+                s.next
             end
-            f.next
+        else
+            -- Regular races have their previous knowledge plus that of
+            -- colonies over which they have fleets
+            if enemy_colony_knowledge.has(player.id) then
+                from 
+                    c := (enemy_colony_knowledge @ (player.id)).get_new_iterator
+                until c.is_off loop
+                    if c.item.location.colony /= Void then
+                        Result.add(c.item)
+                    end
+                    c.next
+                end
+            end
+            from
+                f := fleets.get_new_iterator_on_items
+            until f.is_off loop
+                if f.item.orbit_center /= Void and f.item.owner = player then
+                    from
+                        p := f.item.orbit_center.get_new_iterator_on_planets
+                    until p.is_off loop
+                        if p.item /= Void and then p.item.colony /= Void and then p.item.colony.owner /= player then
+                            Result.add(p.item.colony)
+                        end
+                        p.next
+                    end
+                end
+                f.next
+            end
         end
     end
 
