@@ -92,13 +92,13 @@ feature {NONE} -- Creation
                   colonize_button_img.item(1, 1),
                   colonize_button_img.item(1, 1),
                   colonize_button_img.item(1, 2))
-        b.set_click_handler (agent colonize)
+        b.set_click_handler (agent colonization_button_handler)
         colonize_button.put(b, 1)
         !!b.make (Current, buttons_x, buttons_y@1,
                   colonize_button_img.item(2, 1),
                   colonize_button_img.item(2, 1),
                   colonize_button_img.item(2, 2))
-        b.set_click_handler (agent colonize)
+        b.set_click_handler (agent colonization_button_handler)
         colonize_button.put(b, 2)
 
         -- Toggles
@@ -150,7 +150,12 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
     do
         cancel_trajectory_selection_handler := p
     end
-    
+
+    set_colonization_callback(p: PROCEDURE[ANY, TUPLE]) is
+    do
+        colonization_handler := p
+    end
+
     send_selection_to(s: STAR) is
     do
         if fleet.owner = server.player and fleet.can_receive_orders then
@@ -225,14 +230,19 @@ feature {NONE} -- Callbacks
         update_toggles
     end
 
-    colonize is
+    colonization_button_handler is
     do
-        print("Not Yet Implemented%N")
+        print ("FLEET_VIEW: Colonization button clicked%N")
+        if colonization_handler /= Void then
+            colonization_handler.call([])
+        end
     end
 
 feature {NONE} -- Implementation
 
     cancel_trajectory_selection_handler: PROCEDURE[ANY, TUPLE]
+
+    colonization_handler: PROCEDURE[ANY, TUPLE]
 
     fleet_selection: SET[SHIP]
 

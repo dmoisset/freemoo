@@ -49,10 +49,16 @@ feature {NONE} -- Creation
         !!planet_label.make (Current, r, "")
         !!removable_children.make(1, 0)
         -- Fleetsorbiting view
+        make_fleets_orbiting(g)
+        on_model_change
+    end
+
+    make_fleets_orbiting(g: C_GALAXY) is
+    local
+        r: RECTANGLE
+    do
         r.set_with_size(20, 239, 170, 14)
         !!fleets_orbiting.make(Current, r, star, g)
-
-        on_model_change
     end
 
 feature {NONE} -- Widgets
@@ -79,9 +85,9 @@ feature {NONE} -- Callbacks
 
 feature {NONE} -- Callbacks
 
-    planet_click is
+    planet_click(p: C_PLANET) is
     do
-        print ("Not Yet Implemented%N")
+        print ("Manage Colony on planet on orbit " + p.orbit.to_string + "%N")
     end
 
 feature {NONE} -- Signal handlers
@@ -115,11 +121,11 @@ feature {NONE} -- Signal handlers
         wa: WINDOW_ANIMATED
         msg_label: MULTILINE_LABEL
         button: BUTTON_PLANET
-        planet: PLANET
+        planet: C_PLANET
         ani: ANIMATION_FMA
         r: RECTANGLE
         tuple: TUPLE[INTEGER, INTEGER]
-        ip: ITERATOR[PLANET]
+        ip: ITERATOR[C_PLANET]
     do
         -- Redraw cache on next redraw
         dirty := True
@@ -152,7 +158,7 @@ feature {NONE} -- Signal handlers
                     !!button.make(Current, tuple.first - 17, tuple.second - 17,
                               bracket.images @ 1, bracket.images @ 2,
                               bracket.images @ 3, planet)
-                    button.set_click_handler(agent planet_click)
+                    button.set_click_handler(agent planet_click(planet))
                     removable_children.add_last(button)
                 end
                 ip.next

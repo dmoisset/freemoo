@@ -234,7 +234,7 @@ feature {NONE} -- Redrawing
         img.show (cache, r.x, r.y)
         if galaxy.server.player.has_visited_star.has(s) then
             text := s.name
-        elseif galaxy.server.player.knows_star.has(s) then
+        elseif galaxy.server.player.knows_star.has(s) and s.has_info then
             text := "(" + s.name + ")"
         end
         if text /= Void then
@@ -333,6 +333,38 @@ feature {NONE} -- Event handlers
         end
         !FLEET_VIEW!fleet_window.make(Current, r, f)
         fleet_window.set_cancel_trajectory_selection_callback(agent cancel_trajectory_selection)
+        fleet_window.set_colonization_callback(agent select_planet_for_colonization)
+    end
+
+    select_planet_for_colonization is
+    require
+        fleet_window /= Void
+        children.fast_has(fleet_window)
+        fleet_window.fleet /= Void
+        fleet_window.fleet.orbit_center /= Void
+        fleet_window.fleet.can_colonize
+        fleet_window.fleet.orbit_center.has_colonizable_planet
+    local
+        f: C_FLEET
+        r: RECTANGLE
+    do
+        f := fleet_window.fleet
+        fleet_window.remove
+        cancel_trajectory_selection
+        r.set_with_size((width - star_window_width) // 2,
+                        (height - star_window_height) // 2,
+                        star_window_width, star_window_height)
+        create colonization_dialog.make(Current, r, f.orbit_center, galaxy.server.game_status, galaxy)
+        colonization_dialog.set_selection_callback(agent colonize)
+        colonization_dialog.set_fleet(f)
+    end
+
+    colonize(p: C_PLANET; f: C_FLEET) is
+    do
+        if p.type = p.type_planet then
+            print("GALAXY_VIEW: Colonizing planet on orbit " + p.orbit.to_string + " with fleet " + f.id.to_string + "%N")
+            colonization_dialog.remove
+        end
     end
 
     on_left_click (x, y: INTEGER) is
@@ -539,6 +571,8 @@ feature {NONE} -- Internal data
 
     fleet_window: FLEET_VIEW
         -- Window used to display a fleet
+
+    colonization_dialog: PLANET_SELECTION_DIALOG
 
     trajectory_window: WINDOW_IMAGE
         -- Window used for doing fleet trajectory selection
