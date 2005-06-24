@@ -100,9 +100,25 @@ feature -- Access
         from
             it := ships.get_new_iterator_on_items
         until
-            it.is_off or else it.item.can_colonize
+            Result or it.is_off
+        loop
+            Result := it.item.can_colonize
+            it.next
+        end
+    end
+
+    get_colony_ship: like ship_type is
+    require
+        can_colonize
+    local
+        it: ITERATOR[like ship_type]
+    do
+        from
+            it := ships.get_new_iterator_on_items
+        until
+            it.item.can_colonize
         loop it.next end
-        Result := not it.is_off
+        Result := it.item
     end
     
 feature -- Operations

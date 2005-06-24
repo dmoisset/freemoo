@@ -56,6 +56,8 @@ feature -- Redefined features
             next_turn (u.last_boolean)
         when msgtype_fleet then
             move_fleet (u)
+        when msgtype_colonize then
+            colonize(u)
         else
             Precursor (ptype)
         end
@@ -248,7 +250,41 @@ feature {NONE} -- Operations
             server.game.galaxy.fleet_orders (fleet, destination, ships)
         end
     end
-    
+
+    colonize(u: UNSERIALIZER) is
+    local
+        fleet: S_FLEET
+        star: S_STAR
+        planet: S_PLANET
+        colony_ship: S_COLONY_SHIP
+    do
+        u.get_integer
+        fleet := server.game.galaxy.fleet_with_id(u.last_integer)
+        u.get_integer
+        star := server.game.galaxy.star_with_id(u.last_integer)
+        if fleet = Void then
+            print("colonize: invalid fleet id%N")
+        elseif star = Void then
+            print("colonize: invalid star id%N")
+        else
+            u.get_integer
+            if not u.last_integer.in_range(1, star.Max_planets) then
+                print("colonize: invalid orbit%N")
+            else
+                planet := star.planet_at(u.last_integer)
+                if planet = Void or else not planet.is_colonizable then 
+                    print("colonize: Cannot colonize that planet%N")
+                elseif not fleet.can_colonize then
+                    print("colonize: Fleet cannot colonize%N")
+                else
+                    colony_ship ?= fleet.get_colony_ship
+                    colony_ship.set_will_colonize(planet)
+                    fleet.update_clients
+                end
+            end
+        end
+    end
+
 feature {NONE} -- Representation
 
     player: S_PLAYER

@@ -31,6 +31,8 @@ feature -- Access
     end
 
     planet_at (orbit: INTEGER): like planet_type is
+    require
+        orbit.in_range(1, Max_planets)
     do
         Result := planets @ orbit
     end

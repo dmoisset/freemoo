@@ -197,7 +197,7 @@ feature {STORAGE} -- Retrieving
         end
     end
 
-feature {NONE} -- Internal
+feature
 
     update_clients is
     do

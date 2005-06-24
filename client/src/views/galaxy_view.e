@@ -361,8 +361,8 @@ feature {NONE} -- Event handlers
 
     colonize(p: C_PLANET; f: C_FLEET) is
     do
-        if p.type = p.type_planet then
-            print("GALAXY_VIEW: Colonizing planet on orbit " + p.orbit.to_string + " with fleet " + f.id.to_string + "%N")
+        if p /= Void and then p.is_colonizable then
+            galaxy.server.colonize(f, p)
             colonization_dialog.remove
         end
     end

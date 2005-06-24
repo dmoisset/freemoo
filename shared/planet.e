@@ -140,6 +140,11 @@ feature -- Access
 
     orbit: INTEGER
 
+    is_colonizable: BOOLEAN is
+    do
+        Result := type = type_planet and colony = Void
+    end
+
 feature {STAR} -- To keep consistent orbits
     set_orbit (neworbit: INTEGER) is
     require

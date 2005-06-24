@@ -2,9 +2,9 @@ class C_COLONY_SHIP
 
 inherit
     COLONY_SHIP
-    redefine make end
+    redefine make, will_colonize end
     C_SHIP
-    redefine make end
+    redefine make, on_message, unserialize_from end
 
 creation make
 
@@ -15,5 +15,42 @@ feature {NONE} -- Creation
         Precursor{C_SHIP}(p)
         set_colony_ship_attributes
     end
+
+feature -- Redefined features
+
+    on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
+        -- Action when `msg' arrives from `provider''s `service'
+    local
+        s: UNSERIALIZER
+        star: C_STAR
+    do
+        !!s.start (msg)
+        s.get_boolean
+        is_stealthy := s.last_boolean
+        s.get_boolean
+        can_colonize := s.last_boolean
+        s.get_integer
+        if s.last_integer = -1 then
+            s.get_integer
+            will_colonize := Void
+        else
+            star := server.galaxy.star_with_id(s.last_integer)
+            check star /= Void end
+            s.get_integer
+            will_colonize := star.planet_at(s.last_integer)
+        end
+    end
+
+    unserialize_from (s: UNSERIALIZER) is
+    do
+        s.get_integer
+        creator := server.player_list.item_id(s.last_integer)
+        s.get_boolean
+        can_colonize := s.last_boolean
+    end
+
+feature -- Access
+
+    will_colonize: C_PLANET
 
 end -- class C_COLONY_SHIP

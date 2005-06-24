@@ -9,10 +9,11 @@ CLIENT MESSAGES
     (and registered a user/password pair).
 34: Send setup info. Send a color, ruler name and race change request.
 35: Setup complete. Ready to begin game
-36: Chat. Say something to other(s) player.
+36: Chat. Say something to other player(s).
 40: End of Turn. Report that player won't play anymore for this turn
 41: Fleet movement. Player gives movement orders to some or all ships in a fleet
-    
+42: Colonize. Player indicates that (s)he wants to colonize some planet.
+
   * Join
 
   offset(bytes) name     type     Notes
@@ -99,6 +100,21 @@ CLIENT MESSAGES
   This sets the fleet destination, or splits the fleet and sets the destination
   of the new one. Using as destanation the place where the ship is gives the
   order to stay in its place, perhaps merging with other fleets.
+
+
+  * Colonize
+
+  offset(bytes) name         type     Notes
+  0             msgtype      INTEGER  42
+  4             fleet        INTEGER  id of the fleet that'll colonize
+  8             star         INTEGER  id of colonization orbit center
+  12            orbit        INTEGER  orbit of planet to colonize
+
+  This message indicates to the server that the player wishes to colonize a
+  planet.  The fleet must contain at least one colony ship, and the planet
+  should be colonizable (habitable and not already colonized).  A colony ship
+  in the fleet will be marked for colonzation, but the planet will not be
+  colonized until the end of the turn.
 
 SERVER MESSAGES
 

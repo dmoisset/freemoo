@@ -23,4 +23,26 @@ feature {NONE} -- Creation
         fuel_range := 1.5
     end
 
+feature -- Access
+
+    will_colonize: PLANET
+        -- Planet on which we shall establish a colony at the end of the turn
+
+feature -- Operations
+
+    set_will_colonize(p: like will_colonize) is
+    do
+        will_colonize := p
+        can_colonize := will_colonize = Void
+    ensure
+        will_colonize = p
+    end
+
+    colonize is
+    require
+        will_colonize /= Void
+    do
+        will_colonize.create_colony(owner)
+    end    
+
 end -- class COLONY_SHIP

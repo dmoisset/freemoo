@@ -146,6 +146,21 @@ feature -- Operations -- Game commands
         end
         send_package (msgtype_fleet, s.serialized_form)
     end
+
+    colonize(f: FLEET; p: PLANET) is
+        -- Request colonization of planet `p' by `f'
+    require
+        f /= Void
+        f.can_colonize
+        p /= Void
+        p.is_colonizable
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        s.add_tuple(<<f.id, p.orbit_center.id, p.orbit>>)
+        send_package(msgtype_colonize, s.serialized_form)
+    end
     
     close is
     do

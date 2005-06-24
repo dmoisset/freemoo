@@ -232,7 +232,6 @@ feature {NONE} -- Callbacks
 
     colonization_button_handler is
     do
-        print ("FLEET_VIEW: Colonization button clicked%N")
         if colonization_handler /= Void then
             colonization_handler.call([])
         end
@@ -318,9 +317,15 @@ feature {NONE} -- Internal features
         s /= Void
     local
         st: STARSHIP
+        cs: COLONY_SHIP
     do
-        if s.can_colonize then
-            info_label.set_text("Colony ship")
+        cs ?= s
+        if cs /= Void then
+            if cs.can_colonize then
+                info_label.set_text("Colony ship")
+            else
+                info_label.set_text("Colonizing...")
+            end
         else
             st ?= s
             if st /= Void and then st.name /= Void then
@@ -381,16 +386,8 @@ feature {NONE} -- Internal features
         -- Re-dimension window checking ship number in fleet
     local
         r: RECTANGLE
-        show_colonize_button: BOOLEAN
         button_h, window_h, button_idx: INTEGER
     do
-        if fleet.can_colonize and then
-           fleet.orbit_center /= Void and then
-           fleet.orbit_center.has_colonizable_planet and then
-           fleet.destination = Void then
-            show_colonize_button := True
-        end
-
         size_index := ((fleet.ship_count - 1) // 3 + 1).min(4)
         button_idx := (size_index.max(3) \\ 2) + 1
 
@@ -404,7 +401,10 @@ feature {NONE} -- Internal features
         drag.move(r)
         title_label.move(r)
 
-        if show_colonize_button then
+        if fleet.can_colonize and then
+           fleet.orbit_center /= Void and then
+           fleet.orbit_center.has_colonizable_planet and then
+           fleet.destination = Void then
             r.set_with_size(buttons_x, buttons_y@size_index,
                             colonize_button.item(button_idx).width,
                             colonize_button.item(button_idx).height)

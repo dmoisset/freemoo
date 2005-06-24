@@ -448,9 +448,11 @@ feature {NONE} -- Representation
         -- All fleets in space
     
 feature -- Anchors
-    
+
     ship_type: SHIP
-    
+
+    planet_type: PLANET
+
 invariant
     stars /= Void
     fleets /= Void
