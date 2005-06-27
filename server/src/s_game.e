@@ -37,7 +37,6 @@ feature -- Operations
     local
         i: ITERATOR [S_PLAYER]
         j: ITERATOR [like star_type]
-        p: ITERATOR [like planet_type]
         f: ITERATOR [like fleet_type]
         s: ITERATOR [S_SHIP]
     do
@@ -58,14 +57,6 @@ feature -- Operations
         j := galaxy.get_new_iterator_on_stars
         from j.start until j.is_off loop
             server.register (j.item, "star"+j.item.id.to_string)
-            from 
-                p := j.item.get_new_iterator_on_planets
-            until p.is_off loop
-                if p.item /= Void and then p.item.colony /= Void then
-                    server.register (p.item.colony, "colony" + p.item.colony.id.to_string)
-                end
-                p.next
-            end
             j.next
         end
         -- Register fleets and ships

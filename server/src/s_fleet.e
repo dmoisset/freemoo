@@ -5,7 +5,7 @@ inherit
     redefine subscription_message end
     FLEET
     redefine
-        set_destination, add_ship, split, move,
+        set_destination, add_ship, remove_ship, split, move,
         join, clear_ships, orbit_center, owner, ship_type
     end
     STORABLE
@@ -60,6 +60,12 @@ feature -- Redefined features
     end
 
     add_ship(sh: like ship_type) is
+    do
+        Precursor(sh)
+        update_clients
+    end
+
+    remove_ship(sh: like ship_type) is
     do
         Precursor(sh)
         update_clients

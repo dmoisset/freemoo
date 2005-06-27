@@ -172,7 +172,7 @@ feature {NONE} -- Operations: joining
                       it.item.race.picture = race.picture or
                       it.item.race.name.is_equal(race.name) or
                       it.item.color = color) then
-                    std_error.put_string(l("Client error?  Ruler name, picture, race name or color already taken."))
+                    std_error.put_string(l("Client error?  Ruler name, picture, race name or color already taken.%N"))
                     bad_setup := True
                 end
                 it.next

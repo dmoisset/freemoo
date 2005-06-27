@@ -119,4 +119,3 @@ feature {STORAGE} -- Retrieving
     end
 
 end -- class S_COLONY
-

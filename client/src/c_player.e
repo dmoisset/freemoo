@@ -130,6 +130,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 else
                     old_colonies.remove (colony.id)
                 end
+                colony.unserialize_from(s)
             else
                 print ("c_player::on_message() - Warning: server reported that we have a colony on a star that isn%'t!%N")
             end

@@ -9,7 +9,8 @@ inherit
     COLONY_SHIP
     undefine
         set_size, set_picture
-    redefine creator, make, will_colonize, set_will_colonize end
+    redefine creator, make, will_colonize, set_will_colonize, colonize end
+    SERVER_ACCESS
     
 creation make
         
@@ -50,6 +51,15 @@ feature -- Redefined features
         Precursor(p)
         update_clients
     end
+
+    colonize is
+    local
+        c: S_COLONY
+    do
+        c := will_colonize.create_colony(owner)
+        will_colonize := Void
+        can_colonize := True
+    end    
 
     serialize_on (s: SERIALIZER2) is
     do

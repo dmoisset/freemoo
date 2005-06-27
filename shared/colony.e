@@ -104,8 +104,6 @@ feature -- Operations
     unserialize_from (s: UNSERIALIZER) is
     do
         s.get_integer
-        id := s.last_integer
-        s.get_integer
         producing := s.last_integer + product_min
     end
 

@@ -41,8 +41,12 @@ feature -- Operations
     colonize is
     require
         will_colonize /= Void
+    local
+        c: COLONY
     do
-        will_colonize.create_colony(owner)
+        c := will_colonize.create_colony(owner)
+        will_colonize := Void
+        can_colonize := True
     end    
 
 end -- class COLONY_SHIP
