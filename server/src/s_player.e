@@ -89,10 +89,12 @@ feature -- Operations
         rlname, rcname: STRING
         race_picture: INTEGER
     do
-        if ruler_name /= Void then rlname := ruler_name else rlname := "" end
+        rlname := ""
+        ecname := ""
+        if ruler_name /= Void then rlname := ruler_name end
         if race /= Void then
             race_picture := race.picture
-            if race.name /= Void then rcname := race.name else rcname := "" end
+            if race.name /= Void then rcname := race.name end
         else
             race_picture := 0
         end
