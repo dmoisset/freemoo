@@ -584,16 +584,10 @@ feature {NONE} -- Once features
 
     all_button_img: ARRAY[IMAGE] is
     local
-        i: INTEGER
         a: FMA_FRAMESET
     once
-        !!Result.make (1, 2)
         !!a.make ("client/fleet-view/all-button.fma")
-        from i := 1
-        until i > 2 loop
-            Result.put (a.images @ i, i)
-            i := i + 1
-        end
+        Result := a.images.slice (1, 2)
     end
 
     close_button_img: ARRAY2[IMAGE] is

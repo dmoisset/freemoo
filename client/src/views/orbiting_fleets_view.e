@@ -71,10 +71,11 @@ feature {NONE} -- Signal handlers
         from
             fleet := galaxy.get_new_iterator_on_fleets
             i := 0
+            r.set_with_size(0, 0, fleet_pic_width, fleet_pic_height)
         until fleet.is_off
         loop
             if fleet.item.orbit_center = star and fleet.item.destination = Void then
-                r.set_with_size(i * (fleet_pic_width + fleet_pic_margin), 0, fleet_pic_width, fleet_pic_height)
+                r.translate(fleet_pic_width + fleet_pic_margin, 0)
                 fleet_hotspots.add (r, fleet.item.id)
                 i := i + 1
             end
