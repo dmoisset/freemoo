@@ -90,7 +90,7 @@ feature -- Operations
         race_picture: INTEGER
     do
         rlname := ""
-        ecname := ""
+        rcname := ""
         if ruler_name /= Void then rlname := ruler_name end
         if race /= Void then
             race_picture := race.picture
