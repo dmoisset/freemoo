@@ -61,7 +61,6 @@ feature {NONE} -- Signal handlers
         galaxy /= Void
     local
         fleet: ITERATOR[C_FLEET]
-        i: INTEGER
         r: RECTANGLE
     do
         -- Redraw the cache on next redraw
@@ -70,14 +69,12 @@ feature {NONE} -- Signal handlers
         fleet_hotspots.clear
         from
             fleet := galaxy.get_new_iterator_on_fleets
-            i := 0
             r.set_with_size(0, 0, fleet_pic_width, fleet_pic_height)
         until fleet.is_off
         loop
             if fleet.item.orbit_center = star and fleet.item.destination = Void then
-                r.translate(fleet_pic_width + fleet_pic_margin, 0)
                 fleet_hotspots.add (r, fleet.item.id)
-                i := i + 1
+                r.translate(fleet_pic_width + fleet_pic_margin, 0)
             end
             fleet.next
         end

@@ -63,8 +63,8 @@ feature {NONE} -- Creation
             ship_id := s.last_integer
             s.get_integer
             shtype := s.last_integer + factory.ship_type_min
-            if has_ship(s.last_integer) then
-                sh := old_ships.at(s.last_integer)
+            if has_ship(ship_id) then
+                sh := old_ships.at(ship_id)
             else
                 factory.create_by_type(shtype, owner)
                 sh := factory.last_ship
