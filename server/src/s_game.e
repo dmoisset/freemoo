@@ -2,14 +2,16 @@ class S_GAME
 
 inherit
     GAME
-    redefine
-        status, players, galaxy, add_player, init_game,
-        fleet_type, star_type, planet_type, save
-    end
+        redefine
+            status, players, galaxy, add_player, init_game,
+            fleet_type, star_type, planet_type, save,
+            add_dialog, remove_dialog
+        end
     SERVER_ACCESS
     STORABLE
-    redefine dependents
-    end
+        redefine dependents end
+    SERVICE
+        redefine subscription_message end
 
 creation
     make_with_options
@@ -44,12 +46,13 @@ feature -- Operations
         Precursor
         -- Register galaxy
         server.register (galaxy, "galaxy")
-        -- Register "scanner", "player" and "new_fleets"
+        -- Register player-specific services
         i := players.get_new_iterator
         from i.start until i.is_off loop
             server.register (galaxy, i.item.id.to_string+":scanner")
             server.register (galaxy, i.item.id.to_string+":enemy_colonies")
             server.register (galaxy, i.item.id.to_string+":new_fleets")
+            server.register (Current, i.item.id.to_string+":dialogs")
             server.register (i.item, "player"+i.item.id.to_string)
             i.next
         end
@@ -71,6 +74,69 @@ feature -- Operations
             end
             f.next
         end
+    end
+
+feature {NONE} -- Constants -- dialog service
+
+    dialog_remove: INTEGER is 0
+    dialog_add: INTEGER is 1
+    dialog_list: INTEGER is 2
+
+feature -- Operations -- dialog service
+
+    subscription_message (service_id: STRING): STRING is
+        -- Complete list of dialogs for player
+    require
+        service_id.has_suffix (":dialogs")
+        service_id.substring (1, service_id.count-8).is_integer
+    local
+        s: SERIALIZER2
+        l: LINKED_LIST [FM_DIALOG]
+        i: ITERATOR [FM_DIALOG]
+        player_id: INTEGER
+    do
+        player_id := service_id.substring (1, service_id.count-8).to_integer
+        create s.make
+        create l.make
+        s.add_integer (dialog_list)
+        -- Find dialogs for this player
+        from i := dialogs.get_new_iterator_on_items until i.is_off loop
+            if i.item.player.id = player_id then
+                l.add_last (i.item)
+            end
+            i.next
+        end
+        -- Serialize dialog list
+        s.add_integer (l.count)
+        from i := l.get_new_iterator until i.is_off loop
+            s.add_integer (i.item.id)
+            i.next
+        end
+        Result := s.serialized_form
+    end
+
+feature {DIALOG} -- Operations -- dialog service
+
+    add_dialog (d: FM_DIALOG) is
+    local
+        s: SERIALIZER2
+    do
+        Precursor (d)
+        create s.make
+        s.add_integer (dialog_add)
+        s.add_integer (d.id)
+        send_message(d.player.id.to_string+":dialogs", s.serialized_form)
+    end
+
+    remove_dialog (d: FM_DIALOG) is
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        s.add_integer (dialog_remove)
+        s.add_integer (d.id)
+        send_message(d.player.id.to_string+":dialogs", s.serialized_form)
+        Precursor (d)
     end
 
 feature {STORAGE} -- Saving

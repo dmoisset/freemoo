@@ -10,6 +10,7 @@ CLIENT MESSAGES
 34: Send setup info. Send a color, ruler name and race change request.
 35: Setup complete. Ready to begin game
 36: Chat. Say something to other player(s).
+37: Dialog message. Send some response to a dialog
 40: End of Turn. Report that player won't play anymore for this turn
 41: Fleet movement. Player gives movement orders to some or all ships in a fleet
 42: Colonize. Player indicates that (s)he wants to colonize some planet.
@@ -69,6 +70,16 @@ CLIENT MESSAGES
   4             length       INTEGER  ?
   8             destinations STRING   list of players who will receive message
   ...           message      STRING   message said
+
+  Chat state is updated for receiving clients
+
+  * Dialog
+  
+  offset(bytes) name         type     Notes
+  0             msgtype      INTEGER  37
+  4             length       INTEGER  ?
+  8             dialog_id    INTEGER  dialog that will receive the rest
+  12            ?            ?        depends on the dialog type
 
   Chat state is updated for receiving clients
 

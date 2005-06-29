@@ -133,6 +133,16 @@ CHAT MESSAGES
   Format: "iss", <<color, destinations, message_said>>
           color can be 0 (server message)
 
+DIALOGS
+  Name: "n:dialogs"
+  Provided: Before game_status.started is set
+  Description: informs about dialogs that client should answer to
+  Format:
+    - Remove dialog: "ii" <<action, id>>, action=0
+    - Add dialog: "ii" <<action, id>>, action=1
+    - Subscription "ii" <<action, count>>, action=2, followed by count "i"s
+      (ids)
+
 SERVICE
   Name: "name"
   Provided: 

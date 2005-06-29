@@ -3,6 +3,7 @@ class GAME
 
 inherit
     PLAYER_CONSTANTS
+    DIALOG_HANDLER [FM_DIALOG]
 
 feature {NONE} -- Creation
 
@@ -14,6 +15,7 @@ feature {NONE} -- Creation
         !!galaxy.make
         make_mapgenerator
         make_evolver
+        make -- Dialog handler
     end
 
     make_mapgenerator is
@@ -141,29 +143,24 @@ feature -- Operations
 -- Server used to break with this precondition. See what to do about it.
     do
         players.set_player_state (player, st_waiting_turn_end)
+-- FIXME!!! take care with getting this twice in a turn
         if players.all_in_state (st_waiting_turn_end) then
             new_turn
         end
     end
 
-    new_turn is
-        -- Calculate new turn
+    do_turn_step is
+        -- Move forward in the end of turn sequence
     do
-        colony_new_turn
-        move_fleets
-        -- Fleet combat
-        -- Bombardment/ground combat
-        -- Colonization
-        colonize_all
-        galaxy.generate_scans (players.get_new_iterator)
-        galaxy.generate_colony_knowledge(players.get_new_iterator)
-        status.next_date
-        if not end_condition then
-            players.set_all_state (st_playing_turn)
-            save
-        else
-            players.set_all_state (st_end_game)
-            status.finish
+        from until not dialogs.is_empty or new_turn_step = turn_done loop
+            inspect
+                new_turn_step
+            when 0 then new_turn_0
+            when 1 then new_turn_1
+            when 2 then new_turn_2
+            when 3 then new_turn_3
+            when turn_done then print ("do_turn_step: Turn already finished.%N")
+            end
         end
     end
 
@@ -174,6 +171,73 @@ feature {NONE} -- Internal
     evolver: EVOLVER
 
     options: SERVER_OPTIONS
+
+    new_turn is
+        -- start the end of turn sequence
+    do
+        new_turn_step := 0
+        do_turn_step
+    end
+
+    new_turn_step: INTEGER
+        -- stage inside the end of turn sequence
+
+    turn_done: INTEGER is 4
+        -- last stage of turn passing
+
+    new_turn_0 is
+        -- Calculate new turn, step 0
+    require
+        new_turn_step = 0
+    do
+        colony_new_turn
+        move_fleets
+        -- After this:
+        -- Ask where to combat (dialog)
+        new_turn_step := new_turn_step + 1
+    end
+    
+    new_turn_1 is
+    require
+        new_turn_step = 1
+    do
+        -- Assign fleet combats
+        -- After this:
+        -- Solve combat (dialog)
+        -- Solve bombardment/ground combat (dialog)
+        new_turn_step := new_turn_step + 1
+    end
+
+    new_turn_2 is
+    require
+        new_turn_step = 2
+    do
+        -- Bombardment/ground combat
+        -- After this:
+        -- ask where to colonize (dialog)
+        new_turn_step := new_turn_step + 1
+    end
+    
+    new_turn_3 is
+    require
+        new_turn_step = 3
+    do
+        -- Colonization
+        colonize_all
+        -- Generate data for new turn
+        galaxy.generate_scans (players.get_new_iterator)
+        galaxy.generate_colony_knowledge(players.get_new_iterator)
+        -- Move on, or finish
+        status.next_date
+        if not end_condition then
+            players.set_all_state (st_playing_turn)
+            save
+        else
+            players.set_all_state (st_end_game)
+            status.finish
+        end
+        new_turn_step := new_turn_step + 1
+    end
 
     colony_new_turn is
         -- Advance turn for colonies
@@ -336,5 +400,6 @@ feature {NONE} -- Internal
     
 invariant
     map_generator /= Void
+    new_turn_step.in_range (0, turn_done)
 
 end -- class GAME

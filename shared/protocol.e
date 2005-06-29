@@ -8,6 +8,7 @@ feature -- Constants
     msgtype_setup: INTEGER is 34
     msgtype_start: INTEGER is 35
     msgtype_chat: INTEGER is 36
+    msgtype_dialog: INTEGER is 37
     msgtype_turn: INTEGER is 40
     msgtype_fleet: INTEGER is 41
     msgtype_colonize: INTEGER is 42

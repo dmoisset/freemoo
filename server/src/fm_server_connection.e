@@ -54,6 +54,8 @@ feature -- Redefined features
         when msgtype_turn then
             u.get_boolean
             next_turn (u.last_boolean)
+        when msgtype_dialog then
+            server.game.dialog_message (u)
         when msgtype_fleet then
             move_fleet (u)
         when msgtype_colonize then
