@@ -12,6 +12,12 @@ feature -- Access
 
     name: STRING
 
+    as_colony_ship: COLONY_SHIP is
+    do
+        -- No implementation needed, precondition is always False
+        -- (see invariant below)
+    end
+
 feature -- Operations
 
     set_name(new_name: STRING) is
@@ -34,4 +40,6 @@ feature {NONE} -- Creation
         ship_type := ship_type_starship
     end
 
+invariant
+    not can_colonize
 end -- class STARSHIP

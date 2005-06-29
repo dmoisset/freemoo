@@ -1,4 +1,4 @@
-class SHIP
+deferred class SHIP
     -- base class for SHIPs
 
 inherit
@@ -6,8 +6,6 @@ inherit
     UNIQUE_ID
     select id end
 
-
-creation make
 
 feature {NONE} -- Creation
 
@@ -39,6 +37,16 @@ feature -- Access
     ship_type: INTEGER
         -- An Identifier for different type of ships.
 
+    as_colony_ship: COLONY_SHIP is
+    require
+        can_colonize
+    deferred
+    ensure
+        -- This gives a warning, SmartEiffel is too smart here :)
+        -- but it is true anyway, when the precondition is satisfied
+        -- Result = Current
+    end
+
 feature -- Operations
 
     set_size (s: INTEGER) is
@@ -58,6 +66,7 @@ feature -- Operations
     end
 
 feature -- Modifiers
+
     is_stealthy: BOOLEAN
 
     can_colonize: BOOLEAN

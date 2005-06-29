@@ -256,7 +256,7 @@ feature {NONE} -- Operations
         fleet: S_FLEET
         star: S_STAR
         planet: S_PLANET
-        colony_ship: S_COLONY_SHIP
+        colony_ship: COLONY_SHIP
     do
         u.get_integer
         fleet := server.game.galaxy.fleet_with_id(u.last_integer)
@@ -277,7 +277,7 @@ feature {NONE} -- Operations
                 elseif not fleet.can_colonize then
                     print("colonize: Fleet cannot colonize%N")
                 else
-                    colony_ship ?= fleet.get_colony_ship
+                    colony_ship := fleet.get_colony_ship
                     colony_ship.set_will_colonize(planet)
                     fleet.update_clients
                 end

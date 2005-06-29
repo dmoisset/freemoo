@@ -3,7 +3,7 @@ class COLONY_SHIP
 
 inherit
     SHIP
-    redefine make end
+        redefine make end
 
 creation
     make
@@ -27,6 +27,11 @@ feature -- Access
 
     will_colonize: PLANET
         -- Planet on which we shall establish a colony at the end of the turn
+
+    as_colony_ship: COLONY_SHIP is
+    do
+        Result := Current
+    end
 
 feature -- Operations
 
