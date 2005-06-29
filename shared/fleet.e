@@ -107,7 +107,7 @@ feature -- Access
         end
     end
 
-    get_colony_ship: like ship_type is
+    get_colony_ship: COLONY_SHIP is
     require
         can_colonize
     local
@@ -118,7 +118,7 @@ feature -- Access
         until
             it.item.can_colonize
         loop it.next end
-        Result := it.item
+        Result := it.item.as_colony_ship
     end
     
 feature -- Operations
