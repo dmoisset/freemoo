@@ -81,7 +81,9 @@ CLIENT MESSAGES
   8             dialog_id    INTEGER  dialog that will receive the rest
   12            ?            ?        depends on the dialog type
 
-  Chat state is updated for receiving clients
+  This message is sent when the client wants to interact with some dialog
+  The message includes the dialog's id, and the rest of the payload depens on
+  the kind of dialog
 
   * End of Turn
 
