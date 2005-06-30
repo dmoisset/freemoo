@@ -51,6 +51,8 @@ feature {NONE} -- Creation
         if s.last_integer /= -1  then
             set_destination (server.galaxy.star_with_id (s.last_integer))
         end
+        s.get_boolean
+        has_colonization_orders := s.last_boolean
         s.get_integer
         shipcount := s.last_integer
         unserialize_from (s) -- Position

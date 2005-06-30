@@ -38,7 +38,8 @@ FLEET
   Name: "fleet"+id (id is a digit sequence = fleet_id) 
   Provided: Before reporting fleet on scanner or new_fleets.
   Description: Abridged fleet description.
-  Format: "iiiiirr" <<owner_id, eta, orbiting, destination, ships_count, x, y>>,
+  Format: "iiiibirr" <<owner_id, eta, orbiting, destination,
+                       has_colonization_orders, ships_count, x, y>>,
           followed by a sequence of
           "ii<msg>" <<id, ship_type, ...>> for each ship of the fleet.
             <msg> depends of the type of the ship:

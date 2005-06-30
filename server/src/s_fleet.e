@@ -43,8 +43,9 @@ feature -- Redefined features
         else
             s.add_integer(-1)
         end
-        s.add_integer(ship_count)
-        serialize_on(s)
+        s.add_boolean (has_colonization_orders)
+        s.add_integer (ship_count)
+        serialize_on (s)
         from i := get_new_iterator until i.is_off loop
             s.add_tuple(<<i.item.id, i.item.ship_type - i.item.ship_type_min>>)
             i.item.serialize_on(s)
@@ -129,6 +130,7 @@ feature {STORAGE} -- Saving
         a.add_last(["orbit_center", orbit_center])
         a.add_last(["owner", owner])
         a.add_last(["destination", destination])
+        a.add_last(["has_colonization_orders", has_colonization_orders])
         a.add_last(["eta", eta])
         a.add_last(["current_speed", current_speed]) 
         add_to_fields(a, "ship", ships.get_new_iterator_on_items)
@@ -171,6 +173,7 @@ feature {STORAGE} -- Retrieving
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: reference INTEGER
+        b: reference BOOLEAN
         r: reference REAL
         s: like ship_type
     do
@@ -189,6 +192,9 @@ feature {STORAGE} -- Retrieving
                 owner ?= elems.item.second
             elseif elems.item.first.is_equal("destination") then
                 destination ?= elems.item.second
+            elseif elems.item.first.is_equal("has_colonization_orders") then
+                b ?= elems.item.second
+                has_colonization_orders := b
             elseif elems.item.first.is_equal("eta") then
                 i ?= elems.item.second
                 eta := i

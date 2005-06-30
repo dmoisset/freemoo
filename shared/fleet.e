@@ -38,6 +38,9 @@ feature -- Access
         -- orders calling recalculate_eta, and each time a turn 
         -- passes (substracting one)
 
+    has_colonization_orders: BOOLEAN
+        -- has this fleet received orders of colonizing
+
     is_stopped: BOOLEAN is
         -- is stopped?
     do
@@ -140,6 +143,9 @@ feature -- Operations
         -- Remove `s' from fleet
     do
         ships.remove(s.id)
+        if not can_colonize then
+            has_colonization_orders := False
+        end
         scanner_range := 0
         recalculate_current_speed
     ensure
@@ -158,6 +164,9 @@ feature -- Operations
         other /= Void
     do
         other.ships.do_all (agent ships.put (?, ?))
+        if other.has_colonization_orders then
+            has_colonization_orders := True
+        end
         other.clear_ships
         scanner_range := 0
         recalculate_current_speed
@@ -218,6 +227,7 @@ feature -- Operations
         is_in_orbit
     do
         orbit_center := Void
+        has_colonization_orders := False
     ensure
         not is_in_orbit
     end
@@ -244,6 +254,15 @@ feature -- Operations
             owner.add_to_known_list (orbit_center)
             owner.add_to_visited_list (orbit_center)
         end
+    end
+
+    colonize_order is
+    require
+        can_colonize
+    do
+        has_colonization_orders := True
+    ensure
+        has_colonization_orders
     end
 
 feature -- Operations
@@ -292,6 +311,7 @@ feature -- Operations
     do
         destination := d
         if destination = orbit_center then destination := Void end
+        if destination /= Void then has_colonization_orders := False end
     ensure
         d /= orbit_center implies destination = d
     end
