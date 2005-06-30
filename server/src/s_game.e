@@ -81,6 +81,7 @@ feature {NONE} -- Constants -- dialog service
     dialog_remove: INTEGER is 0
     dialog_add: INTEGER is 1
     dialog_list: INTEGER is 2
+-- FIXME: this is duplicated with DIALOG_HANDLER
 
 feature -- Operations -- dialog service
 
@@ -110,6 +111,8 @@ feature -- Operations -- dialog service
         s.add_integer (l.count)
         from i := l.get_new_iterator until i.is_off loop
             s.add_integer (i.item.id)
+            s.add_integer (i.item.kind)
+            s.add_string (i.item.info)
             i.next
         end
         Result := s.serialized_form
@@ -125,6 +128,8 @@ feature {DIALOG} -- Operations -- dialog service
         create s.make
         s.add_integer (dialog_add)
         s.add_integer (d.id)
+        s.add_integer (d.kind)
+        s.add_string (d.info)
         send_message(d.player.id.to_string+":dialogs", s.serialized_form)
     end
 

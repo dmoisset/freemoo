@@ -97,6 +97,23 @@ feature -- Operations
         end
     end
 
+    select_planet_for_colonization (id: INTEGER; f: C_FLEET) is
+        -- Select a planet for `f' to colonize
+        -- Answer should return to dialog `id'
+    require
+        f /= Void
+        f.orbit_center /= Void
+        f.can_colonize
+        f.orbit_center.has_info implies f.orbit_center.has_colonizable_planet
+    local
+        r: RECTANGLE
+    do
+        r.set_with_size((width - star_window_width) // 2,
+                        (height - star_window_height) // 2,
+                        star_window_width, star_window_height)
+        create colonization_dialog.make(Current, r, f, id)
+    end
+
 feature {NONE} -- Signal handlers
 
     on_map_change (g: C_GALAXY) is
@@ -333,30 +350,7 @@ feature {NONE} -- Event handlers
         end
         !FLEET_VIEW!fleet_window.make(Current, r, f)
         fleet_window.set_cancel_trajectory_selection_callback(agent cancel_trajectory_selection)
-        fleet_window.set_colonization_callback(agent select_planet_for_colonization)
-    end
-
-    select_planet_for_colonization is
-    require
-        fleet_window /= Void
-        children.fast_has(fleet_window)
-        fleet_window.fleet /= Void
-        fleet_window.fleet.orbit_center /= Void
-        fleet_window.fleet.can_colonize
-        fleet_window.fleet.orbit_center.has_colonizable_planet
-    local
-        f: C_FLEET
-        r: RECTANGLE
-    do
-        f := fleet_window.fleet
-        fleet_window.remove
-        cancel_trajectory_selection
-        r.set_with_size((width - star_window_width) // 2,
-                        (height - star_window_height) // 2,
-                        star_window_width, star_window_height)
-        create colonization_dialog.make(Current, r, f.orbit_center, galaxy.server.game_status, galaxy)
-        colonization_dialog.set_selection_callback(agent colonize)
-        colonization_dialog.set_fleet(f)
+        fleet_window.set_colonization_callback(agent galaxy.server.colonize (f))
     end
 
     colonize(p: C_PLANET; f: C_FLEET) is

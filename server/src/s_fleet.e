@@ -6,7 +6,8 @@ inherit
     FLEET
     redefine
         set_destination, add_ship, remove_ship, split, move,
-        join, clear_ships, orbit_center, owner, ship_type
+        join, clear_ships, orbit_center, owner, ship_type,
+        colonize_order
     end
     STORABLE
     rename
@@ -102,6 +103,12 @@ feature -- Redefined features
         end
     end
     
+    colonize_order is
+    do
+        Precursor
+        update_clients
+    end
+
 feature -- Operations
     
     copy(other: like Current) is

@@ -79,10 +79,10 @@ CLIENT MESSAGES
   0             msgtype      INTEGER  37
   4             length       INTEGER  ?
   8             dialog_id    INTEGER  dialog that will receive the rest
-  12            ?            ?        depends on the dialog type
+  12            data         STRING   depends on the dialog type
 
   This message is sent when the client wants to interact with some dialog
-  The message includes the dialog's id, and the rest of the payload depens on
+  The message includes the dialog's id, and the rest of the payload depends on
   the kind of dialog
 
   * End of Turn

@@ -1,7 +1,7 @@
 class COLONIZATION_DIALOG
 
 inherit
-    DIALOG
+    FM_DIALOG
 
 create
     make
@@ -25,23 +25,37 @@ feature -- Access
         Result := fleet.owner
     end
 
+    kind: INTEGER is
+    local
+        k: DIALOG_KINDS
+    do
+        Result := k.dk_colonization
+    end
+
+    info: STRING is
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        s.add_integer (fleet.id)
+        Result := s.serialized_form
+    end
+
 feature -- Operations
 
-    on_message (u: UNSERIALIZER) is
-        -- Handle message inside `u'
+    on_message (message: STRING) is
     local
         colonizer: COLONY_SHIP
         orbit: INTEGER
+        u: UNSERIALIZER
     do
+        create u.start (message)
         u.get_integer
         orbit := u.last_integer
-
         if orbit.in_range (1, fleet.orbit_center.Max_planets) then
             colonizer := fleet.get_colony_ship
             colonizer.set_will_colonize (fleet.orbit_center.planet_at (orbit))
---            fleet.update_clients
         end
-
         close
     end
     

@@ -13,10 +13,16 @@ feature {NONE} -- Creation
 feature -- Operations
 
     dialog_message (u: UNSERIALIZER) is
+    local
+        id: INTEGER
+        data: STRING
     do
         u.get_integer
-        if dialogs.has (u.last_integer) then
-            dialogs.item (u.last_integer).on_message (u)
+        id := u.last_integer
+        u.get_string
+        data := u.last_string
+        if dialogs.has (id) then
+            (dialogs @ id).on_message (data)
         else
             print ("dialog_message: message for invalid dialog.%N")
         end

@@ -265,6 +265,11 @@ feature -- Operations
         has_colonization_orders
     end
 
+    cancel_colonize_order is
+    do
+        has_colonization_orders := False
+    end
+
 feature -- Operations
 
     copy_from (f: like Current) is
@@ -382,4 +387,5 @@ invariant
     nonnegative_speed: current_speed >= 0
     nonnegative_eta: eta >= 0
     positive_speed: current_speed > 0
+    has_colonization_orders implies orbit_center /= Void
 end -- class FLEET

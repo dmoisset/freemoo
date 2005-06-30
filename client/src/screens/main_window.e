@@ -3,12 +3,50 @@ class MAIN_WINDOW
 
 inherit
     MAIN_WINDOW_GUI
+        redefine make end
     GETTEXT
     CLIENT
     PLAYER_CONSTANTS
+    DIALOG_KINDS
+        export {NONE} all end
 
 creation
     make
+
+feature {NONE} -- Creation
+
+    make (w: WINDOW; where: RECTANGLE) is
+    do
+        Precursor (w, where)
+        server.dialogs.on_dialog_addition.connect (agent new_dialog)
+    end
+
+    new_dialog (args: TUPLE[INTEGER, INTEGER, STRING]) is
+    local
+        id, kind: INTEGER
+        dinfo: STRING
+    do
+        id := args.first
+        kind := args.second
+        dinfo := args.third
+        inspect kind
+        when dk_colonization then
+            on_colonize_dialog (id, dinfo)
+        else
+            print ("Unrecognized dialog kind%N")
+        end
+    end
+
+    on_colonize_dialog (id: INTEGER; dinfo: STRING) is
+    local
+        u: UNSERIALIZER
+        f: C_FLEET
+    do
+        create u.start (dinfo)
+        u.get_integer
+        f := server.galaxy.fleet_with_id (u.last_integer)
+        galaxy.select_planet_for_colonization (id, f)
+    end
 
 feature -- Operations
 

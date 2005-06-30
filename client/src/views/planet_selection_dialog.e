@@ -3,18 +3,27 @@ class PLANET_SELECTION_DIALOG
 
 inherit
     STAR_VIEW
+    rename
+        make as star_view_make
     redefine
-        make, planet_click, make_fleets_orbiting
+        planet_click, make_fleets_orbiting
     end
+    CLIENT
 
 creation make
 
 feature {NONE} -- Creation
 
-    make (w: WINDOW; where: RECTANGLE; s: C_STAR; new_status: C_GAME_STATUS; g: C_GALAXY) is
+    make (w: WINDOW; where: RECTANGLE; f: C_FLEET; id: INTEGER) is
+    require
+        f /= Void
+        f.orbit_center /= Void
     do
-        Precursor(w, where, s, new_status, g)
+        fleet := f
+        dialog_id := id
+        star_view_make (w, where, f.orbit_center, server.game_status, server.galaxy)
         name_label.set_text("Select planet for colonization on " + star.name)
+        close_button.set_click_handler (agent cancel_selection)
     end
 
     make_fleets_orbiting(g: C_GALAXY) is
@@ -24,27 +33,29 @@ feature {NONE} -- Creation
 feature -- Commanding
 
     planet_click(p: C_PLANET) is
+    local
+        s: SERIALIZER2
     do
-        if selection_handler /= Void then
-            selection_handler.call([p, fleet])
-        end
+        create s.make
+        s.add_integer (p.orbit)
+        server.dialog (dialog_id, s.serialized_form)
+        remove
     end
 
-    set_selection_callback(p: PROCEDURE[ANY, TUPLE[C_PLANET, C_FLEET]]) is
+    cancel_selection is
+    local
+        s: SERIALIZER2
     do
-        selection_handler := p
-    end
-
-    set_fleet(f: C_FLEET) is
-        -- Provide the fleet that will do stuff on the colonization
-    do
-        fleet := f
+        create s.make
+        s.add_integer (0)
+        server.dialog (dialog_id, s.serialized_form)
+        remove
     end
 
 feature {NONE} -- Internal
 
     fleet: C_FLEET
 
-    selection_handler: PROCEDURE[ANY, TUPLE[C_PLANET, C_FLEET]]
+    dialog_id: INTEGER
 
 end -- PLANET_SELECTION_DIALOG

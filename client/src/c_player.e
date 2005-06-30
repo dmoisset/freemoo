@@ -122,6 +122,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     colony.set_id(s.last_integer)
                 else
                     colony := planet.colony
+-- What if a somebody bombards and then recolonizes? The next check might fail
                     check colony.id = s.last_integer end
                 end
                 colonies.add (colony, colony.id)

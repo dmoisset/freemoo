@@ -23,6 +23,7 @@ feature -- Creation
         if game_status = Void then !!game_status.make end
         if player_list = Void then !!player_list.make end
         if galaxy = Void then !!galaxy.make end
+        create dialogs.make
     rescue
         if is_opening or not is_closed then
             close
@@ -98,6 +99,7 @@ feature -- Operations -- Login commands
         subscribe (galaxy, player.id.to_string+":scanner")
         subscribe (galaxy, player.id.to_string+":new_fleets")
         subscribe (galaxy, player.id.to_string+":enemy_colonies")
+        subscribe (dialogs, player.id.to_string+":dialogs")
         subscribe (player, "player"+player.id.to_string)
     end
 
@@ -147,21 +149,31 @@ feature -- Operations -- Game commands
         send_package (msgtype_fleet, s.serialized_form)
     end
 
-    colonize(f: FLEET; p: PLANET) is
-        -- Request colonization of planet `p' by `f'
+    colonize(f: FLEET) is
+        -- Give colonize order to `f'
     require
         f /= Void
         f.can_colonize
-        p /= Void
-        p.is_colonizable
+        f.is_in_orbit
+        f.orbit_center.has_colonizable_planet
     local
         s: SERIALIZER2
     do
         create s.make
-        s.add_tuple(<<f.id, p.orbit_center.id, p.orbit>>)
+        s.add_tuple(<<f.id>>)
         send_package(msgtype_colonize, s.serialized_form)
     end
     
+    dialog (id: INTEGER; response: STRING) is
+        -- Send `response' to dialog `id'
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        s.add_tuple(<<id, response>>)
+        send_package(msgtype_dialog, s.serialized_form)
+    end
+
     close is
     do
         if not remote_close then
@@ -209,6 +221,9 @@ feature -- Access (server attributes)
 
     player_name: STRING
         -- Name of the player at this client
+
+    dialogs: DIALOG_LISTENER
+        -- Notifier of dialog status
 
 feature -- Redefined features
 

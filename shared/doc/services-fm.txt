@@ -140,9 +140,10 @@ DIALOGS
   Description: informs about dialogs that client should answer to
   Format:
     - Remove dialog: "ii" <<action, id>>, action=0
-    - Add dialog: "ii" <<action, id>>, action=1
-    - Subscription "ii" <<action, count>>, action=2, followed by count "i"s
-      (ids)
+    - Add dialog: "iiis" <<action, id, kind, info>>, action=1, followed by dialog
+                  specific information
+    - Subscription "ii" <<action, count>>, action=2, followed by count
+      "iis" <<id, kind, info>>
 
 SERVICE
   Name: "name"

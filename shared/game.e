@@ -4,6 +4,7 @@ class GAME
 inherit
     PLAYER_CONSTANTS
     DIALOG_HANDLER [FM_DIALOG]
+        redefine remove_dialog end
 
 feature {NONE} -- Creation
 
@@ -164,6 +165,16 @@ feature -- Operations
         end
     end
 
+feature {DIALOG} -- Operations
+
+    remove_dialog (d: FM_DIALOG) is
+    do
+        Precursor (d)
+        if new_turn_step < turn_done then
+            do_turn_step
+        end
+    end
+
 feature {NONE} -- Internal
 
     map_generator: MAP_GENERATOR
@@ -211,10 +222,22 @@ feature {NONE} -- Internal
     new_turn_2 is
     require
         new_turn_step = 2
+    local
+        f: ITERATOR [FLEET]
     do
         -- Bombardment/ground combat
         -- After this:
-        -- ask where to colonize (dialog)
+        -- ask where to colonize (dialogs)
+        from f := galaxy.get_new_iterator_on_fleets until f.is_off loop
+            if
+                f.item.has_colonization_orders and then
+                f.item.orbit_center.has_colonizable_planet
+            then
+                add_dialog (create {COLONIZATION_DIALOG}.make(f.item))
+                f.item.cancel_colonize_order
+            end
+            f.next
+        end
         new_turn_step := new_turn_step + 1
     end
     
@@ -359,6 +382,12 @@ feature {NONE} -- Internal
             old_in_orbit := i.item.is_in_orbit
             i.item.move
             if not old_in_orbit and i.item.is_in_orbit then
+                if
+                    i.item.orbit_center.has_colonizable_planet and
+                    i.item.can_colonize
+                then
+                    i.item.colonize_order
+                end
                 galaxy.join_fleets (i.item.orbit_center)
             end
             i.next
