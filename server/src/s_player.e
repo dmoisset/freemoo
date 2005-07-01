@@ -278,7 +278,7 @@ feature {STORAGE} -- Retrieving
                 race ?= elems.item.second
             elseif elems.item.first.has_prefix("colony") then
                 colony ?= elems.item.second
-                colonies.add (colony, colony.id)
+                add_colony (colony)
             elseif elems.item.first.has_prefix("knows_star") then
                 star ?= elems.item.second
                 knows_star.add(star)

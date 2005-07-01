@@ -22,6 +22,10 @@ feature -- Access
     size: INTEGER
 
     special: INTEGER
+        -- star special.  One of stspecial_* constants.  Don't confuse
+        -- with planet specials!
+
+    wormhole: like Current
 
     Max_planets: INTEGER is 5
 
@@ -102,8 +106,33 @@ feature -- Operations on star system
     ensure
         kind = new_kind
     end
-    
-    
+
+    setup_wormhole_to(other: like Current) is
+    require
+        other /= Void
+    do
+        special := stspecial_wormhole
+        wormhole := other
+        other.set_wormhole(Current)
+    ensure
+        special = stspecial_wormhole
+        other.special = stspecial_wormhole
+        wormhole = other
+        other.wormhole = Current
+    end
+
+    take_down_wormhole is
+    do
+        if special = stspecial_wormhole then
+            wormhole.set_wormhole(Void)
+            wormhole := Void
+            special := stspecial_nospecial
+        end
+    ensure
+        wormhole = Void
+        old special = stspecial_wormhole implies special = stspecial_nospecial
+    end
+
 feature -- Factory Methods
     
     create_planet: like planet_type is
@@ -152,6 +181,20 @@ feature {STAR} -- Representation
         -- planets orbiting, from inner to outer orbit
         -- has Void at empty orbits
 
+    set_wormhole (new_wormhole: like Current) is
+    do
+        wormhole := new_wormhole
+        if new_wormhole = Void then
+            special := stspecial_nospecial
+        else
+            special := stspecial_wormhole
+        end
+    ensure
+        wormhole = new_wormhole
+        (special = stspecial_wormhole) = (new_wormhole /= Void)
+        (special = stspecial_nospecial) = (new_wormhole = Void)
+    end
+
 feature {NONE} -- Internal
     
     planet_type: PLANET
@@ -165,5 +208,4 @@ invariant
     planets.count = Max_planets
     planets.lower = 1
     special.in_range (stspecial_min, stspecial_max)
-
 end -- class STAR

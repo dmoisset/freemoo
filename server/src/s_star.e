@@ -47,6 +47,11 @@ feature -- Redefined Features
             s_id := service_id
         end
         s.add_string (name)
+        if wormhole = Void then
+            s.add_integer(-1)
+        else
+            s.add_integer(wormhole.id)
+        end
         s.add_integer (Max_planets - planets.fast_occurrences(Void))
         from
             i := planets.get_new_iterator
@@ -127,6 +132,7 @@ feature {STORAGE} -- Saving
         a.add_last(["special", special])
         a.add_last(["x", x])
         a.add_last(["y", y])
+        a.add_last(["wormhole", wormhole])
         add_to_fields(a, "planet", planets.get_new_iterator)
         Result := a.get_new_iterator
     end
@@ -137,8 +143,13 @@ feature {STORAGE} -- Saving
     end
     
     dependents: ITERATOR[STORABLE] is
+    local
+        a: ARRAY[STORABLE]
     do
-        Result := planets.get_new_iterator
+        create a.make(1, 0)
+        a.add_last(wormhole)
+        add_dependents_to(a, planets.get_new_iterator)
+        Result := a.get_new_iterator
     end
     
 feature {STORAGE} -- Retrieving
@@ -184,6 +195,8 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("y") then
                 r ?= elems.item.second
                 y := r
+            elseif elems.item.first.is_equal("wormhole") then
+                wormhole ?= elems.item.second
             elseif elems.item.first.has_prefix("planet") then
                 n := elems.item.first.last.value
                 planet ?= elems.item.second

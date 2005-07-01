@@ -91,6 +91,8 @@ feature -- Operations
         planet_gravs := last_int_ptables
         load_int_ptables (f, mnrl_ultrapoor, mnrl_ultrarich)
         planet_minerals := last_int_ptables
+        load_int_ptable(f, stspecial_min, stspecial_max - 1) -- Without Orion
+        star_specials := last_int_ptable
 
         pkg_system.open_file ("galaxy/"+subdir+"/stars")
         !!f.make (pkg_system.last_file_open)
@@ -107,6 +109,9 @@ feature {NONE} -- Access -- Star constants
 
     star_sizes: FINITE_PTABLE [INTEGER]
         -- Probability of a star being a certain size.
+
+    star_specials: FINITE_PTABLE[INTEGER]
+        -- Probability of a star having a certain special
 
 feature {NONE} --Access -- Planet Constants
 

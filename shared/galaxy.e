@@ -439,7 +439,7 @@ feature {MAP_GENERATOR} -- Generation
         limit = l
     end
 
-feature {NONE} -- Representation
+feature {MAP_GENERATOR} -- Representation
 
     stars: DICTIONARY [like last_star, INTEGER]
         -- stars in the map, by id

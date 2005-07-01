@@ -128,9 +128,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 colonies.add (colony, colony.id)
                 if not old_colonies.has (colony.id) then 
                     colony.subscribe (server, "colony"+colony.id.to_string)
-                else
-                    old_colonies.remove (colony.id)
                 end
+                old_colonies.remove (colony.id)
                 colony.unserialize_from(s)
             else
                 print ("c_player::on_message() - Warning: server reported that we have a colony on a star that isn%'t!%N")

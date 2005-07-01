@@ -240,6 +240,7 @@ feature {NONE} -- Redrawing
         lwidth: INTEGER -- star label width
         r: RECTANGLE
         text: STRING
+        traj: TRAJECTORY
     do
         current_projection.project(s)
         px := current_projection.x
@@ -263,6 +264,11 @@ feature {NONE} -- Redrawing
                 r.set_with_size(lx - 1, ly, lwidth, font.height)
                 paint (r, s)
             end
+        end
+        if s.wormhole /= Void and then s.wormhole.id > s.id then
+            !!traj.with_projection(s, s.wormhole, current_projection)
+            traj.set_type(traj.traj_type_wormhole)
+            traj.show(cache, traj.showx, traj.showy)
         end
     end
 

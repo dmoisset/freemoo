@@ -34,9 +34,10 @@ feature -- Constants
     end
 
     stspecial_nospecial, stspecial_wormhole, stspecial_debris,
-    stspecial_piratecache, stspecial_hero,
+    stspecial_piratecache, stspecial_hero, stspecial_planetspecial,
     stspecial_orion: INTEGER is unique
         -- Possible values for a stars's `special'
+        -- stspecial_orion *must* be last
 
     stspecial_min: INTEGER is
         -- Minimum value for a star's `special'
@@ -220,6 +221,16 @@ feature -- Constants
         -- Maximum value for a planet's `special'
     once
         Result := plspecial_artifacts
+    end
+
+    plspecial_names: DICTIONARY[STRING, INTEGER] is
+    once
+        !!Result.make
+        Result.add (l("Gold Deposits"), plspecial_gold)
+        Result.add (l("Gem Deposits"), plspecial_gems)
+        Result.add (l("Natives"), plspecial_natives)
+        Result.add (l("Splinter Colony"), plspecial_splinter)
+        Result.add (l("Ancient Artifacts"), plspecial_artifacts)
     end
 
 end -- class MAP_CONSTANTS

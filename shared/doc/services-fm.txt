@@ -31,8 +31,9 @@ STAR
   Name: "star"+id (id is a digit sequence = star_id) 
   Provided: Before adding star id to player's set of known star ids
   Description: Full star description (star name, planet info)
-  Format: "si" <<name, planets.count>>, followed by a sequence of
+  Format: "sii" <<name, wormhole_id, planets.count>>, followed by a sequence of
           "iiiiiii" <<orbit, size, climate, minerals, gravity, type, special>>
+          wormhole can be -1.  This means 'no wormhole'
 
 FLEET
   Name: "fleet"+id (id is a digit sequence = fleet_id) 

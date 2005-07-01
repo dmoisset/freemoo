@@ -24,14 +24,19 @@ feature -- Access
 feature -- Constants
 
     traj_type_normal, traj_type_select_ok, traj_type_unreachable,
-    traj_type_enemy: INTEGER is UNIQUE;
+    traj_type_enemy, traj_type_wormhole: INTEGER is UNIQUE;
         -- Types of trajectory, determines color and dash type (use with set_type)
+
+    traj_type_max: INTEGER is
+    once
+        Result := traj_type_wormhole
+    end
 
 feature -- Operations
 
     set_type(type: INTEGER) is
     require
-        type.in_range(traj_type_normal, traj_type_enemy)
+        type.in_range(traj_type_normal, traj_type_max)
     do
         set_color(rs@type, gs@type, bs@type)
         set_dash(dashes@type)
@@ -79,25 +84,25 @@ feature {NONE} -- Representation
 
     rs: ARRAY[INTEGER] is
     once
-        Result := <<80, 120, 200, 180>>
+        Result := <<80, 120, 200, 180, 100>>
         Result.reindex(traj_type_normal)
     end
 
     gs: ARRAY[INTEGER] is
     once
-        Result := <<180, 250, 100, 0>>
+        Result := <<180, 250, 100, 0, 100>>
         Result.reindex(traj_type_normal)
     end
 
     bs: ARRAY[INTEGER] is
     once
-        Result := <<80, 120, 100, 0>>
+        Result := <<80, 120, 100, 0, 100>>
         Result.reindex(traj_type_normal)
     end
 
     dashes: ARRAY[ARRAY[INTEGER]] is
     once
-        !!Result.make(traj_type_normal, traj_type_enemy)
+        !!Result.make(traj_type_normal, traj_type_max)
         Result.put(create {ARRAY[INTEGER]}.make(0, 1), traj_type_normal)
         Result.item(traj_type_normal).put(1, 0)
         Result.item(traj_type_normal).put(2, 1)
@@ -110,8 +115,11 @@ feature {NONE} -- Representation
         Result.put(create {ARRAY[INTEGER]}.make(0, 1), traj_type_enemy)
         Result.item(traj_type_enemy).put(5, 0)
         Result.item(traj_type_enemy).put(3, 1)
+        Result.put(create {ARRAY[INTEGER]}.make(0, 1), traj_type_wormhole)
+        Result.item(traj_type_wormhole).put(1, 0)
+        Result.item(traj_type_wormhole).put(2, 1)
     end
 
 invariant
-    my_type.in_range(traj_type_normal, traj_type_enemy)
+    my_type.in_range(traj_type_normal, traj_type_max)
 end -- class TRAJECTORY

@@ -6,6 +6,7 @@ inherit
     STAR
     redefine make, make_defaults, planet_type end
     SUBSCRIBER
+    CLIENT
 
 creation
     make, make_defaults
@@ -38,6 +39,12 @@ feature {SERVICE_PROVIDER} -- Redefined features
         !!s.start (msg)
         has_info := True
         s.get_string; name := s.last_string
+        s.get_integer
+        if s.last_integer = -1 then
+            take_down_wormhole
+        else
+            setup_wormhole_to(server.galaxy.star_with_id(s.last_integer))
+        end
         s.get_integer; pcount := s.last_integer
         from until pcount = 0 loop
             s.get_integer; orbit := s.last_integer

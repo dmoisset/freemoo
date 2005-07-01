@@ -18,7 +18,7 @@ feature {NONE} -- Creation
         location := p
         p.set_colony (Current)
         owner := o
-        o.add_colony (Current)
+        o.add_colony(Current)
         create ship_factory
     ensure
         location = p

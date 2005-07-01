@@ -21,4 +21,8 @@
     104    402    390    103      1 # Orange
     186    383    423      4      4 # Red
      50    110    610    180     50 # Brown
-      
+
+
+# Star specials (Same probability for all kinds of stars)
+# nospecial wormhole debris piratecache hero planetspecial
+        160       10      5           5    5            20

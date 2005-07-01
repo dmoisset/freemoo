@@ -149,7 +149,9 @@ feature {NONE} -- Name Generation
         -- Load star names
         from until file.end_of_input loop
             file.read_line
-            buffer.add_last (clone(file.last_string))
+            if not file.last_string.is_equal("") then
+                buffer.add_last (clone(file.last_string))
+            end
         end
         file.disconnect
 
@@ -167,10 +169,79 @@ feature {NONE} -- Name Generation
     end
 
 feature {NONE} -- Planet Generation
+
+    create_random_planet(star: STAR): PLANET is
+    -- Create a random planet for `star'
+    do
+        Result := star.create_planet
+        Result.set_size(planet_sizes.random_item)
+        Result.set_climate(planet_climates.item(star.kind).random_item)
+        Result.set_mineral(planet_minerals.item(star.kind).random_item)
+        Result.set_gravity(planet_gravs.item(star.kind).random_item)
+        Result.set_type(type_planet)
+        Result.set_special(plspecial_nospecial)
+    end
+
+    create_default_homeworld(star: STAR): PLANET  is
+    -- Create a medium, terran, NG, abundand planet for `star'
+    do
+        Result := star.create_planet
+        Result.set_size(plsize_medium)
+        Result.set_climate(climate_terran)
+        Result.set_mineral(mnrl_abundant)
+        Result.set_gravity(grav_normalg)
+        Result.set_type(type_planet)
+        Result.set_special(plspecial_nospecial)
+    end
+
+    make_special_on (star: STAR; galaxy: GALAXY) is
+    local
+        special, orbit, idx: INTEGER
+        other: STAR
+    do
+        if star.kind /= kind_blackhole and not dont_touch.has(star) then
+            special := star_specials.random_item
+            star.set_special(special)
+            if special /= stspecial_nospecial then
+                dont_touch.add(star)
+            end
+            if special = stspecial_wormhole then
+            -- Setup Wormholes
+                from
+                    star.set_special(stspecial_nospecial)
+                until
+                    star.special = stspecial_wormhole
+                loop 
+                    rand.next
+                    idx := rand.last_integer(galaxy.stars.count) - 1 + galaxy.stars.lower
+                    other := galaxy.stars.item(idx)
+                    if other.kind /= kind_blackhole and not dont_touch.has(other) then
+                        star.setup_wormhole_to(other)
+                    end
+                end
+            elseif special = stspecial_planetspecial then
+            -- Setup Planet specials
+                rand.next
+                special := rand.last_integer(plspecial_max - plspecial_min - 1) + plspecial_min
+                check special.in_range(plspecial_min + 1, plspecial_max) end
+                rand.next
+                orbit := rand.last_integer(star.Max_planets)
+                if special = plspecial_splinter or special = plspecial_natives then
+                    star.set_planet(create_default_homeworld(star), orbit)
+                else
+                    star.set_planet(create_random_planet(star), orbit)
+                end
+                star.planet_at(orbit).set_special(special)
+            -- Setup other specials
+            end
+        end
+    end
+
     make_planets_on (star: STAR) is
     local
         i: INTEGER
         planet: PLANET
+        type: INTEGER
     do
         from
             i := 1
@@ -179,13 +250,13 @@ feature {NONE} -- Planet Generation
         loop
             rand.next
             if rand.last_integer (100) <= planet_prob @ (star.kind) then
-                planet := star.create_planet
-                planet.set_size(planet_sizes.random_item)
-                planet.set_climate(planet_climates.item(star.kind).random_item)
-                planet.set_mineral(planet_minerals.item(star.kind).random_item)
-                planet.set_gravity(planet_gravs.item(star.kind).random_item)
-                planet.set_type(planet_types.random_item)
-                planet.set_special(plspecial_nospecial)
+                type := planet_types.random_item
+                if type = type_planet then
+                    planet := create_random_planet(star)
+                else
+                    planet := star.create_planet
+                    planet.set_type(type)
+                end
                 star.set_planet (planet, i)
             end
             i := i + 1
@@ -239,20 +310,15 @@ feature {NONE} -- Planet Generation
         until i.is_off loop
             hmworldpos := walk_point (step * done + offset)
             hmworld_system := galaxy.closest_star_to (hmworldpos, dont_touch)
-            hmworld := hmworld_system.create_planet
+            hmworld := create_default_homeworld(hmworld_system)
             hmworld.set_size(plsize_medium + i.item.race.homeworld_size)
             if i.item.race.aquatic then
                 hmworld.set_climate(climate_ocean)
-            else
-                hmworld.set_climate(climate_terran)
             end
             hmworld.set_mineral(mnrl_abundant + i.item.race.homeworld_richness)
             hmworld.set_gravity(grav_normalg + i.item.race.homeworld_gravity)
-            hmworld.set_type(type_planet)
             if i.item.race.ancient_artifacts then
                 hmworld.set_special(plspecial_artifacts)
-            else
-                hmworld.set_special(plspecial_nospecial)
             end
             rand.next
             hmworld_system.set_planet (hmworld, rand.last_integer (hmworld_system.Max_planets))
@@ -298,6 +364,7 @@ feature -- Operation
             galaxy.last_star.set_kind(star_kinds.random_item)
             galaxy.last_star.set_size(star_sizes.random_item)
             make_planets_on (galaxy.last_star)
+            make_special_on(galaxy.last_star, galaxy)
             i := i + 1
         end
         print ("Placing Orion%N")
@@ -373,7 +440,7 @@ feature {NONE} -- Implementation
 
 feature{NONE} -- Internal Constants
 
-    mindelta: REAL is 2.5
+    mindelta: REAL is 3
     maxdelta: REAL is 4
     
 invariant

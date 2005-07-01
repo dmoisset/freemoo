@@ -47,6 +47,11 @@ feature {NONE} -- Creation
         -- Planet label
         r.set_with_size (15, 50, 310, 100)
         !!planet_label.make (Current, r, "")
+        -- Wormhole label
+        r.set_with_size (209, 208, 120, 20)
+        !!wormhole_label.make(Current, r, "")
+        wormhole_label.set_h_alignment(1.0)
+
         !!removable_children.make(1, 0)
         -- Fleetsorbiting view
         make_fleets_orbiting(g)
@@ -66,6 +71,8 @@ feature {NONE} -- Widgets
     close_button: BUTTON
 
     name_label: LABEL
+
+    wormhole_label: LABEL
 
     planet_label: MULTILINE_LABEL
 
@@ -141,6 +148,13 @@ feature {NONE} -- Signal handlers
         if star.has_info then
         -- Show info for an known system
             name_label.set_text("Star System " + star.name)
+            if star.wormhole = Void then
+                wormhole_label.set_text("")
+            elseif star.wormhole.has_info then
+                wormhole_label.set_text("Wormhole to " + star.wormhole.name)
+            else
+                wormhole_label.set_text("Active wormhole")
+            end
             from
                 ip := star.get_new_iterator_on_planets
             until ip.is_off loop
@@ -287,17 +301,23 @@ feature -- Controls
 
     enter_planet (p: PLANET) is
         -- Called when `p' gets under pointer
+    local
+        text: STRING
     do
         in_asteroid_field := False
         if p.type = type_gasgiant then
-            set_planet_text ("Gas Giant (Uninhabitable)")
+            text := "Gas Giant (Uninhabitable)"
         else
-            set_planet_text (star.name + " " + roman @ orbit2planet_number(p.orbit) + "%N" +
-                             plsize_names @ p.size + ", " +
-                             climate_names @ p.climate + "%N" +
-                             mineral_names @ p.mineral + "  " +
-                             gravity_names @ p.gravity)
+            text := star.name + " " + roman @ orbit2planet_number(p.orbit) + "%N" +
+                    plsize_names @ p.size + ", " +
+                    climate_names @ p.climate + "%N" +
+                    mineral_names @ p.mineral + "  " +
+                    gravity_names @ p.gravity
+            if p.special /= plspecial_nospecial then
+                text := text + "%N" + plspecial_names @ p.special
+            end
         end
+        set_planet_text(text)
     end
 
     leave_planet (p: PLANET) is
