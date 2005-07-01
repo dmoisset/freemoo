@@ -64,20 +64,40 @@ feature -- Access
     
 feature -- Query
     
-    is_in_range(p: POSITIONAL): BOOLEAN is
-        -- Can our ships reach p with our current fuel range?
+    is_in_range(dest: STAR; fleet: FLEET; ss: SET[SHIP]): BOOLEAN is
+        -- Can these ships reach dest with our current fuel range?
     require
-        p /= Void
+        dest /= Void
+        fleet /= Void
+        ss /= Void
     local
-        it: ITERATOR[like colony_type]
+        shp_it: ITERATOR[SHIP]
+        col_it: ITERATOR[like colony_type]
+        fuel_factor: REAL
     do
-        from
-            it := colonies.get_new_iterator_on_items
-        until it.is_off or Result = True loop
-            if it.item.location.orbit_center |-| p < fuel_range then
-                Result := True
+        -- Consider wormholes
+        if fleet.orbit_center /= Void and then
+           fleet.orbit_center.wormhole = dest then
+            Result := True
+        else
+        -- Consider different ships' fuel range
+            from
+                fuel_factor := 1000 -- Infinity
+                shp_it := ss.get_new_iterator
+            until
+                shp_it.is_off
+            loop
+                fuel_factor := fuel_factor.min(shp_it.item.fuel_range)
+                shp_it.next
             end
-            it.next
+            from
+                col_it := colonies.get_new_iterator_on_items
+            until col_it.is_off or Result = True loop
+                if col_it.item.location.orbit_center |-| dest < fuel_range * fuel_factor then
+                    Result := True
+                end
+                col_it.next
+            end
         end
     end
 

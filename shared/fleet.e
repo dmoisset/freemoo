@@ -84,7 +84,13 @@ feature -- Access
         dest /= Void
         current_speed > 0
     do
-        Result := ((Current |-| dest) / current_speed).ceiling
+        -- Consider wormholes
+        if orbit_center /= Void and then orbit_center.wormhole = dest then
+            Result := 1
+        -- Consider other things
+        else
+            Result := ((Current |-| dest) / current_speed).ceiling
+        end
     end
     
     can_receive_orders: BOOLEAN is

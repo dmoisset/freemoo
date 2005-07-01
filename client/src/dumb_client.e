@@ -196,7 +196,7 @@ feature -- Incredibly smart AI
                         s := server.galaxy.get_new_iterator_on_stars
                     until 
                         s.is_off or else
-                            (server.player.is_in_range(s.item) and
+                            (server.player.fuel_range > s.item |-| i.item.orbit_center and
                              s.item /= i.item.orbit_center)
                     loop
                         s.next

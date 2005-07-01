@@ -372,13 +372,13 @@ feature {NONE} -- Event handlers
     local
         i: ITERATOR[RECTANGLE]
         r: RECTANGLE
-        dest: STAR
+        dest: C_STAR
     do
         i := star_hotspots.item_at_xy(x, y)
         if not i.is_off then
             if fleet_window /= Void and then fleet_window.visible and then fleet_window.some_ships_selected then
                 dest := galaxy.star_with_id (star_hotspots.fast_key_at(i.item))
-                if galaxy.server.player.is_in_range(dest) then
+                if fleet_window.selection_is_in_range(dest) then
                     fleet_window.send_selection_to(dest)
                 end
             else
@@ -428,7 +428,7 @@ feature {NONE} -- Event handlers
     local
         i: ITERATOR[RECTANGLE]
         traj: TRAJECTORY
-        dest: STAR
+        dest: C_STAR
     do
         i := star_hotspots.item_at_xy(x, y)
         if not i.is_off then
@@ -437,10 +437,14 @@ feature {NONE} -- Event handlers
             end
             dest := galaxy.star_with_id(star_hotspots.fast_key_at(i.item))
             !!traj.with_projection (dest, fleet_window.model_position, current_projection)
-            if galaxy.exists_black_hole_between(fleet_window.fleet, dest) then
+            if fleet_window.model_orbit_center /= Void and then
+               fleet_window.model_orbit_center.wormhole = dest then
+                traj.set_type(traj.traj_type_select_ok)
+                fleet_window.set_info_eta(dest)
+            elseif galaxy.exists_black_hole_between(fleet_window.model_position, dest) then
                 traj.set_type(traj.traj_type_unreachable)
                 fleet_window.set_info_black_hole
-            elseif galaxy.server.player.is_in_range(dest) then
+            elseif fleet_window.selection_is_in_range(dest) then
                 traj.set_type(traj.traj_type_select_ok)
                 fleet_window.set_info_eta(dest)
             else

@@ -239,7 +239,7 @@ feature {NONE} -- Operations
             print ("move_fleet: fleet is owned by somebody else%N")
         elseif destination = Void then
             print ("move_fleet: Invalid destination id%N")
-        elseif not player.is_in_range(destination) then
+        elseif not player.is_in_range(destination, fleet, ships) then
             print ("move_fleet: Destination out of range%N")
         elseif not fleet.can_receive_orders then
             print ("Cannot issue orders to that fleet at the moment")

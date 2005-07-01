@@ -15,7 +15,7 @@ inherit
 creation
     make
 
-feature -- Representation
+feature {NONE} -- Representation
 
     fleet: C_FLEET
 
@@ -140,12 +140,22 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
     do
         Result := not fleet_selection.is_empty
     end
-    
+
+    selection_is_in_range(dest: C_STAR): BOOLEAN is
+    do
+        Result := fleet.owner.is_in_range(dest, fleet, fleet_selection)
+    end
+
     model_position: POSITIONAL is
     do
         Result := fleet
     end
-    
+
+    model_orbit_center: C_STAR is
+    do
+        Result := fleet.orbit_center
+    end
+
     set_cancel_trajectory_selection_callback (p: PROCEDURE[ANY, TUPLE]) is
     do
         cancel_trajectory_selection_handler := p
