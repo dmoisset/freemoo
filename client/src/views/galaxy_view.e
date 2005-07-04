@@ -166,6 +166,7 @@ feature -- Redefined features
     local
         star_it: ITERATOR[C_STAR]
         fleet_it: ITERATOR[FLEET]
+        origin: COORDS
     do
         if dirty then
             dirty := False
@@ -182,9 +183,12 @@ feature -- Redefined features
                 star_it.next
             end
             fleet_hotspots.clear
+            create origin.make_at(0, 0)
             from fleet_it := galaxy.get_new_iterator_on_fleets
             until fleet_it.is_off loop
-                draw_fleet (fleet_it.item)
+                if fleet_it.item |-| origin > 0 then
+                    draw_fleet (fleet_it.item)
+                end
                 fleet_it.next
             end
         end
