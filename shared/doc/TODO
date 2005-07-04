@@ -2,7 +2,6 @@ BUG: Scanner debería delegar escaneado a elementos
 BUG: scanner debería usar lista de flotas y colonias del jugador
     - ?
 image bin
-DESIGN: ordenes a flotas
 Hacer más tolerante el server respecto a caidas
 Renombre de estrellas
 Usar cursores
@@ -11,20 +10,8 @@ galaxy_view:
     fondo movil
     scroll suave
     drag para moverse
-    star labels (coloreado, parentesis)
     modo zoom (en vez de los botones de ahora)
 indicador de espera de fin de turno
-selección de color, ruler_name (player setup)
 chat
 updates incrementales
 Revision general de código
-teclas rápidas en la interfaz (en especial TAB, ENTER)
-
-Compilacion:
-- hacer que xtract mande las cosas a un directorio separado
-- agregar makefiles para tools
-- eliminar dependencia de freepascal (listo para todas las herramientas criticas)
-- hay archivos .c ejecutables
-- test map generator depende de jegl
-- extract no revisa presencia de los lbx (si no estan, "funciona")
-- problemas con xcf2png
