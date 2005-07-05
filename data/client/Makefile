@@ -1,4 +1,4 @@
-SUBDIRS=connect-window join-window setup-window main-window gui \
+SUBDIRS=connect-window join-window setup-window main-window \
         fleet-view
 
 all: $(SUBDIRS)
