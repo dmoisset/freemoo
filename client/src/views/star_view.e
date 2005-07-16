@@ -266,7 +266,7 @@ feature -- Redefined features
                     i := 0
                 until ip.is_off or a loop
                     if ip.item /= Void and then ip.item.type = type_asteroids then
-                        y := br * (bi + i)
+                        y := br * (bi + i + 1)
                         x := y * xm
                         y := cy + angle.sin * y
                         x := cx + angle.cos * x
