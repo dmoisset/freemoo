@@ -158,7 +158,9 @@ feature {STAR} -- To keep consistent orbits
 feature -- Factory methods
     
     create_colony(p: PLAYER): like colony is
-    require p /= Void
+    require
+        p /= Void
+        is_colonizable
     do
         create Result.make(Current, p)
     end

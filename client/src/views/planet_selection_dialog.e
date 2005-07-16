@@ -36,10 +36,12 @@ feature -- Commanding
     local
         s: SERIALIZER2
     do
-        create s.make
-        s.add_integer (p.orbit)
-        server.dialog (dialog_id, s.serialized_form)
-        remove
+        if p.is_colonizable then
+            create s.make
+            s.add_integer (p.orbit)
+            server.dialog (dialog_id, s.serialized_form)
+            remove
+        end
     end
 
     cancel_selection is

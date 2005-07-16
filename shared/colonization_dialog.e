@@ -47,6 +47,7 @@ feature -- Operations
     local
         colonizer: COLONY_SHIP
         orbit: INTEGER
+        planet: PLANET
         u: UNSERIALIZER
     do
         create u.start (message)
@@ -54,7 +55,12 @@ feature -- Operations
         orbit := u.last_integer
         if orbit.in_range (1, fleet.orbit_center.Max_planets) then
             colonizer := fleet.get_colony_ship
-            colonizer.set_will_colonize (fleet.orbit_center.planet_at (orbit))
+            planet := fleet.orbit_center.planet_at (orbit)
+            if planet /=  Void and then planet.is_colonizable then
+                colonizer.set_will_colonize (planet)
+            else
+                print ("Invalid colonization request. Ignored%N")
+            end
         end
         close
     end

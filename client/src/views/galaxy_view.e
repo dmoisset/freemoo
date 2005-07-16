@@ -363,14 +363,6 @@ feature {NONE} -- Event handlers
         fleet_window.set_colonization_callback(agent galaxy.server.colonize (f))
     end
 
-    colonize(p: C_PLANET; f: C_FLEET) is
-    do
-        if p /= Void and then p.is_colonizable then
-            galaxy.server.colonize(f, p)
-            colonization_dialog.remove
-        end
-    end
-
     on_left_click (x, y: INTEGER) is
         -- Click on view, try to open a fleet or star window
     local

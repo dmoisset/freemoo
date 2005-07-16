@@ -36,6 +36,8 @@ feature -- Access
 feature -- Operations
 
     set_will_colonize(p: like will_colonize) is
+    require
+        p /= Void implies p.is_colonizable
     do
         will_colonize := p
         can_colonize := will_colonize = Void
@@ -46,6 +48,7 @@ feature -- Operations
     colonize is
     require
         will_colonize /= Void
+        will_colonize.is_colonizable
     local
         c: COLONY
     do
