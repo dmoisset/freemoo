@@ -375,13 +375,13 @@ feature {NONE} -- Internal
         -- Fleet movement
     local
         i: ITERATOR [like fleet_type]
-        old_in_orbit: BOOLEAN
+        old_orbit: STAR
     do
         i := galaxy.get_new_iterator_on_fleets
         from i.start until i.is_off loop
-            old_in_orbit := i.item.is_in_orbit
+            old_orbit := i.item.orbit_center
             i.item.move
-            if not old_in_orbit and i.item.is_in_orbit then
+            if i.item.is_in_orbit and i.item.orbit_center /= old_orbit then
                 if
                     i.item.orbit_center.has_colonizable_planet and
                     i.item.can_colonize
