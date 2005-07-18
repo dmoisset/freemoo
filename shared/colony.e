@@ -304,10 +304,14 @@ feature -- Redefined features
         end
     end
 
-feature -- Special cases
+feature {CONSTRUCTION} -- Special cases
 
     preclimate:  INTEGER
         -- Climate to which this colony will return if the radiation shield
+        -- is destroyed
+
+    pregrav: INTEGER
+        -- Gravity to which this colony will return if gravity generator
         -- is destroyed
 
     extra_population_growth: INTEGER

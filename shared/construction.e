@@ -9,11 +9,14 @@ feature -- Access
     end
 
     can_be_built_on(c: COLONY): BOOLEAN is
+        -- Can this construction be built on `c'?
+    require c /= Void
     deferred
     end
 
     cost(c: COLONY): INTEGER is
         -- Industry needed to build this construction at `c'
+    require c /= Void
     deferred
     end
 
@@ -26,27 +29,34 @@ feature -- Operations
 
     produce_proportional(c: COLONY) is
         -- Increase production on `c' proportionally to `c''s population
+    require c /= Void
     deferred
     end
 
     produce_fixed(c: COLONY) is
         -- Increase production on `c' by a fixed amount
+    require c /= Void
     deferred
     end
 
     clean_up_pollution(c: COLONY) is
         -- Reduce pollution penalty on colony `c'
+    require c /= Void
     deferred
     end
 
     build(c: COLONY) is
         -- Do whatever this construction does when it is built
+    require c /= Void
     deferred
     end
 
     take_down(c: COLONY) is
         -- Undo whatever this construction did when built
+    require c /= Void
     deferred
     end
 
+invariant
+    name /= Void
 end
