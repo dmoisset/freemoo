@@ -15,7 +15,7 @@ Volm
 .
 
 # Modifiers.  The list is terminated with a line containing a single '.'
-money_bonus=1
+money_bonus=2
 homeworld_gravity=-1
 fantastic_trader
 lucky

@@ -3,26 +3,8 @@ class MAP_PROBABILITIES
 
 inherit
     MAP_CONSTANTS
-    PKG_USER
 
 feature {NONE} -- Utililty functions
-
-    str_array_to_int_array (a: ARRAY [STRING]): ARRAY [INTEGER] is
-        -- map of `a' with method to_inteeger
-    require
-        a /= Void
-    local
-        i: INTEGER
-    do
-        !!Result.make (a.lower, a.upper)
-        from i := a.lower until i > a.upper loop
-            Result.put ((a @ i).to_integer, i)
-            i := i + 1
-        end
-    ensure
-        Result.count = a.count
-        Result /= Void
-    end
 
     load_int_ptable (s: COMMENTED_TEXT_FILE; min, max: INTEGER) is
         -- Read a sequence of integers from `s' and build a finite

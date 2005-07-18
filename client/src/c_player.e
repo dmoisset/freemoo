@@ -125,7 +125,6 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 -- What if a somebody bombards and then recolonizes? The next check might fail
                     check colony.id = s.last_integer end
                 end
-                colonies.add (colony, colony.id)
                 if not old_colonies.has (colony.id) then 
                     colony.subscribe (server, "colony"+colony.id.to_string)
                 end

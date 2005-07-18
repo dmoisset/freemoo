@@ -1,7 +1,28 @@
 class MAP_CONSTANTS
     -- galactic enumerations and constants
 
-inherit GETTEXT
+inherit
+    GETTEXT
+    PKG_USER
+
+feature {NONE} -- Utililty functions
+
+    str_array_to_int_array (a: ARRAY [STRING]): ARRAY [INTEGER] is
+        -- map of `a' with method to_integer
+    require
+        a /= Void
+    local
+        i: INTEGER
+    do
+        !!Result.make (a.lower, a.upper)
+        from i := a.lower until i > a.upper loop
+            Result.put ((a @ i).to_integer, i)
+            i := i + 1
+        end
+    ensure
+        Result.count = a.count
+        Result /= Void
+    end
 
 feature -- Constants
 
@@ -231,6 +252,57 @@ feature -- Constants
         Result.add (l("Natives"), plspecial_natives)
         Result.add (l("Splinter Colony"), plspecial_splinter)
         Result.add (l("Ancient Artifacts"), plspecial_artifacts)
+    end
+
+feature -- planetary Productions
+
+    planet_farming: ARRAY[INTEGER] is
+    local
+        f: COMMENTED_TEXT_FILE
+    once
+        pkg_system.open_file ("galaxy/planetary_farming")
+        !!f.make (pkg_system.last_file_open)
+        f.read_nonempty_line
+        Result := str_array_to_int_array (f.last_line.split)
+        Result.reindex (climate_min)
+    ensure
+        Result.lower = climate_min
+    end
+
+    planet_industry: ARRAY[INTEGER] is
+    local
+        f: COMMENTED_TEXT_FILE
+    once
+        pkg_system.open_file ("galaxy/planetary_industry")
+        !!f.make (pkg_system.last_file_open)
+        f.read_nonempty_line
+        Result := str_array_to_int_array (f.last_line.split)
+        Result.reindex (mnrl_min)
+    ensure
+        Result.lower = mnrl_min
+    end
+
+    planet_maxpop: ARRAY[ARRAY[INTEGER]] is
+    local
+        f: COMMENTED_TEXT_FILE
+        i: INTEGER
+    once
+        pkg_system.open_file ("galaxy/planetary_maxpop")
+        !!f.make (pkg_system.last_file_open)
+        create Result.make(plsize_min, plsize_max)
+        from
+            i := plsize_min
+        until
+            i > plsize_max
+        loop
+            f.read_nonempty_line
+            Result.put(str_array_to_int_array (f.last_line.split), i)
+            Result.item(i).reindex(climate_min)
+            i := i + 1
+        end
+    ensure
+        Result.lower = plsize_min
+        Result.first.lower = climate_min
     end
 
 end -- class MAP_CONSTANTS

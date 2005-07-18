@@ -145,6 +145,12 @@ feature -- Access
         Result := type = type_planet and colony = Void
     end
 
+    subterranean_maxpop_bonus: INTEGER is
+        -- Extra maximum population a subterranean race can fit on this planet
+    do
+        Result := 2 * size - (plsize_min + 1)
+    end
+
 feature {STAR} -- To keep consistent orbits
     set_orbit (neworbit: INTEGER) is
     require
