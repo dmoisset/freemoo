@@ -136,10 +136,10 @@ feature -- Access
         end
     end
 
-    scans: DICTIONARY [ARRAY [like last_fleet], INTEGER]
+    scans: HASHED_DICTIONARY [ARRAY [like last_fleet], INTEGER]
         -- Fleets scanned by each player
     
-    enemy_colony_knowledge: DICTIONARY [SET [COLONY], INTEGER]
+    enemy_colony_knowledge: HASHED_DICTIONARY [SET [COLONY], INTEGER]
         -- Enemy colonies known by each player.
         -- Eventually should be changed for something that contains
         -- all visible information, to show the colonies as each player 
@@ -441,10 +441,10 @@ feature {MAP_GENERATOR} -- Generation
 
 feature {MAP_GENERATOR} -- Representation
 
-    stars: DICTIONARY [like last_star, INTEGER]
+    stars: HASHED_DICTIONARY [like last_star, INTEGER]
         -- stars in the map, by id
 
-    fleets: DICTIONARY [like last_fleet, INTEGER]
+    fleets: HASHED_DICTIONARY [like last_fleet, INTEGER]
         -- All fleets in space
     
 feature -- Anchors

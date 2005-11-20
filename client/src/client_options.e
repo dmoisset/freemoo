@@ -8,7 +8,7 @@ creation
 
 feature {NONE} -- Valid options and values
 
-    options: DICTIONARY [INTEGER, STRING] is
+    options: HASHED_DICTIONARY [INTEGER, STRING] is
     once
         !!Result.make
         Result.put (ot_integer, "port")
@@ -17,7 +17,7 @@ feature {NONE} -- Valid options and values
         Result.put (ot_string , "password")
     end
 
-    enums: DICTIONARY [DICTIONARY [INTEGER, STRING], STRING] is
+    enums: HASHED_DICTIONARY [HASHED_DICTIONARY [INTEGER, STRING], STRING] is
     once
         !!Result.make
     end
