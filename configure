@@ -27,13 +27,13 @@ if [ -x "$SECOMPILE" ]; then
     echo "$SECOMPILE"
 else
     echo "not found."
-    echo "Please install SmartEiffel 1.1, http://smarteiffel.loria.fr/"
+    echo "Please install SmartEiffel 1.2, http://smarteiffel.loria.fr/"
     exit 1
 fi
 echo "SECOMPILE=\"$SECOMPILE\"" >>config
 ####################################################
-echo -n "Checking for SmartEiffel version 1.1... "
-if "$SECOMPILE" -version| grep "^Release 1\.1.*Charlemagne" >/dev/null 2>&1; then
+echo -n "Checking for SmartEiffel version 1.2... "
+if "$SECOMPILE" -version| grep "^Release 1\.2r" >/dev/null 2>&1; then
     echo "ok"
 else
     echo "not found."
@@ -105,7 +105,7 @@ fi
 ####################################################
 echo -n "Testing EWS C glue... "
 echo "int main;" >tmp.c
-if gcc tmp.c "$SEDIR/lib_ews/driver-sdl/C/driver-sdl.o" \
+if gcc tmp.c -lews-SDL \
    $(sdl-config --cflags --libs) -otmp.out >>configure.log 2>&1; then
     echo "ok"
     rm -f tmp.c tmp.out
