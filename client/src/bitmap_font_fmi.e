@@ -10,6 +10,8 @@ creation
 feature {NONE} -- Creation
 
     make (filename: STRING) is
+    require
+        filename /= Void
     local
         p: PKG_USER
     do
@@ -18,7 +20,9 @@ feature {NONE} -- Creation
             make_from_surface (FMI_Load (p.pkg_system.last_file_open.to_external))
             p.pkg_system.last_file_open.disconnect
         else
-            print ("Can't find font file%N")
+            print ("Can't find font file: '")
+            print (filename)
+            print ("'%N")
         end
         !!chr_areas.make (33, 128)
         parse
