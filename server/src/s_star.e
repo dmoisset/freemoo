@@ -156,13 +156,13 @@ feature {STORAGE} -- Retrieving
    
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
+        i: REFERENCE [INTEGER]
     do
         from
         until elems.is_off loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
-                id := i
+                id := i.item
             end
             elems.next
         end
@@ -171,8 +171,8 @@ feature {STORAGE} -- Retrieving
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         n: INTEGER
-        i: reference INTEGER
-        r: reference REAL
+        i: REFERENCE [INTEGER]
+        r: REFERENCE [REAL]
         planet: like planet_type
     do
         from
@@ -182,19 +182,19 @@ feature {STORAGE} -- Retrieving
                 name ?= elems.item.second
             elseif elems.item.first.is_equal("kind") then
                 i ?= elems.item.second
-                kind := i
+                kind := i.item
             elseif elems.item.first.is_equal("size") then
                 i ?= elems.item.second
-                size := i
+                size := i.item
             elseif elems.item.first.is_equal("special") then
                 i ?= elems.item.second
-                special := i
+                special := i.item
             elseif elems.item.first.is_equal("x") then
                 r ?= elems.item.second
-                x := r
+                x := r.item
             elseif elems.item.first.is_equal("y") then
                 r ?= elems.item.second
-                y := r
+                y := r.item
             elseif elems.item.first.is_equal("wormhole") then
                 wormhole ?= elems.item.second
             elseif elems.item.first.has_prefix("planet") then

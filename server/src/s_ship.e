@@ -86,13 +86,13 @@ feature {STORAGE} -- Retrieving
 
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
+        i: REFERENCE [INTEGER]
     do
         from
         until elems.is_off loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
-                id := i
+                id := i.item
             end
             elems.next
         end
@@ -100,8 +100,8 @@ feature {STORAGE} -- Retrieving
 
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        b: reference BOOLEAN
-        i: reference INTEGER
+        b: REFERENCE [BOOLEAN]
+        i: REFERENCE [INTEGER]
         unknown_tag: BOOLEAN
     do
         from
@@ -112,13 +112,13 @@ feature {STORAGE} -- Retrieving
                 owner ?= elems.item.second
             elseif elems.item.first.is_equal("size") then
                 i ?= elems.item.second
-                size := i
+                size := i.item
             elseif elems.item.first.is_equal("picture") then
                 i ?= elems.item.second
-                picture := i
+                picture := i.item
             elseif elems.item.first.is_equal("is_stealthy") then
                 b ?= elems.item.second
-                is_stealthy := b
+                is_stealthy := b.item
             else
                 unknown_tag := true
             end

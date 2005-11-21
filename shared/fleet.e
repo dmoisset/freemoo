@@ -381,7 +381,7 @@ feature {NONE} -- Creation
 
 feature {FLEET} -- Representation
 
-    ships: DICTIONARY [like ship_type, INTEGER]
+    ships: HASHED_DICTIONARY [like ship_type, INTEGER]
         -- Ships, indexed by id
     
 feature -- Anchors

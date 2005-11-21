@@ -63,7 +63,7 @@ feature -- Redefined features
 
     serialize_on (s: SERIALIZER2) is
     do
-        s.add_tuple(<<creator.id, can_colonize>>)
+        s.add_tuple(<<creator.id.box, can_colonize.box>>)
     end
 
 feature -- Saving
@@ -85,7 +85,7 @@ feature -- Saving
 
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        b: reference BOOLEAN
+        b: REFERENCE [BOOLEAN]
     do
         from
         until elems.is_off loop
@@ -96,7 +96,7 @@ feature -- Saving
                 end
                 if elems.item.first.is_equal("can_colonize") then
                     b ?= elems.item.second
-                    can_colonize := b
+                    can_colonize := b.item
                 end
             end
             elems.next

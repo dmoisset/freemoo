@@ -146,6 +146,6 @@ feature -- Operations
     
 feature {NONE} -- Representation
 
-    items: DICTIONARY [P, STRING]
+    items: HASHED_DICTIONARY [P, STRING]
 
 end -- class PLAYER_LIST [P -> PLAYER]

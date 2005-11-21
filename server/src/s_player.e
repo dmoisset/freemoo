@@ -98,8 +98,8 @@ feature -- Operations
         else
             race_picture := 0
         end
-        s.add_tuple (<<id, name, rlname, rcname, race_picture, color, state,
-                       connection /= Void>>)
+        s.add_tuple (<<id.box, name, rlname, rcname, race_picture.box,
+                       color.box, state.box, (connection /= Void).box>>)
     end
 
 feature -- Access
@@ -233,13 +233,13 @@ feature {STORAGE} -- Retrieving
 
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
+        i: REFERENCE [INTEGER]
     do
         from
         until elems.is_off loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
-                id := i
+                id := i.item
             end
             if elems.item.first.is_equal("name") then
                 name ?= elems.item.second
@@ -252,7 +252,7 @@ feature {STORAGE} -- Retrieving
     
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
+        i: REFERENCE [INTEGER]
         colony: S_COLONY
         star: S_STAR
     do
@@ -265,15 +265,15 @@ feature {STORAGE} -- Retrieving
                 ruler_name ?= elems.item.second
             elseif elems.item.first.is_equal("money") then
                 i ?= elems.item.second
-                money := i
+                money := i.item
             elseif elems.item.first.is_equal("password") then
                 password ?= elems.item.second
             elseif elems.item.first.is_equal("color") then
                 i ?= elems.item.second
-                color := i
+                color := i.item
             elseif elems.item.first.is_equal("state") then
                 i ?= elems.item.second
-                state := i
+                state := i.item
             elseif elems.item.first.is_equal("race") then
                 race ?= elems.item.second
             elseif elems.item.first.has_prefix("colony") then

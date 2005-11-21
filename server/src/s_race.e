@@ -98,13 +98,13 @@ feature {STORAGE} -- Retrieving
 
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
+        i: REFERENCE [INTEGER]
     do
         from
         until elems.is_off loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
-                id := i
+                id := i.item
             end
             elems.next
         end
@@ -114,8 +114,8 @@ feature {STORAGE} -- Retrieving
     
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
-        b: reference BOOLEAN
+        i: REFERENCE [INTEGER]
+        b: REFERENCE [BOOLEAN]
     do
         from
         until elems.is_off loop
@@ -125,91 +125,91 @@ feature {STORAGE} -- Retrieving
                 homeworld_name ?= elems.item.second
             elseif elems.item.first.is_equal("picture") then
                 i ?= elems.item.second
-                picture := i
+                picture := i.item
             elseif elems.item.first.is_equal("population_growth") then
                 i ?= elems.item.second
-                population_growth := i
+                population_growth := i.item
             elseif elems.item.first.is_equal("farming_bonus") then
                 i ?= elems.item.second
-                farming_bonus := i
+                farming_bonus := i.item
             elseif elems.item.first.is_equal("industry_bonus") then
                 i ?= elems.item.second
-                industry_bonus := i
+                industry_bonus := i.item
             elseif elems.item.first.is_equal("science_bonus") then
                 i ?= elems.item.second
-                science_bonus := i
+                science_bonus := i.item
             elseif elems.item.first.is_equal("money_bonus") then
                 i ?= elems.item.second
-                money_bonus := i
+                money_bonus := i.item
             elseif elems.item.first.is_equal("ship_defense_bonus") then
                 i ?= elems.item.second
-                ship_defense_bonus := i
+                ship_defense_bonus := i.item
             elseif elems.item.first.is_equal("ship_attack_bonus") then
                 i ?= elems.item.second
-                ship_attack_bonus := i
+                ship_attack_bonus := i.item
             elseif elems.item.first.is_equal("ground_combat_bonus") then
                 i ?= elems.item.second
-                ground_combat_bonus := i
+                ground_combat_bonus := i.item
             elseif elems.item.first.is_equal("spying_bonus") then
                 i ?= elems.item.second
-                spying_bonus := i
+                spying_bonus := i.item
             elseif elems.item.first.is_equal("government") then
                 i ?= elems.item.second
-                government := i + government_feudal
+                government := i.item + government_feudal
             elseif elems.item.first.is_equal("homeworld_size") then
                 i ?= elems.item.second
-                homeworld_size := i
+                homeworld_size := i.item
             elseif elems.item.first.is_equal("homeworld_gravity") then
                 i ?= elems.item.second
-                homeworld_gravity := i
+                homeworld_gravity := i.item
             elseif elems.item.first.is_equal("ancient_artifacts") then
                 b ?= elems.item.second
-                ancient_artifacts := b
+                ancient_artifacts := b.item
             elseif elems.item.first.is_equal("aquatic") then
                 b ?= elems.item.second
-                aquatic := b
+                aquatic := b.item
             elseif elems.item.first.is_equal("subterranean") then
                 b ?= elems.item.second
-                subterranean := b
+                subterranean := b.item
             elseif elems.item.first.is_equal("cybernetic") then
                 b ?= elems.item.second
-                cybernetic := b
+                cybernetic := b.item
             elseif elems.item.first.is_equal("lithovore") then
                 b ?= elems.item.second
-                lithovore := b
+                lithovore := b.item
             elseif elems.item.first.is_equal("repulsive") then
                 b ?= elems.item.second
-                repulsive := b
+                repulsive := b.item
             elseif elems.item.first.is_equal("charismatic") then
                 b ?= elems.item.second
-                charismatic := b
+                charismatic := b.item
             elseif elems.item.first.is_equal("uncreative") then
                 b ?= elems.item.second
-                uncreative := b
+                uncreative := b.item
             elseif elems.item.first.is_equal("creative") then
                 b ?= elems.item.second
-                creative := b
+                creative := b.item
             elseif elems.item.first.is_equal("tolerant") then
                 b ?= elems.item.second
-                tolerant := b
+                tolerant := b.item
             elseif elems.item.first.is_equal("fantastic_trader") then
                 b ?= elems.item.second
-                fantastic_trader := b
+                fantastic_trader := b.item
             elseif elems.item.first.is_equal("telepathic") then
                 b ?= elems.item.second
-                telepathic := b
+                telepathic := b.item
             elseif elems.item.first.is_equal("lucky") then
                 b ?= elems.item.second
-                telepathic := b
+                telepathic := b.item
             elseif elems.item.first.is_equal("omniscient") then
                 b ?= elems.item.second
-                omniscient := b
+                omniscient := b.item
             elseif elems.item.first.is_equal("stealthy") then
                 b ?= elems.item.second
-                stealthy := b
+                stealthy := b.item
             elseif elems.item.first.is_equal("transdimensional") then
                 b ?= elems.item.second
-                transdimensional := b
+                transdimensional := b.item
             end
             elems.next
         end

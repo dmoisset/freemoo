@@ -38,16 +38,16 @@ feature {STORAGE} -- Retrieving
     
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-	r: reference REAL
+	r: REFERENCE [REAL]
     do
 	from
 	until elems.is_off loop
 	    if elems.item.first.is_equal("x") then
 		r ?= elems.item.second
-		x := r
+		x := r.item
 	    elseif elems.item.first.is_equal("y") then
 		r ?= elems.item.second
-		y := r
+		y := r.item
 	    end
 	    elems.next
 	end

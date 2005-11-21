@@ -308,8 +308,8 @@ feature {NONE} -- Internal
     colonize_all is
         -- Colonization
     local
-        candidates: DICTIONARY[SET[S_COLONY_SHIP], S_PLANET]
-        fleet_back_reference: DICTIONARY[S_FLEET, S_COLONY_SHIP]
+        candidates: HASHED_DICTIONARY[SET[S_COLONY_SHIP], S_PLANET]
+        fleet_back_reference: HASHED_DICTIONARY[S_FLEET, S_COLONY_SHIP]
         colony_ship: S_COLONY_SHIP
         f_it: ITERATOR[S_FLEET]
         s_it: ITERATOR[S_SHIP]
@@ -335,7 +335,7 @@ feature {NONE} -- Internal
                        f_it.item.orbit_center /= Void and then
                        colony_ship.will_colonize.orbit_center = f_it.item.orbit_center then
                         if not candidates.has(colony_ship.will_colonize) then
-                            candidates.add(create {SET[S_COLONY_SHIP]}.make, colony_ship.will_colonize)
+                            candidates.add(create {HASHED_SET[S_COLONY_SHIP]}.make, colony_ship.will_colonize)
                         end
                         candidates.reference_at(colony_ship.will_colonize).add(colony_ship)
                         fleet_back_reference.add(f_it.item, colony_ship)

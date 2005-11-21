@@ -69,7 +69,7 @@ feature {NONE} -- Creation
 
 feature {NONE} -- Implementation
 
-    subtotals: DICTIONARY[E, STRING]
+    subtotals: HASHED_DICTIONARY[E, STRING]
 
 invariant
     subtotals /= Void

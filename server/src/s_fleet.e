@@ -33,7 +33,7 @@ feature -- Redefined features
     do
         !!s.make
         -- Currently just has same info as scanner
-        s.add_tuple(<< owner, eta >>)
+        s.add_tuple(<< owner, eta.box >>)
         if orbit_center/=Void then
             s.add_integer(orbit_center.id)
         else
@@ -165,13 +165,13 @@ feature {STORAGE} -- Retrieving
     
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
+        i: REFERENCE [INTEGER]
     do
         from
         until elems.is_off loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
-                id := i
+                id := i.item
             end
             elems.next
         end
@@ -179,9 +179,9 @@ feature {STORAGE} -- Retrieving
     
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
-        b: reference BOOLEAN
-        r: reference REAL
+        i: REFERENCE [INTEGER]
+        b: REFERENCE [BOOLEAN]
+        r: REFERENCE [REAL]
         s: like ship_type
     do
         from
@@ -189,10 +189,10 @@ feature {STORAGE} -- Retrieving
         until elems.is_off loop
             if elems.item.first.is_equal("x") then
                 r ?= elems.item.second
-                x := r
+                x := r.item
             elseif elems.item.first.is_equal("y") then
                 r ?= elems.item.second
-                y := r
+                y := r.item
             elseif elems.item.first.is_equal("orbit_center") then
                 orbit_center ?= elems.item.second
             elseif elems.item.first.is_equal("owner") then
@@ -201,13 +201,13 @@ feature {STORAGE} -- Retrieving
                 destination ?= elems.item.second
             elseif elems.item.first.is_equal("has_colonization_orders") then
                 b ?= elems.item.second
-                has_colonization_orders := b
+                has_colonization_orders := b.item
             elseif elems.item.first.is_equal("eta") then
                 i ?= elems.item.second
-                eta := i
+                eta := i.item
             elseif elems.item.first.is_equal("current_speed") then
                 r ?= elems.item.second
-                current_speed := r
+                current_speed := r.item
             elseif elems.item.first.has_prefix("ship") then
                 s ?= elems.item.second
                 ships.add (s, s.id)

@@ -69,13 +69,13 @@ feature -- Redefined features
     do
         if player /= Void then
             std_error.put_string (format(l("Connection from player ~1~@~2~:~3~ closed.%N"),
-                                  <<player.name, dq_address, port>>))
+                                  <<player.name, dq_address, port.box>>))
             player.set_connection (Void)
             player := Void
             server.game.players.update_clients
         else
             std_error.put_string (format(l("Connection from ~1~:~2~ closed.%N"),
-                                         <<dq_address, port>>))
+                                         <<dq_address, port.box>>))
         end
     end
 
@@ -210,7 +210,7 @@ feature {NONE} -- Operations
     local
         fleet: S_FLEET
         destination: S_STAR
-        ships: SET [S_SHIP]
+        ships: HASHED_SET [S_SHIP]
         i, count: INTEGER
     do
         -- Unserialize

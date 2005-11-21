@@ -435,7 +435,7 @@ feature {NONE} -- Implementation
         end
     end
 
-    dont_touch: SET [STAR]
+    dont_touch: HASHED_SET [STAR]
         -- Stars that souldn't be modified any more, thank you.
 
 feature{NONE} -- Internal Constants

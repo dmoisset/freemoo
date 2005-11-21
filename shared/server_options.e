@@ -8,7 +8,7 @@ creation
 
 feature {NONE} -- Valid options and values
 
-    options: DICTIONARY [INTEGER, STRING] is
+    options: HASHED_DICTIONARY [INTEGER, STRING] is
     once
         !!Result.make
         Result.put (ot_integer, "maxplayers")
@@ -19,12 +19,12 @@ feature {NONE} -- Valid options and values
         Result.put (ot_bool   , "tactical")
         Result.put (ot_bool   , "randomevs")
         Result.put (ot_bool   , "antarans")
-	Result.put (ot_string , "load")
+        Result.put (ot_string , "load")
     end
 
-    enums: DICTIONARY [DICTIONARY [INTEGER, STRING], STRING] is
+    enums: HASHED_DICTIONARY [HASHED_DICTIONARY [INTEGER, STRING], STRING] is
     local
-        enum: DICTIONARY [INTEGER, STRING]
+        enum: HASHED_DICTIONARY [INTEGER, STRING]
     once
         !!Result.make
             -- Galaxy sizes

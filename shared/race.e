@@ -264,16 +264,17 @@ feature -- Operations
 
     serialize_on(s: SERIALIZER2) is
     do
-        s.add_tuple(<<name, homeworld_name, picture, 
-          population_growth, farming_bonus, industry_bonus,
-          science_bonus, money_bonus, ship_defense_bonus,
-          ship_attack_bonus, ground_combat_bonus, spying_bonus,
-          government-government_feudal, homeworld_size, homeworld_gravity,
-          homeworld_richness, ancient_artifacts, aquatic,
-          subterranean, cybernetic, lithovore, repulsive, charismatic,
-          uncreative, creative, tolerant, fantastic_trader,
-          telepathic, lucky, omniscient, stealthy, transdimensional, 
-          warlord>>)
+        s.add_tuple(<<name, homeworld_name, picture.box, 
+          population_growth.box, farming_bonus.box, industry_bonus.box,
+          science_bonus.box, money_bonus.box, ship_defense_bonus.box,
+          ship_attack_bonus.box, ground_combat_bonus.box, spying_bonus.box,
+          (government-government_feudal).box, homeworld_size.box,
+          homeworld_gravity.box, homeworld_richness.box,
+          ancient_artifacts.box, aquatic.box, subterranean.box,
+          cybernetic.box, lithovore.box, repulsive.box, charismatic.box,
+          uncreative.box, creative.box, tolerant.box, fantastic_trader.box,
+          telepathic.box, lucky.box, omniscient.box, stealthy.box,
+          transdimensional.box, warlord.box>>)
     end
 
     unserialize_from(s: UNSERIALIZER) is

@@ -36,7 +36,7 @@ feature -- Redefined features
         id: INTEGER
         star: ITERATOR [like last_star]
         reading: like scanner
-        colonies: SET[COLONY]
+        colonies: HASHED_SET[COLONY]
         colony: ITERATOR[COLONY]
         fleet: ITERATOR [like last_fleet]
         ship: ITERATOR [like ship_type]
@@ -154,7 +154,7 @@ feature {MAP_GENERATOR} -- Generation
 
 feature -- Access
 
-    ids: SET[STRING]
+    ids: HASHED_SET[STRING]
 
 feature -- Operations
 

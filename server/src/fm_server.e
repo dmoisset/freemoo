@@ -45,7 +45,7 @@ feature -- Redefined features
     do
         !!Result.make (Current)
         std_error.put_string (format (l("New connection from ~1~:~2~%N"),
-                                      <<Result.dq_address, Result.port>>))
+                                      <<Result.dq_address, Result.port.box>>))
     end
 
 feature {NONE} -- Internal

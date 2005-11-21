@@ -75,7 +75,7 @@ feature -- Access
         --		print(" picks up " + Result.count.to_string + " alien fleets%N")
     end
     
-    calculate_enemy_colony_knowledge(player: PLAYER): SET[COLONY] is
+    calculate_enemy_colony_knowledge(player: PLAYER): HASHED_SET[COLONY] is
         -- All enemy colonies known by `player'
     local
         c: ITERATOR[COLONY]
@@ -139,7 +139,7 @@ feature -- Access
     scans: HASHED_DICTIONARY [ARRAY [like last_fleet], INTEGER]
         -- Fleets scanned by each player
     
-    enemy_colony_knowledge: HASHED_DICTIONARY [SET [COLONY], INTEGER]
+    enemy_colony_knowledge: HASHED_DICTIONARY [HASHED_SET [COLONY], INTEGER]
         -- Enemy colonies known by each player.
         -- Eventually should be changed for something that contains
         -- all visible information, to show the colonies as each player 
@@ -148,7 +148,7 @@ feature -- Access
 feature -- Access -- star list
 
     closest_star_to_or_within (c: COORDS; threshold: INTEGER;
-                               exclude: SET [STAR]): like last_star is
+                               exclude: HASHED_SET [STAR]): like last_star is
         -- Star not in `exclude' within `threshold' of `c', or closest
         -- if not found.
     require
@@ -175,7 +175,7 @@ feature -- Access -- star list
     end
 
 --reimplement with closest_star_or_within (...,0,...)
-    closest_star_to (c: COORDS; exclude: SET [STAR]): like last_star is
+    closest_star_to (c: COORDS; exclude: HASHED_SET [STAR]): like last_star is
         -- Star closest to `c' not in `exclude'
     require
         c /= Void
@@ -309,7 +309,7 @@ feature -- Operations
         fleets.remove (f.id)
     end
 
-    fleet_orders (fleet: like last_fleet; destination: like last_star; ships: SET[like ship_type]) is
+    fleet_orders (fleet: like last_fleet; destination: like last_star; ships: HASHED_SET[like ship_type]) is
         -- Set fleet orders of `fleet', sending its `ships' toward 
         -- `destination'
     require
@@ -383,7 +383,7 @@ feature -- Operations
         -- Remove all 0-sized (i.e. dead) fleets
     local
         i: ITERATOR [like last_fleet]
-        dead: SET [like last_fleet]
+        dead: HASHED_SET [like last_fleet]
     do
         !!dead.make
         from i := fleets.get_new_iterator_on_items until i.is_off loop

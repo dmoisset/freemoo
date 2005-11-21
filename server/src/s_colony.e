@@ -88,13 +88,13 @@ feature {STORAGE} -- Retrieving
     
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
+        i: REFERENCE [INTEGER]
     do
         from
         until elems.is_off loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
-                id := i
+                id := i.item
             end
             elems.next
         end
@@ -102,13 +102,13 @@ feature {STORAGE} -- Retrieving
     
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
+        i: REFERENCE [INTEGER]
     do
         from
         until elems.is_off loop
             if elems.item.first.is_equal("producing") then
                 i ?= elems.item.second
-                producing := i + product_min
+                producing := i.item + product_min
             elseif elems.item.first.is_equal("owner") then
                 owner ?= elems.item.second
             elseif elems.item.first.is_equal("location") then

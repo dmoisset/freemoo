@@ -28,13 +28,13 @@ feature -- Access
     color: INTEGER
         -- a unique color
         
-    colonies: DICTIONARY [like colony_type, INTEGER]
+    colonies: HASHED_DICTIONARY [like colony_type, INTEGER]
         -- Colonies owned by this player
         
-    knows_star: SET[like star_type]
+    knows_star: HASHED_SET[like star_type]
         -- Stars known by this player
     
-    has_visited_star: SET[like star_type]
+    has_visited_star: HASHED_SET[like star_type]
         -- Stars visited by this player
     
     fuel_range: REAL
@@ -64,7 +64,7 @@ feature -- Access
     
 feature -- Query
     
-    is_in_range(dest: STAR; fleet: FLEET; ss: SET[SHIP]): BOOLEAN is
+    is_in_range(dest: STAR; fleet: FLEET; ss: HASHED_SET[SHIP]): BOOLEAN is
         -- Can these ships reach dest with our current fuel range?
     require
         dest /= Void

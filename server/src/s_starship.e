@@ -29,7 +29,7 @@ feature
         s: SERIALIZER2
     do
         !!s.make
-        s.add_tuple(<<name, fuel_range, is_stealthy>>)
+        s.add_tuple(<<name, fuel_range.box, is_stealthy.box>>)
         Result := s.serialized_form
     end
 

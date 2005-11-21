@@ -65,7 +65,7 @@ feature {STORAGE} -- Retrieving
     
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: reference INTEGER
+        i: REFERENCE [INTEGER]
     do
         from
         until elems.is_off loop
@@ -73,25 +73,25 @@ feature {STORAGE} -- Retrieving
                 colony ?= elems.item.second
             elseif elems.item.first.is_equal("climate") then
                 i ?= elems.item.second
-                climate := i + climate_min
+                climate := i.item + climate_min
             elseif elems.item.first.is_equal("mineral") then
                 i ?= elems.item.second
-                mineral := i + mnrl_min
+                mineral := i.item + mnrl_min
             elseif elems.item.first.is_equal("size") then
                 i ?= elems.item.second
-                size := i + plsize_min
+                size := i.item + plsize_min
             elseif elems.item.first.is_equal("gravity") then
                 i ?= elems.item.second
-                gravity := i + grav_min
+                gravity := i.item + grav_min
             elseif elems.item.first.is_equal("type") then
                 i ?= elems.item.second
-                type := i + type_min
+                type := i.item + type_min
             elseif elems.item.first.is_equal("special") then
                 i ?= elems.item.second
-                special := i + plspecial_min
+                special := i.item + plspecial_min
             elseif elems.item.first.is_equal("orbit") then
                 i ?= elems.item.second
-                orbit := i
+                orbit := i.item
             elseif elems.item.first.is_equal("orbit_center") then
                 orbit_center ?= elems.item.second
             end

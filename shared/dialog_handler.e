@@ -59,7 +59,7 @@ feature {DIALOG} -- Operations
 
 feature {NONE} -- Representation
 
-    dialogs: DICTIONARY [D, INTEGER]
+    dialogs: HASHED_DICTIONARY [D, INTEGER]
         -- Open dialogs, by id
 
     last_dialog_id: INTEGER
