@@ -107,6 +107,7 @@ feature -- Operations
             i.next
         end
         -- Get first free color
+            check not available_colors.all_cleared end
         from color := 1 until available_colors.item (color) loop
             color := color + 1
         end

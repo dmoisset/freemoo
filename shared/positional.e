@@ -62,7 +62,7 @@ feature -- Operations
 
     serialize_on (s: SERIALIZER2) is
     do
-        s.add_tuple (<<x, y>>)
+        s.add_tuple (<<x.box, y.box>>)
     end
 
     unserialize_from (s: UNSERIALIZER) is

@@ -42,7 +42,7 @@ feature -- Constants
         Result := kind_brown
     end
 
-    kind_names: DICTIONARY[STRING, INTEGER] is
+    kind_names: HASHED_DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
         Result.add (l("Black Hole"), kind_blackhole)
@@ -87,7 +87,7 @@ feature -- Constants
         Result := stsize_big
     end
 
-    stsize_names: DICTIONARY[STRING, INTEGER] is
+    stsize_names: HASHED_DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
         Result.add (l("Big"), stsize_big)
@@ -111,7 +111,7 @@ feature -- Constants
         Result := plsize_huge
     end
 
-    plsize_names: DICTIONARY[STRING, INTEGER] is
+    plsize_names: HASHED_DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
         Result.add (l("Tiny"), plsize_tiny)
@@ -138,7 +138,7 @@ feature -- Constants
         Result := climate_gaia
     end
 
-    climate_names: DICTIONARY[STRING, INTEGER] is
+    climate_names: HASHED_DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
         Result.add (l("Toxic"), climate_toxic)
@@ -169,7 +169,7 @@ feature -- Constants
         Result := mnrl_ultrarich
     end
 
-    mineral_names: DICTIONARY[STRING, INTEGER] is
+    mineral_names: HASHED_DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
         Result.add (l("Ultra Poor"), mnrl_ultrapoor)
@@ -195,7 +195,7 @@ feature -- Constants
         Result := type_planet
     end
 
-    type_names: DICTIONARY[STRING, INTEGER] is
+    type_names: HASHED_DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
         Result.add (l("Planet"), type_planet)
@@ -219,7 +219,7 @@ feature -- Constants
         Result := grav_highg
     end
 
-    gravity_names: DICTIONARY[STRING, INTEGER] is
+    gravity_names: HASHED_DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
         Result.add (l("LG"), grav_lowg)
@@ -244,7 +244,7 @@ feature -- Constants
         Result := plspecial_artifacts
     end
 
-    plspecial_names: DICTIONARY[STRING, INTEGER] is
+    plspecial_names: HASHED_DICTIONARY[STRING, INTEGER] is
     once
         !!Result.make
         Result.add (l("Gold Deposits"), plspecial_gold)

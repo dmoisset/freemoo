@@ -245,7 +245,7 @@ feature -- Operations
     
     serialize_on (s: SERIALIZER2) is
     do
-        s.add_tuple (<<id, producing - product_min>>)
+        s.add_tuple (<<id.box, (producing - product_min).box>>)
     end
 
     unserialize_from (s: UNSERIALIZER) is

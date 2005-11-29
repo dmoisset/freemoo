@@ -53,19 +53,19 @@ feature
 
 feature
 
-    ruler_names: DICTIONARY[ARRAY[STRING], STRING]
+    ruler_names: HASHED_DICTIONARY[ARRAY[STRING], STRING]
         -- Ruler name suggestions
 
-    homeworlds: DICTIONARY[STRING, STRING]
+    homeworlds: HASHED_DICTIONARY[STRING, STRING]
         -- Homeworld name suggestion
 
-    specials: DICTIONARY[ARRAY[STRING], STRING]
+    specials: HASHED_DICTIONARY[ARRAY[STRING], STRING]
 
     race_names: ARRAY[STRING]
 
-    description: DICTIONARY[STRING, STRING]
+    description: HASHED_DICTIONARY[STRING, STRING]
 
-    pictures: DICTIONARY[INTEGER, STRING]
+    pictures: HASHED_DICTIONARY[INTEGER, STRING]
 
 feature {NONE} -- Creation
 
