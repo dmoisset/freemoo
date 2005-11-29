@@ -134,6 +134,8 @@ feature {NONE} -- Callbacks
                 set_state (st_finish)
             end
         when st_finish then
+        when st_disconnected then
+            -- We lost connection to the server already, so this data is useless
         end
         if server.is_closed then
             set_state (st_disconnected)
