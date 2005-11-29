@@ -21,7 +21,7 @@ feature
     serialize_on(s: SERIALIZER2) is
     do
         Precursor(s)
-        s.add_tuple(<<size, picture>>)
+        s.add_tuple(<<size.box, picture.box>>)
     end
 
     subscription_message (service_id: STRING): STRING is

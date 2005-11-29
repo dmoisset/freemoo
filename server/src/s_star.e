@@ -57,13 +57,13 @@ feature -- Redefined Features
             i := planets.get_new_iterator
         until i.is_off loop
             if i.item /= Void then
-                s.add_tuple (<<i.item.orbit,
-                               i.item.size - i.item.plsize_min,
-                               i.item.climate - i.item.climate_min,
-                               i.item.mineral - i.item.mnrl_min,
-                               i.item.gravity - i.item.grav_min,
-                               i.item.type - i.item.type_min,
-                               i.item.special - i.item.plspecial_min>>)
+                s.add_tuple (<<i.item.orbit.box,
+                               (i.item.size - i.item.plsize_min).box,
+                               (i.item.climate - i.item.climate_min).box,
+                               (i.item.mineral - i.item.mnrl_min).box,
+                               (i.item.gravity - i.item.grav_min).box,
+                               (i.item.type - i.item.type_min).box,
+                               (i.item.special - i.item.plspecial_min).box>>)
             end
             i.next
         end

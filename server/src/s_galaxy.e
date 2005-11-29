@@ -55,9 +55,9 @@ feature -- Redefined features
             until
                 star.is_off
             loop
-                s.add_tuple (<<star.item.id,
-                               star.item.kind - star.item.kind_min,
-                               star.item.size - star.item.stsize_min>>)
+                s.add_tuple (<<star.item.id.box,
+                               (star.item.kind - star.item.kind_min).box,
+                               (star.item.size - star.item.stsize_min).box>>)
                 star.item.serialize_on (s)
                 star.next
             end
@@ -70,7 +70,7 @@ feature -- Redefined features
             from
                 fleet := reading.get_new_iterator
             until fleet.is_off loop
-                s.add_tuple (<<fleet.item.owner.id, fleet.item.eta>>)
+                s.add_tuple (<<fleet.item.owner.id.box, fleet.item.eta.box>>)
                 if fleet.item.is_stopped then
                     s.add_integer (fleet.item.orbit_center.id)
                 else
@@ -106,9 +106,9 @@ feature -- Redefined features
             from
                 colony := colonies.get_new_iterator
             until colony.is_off loop
-                s.add_tuple (<<colony.item.location.orbit_center.id,
-                               colony.item.location.orbit,
-                               colony.item.owner.id>>)
+                s.add_tuple (<<colony.item.location.orbit_center.id.box,
+                               colony.item.location.orbit.box,
+                               colony.item.owner.id.box>>)
                 colony.next
             end
         else

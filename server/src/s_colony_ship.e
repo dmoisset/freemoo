@@ -33,11 +33,12 @@ feature
         s: SERIALIZER2
     do
         !!s.make
-        s.add_tuple(<<is_stealthy, can_colonize>>)
+        s.add_tuple(<<is_stealthy.box, can_colonize.box>>)
         if will_colonize /= Void then
-            s.add_tuple(<<will_colonize.orbit_center.id, will_colonize.orbit>>)
+            s.add_tuple(<<will_colonize.orbit_center.id.box,
+                will_colonize.orbit.box>>)
         else
-            s.add_tuple(<<-1, 0>>)
+            s.add_tuple(<<(-1).box, (0).box>>)
         end
         Result := s.serialized_form
     end
