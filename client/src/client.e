@@ -38,7 +38,7 @@ feature -- Access
 
 feature {NONE} -- Internal
 
-    server_ref: MEMO [FM_CLIENT_CONNECTION] is
+    server_ref: REFERENCE [FM_CLIENT_CONNECTION] is
         -- shared container for server connection
     once
         !!Result

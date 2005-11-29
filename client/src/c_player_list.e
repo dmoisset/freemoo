@@ -30,7 +30,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
     on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
         -- Action when `msg' arrives from `provider''s `service'
     local
-        new_items: DICTIONARY [C_PLAYER, STRING]
+        new_items: HASHED_DICTIONARY [C_PLAYER, STRING]
         left: INTEGER
         name: STRING
         pid: INTEGER

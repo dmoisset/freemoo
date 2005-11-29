@@ -157,7 +157,7 @@ feature {NONE} -- Internal
     
     star: C_STAR
 
-    fleet_hotspots: DICTIONARY[RECTANGLE, INTEGER]
+    fleet_hotspots: HASHED_DICTIONARY[RECTANGLE, INTEGER]
 
     cache: SDL_IMAGE
 

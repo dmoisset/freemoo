@@ -212,7 +212,8 @@ feature -- Redefined features
                 when 3 then center_on (b.x, b.y)
                 when 4 then zoom_in (b.x, b.y)
                 when 5 then zoom_out (b.x, b.y)
-                else do_nothing
+                else 
+                    --
                 end
             else
                 m ?= event
@@ -679,7 +680,7 @@ feature {NONE} -- Internal configuration and constants
         !!projs.make(0, 3)
         !!p.make_identity
         p.project (galaxy.limit)
-        !!p.make_simple ((width-2*gborder)/p.x, (height-2*gborder)/p.y, gborder, gborder)
+        !!p.make_simple ((width-2*gborder).to_real/p.x, (height-2*gborder).to_real/p.y, gborder, gborder)
         projs.put(p, 0)
         p := p.twin
         p.scale ((6/4).to_real, (6/4).to_real)

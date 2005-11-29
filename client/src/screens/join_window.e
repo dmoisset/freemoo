@@ -37,7 +37,7 @@ feature -- Operations
     do
         show
         title_label.set_text (format(l("Connected to ~1~:~2~"),
-                                     <<server.dq_address, server.port>>))
+                                     <<server.dq_address, server.port.box>>))
         status_label.set_text (
             l("Join as new player or rejoin as existing one."))
         name.grab

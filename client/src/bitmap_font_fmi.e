@@ -10,7 +10,7 @@ creation
 feature {NONE} -- Creation
 
     make (filename: STRING) is
-    require
+    require else
         filename /= Void
     local
         p: PKG_USER

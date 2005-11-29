@@ -253,7 +253,7 @@ feature {NONE} -- Implementation
 
     colonization_handler: PROCEDURE[ANY, TUPLE]
 
-    fleet_selection: SET[SHIP]
+    fleet_selection: HASHED_SET[SHIP]
 
     ships: ARRAY[SHIP]
 

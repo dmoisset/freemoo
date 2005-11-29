@@ -74,7 +74,7 @@ feature -- Operations -- Login commands
         s: SERIALIZER2
     do
         !!s.make
-        s.add_tuple(<<color, ruler_name>>)
+        s.add_tuple(<<color.box, ruler_name>>)
         race.serialize_on(s)
         send_package (msgtype_start, s.serialized_form)
     end
@@ -112,7 +112,7 @@ feature -- Operations -- Game commands
         s: SERIALIZER2
     do
         !!s.make
-        s.add_tuple (<<multiple>>)
+        s.add_tuple (<<multiple.box>>)
         send_package (msgtype_turn, s.serialized_form)
         player_list.set_player_state (player, st_waiting_turn_end)
     end
@@ -141,7 +141,7 @@ feature -- Operations -- Game commands
         i: ITERATOR [SHIP]
     do
         !!s.make
-        s.add_tuple (<<f.id, dest.id, ships.count>>)
+        s.add_tuple (<<f.id.box, dest.id.box, ships.count.box>>)
         from i := ships.get_new_iterator until i.is_off loop
             s.add_integer (i.item.id)
             i.next
@@ -160,7 +160,7 @@ feature -- Operations -- Game commands
         s: SERIALIZER2
     do
         create s.make
-        s.add_tuple(<<f.id>>)
+        s.add_tuple(<<f.id.box>>)
         send_package(msgtype_colonize, s.serialized_form)
     end
     
@@ -170,7 +170,7 @@ feature -- Operations -- Game commands
         s: SERIALIZER2
     do
         create s.make
-        s.add_tuple(<<id, response>>)
+        s.add_tuple(<<id.box, response>>)
         send_package(msgtype_dialog, s.serialized_form)
     end
 

@@ -33,7 +33,7 @@ feature {SERVICE_PROVIDER} -- Redefined features
         pcount: INTEGER
         s: UNSERIALIZER
         orbit: INTEGER
-        todays_planets: SET[INTEGER]
+        todays_planets: HASHED_SET[INTEGER]
     do
         !!todays_planets.make
         !!s.start (msg)

@@ -180,7 +180,7 @@ feature -- Incredibly smart AI
         i: ITERATOR [FLEET]
         j: ITERATOR [SHIP]
         s: ITERATOR [STAR]
-        ll: SET [SHIP]
+        ll: HASHED_SET [SHIP]
     do
         from
             i := server.galaxy.get_new_iterator_on_fleets
@@ -206,10 +206,10 @@ feature -- Incredibly smart AI
                     end
                 else
                     print ("Fleet empty? ")
-                    print (i.item.id)
+                    print (i.item.id.to_string)
                     print ("<-id   ships->")
-                    print (i.item.ship_count)
-                    print ('%N')
+                    print (i.item.ship_count.to_string)
+                    print ("%N")
                 end
             end
             i.next
