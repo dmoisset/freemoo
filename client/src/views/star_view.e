@@ -93,7 +93,13 @@ feature {NONE} -- Callbacks
 feature {NONE} -- Callbacks
 
     planet_click(p: C_PLANET) is
+    local
+        connect_window: CONNECTION_WINDOW
     do
+        if p.colony /= Void then
+            connect_window ?= parent.parent.parent
+            connect_window.goto_colony_window(p.colony)
+        end
         print ("Manage Colony on planet on orbit " + p.orbit.to_string + "%N")
     end
 

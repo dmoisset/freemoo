@@ -206,7 +206,10 @@ feature {NONE} -- Internal
         when st_playing then
             safe_hide (setup_window)
             server.subscribe_init
-            if main_window=Void then
+            if colony_window = Void then
+                !!colony_window.make (Current, display.dimensions)
+            end
+            if main_window = Void then
                 !!main_window.make (Current, display.dimensions)
             end
             main_window.activate
@@ -228,6 +231,25 @@ feature {NONE} -- Internal
         retry
     end
 
+feature -- Window swapping
+
+    goto_main_window is
+    do
+        colony_window.hide
+        main_window.bring_to_front
+        main_window.show
+    end
+
+    goto_colony_window(c: C_COLONY) is
+    require
+        c /= Void
+    do
+        main_window.hide
+        colony_window.bring_to_front
+        colony_window.set_colony(c)
+        colony_window.show
+    end
+
 feature {NONE} -- Dialogs 
 
     join_window: JOIN_WINDOW
@@ -235,6 +257,8 @@ feature {NONE} -- Dialogs
     setup_window: SETUP_WINDOW
 
     main_window: MAIN_WINDOW
+
+    colony_window: COLONY_WINDOW
 
     end_window: END_WINDOW
     
