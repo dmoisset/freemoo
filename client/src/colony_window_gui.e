@@ -18,7 +18,7 @@ feature {NONE} -- Creation
         !!background.make (Current, 0, 0, a.images @ 1)
 
         !!a.make ("client/colony-window/close1.fma")
-        !BUTTON_IMAGE!close_button.make(background, 568, 454,
+        !BUTTON_IMAGE!close_button.make(background, 556, 449,
              create {SDL_SOLID_IMAGE}.make(0, 0, 80,80,250),
              a.images @ 1,a.images @ 1)
         close_button.set_click_handler(agent close)
