@@ -59,9 +59,9 @@ feature {STORAGE} -- Saving
     do
         Result :=<<["creator", creator],
                    ["owner", owner],
-                   ["size", size],
-                   ["picture", picture],
-                   ["is_stealthy", is_stealthy]
+                   ["size", size.box],
+                   ["picture", picture.box],
+                   ["is_stealthy", is_stealthy.box]
                    >>
     end
 
@@ -72,7 +72,7 @@ feature {STORAGE} -- Saving
 
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
-        Result := (<<["id", id] >>).get_new_iterator
+        Result := (<<["id", id.box] >>).get_new_iterator
     end
 
 

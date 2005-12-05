@@ -132,21 +132,21 @@ feature {STORAGE} -- Saving
         a: ARRAY[TUPLE[STRING, ANY]]
     do
         create a.make(1, 0)
-        a.add_last(["x", x])
-        a.add_last(["y", y])
+        a.add_last(["x", x.box])
+        a.add_last(["y", y.box])
         a.add_last(["orbit_center", orbit_center])
         a.add_last(["owner", owner])
         a.add_last(["destination", destination])
-        a.add_last(["has_colonization_orders", has_colonization_orders])
-        a.add_last(["eta", eta])
-        a.add_last(["current_speed", current_speed]) 
+        a.add_last(["has_colonization_orders", has_colonization_orders.box])
+        a.add_last(["eta", eta.box])
+        a.add_last(["current_speed", current_speed.box]) 
         add_to_fields(a, "ship", ships.get_new_iterator_on_items)
         Result := a.get_new_iterator
     end
     
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
-        Result := (<<["id", id] >>).get_new_iterator
+        Result := (<<["id", id.box] >>).get_new_iterator
     end
     
     dependents: ITERATOR[STORABLE] is

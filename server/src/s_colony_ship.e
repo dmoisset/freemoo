@@ -75,7 +75,7 @@ feature -- Saving
     do
         Result := Precursor
         Result.add_last(["will_colonize", will_colonize])
-        Result.add_last(["can_colonize", can_colonize])
+        Result.add_last(["can_colonize", can_colonize.box])
     end
 
     dependents: ITERATOR[STORABLE] is

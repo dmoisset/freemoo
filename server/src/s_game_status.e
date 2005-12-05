@@ -75,16 +75,16 @@ feature {STORAGE} -- Saving
 
 	fields: ITERATOR[TUPLE [STRING, ANY]] is
 	do
-		Result := (<< ["open_slots", open_slots],
-					 ["started", started],
-					 ["finished", finished],
-					 ["date", date],
-					 ["galaxy_size", galaxy_size],
-					 ["galaxy_age", galaxy_age],
-					 ["start_tech_level", start_tech_level],
-					 ["tactical_combat", tactical_combat],
-					 ["random_events", random_events],
-					 ["antaran_attacks", antaran_attacks]
+		Result := (<< ["open_slots", open_slots.box],
+					 ["started", started.box],
+					 ["finished", finished.box],
+					 ["date", date.box],
+					 ["galaxy_size", galaxy_size.box],
+					 ["galaxy_age", galaxy_age.box],
+					 ["start_tech_level", start_tech_level.box],
+					 ["tactical_combat", tactical_combat.box],
+					 ["random_events", random_events.box],
+					 ["antaran_attacks", antaran_attacks.box]
 					 >>).get_new_iterator
 	end
 	

@@ -36,13 +36,13 @@ feature {STORAGE} -- Saving
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     do
         Result := (<<["colony", colony],
-                     ["climate", climate - climate_min],
-                     ["mineral", mineral - mnrl_min],
-                     ["size", size - plsize_min],
-                     ["gravity", gravity - grav_min],
-                     ["type", type - type_min],
-                     ["special", special - plspecial_min],
-                     ["orbit", orbit]
+                     ["climate", (climate - climate_min).box],
+                     ["mineral", (mineral - mnrl_min).box],
+                     ["size", (size - plsize_min).box],
+                     ["gravity", (gravity - grav_min).box],
+                     ["type", (type - type_min).box],
+                     ["special", (special - plspecial_min).box],
+                     ["orbit", orbit.box]
                      ["orbit_center", orbit_center]
                      >>).get_new_iterator
     end

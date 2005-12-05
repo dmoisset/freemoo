@@ -69,7 +69,7 @@ feature {STORAGE} -- Saving
 
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     do
-    Result := (<<["producing", producing-product_min],
+    Result := (<<["producing", (producing-product_min).box],
              ["owner", owner],
              ["location", location]
              >>).get_new_iterator
@@ -77,7 +77,7 @@ feature {STORAGE} -- Saving
     
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
-        Result := (<<["id", id] >>).get_new_iterator
+        Result := (<<["id", id.box] >>).get_new_iterator
     end
     
     dependents: ITERATOR[STORABLE] is
