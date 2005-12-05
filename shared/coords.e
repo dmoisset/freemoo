@@ -27,7 +27,7 @@ feature {STORAGE} -- Saving
     
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     do
-	Result := (<<["x", x], ["y", y]>>).get_new_iterator
+	Result := (<<["x", x.box], ["y", y.box]>>).get_new_iterator
     end
     
 feature {STORAGE} -- Retrieving
