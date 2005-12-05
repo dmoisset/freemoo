@@ -199,9 +199,9 @@ feature {STORAGE} -- Saving
     do
         create a.make(1, 0)
         a.add_last(["ruler_name", ruler_name])
-        a.add_last(["money", money])
-        a.add_last(["color", color])
-        a.add_last(["state", state])
+        a.add_last(["money", money.box])
+        a.add_last(["color", color.box])
+        a.add_last(["state", state.box])
         a.add_last(["password", password])
         a.add_last(["race", race])
         add_to_fields(a, "colony", colonies.get_new_iterator_on_items)
@@ -212,7 +212,7 @@ feature {STORAGE} -- Saving
     
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
-        Result := (<<["id", id],
+        Result := (<<["id", id.box],
                      ["name", name]
                      >>).get_new_iterator
     end
