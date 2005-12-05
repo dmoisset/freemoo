@@ -111,6 +111,7 @@ feature -- Access
             if pop_it.item.race.subterranean /= subterranean then
                 aliens := aliens + 1
             end
+            pop_it.next
         end
         if subterranean then
             Result := Result - (location.subterranean_maxpop_bonus * 
@@ -209,6 +210,9 @@ feature -- Operations
 
     new_turn is
     do
+        recalculate_production
+        population := population + population_growth
+        -- Do stuff if population goes above max or below min?
         inspect
             producing
         when product_none then

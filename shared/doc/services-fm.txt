@@ -73,7 +73,7 @@ COLONY
   Name: "colony"+id (id is a digit sequesnce = colony.id)
   Provided: Before reporting colony on player.
   Description: Detailed colony description.
-  Format: "i" <<producing>>
+  Format: "ii" <<producing, population>>
 
 RACE
   Name: "race"+id (id is a digit sequence = race.id)

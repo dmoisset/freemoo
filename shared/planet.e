@@ -140,6 +140,11 @@ feature -- Access
 
     orbit: INTEGER
 
+    name: STRING is
+    do
+        Result := orbit_center.name + " " + roman @ orbit2planet_number    
+    end
+
     is_colonizable: BOOLEAN is
     do
         Result := type = type_planet and colony = Void
@@ -152,6 +157,7 @@ feature -- Access
     end
 
 feature {STAR} -- To keep consistent orbits
+
     set_orbit (neworbit: INTEGER) is
     require
         neworbit.in_range (1, orbit_center.Max_planets)
@@ -171,7 +177,23 @@ feature -- Factory methods
         create Result.make(Current, p)
     end
     
-    
+feature {NONE} -- Internal for naming
+
+    orbit2planet_number:INTEGER is
+    local
+        i: INTEGER
+    do
+        from i := 1 until i > orbit loop
+            if orbit_center.planet_at (i) /= Void then Result := Result + 1 end
+            i := i + 1
+        end
+    end
+   
+    roman: ARRAY[STRING] is
+    once
+        Result := << "I", "II", "III", "IV", "V" >>
+    end
+
 invariant
     orbit_center /= Void
     climate.in_range (climate_min, climate_max)

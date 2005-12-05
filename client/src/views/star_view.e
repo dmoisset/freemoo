@@ -314,7 +314,7 @@ feature -- Controls
         if p.type = type_gasgiant then
             text := "Gas Giant (Uninhabitable)"
         else
-            text := star.name + " " + roman @ orbit2planet_number(p.orbit) + "%N" +
+            text := p.name + "%N" +
                     plsize_names @ p.size + ", " +
                     climate_names @ p.climate + "%N" +
                     mineral_names @ p.mineral + "  " +
@@ -476,18 +476,6 @@ feature {NONE} -- Internal
         Result := [x.rounded, y.rounded]
     end
 
-    orbit2planet_number(orbit:INTEGER):INTEGER is
-    require
-        orbit.in_range(1, star.Max_planets)
-    local
-        i: INTEGER
-    do
-        from i := 1 until i > orbit loop
-            if star.planet_at (i) /= Void then Result := Result + 1 end
-            i := i + 1
-        end
-    end
-
 feature {NONE} -- Internal constants
 
     -- These numbers are in pixels:
@@ -499,10 +487,5 @@ feature {NONE} -- Internal constants
 
     di: REAL is .2    -- date increment, amount to increase orbit position
                       -- each turn, in radians
-
-    roman: ARRAY[STRING] is
-    once
-        Result := << "I", "II", "III", "IV", "V" >>
-    end
 
 end -- class STAR_VIEW

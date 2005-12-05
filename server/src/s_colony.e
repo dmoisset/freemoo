@@ -34,6 +34,7 @@ feature -- Service related
     do
         !!s.make
         s.add_integer(producing - product_min)
+        s.add_integer(population)
         Result := s.serialized_form
     end
 
