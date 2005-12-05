@@ -385,7 +385,7 @@ feature -- Operations
         i: ITERATOR [like last_fleet]
         dead: HASHED_SET [like last_fleet]
     do
-        !!dead.make
+        create dead.make
         from i := fleets.get_new_iterator_on_items until i.is_off loop
             if i.item.ship_count = 0 then
                 dead.add(i.item)

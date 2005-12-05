@@ -308,13 +308,13 @@ feature {NONE} -- Internal
     colonize_all is
         -- Colonization
     local
-        candidates: HASHED_DICTIONARY[SET[S_COLONY_SHIP], S_PLANET]
+        candidates: HASHED_DICTIONARY[HASHED_SET[S_COLONY_SHIP], S_PLANET]
         fleet_back_reference: HASHED_DICTIONARY[S_FLEET, S_COLONY_SHIP]
         colony_ship: S_COLONY_SHIP
         f_it: ITERATOR[S_FLEET]
         s_it: ITERATOR[S_SHIP]
         cs_it: ITERATOR[S_COLONY_SHIP]
-        ships: ITERATOR[SET[S_COLONY_SHIP]]
+        ships: ITERATOR[HASHED_SET[S_COLONY_SHIP]]
     do
         create candidates.make
         create fleet_back_reference.make
