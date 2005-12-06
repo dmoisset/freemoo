@@ -153,7 +153,7 @@ feature -- Access
     subterranean_maxpop_bonus: INTEGER is
         -- Extra maximum population a subterranean race can fit on this planet
     do
-        Result := 2 * size - (plsize_min + 1)
+        Result := 2 * (size - (plsize_min + 1))
     end
 
 feature {STAR} -- To keep consistent orbits

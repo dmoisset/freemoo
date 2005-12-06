@@ -4,6 +4,8 @@ inherit
     RACE
     SUBSCRIBER
 
+creation make
+
 feature
 
     on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
@@ -11,6 +13,7 @@ feature
     local
         s: UNSERIALIZER
     do
+        print ("in race's on_message!%N")
         !!s.start (msg)
         unserialize_from(s)
     end

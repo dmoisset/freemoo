@@ -38,7 +38,7 @@ feature -- Operations
         total := total + amount
     ensure
         get_amount_due_to(reason) = old get_amount_due_to(reason) + amount
-        total = old total + amount
+        (total - (old total + amount)).abs < 0.000001 -- I really, really hate this hack
     end
 
     eliminate(reason: STRING) is

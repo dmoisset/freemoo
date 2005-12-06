@@ -4,6 +4,7 @@ inherit
     COLONY
     redefine make end
     SUBSCRIBER
+    CLIENT
 
 creation
     make
@@ -22,12 +23,31 @@ feature
         -- Action when `msg' arrives from `provider''s `service'
     local
         s: UNSERIALIZER
+        pop_count: INTEGER
+        race: RACE
+        populator: POPULATION_UNIT
     do
         !!s.start (msg)
         s.get_integer
         producing := s.last_integer + product_min
         s.get_integer
         population := s.last_integer
+        s.get_integer
+        populators.clear
+        print (s.last_integer.to_string + " populators.%N")
+        from
+            pop_count := s.last_integer
+        until
+            pop_count = 0
+        loop
+            print ("Creating 1 population unit...%N")
+            s.get_integer
+            race := server.player_list.item_with_race_id(s.last_integer).race
+            create populator.make(race, Current)
+            populator.unserialize_from(s)
+            populators.add_last(populator)
+            pop_count := pop_count - 1
+        end
         changed.emit(Current)
     end
 

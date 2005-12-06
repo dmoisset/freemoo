@@ -88,6 +88,7 @@ feature -- Operations
     local
         rlname, rcname: STRING
         race_picture: INTEGER
+        race_id: INTEGER
     do
         rlname := ""
         rcname := ""
@@ -95,10 +96,11 @@ feature -- Operations
         if race /= Void then
             race_picture := race.picture
             if race.name /= Void then rcname := race.name end
+            race_id := race.id
         else
             race_picture := 0
         end
-        s.add_tuple (<<id.box, name, rlname, rcname, race_picture.box,
+        s.add_tuple (<<id.box, name, rlname, rcname, race_id.box, race_picture.box,
                        color.box, state.box, (connection /= Void).box>>)
     end
 

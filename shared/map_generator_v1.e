@@ -198,9 +198,28 @@ feature {NONE} -- Planet Generation
     local
         special, orbit, idx: INTEGER
         other: STAR
+        star_it: ITERATOR[STAR]
     do
         if star.kind /= kind_blackhole and not dont_touch.has(star) then
             special := star_specials.random_item
+            if special = stspecial_wormhole then
+            -- Can't add a wormhole if there are no stars left.
+            -- If we're trying to add a wormhole to the last star, just
+            -- leave it as stspecial_nospecial
+                from
+                    star_it := galaxy.get_new_iterator_on_stars
+                until
+                    (star_it.item.kind /= kind_blackhole and
+                    not dont_touch.has(star) and
+                    star_it.item /= star) or
+                    star_it.is_off
+                loop
+                    star_it.next
+                end
+                if star_it.is_off then
+                    special := stspecial_nospecial
+                end
+            end
             star.set_special(special)
             if special /= stspecial_nospecial then
                 dont_touch.add(star)

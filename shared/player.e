@@ -122,6 +122,7 @@ feature -- Query
             climate := climate.max(p.climate_terran)
         end
         Result := (p.planet_maxpop @ p.size) @ climate
+        print ("Size: " + (p.size - p.plsize_min).to_string + " Climate: " + (climate-p.climate_min).to_string + " maxpop: " + Result.to_string + "%N")
         -- Consider subterranean bonus
         if race.subterranean then
             Result := Result + p.subterranean_maxpop_bonus

@@ -53,7 +53,9 @@ feature -- Operations
             server.register (galaxy, i.item.id.to_string+":enemy_colonies")
             server.register (galaxy, i.item.id.to_string+":new_fleets")
             server.register (Current, i.item.id.to_string+":dialogs")
+            server.register (i.item.race, "race" + i.item.race.id.to_string)
             server.register (i.item, "player"+i.item.id.to_string)
+            print ("race" + i.item.race.id.to_string + "%N")
             i.next
         end
         -- Register stars

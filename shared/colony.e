@@ -66,20 +66,25 @@ feature -- Access
         maxpop: INTEGER
     do
         maxpop := max_population
+        print ("Max pop: " + maxpop.to_string + "%N")
         Result := ((2000 * (maxpop - populators.count)) /
                             (populators.count * maxpop)).sqrt.rounded
+        print ("Natural growth: " + Result.to_string + "%N")
         -- Consider racial modifiers
         Result := Result * (100 + owner.race.population_growth) // 100
+        print ("With Racial Modifiers: " + Result.to_string + "%N")
         -- Consider Advances
         -- ... (Microbiotics, Universal Antidote)...
         -- Consider constructions and events
         Result := Result + extra_population_growth
+        print ("With Extra Population Growth: " + Result.to_string + "%N")
         -- Consider Housing Production
         if producing = product_housing then
             Result := Result + (industry.total *
                                (25 * (maxpop - populators.count) /
                                      (maxpop * populators.count)).sqrt).rounded
         end
+        print ("With Housing: " + Result.to_string + "%N")
         -- Consider Leader Ability
         -- Consider Missing Food
         if owner.race.cybernetic then
@@ -88,6 +93,8 @@ feature -- Access
         else
             Result := Result - 50 * (populators.count - farming.total.rounded).max(0)
         end
+        print ("  (farming.total.rounded: " + farming.total.rounded.to_string + ")%N")
+        print ("With Missing Food: " + Result.to_string + "%N")
     end
 
     max_population: INTEGER is
@@ -99,6 +106,7 @@ feature -- Access
         pop_it: ITERATOR[POPULATION_UNIT]
     do
         Result := owner.max_population_on(location)
+        print ("owner.max_population_on(location): " + Result.to_string + "%N")
         -- Consider constructions
         Result := Result + extra_max_population
         -- Consider biodiversity
@@ -113,6 +121,9 @@ feature -- Access
             end
             pop_it.next
         end
+        print ("Subterranean_maxpop_bonus: " + location.subterranean_maxpop_bonus.to_string + "%N")
+        print ("location.subterranean_maxpop_bonus * aliens / populators.count: " + (location.subterranean_maxpop_bonus * 
+               aliens / populators.count).to_string + "%N")
         if subterranean then
             Result := Result - (location.subterranean_maxpop_bonus * 
                                 aliens / populators.count).ceiling
@@ -140,6 +151,7 @@ feature -- Access
         science.clear
         money.clear
         -- Population Units
+        print ("(in recalculate_producation: " + populators.count.to_string + " populators%N")
         from
             pop_it := populators.get_new_iterator
         until
@@ -148,6 +160,7 @@ feature -- Access
             pop_it.item.produce
             pop_it.next
         end
+        print ("   After population units: " + farming.total.to_string + " " + industry.total.to_string + " " + science.total.to_string + " " + money.total.to_string + "%N")
         -- Buildings' proportional
         from
             const_it := constructions.get_new_iterator
@@ -157,15 +170,18 @@ feature -- Access
             const_it.item.produce_proportional(Current)
             const_it.next
         end
+        print ("   After buildings proportional: " + farming.total.to_string + " " + industry.total.to_string + " " + science.total.to_string + " " + money.total.to_string + "%N")
         -- Morale Bonus
-        farming.add(farming.total * morale.total * 0.1, l("Morale Bonus"))
-        industry.add(industry.total * morale.total * 0.1, l("Morale Bonus"))
-        science.add(science.total * morale.total * 0.1, l("Morale Bonus"))
-        money.add(money.total * morale.total * 0.1, l("Morale Bonus"))
+        farming.add(farming.total * morale.total * 0.01, l("Morale Bonus"))
+        industry.add(industry.total * morale.total * 0.01, l("Morale Bonus"))
+        science.add(science.total * morale.total * 0.01, l("Morale Bonus"))
+        money.add(money.total * morale.total * 0.01, l("Morale Bonus"))
+        print ("   After morale bonus (" + morale.total.to_string + "): " + farming.total.to_string + " " + industry.total.to_string + " " + science.total.to_string + " " + money.total.to_string + "%N")
         -- Government Bonus
-        farming.add(farming.total * (1 + owner.race.food_multiplier * 0.01), l("Government Bonus"))
-        industry.add(industry.total * (1 + owner.race.industry_multiplier * 0.01), l("Government Bonus"))
-        science.add(science.total * (1 + owner.race.science_multiplier * 0.01), l("Government Bonus"))
+        farming.add(farming.total * owner.race.food_multiplier * 0.01, l("Government Bonus"))
+        industry.add(industry.total * owner.race.industry_multiplier * 0.01, l("Government Bonus"))
+        science.add(science.total * owner.race.science_multiplier * 0.01, l("Government Bonus"))
+        print ("   After government bonus: " + farming.total.to_string + " " + industry.total.to_string + " " + science.total.to_string + " " + money.total.to_string + "%N")
         -- Leader Bonus
         -- Pollution
         if not owner.race.tolerant then
@@ -180,6 +196,7 @@ feature -- Access
                 const_it.next
             end
         end
+        print ("   After pollution: " + farming.total.to_string + " " + industry.total.to_string + " " + science.total.to_string + " " + money.total.to_string + "%N")
         -- Buildings fixed production
         from
             const_it := constructions.get_new_iterator
@@ -189,6 +206,7 @@ feature -- Access
             const_it.item.produce_fixed(Current)
             const_it.next
         end
+        print ("   After buildings fixed production: " + farming.total.to_string + " " + industry.total.to_string + " " + science.total.to_string + " " + money.total.to_string + "%N")
     end
 
 feature -- Constants
@@ -211,7 +229,7 @@ feature -- Operations
     new_turn is
     do
         recalculate_production
-        population := population + population_growth
+        if 
         -- Do stuff if population goes above max or below min?
         inspect
             producing
@@ -227,6 +245,7 @@ feature -- Operations
             shipyard := ship_factory.last_colony_ship
             set_producing(product_starship)
         end
+        population := population + population_growth
     end
 
 feature -- Operations

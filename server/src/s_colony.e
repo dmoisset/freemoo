@@ -31,10 +31,17 @@ feature -- Service related
     subscription_message (service_id: STRING): STRING is
     local
         s: SERIALIZER2
+        i: ITERATOR[POPULATION_UNIT]
     do
         !!s.make
         s.add_integer(producing - product_min)
         s.add_integer(population)
+        s.add_integer(populators.count)
+        from i := populators.get_new_iterator until i.is_off loop
+            s.add_integer(i.item.race.id)
+            i.item.serialize_on(s)
+            i.next
+        end
         Result := s.serialized_form
     end
 

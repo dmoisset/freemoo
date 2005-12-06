@@ -345,6 +345,23 @@ feature -- Operations
         transdimensional := s.last_boolean
         s.get_boolean
         warlord := s.last_boolean
+        print ("----%NRace " + id.to_string + "%Nname:" + name + "%Nhomeworld_name:" + homeworld_name
+          + "%Npopulation_growth:" + population_growth.to_string + "%Nfarming_bonus: " + farming_bonus.to_string
+          + "%Nindustry_bonus:" + industry_bonus.to_string + "%Nscience_bonus:" + science_bonus.to_string
+          + "%Nmoney_bonus:" + money_bonus.to_string + "%Nship_defense_bonus:" + ship_defense_bonus.to_string
+          + "%Nship_attack_bonus:" + ship_attack_bonus.to_string + "%Nground_combat_bonus:"
+          + ground_combat_bonus.to_string + "%Nspying_bonus:" + spying_bonus.to_string + "%Ngovernment:"
+          + (government-government_feudal).to_string + "%Nhomeworld_size:" + homeworld_size.to_string
+          + "%Nhomeworld_gravity:" + homeworld_gravity.to_string + "%Nhomeworld_richness:"
+          + homeworld_richness.to_string + "%Nancient_artifacts:" + ancient_artifacts.to_string + "%Naquatic:"
+          + aquatic.to_string + "%Nsubterranean:" + subterranean.to_string + "%Ncybernetic:"
+          + cybernetic.to_string + "%Nlithovore:" + lithovore.to_string + "%Nrepulsive:" + repulsive.to_string
+          + "%Ncharismatic:" + charismatic.to_string + "%Nuncreative:" + uncreative.to_string + "%Ncreative:"
+          + creative.to_string + "%Ntolerant:" + tolerant.to_string + "%Nfantastic_trader:"
+          + fantastic_trader.to_string + "%Ntelepathic:" + telepathic.to_string
+          + "%Nlucky:" + lucky.to_string + "%Nomniscient:" + omniscient.to_string + "%Nstealthy:"
+          + stealthy.to_string + "%Ntransdimensional:" + transdimensional.to_string + "%Nwarlord:"
+          + warlord.to_string + "%N----%N")
     end
 
 feature {NONE} -- Creation

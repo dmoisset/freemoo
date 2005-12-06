@@ -40,12 +40,15 @@ feature -- Operation
 
     produce is
     do
+        print ("In produce!%N")
         inspect
             task
         when task_farming then
             colony.farming.add(colony.location.planet_farming @ colony.location.climate, l("Produced by farmers"))
+            print ("Produced farming: " + (colony.location.planet_farming @ colony.location.climate).to_string + "%N")
             if race.farming_bonus /= 0 then
                 colony.farming.add(race.farming_bonus, format(l("~1~ Bonus"), <<race.name>>))
+                print ("Produced racial bonus: " + race.farming_bonus.to_string + "%N")
             end
         when task_industry then
             colony.industry.add(colony.location.planet_industry @ colony.location.mineral, l("Produced by workers"))
@@ -92,6 +95,21 @@ feature {NONE} -- Creation
         race := r
         colony := c
         task := task_farming
+    end
+
+feature -- Serialization
+
+    serialize_on (s: SERIALIZER2) is
+    do
+        s.add_tuple (<<turns_to_assimilation.to_boolean.box, (task - task_farming).box>>)
+    end
+
+    unserialize_from (s: UNSERIALIZER) is
+    do
+        s.get_boolean
+        turns_to_assimilation := s.last_boolean.to_integer
+        s.get_integer
+        task := s.last_integer + task_farming
     end
 
 invariant

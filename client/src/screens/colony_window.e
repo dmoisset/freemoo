@@ -12,6 +12,7 @@ feature
     require
         c /= Void
     do
+        c.recalculate_production
         name.set_colony(c)
         population.set_colony(c)
     end
