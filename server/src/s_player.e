@@ -8,7 +8,8 @@ inherit
         copy, is_equal
     redefine
         add_to_known_list, add_to_visited_list, colony_type,
-        star_type, race, set_ruler_name, set_race, set_color, add_colony
+        star_type, race, set_ruler_name, set_race, set_color, add_colony,
+        remove_colony
     select id end
     STORABLE
     rename
@@ -179,6 +180,13 @@ feature {COLONY} -- Redefined features
         Precursor(c)
         server.register(c, "colony" + c.id.to_string)
         update_clients
+    end
+
+    remove_colony(c: like colony_type) is
+    do
+        server.unregister("colony" + c.id.to_string)
+        update_clients
+        Precursor(c)
     end
 
 feature -- Operations

@@ -376,6 +376,7 @@ feature {NONE} -- Creation
 invariant
     government.in_range (government_feudal, government_unification)
     ship_cost_bonus <= 3 -- Otherwise ships would have negative cost    
+    picture.in_range(0, 12)
     not (creative and uncreative)
     not (charismatic and repulsive)
     not (lithovore and cybernetic)

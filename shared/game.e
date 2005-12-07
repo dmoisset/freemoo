@@ -298,6 +298,10 @@ feature {NONE} -- Internal
                         end
                         p.item.colony.clear_shipyard
                     end
+                    if p.item.colony.populators.count = 0 then
+                        p.item.set_colony(Void)
+                        -- Add something to the end-of-turn summary?
+                    end
                 end
                 p.next
             end

@@ -23,6 +23,9 @@ feature {NONE} -- Creation
         r.set_with_size(393, 19, 155, 19)
         new_population(r)
 
+        r.set_with_size(45, 72, 200, 100)
+        new_populators(r)
+
         !!a.make ("client/colony-window/close1.fma")
         !!a2.make ("client/colony-window/close2.fma")
         !BUTTON_IMAGE!close_button.make(background, 556, 449,
@@ -37,8 +40,10 @@ feature {NONE} -- Widgets
     close_button: BUTTON
     name: COLONY_NAME_VIEW
     population: COLONY_POPULATION_VIEW
+    populators: COLONY_POPULATORS_VIEW
     new_name (where: RECTANGLE) is deferred end
     new_population (where: RECTANGLE) is deferred end
+    new_populators (where: RECTANGLE) is deferred end
 
 feature {NONE} -- Callbacks
 

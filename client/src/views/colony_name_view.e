@@ -1,5 +1,5 @@
 class COLONY_NAME_VIEW
-    -- ews view for current stardate
+    -- Shows a colony's name
 
 inherit
     WINDOW

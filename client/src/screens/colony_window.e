@@ -15,6 +15,7 @@ feature
         c.recalculate_production
         name.set_colony(c)
         population.set_colony(c)
+        populators.set_colony(c)
     end
 
 feature {NONE} -- Widgets
@@ -27,6 +28,11 @@ feature {NONE} -- Widgets
     new_population(where: RECTANGLE) is
     do
         !!population.make(Current, where)
+    end
+
+    new_populators(where: RECTANGLE) is
+    do
+        !!populators.make(Current, where)
     end
 
 end -- class COLONY_WINDOW

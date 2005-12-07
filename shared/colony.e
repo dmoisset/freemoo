@@ -42,6 +42,17 @@ feature {NONE} -- Creation
         producing = product_none
     end
 
+
+    remove is
+        -- Remove self from the game
+    do
+        location.set_colony (Void)
+        owner.remove_colony(Current)
+    ensure
+        location.colony = Void
+        not owner.colonies.has(id)
+    end
+
 feature -- Access
 
     producing: INTEGER
@@ -126,7 +137,10 @@ feature -- Access
         print ("Subterranean_maxpop_bonus: " + location.subterranean_maxpop_bonus.to_string + "%N")
         print ("location.subterranean_maxpop_bonus * aliens / populators.count: " + (location.subterranean_maxpop_bonus * 
                aliens / populators.count).to_string + "%N")
-        if subterranean then
+        if subterranean and populators.count > 0 then
+            -- This coming code breaks if populators.count = 0
+            -- It happens when a colony dies of starvation, on the client, just
+            -- before the colony is removed
             Result := Result - (location.subterranean_maxpop_bonus * 
                                 aliens / populators.count).ceiling
         else
@@ -241,7 +255,7 @@ feature -- Operations
         until
             new_population // 1000 = population // 1000
         loop
-            if new_population // 1000 < population // 1000 then
+            if new_population // 1000 > population // 1000 then
                 create new_populator.make(owner.race, Current)
                 populators.add_last(new_populator)
                 population := population + 1000
@@ -249,22 +263,28 @@ feature -- Operations
                 populators.remove_last
                 population := population - 1000
             end
+            print ("population: " + population.to_string + "  new_population: " + new_population.to_string + "%N")
         end
         population := new_population
         
-        inspect
-            producing
-        when product_none then
-            -- Nothing to do this turn
-        when product_starship then
-            ship_factory.create_starship(owner)
-            ship_factory.last_starship.set_name("Enterprise")
-            shipyard := ship_factory.last_starship
-            set_producing(product_colony_ship)
-        when product_colony_ship then
-            ship_factory.create_colony_ship(owner)
-            shipyard := ship_factory.last_colony_ship
-            set_producing(product_starship)
+        print ("population: " + population.to_string + "  populators.count: " + populators.count.to_string + "%N")
+        if populators.count = 0 then
+            remove
+        else
+            inspect
+                producing
+            when product_none then
+                -- Nothing to do this turn
+            when product_starship then
+                ship_factory.create_starship(owner)
+                ship_factory.last_starship.set_name("Enterprise")
+                shipyard := ship_factory.last_starship
+                set_producing(product_colony_ship)
+            when product_colony_ship then
+                ship_factory.create_colony_ship(owner)
+                shipyard := ship_factory.last_colony_ship
+                set_producing(product_starship)
+            end
         end
     end
 

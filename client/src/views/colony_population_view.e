@@ -1,5 +1,5 @@
 class COLONY_POPULATION_VIEW
-    -- ews view for current stardate
+    -- Shows a colony's total population and it's growth for next turn
 
 inherit
     WINDOW
@@ -36,7 +36,7 @@ feature -- Redefined features
         s: STRING
         growth: INTEGER
     do
-        s := "Population: " + colony.population.to_string + "000 ("
+        s := "Population: " + colony.population.to_string + "k ("
         growth := colony.population_growth
         if growth >= 0 then
           s := s + "+"

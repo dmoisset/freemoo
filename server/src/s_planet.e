@@ -21,7 +21,7 @@ feature
         -- Result := Precursor(p) -- We don't do this because SE chokes
         create Result.make (Current, p)
     end
-    
+
 feature -- Saving
 
     hash_code: INTEGER is
