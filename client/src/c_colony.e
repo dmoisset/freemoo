@@ -25,15 +25,17 @@ feature
         s: UNSERIALIZER
         pop_count: INTEGER
         race: RACE
+        new_populators: ARRAY[POPULATION_UNIT]
+        new_population: INTEGER
         populator: POPULATION_UNIT
     do
         !!s.start (msg)
         s.get_integer
         producing := s.last_integer + product_min
         s.get_integer
-        population := s.last_integer
+        new_population := s.last_integer
         s.get_integer
-        populators.clear
+        create new_populators.make(1,0)
         print (s.last_integer.to_string + " populators.%N")
         from
             pop_count := s.last_integer
@@ -45,9 +47,11 @@ feature
             race := server.player_list.item_with_race_id(s.last_integer).race
             create populator.make(race, Current)
             populator.unserialize_from(s)
-            populators.add_last(populator)
+            new_populators.add_last(populator)
             pop_count := pop_count - 1
         end
+        population := new_population
+        populators := new_populators
         changed.emit(Current)
     end
 

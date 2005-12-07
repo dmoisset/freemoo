@@ -14,6 +14,8 @@ feature {NONE} -- Creation
     require
         p /= Void
         o /= Void
+    local
+        first_populator: POPULATION_UNIT
     do
         make_unique_id
         producing := product_none
@@ -27,13 +29,13 @@ feature {NONE} -- Creation
         -- .. Consider morale techs (Virtual Reality Network, Psionics)...
         create constructions.make(1, 0)
         create populators.make(1, 0)
-        population := 1000
-        populators.add_last(create {POPULATION_UNIT}.make(o.race, Current))
-        
         location := p
         p.set_colony (Current)
         owner := o
         o.add_colony(Current)
+        create first_populator.make(o.race, Current)
+        populators.add_last(first_populator)
+        population := 1000
     ensure
         location = p
         p.colony = Current
@@ -227,10 +229,29 @@ feature -- Constants
 feature -- Operations
 
     new_turn is
+    local
+        new_population: INTEGER
+        new_populator: POPULATION_UNIT
     do
         recalculate_production
-        if 
-        -- Do stuff if population goes above max or below min?
+        new_population := population + population_growth
+        from
+            -- First create population_units and then add to maintain class
+            -- invariants in colony and population_unit
+        until
+            new_population // 1000 = population // 1000
+        loop
+            if new_population // 1000 < population // 1000 then
+                create new_populator.make(owner.race, Current)
+                populators.add_last(new_populator)
+                population := population + 1000
+            else
+                populators.remove_last
+                population := population - 1000
+            end
+        end
+        population := new_population
+        
         inspect
             producing
         when product_none then
@@ -245,7 +266,6 @@ feature -- Operations
             shipyard := ship_factory.last_colony_ship
             set_producing(product_starship)
         end
-        population := population + population_growth
     end
 
 feature -- Operations
@@ -344,7 +364,7 @@ feature {CONSTRUCTION} -- Special cases
         -- Increased maximum population for this colony
 
 invariant
-    populators.count = population // 1000
+    population // 1000 = populators.count
     valid_producing: producing.in_range (product_min, product_max)
     populators /= Void
     constructions /= Void

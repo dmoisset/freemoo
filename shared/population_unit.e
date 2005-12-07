@@ -95,6 +95,9 @@ feature {NONE} -- Creation
         race := r
         colony := c
         task := task_farming
+        if not able_farmer then
+            task := task_industry
+        end
     end
 
 feature -- Serialization
@@ -116,4 +119,7 @@ invariant
     race /= Void
     colony /= Void
     task.in_range(task_farming, task_science)
+    task = task_farming implies able_farmer
+    task = task_industry implies able_worker
+    task = task_science implies able_scientist
 end -- class POPULATION_UNIT
