@@ -1,10 +1,10 @@
 class S_COLONY
-    
+
 inherit
     COLONY
-    redefine 
+    redefine
         owner, location, shipyard, ship_factory,
-        new_turn, set_producing
+        new_turn, set_producing, set_task
     end
     STORABLE
     rename
@@ -15,9 +15,9 @@ inherit
     SERVICE
         redefine subscription_message end
     SERVER_ACCESS
-    
+
 creation make
-    
+
 feature -- Service related
 
     update_clients is
@@ -37,8 +37,7 @@ feature -- Service related
         s.add_integer(producing - product_min)
         s.add_integer(population)
         s.add_integer(populators.count)
-        from i := populators.get_new_iterator until i.is_off loop
-            s.add_integer(i.item.race.id)
+        from i := populators.get_new_iterator_on_items until i.is_off loop
             i.item.serialize_on(s)
             i.next
         end
@@ -46,11 +45,11 @@ feature -- Service related
     end
 
 feature -- Redefined features
-    
+
     location: S_PLANET
-    
+
     owner: S_PLAYER
-    
+
     shipyard: S_SHIP
 
     ship_factory: S_SHIP_FACTORY
@@ -70,30 +69,36 @@ feature -- Redefined features
         update_clients
     end
 
+    set_task(pops: HASHED_SET[POPULATION_UNIT]; task: INTEGER) is
+    do
+        Precursor(pops, task)
+        update_clients
+    end
+
 feature {STORAGE} -- Saving
 
     get_class: STRING is "COLONY"
 
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     do
-    Result := (<<["producing", (producing-product_min).box],
-             ["owner", owner],
-             ["location", location]
-             >>).get_new_iterator
+        Result := (<<["producing", (producing-product_min).box],
+                     ["owner", owner],
+                     ["location", location]
+                     >>).get_new_iterator
     end
-    
+
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
         Result := (<<["id", id.box] >>).get_new_iterator
     end
-    
+
     dependents: ITERATOR[STORABLE] is
     do
         Result := (<<owner, location>>).get_new_iterator
     end
 
 feature {STORAGE} -- Retrieving
-    
+
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
@@ -107,7 +112,7 @@ feature {STORAGE} -- Retrieving
             elems.next
         end
     end
-    
+
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]

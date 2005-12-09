@@ -12,6 +12,7 @@ feature -- Constants
     msgtype_turn: INTEGER is 40
     msgtype_fleet: INTEGER is 41
     msgtype_colonize: INTEGER is 42
+    msgtype_task: INTEGER is 43
 
     msgtype_join_accept: INTEGER is 32
     msgtype_join_reject: INTEGER is 33

@@ -30,7 +30,7 @@ feature {NONE} -- Creation
         galaxy.fleets_change.connect (agent on_fleets_change)
         galaxy.star_change.connect (agent on_star_change)
         galaxy.map_change.connect (agent on_map_change)
-        
+
         window_make (w, where)
         -- Load images
         !!a.make ("client/galaxy-view/background.fma")
@@ -212,7 +212,7 @@ feature -- Redefined features
                 when 3 then center_on (b.x, b.y)
                 when 4 then zoom_in (b.x, b.y)
                 when 5 then zoom_out (b.x, b.y)
-                else 
+                else
                     --
                 end
             else
@@ -452,7 +452,7 @@ feature {NONE} -- Event handlers
             trajectory_window.send_behind(fleet_window)
         end
     end
-    
+
 
 
 feature {NONE} -- Internal functions

@@ -27,16 +27,16 @@ feature -- Access
 
     color: INTEGER
         -- a unique color
-        
+
     colonies: HASHED_DICTIONARY [like colony_type, INTEGER]
         -- Colonies owned by this player
-        
+
     knows_star: HASHED_SET[like star_type]
         -- Stars known by this player
-    
+
     has_visited_star: HASHED_SET[like star_type]
         -- Stars visited by this player
-    
+
     fuel_range: REAL
         -- Distance our ships can travel from our colonies
 
@@ -60,10 +60,9 @@ feature -- Access
 
     state: INTEGER
         -- State on the game
-    
-    
+
 feature -- Query
-    
+
     is_in_range(dest: STAR; fleet: FLEET; ss: HASHED_SET[SHIP]): BOOLEAN is
         -- Can these ships reach dest with our current fuel range?
     require
@@ -122,7 +121,6 @@ feature -- Query
             climate := climate.max(p.climate_terran)
         end
         Result := (p.planet_maxpop @ p.size) @ climate
-        print ("Size: " + (p.size - p.plsize_min).to_string + " Climate: " + (climate-p.climate_min).to_string + " maxpop: " + Result.to_string + "%N")
         -- Consider subterranean bonus
         if race.subterranean then
             Result := Result + p.subterranean_maxpop_bonus
@@ -159,7 +157,7 @@ feature {PLAYER_LIST} -- Operations
     ensure
         ruler_name = new_ruler_name
     end
-    
+
     set_fuel_range (new_range: REAL) is
     require
         new_range > 0
@@ -197,23 +195,23 @@ feature {COLONY} -- Operations
     ensure
         not colonies.has (colony.id)
     end
-    
-feature {MAP_GENERATOR, FLEET} 
+
+feature {MAP_GENERATOR, FLEET}
 
     add_to_known_list (star: like star_type) is
     do
         knows_star.add (star)
     end
-    
+
     add_to_visited_list (star: like star_type) is
     do
         has_visited_star.add (star)
     end
 
 feature -- Anchors
-    
+
     colony_type: COLONY
-    
+
     star_type: STAR
 
 invariant

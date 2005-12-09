@@ -74,7 +74,7 @@ COLONY
   Provided: Before reporting colony on player.
   Description: Detailed colony description.
   Format: "iii" <<producing, population, populators_count>>, followed by a sequence of
-          "ibi" <<race_id, captive (not assimilated), task>> one per populator
+          "iibi" <<id, race_id, captive (not assimilated), task>> one per populator
 
 RACE
   Name: "race"+id (id is a digit sequence = race.id)

@@ -16,14 +16,14 @@ feature {NONE} -- Creation
         Precursor (w, where)
         !!a.make ("client/colony-window/colony-background.fma")
         !!background.make (Current, 0, 0, a.images @ 1)
-        
+
         r.set_with_size(93, 19, 255, 19)
         new_name(r)
 
         r.set_with_size(393, 19, 155, 19)
         new_population(r)
 
-        r.set_with_size(45, 72, 200, 100)
+        r.set_with_size(45, 72, 200, 115)
         new_populators(r)
 
         !!a.make ("client/colony-window/close1.fma")

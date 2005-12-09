@@ -209,10 +209,10 @@ feature {NONE} -- Planet Generation
                 from
                     star_it := galaxy.get_new_iterator_on_stars
                 until
+                    star_it.is_off or else
                     (star_it.item.kind /= kind_blackhole and
                     not dont_touch.has(star) and
-                    star_it.item /= star) or
-                    star_it.is_off
+                    star_it.item /= star)
                 loop
                     star_it.next
                 end
@@ -230,7 +230,7 @@ feature {NONE} -- Planet Generation
                     star.set_special(stspecial_nospecial)
                 until
                     star.special = stspecial_wormhole
-                loop 
+                loop
                     rand.next
                     idx := rand.last_integer(galaxy.stars.count) - 1 + galaxy.stars.lower
                     other := galaxy.stars.item(idx)
@@ -461,7 +461,7 @@ feature{NONE} -- Internal Constants
 
     mindelta: REAL is 3
     maxdelta: REAL is 4
-    
+
 invariant
     size /= Void
     limit /= Void

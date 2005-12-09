@@ -58,6 +58,8 @@ feature -- Redefined features
             server.game.dialog_message (u)
         when msgtype_fleet then
             move_fleet (u)
+        when msgtype_task then
+            set_task(u)
         when msgtype_colonize then
             colonize(u)
         else
@@ -250,6 +252,58 @@ feature {NONE} -- Operations
         else
             -- Send orders
             server.game.galaxy.fleet_orders (fleet, destination, ships)
+        end
+    end
+
+
+    set_task (u: UNSERIALIZER) is
+    local
+        pops: HASHED_SET [POPULATION_UNIT]
+        pop_it: ITERATOR[POPULATION_UNIT]
+        task, count, i: INTEGER
+        colony: S_COLONY
+    do
+        -- Unserialize
+        u.get_integer
+        if player.colonies.has(u.last_integer) then
+            colony := player.colonies @ u.last_integer
+        end
+        u.get_integer
+        task := u.last_integer
+        u.get_integer
+        count := u.last_integer
+        create pops.with_capacity (count)
+        from i := 1 until i > count loop
+            u.get_integer
+            if colony /= Void and then colony.populators.has(u.last_integer) then
+                pops.add (colony.populators @ u.last_integer)
+            end
+            i := i + 1
+        end
+        -- Check consistency
+        if colony = Void then
+            print ("set_task: Invalid colony id%N")
+        elseif not task.in_range(0, 2) then
+            print ("set_task: Invalid task%N")
+        elseif count <= 0 then
+            print ("set_task: Non-positive count%N")
+        elseif pops.count < count then
+            print ("set_task: Invalid population unit ids%N")
+        else
+            task := task + pops.item(pops.lower).task_farming
+            from
+                pop_it := pops.get_new_iterator
+            until
+                pop_it.is_off or else not pop_it.item.able(task)
+            loop
+                pop_it.next
+            end
+            if not pop_it.is_off then
+                print ("set_task: Some population units are unable to perform this task")
+            else
+                -- Send orders
+                colony.set_task(pops, task)
+            end
         end
     end
 

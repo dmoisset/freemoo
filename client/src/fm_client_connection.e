@@ -92,7 +92,7 @@ feature -- Operations -- Login commands
 
     subscribe_init is
         -- subscribe to services provided on beginning
-    require 
+    require
         player /= Void
     do
         subscribe (galaxy, "galaxy")
@@ -149,6 +149,26 @@ feature -- Operations -- Game commands
         send_package (msgtype_fleet, s.serialized_form)
     end
 
+    set_task(c: COLONY; pops: SET[POPULATION_UNIT]; task: INTEGER) is
+        -- Send server a request to set all population units in `pops' 
+        -- to do `task'
+    require
+        pops.count > 0
+    local
+        s: SERIALIZER2
+        i: ITERATOR[POPULATION_UNIT]
+        normalized_task: INTEGER
+    do
+        create s.make
+        normalized_task := task - pops.item(pops.lower).task_farming
+        s.add_tuple(<<c.id.box, normalized_task.box, pops.count.box>>)
+        from i := pops.get_new_iterator until i.is_off loop
+            s.add_integer(i.item.id)
+            i.next
+        end
+        send_package(msgtype_task, s.serialized_form)
+    end
+
     colonize(f: FLEET) is
         -- Give colonize order to `f'
     require
@@ -163,7 +183,7 @@ feature -- Operations -- Game commands
         s.add_tuple(<<f.id.box>>)
         send_package(msgtype_colonize, s.serialized_form)
     end
-    
+
     dialog (id: INTEGER; response: STRING) is
         -- Send `response' to dialog `id'
     local

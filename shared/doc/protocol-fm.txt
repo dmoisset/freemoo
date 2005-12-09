@@ -129,6 +129,24 @@ CLIENT MESSAGES
   in the fleet will be marked for colonzation, but the planet will not be
   colonized until the end of the turn.
 
+
+  * Set Task
+
+  offset(bytes) name        type    Notes
+  0             msgtype     INTEGER 43
+  4             colony      INTEGER id of a colony the player owns
+  8             task        INTEGER 0-2: farming, industry, science
+  12            count       INTEGER number of population units commanded
+  16            pop_1       INTEGER id of first population unit
+  20            pop_2       INTEGER id of second population unit
+  ....
+  12+4*count    pop_count   INTEGER id of count'th population unit
+
+  Switch some population units in this colony to work on this task.
+  The colony should be owned by the current player,
+  and every population unit should be at the colony.
+  *All* population units should be able to perform the task.
+
 SERVER MESSAGES
 
 32: Join-Accept. Login complete.

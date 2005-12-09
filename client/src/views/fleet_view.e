@@ -133,7 +133,7 @@ feature {NONE} -- Creation
         scrollbar.set_value(0)
         scrollbar.set_change_handler(agent scrollbar_handler)
     end
-    
+
 feature {GALAXY_VIEW} -- Auxiliary for commanding
 
     some_ships_selected: BOOLEAN is
