@@ -3,7 +3,7 @@ class C_PLAYER
 
 inherit
     PLAYER
-    rename 
+    rename
         make as player_make
     redefine colony_type, race end
     SUBSCRIBER
@@ -81,7 +81,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             if server.galaxy.has_star (s.last_integer) then
                 star := server.galaxy.star_with_id (s.last_integer)
                 knows_star.add (star)
-                if not old_knows.has (star) then 
+                if not old_knows.has (star) then
                     -- We do the above check to avoid network overhead
                     -- Not doing iit implies we re-suscribe to the star service for
                     -- ALL stars
@@ -132,7 +132,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 -- What if a somebody bombards and then recolonizes? The next check might fail
                     check colony.id = s.last_integer end
                 end
-                if not old_colonies.has (colony.id) then 
+                if not old_colonies.has (colony.id) then
                     colony.subscribe (server, "colony"+colony.id.to_string)
                 end
                 old_colonies.remove (colony.id)
@@ -142,6 +142,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             end
             colony_count := colony_count - 1
         end
+        print ("colony count: " + colonies.count.to_string + "%N")
     end
 
 feature -- Access

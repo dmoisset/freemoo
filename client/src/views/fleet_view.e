@@ -38,8 +38,8 @@ feature {NONE} -- Creation
         fleet_changed (fleet)
         select_all
     end
- 
- 
+
+
     make_widgets is
     local
         b: BUTTON_IMAGE
@@ -567,7 +567,7 @@ feature {NONE} -- Once features
         if ship_pics.item(owner, creator).item(size, pic) = Void then
             !!imgs.make (1, 2)
             ship_pics.item(owner, creator).put(imgs, size, pic)
-            !!a.make("client/fleet-view/ships/ship" + 
+            !!a.make("client/fleet-view/ships/ship" +
                      (creator - fleet.owner.min_color).to_string +
                      size.to_string +
                      pic.to_string +

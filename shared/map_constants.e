@@ -265,7 +265,6 @@ feature -- planetary Productions
         f.read_nonempty_line
         Result := str_array_to_int_array (f.last_line.split)
         Result.reindex (climate_min)
-        print (Result)
     ensure
         Result.lower = climate_min
     end
