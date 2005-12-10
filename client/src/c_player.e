@@ -90,7 +90,6 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     old_knows.remove (star)
                 end
             else
-                print ("c_player::on_message() - Warning: server reported that we know a star that isn%'t!%N")
             end
             knows_count := knows_count - 1
         end
@@ -131,18 +130,17 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                     colony := planet.colony
 -- What if a somebody bombards and then recolonizes? The next check might fail
                     check colony.id = s.last_integer end
+                    add_colony(colony)
                 end
                 if not old_colonies.has (colony.id) then
                     colony.subscribe (server, "colony"+colony.id.to_string)
                 end
                 old_colonies.remove (colony.id)
-                colony.unserialize_from(s)
             else
                 print ("c_player::on_message() - Warning: server reported that we have a colony on a star that isn%'t!%N")
             end
             colony_count := colony_count - 1
         end
-        print ("colony count: " + colonies.count.to_string + "%N")
     end
 
 feature -- Access

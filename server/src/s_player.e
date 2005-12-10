@@ -27,13 +27,13 @@ inherit
 
 creation
     make
-    
+
 feature -- Redefined Features
-    
+
     colony_type: S_COLONY
-    
+
     star_type: S_STAR
-    
+
     race: S_RACE
 
 feature {NONE} -- Creation
@@ -117,7 +117,7 @@ feature -- Access
     do
         Result := id = other.id
     end
-    
+
 feature -- Redefined features
 
     subscription_message (service_id: STRING): STRING is
@@ -153,7 +153,7 @@ feature -- Redefined features
                 from col_it.start until col_it.is_off loop
                     s.add_integer (col_it.item.location.orbit_center.id)
                     s.add_integer (col_it.item.location.orbit)
-                    col_it.item.serialize_on(s)
+                    s.add_integer (col_it.item.id)
                     col_it.next
                 end
             end
@@ -190,7 +190,7 @@ feature {COLONY} -- Redefined features
     end
 
 feature -- Operations
-    
+
     copy(other: like Current) is
     do
         standard_copy(other)
@@ -198,7 +198,7 @@ feature -- Operations
         knows_star := clone(other.knows_star)
         has_visited_star := clone(other.has_visited_star)
     end
-    
+
 feature {STORAGE} -- Saving
 
     get_class: STRING is "PLAYER"
@@ -219,7 +219,7 @@ feature {STORAGE} -- Saving
         add_to_fields(a, "has_visited_star", has_visited_star.get_new_iterator)
         Result := a.get_new_iterator
     end
-    
+
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
         Result := (<<["id", id.box],
@@ -257,9 +257,9 @@ feature {STORAGE} -- Retrieving
             elems.next
         end
     end
-    
+
 feature {STORAGE} -- Retrieving
-    
+
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]

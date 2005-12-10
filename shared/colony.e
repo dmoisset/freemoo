@@ -302,17 +302,6 @@ feature -- Operations
         shipyard = Void
     end
 
-    serialize_on (s: SERIALIZER2) is
-    do
-        s.add_tuple (<<id.box, (producing - product_min).box>>)
-    end
-
-    unserialize_from (s: UNSERIALIZER) is
-    do
-        s.get_integer
-        producing := s.last_integer + product_min
-    end
-
 feature {GALAXY} -- Scanning
 
     scan(alienfleet: FLEET; alienship: like shipyard): BOOLEAN is
