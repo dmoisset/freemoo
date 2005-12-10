@@ -172,7 +172,7 @@ feature -- Operations
     ensure
         all_in_state (new_state)
     end
-    
+
 feature {NONE} -- Representation
 
     items: HASHED_DICTIONARY [P, STRING]

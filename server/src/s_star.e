@@ -105,43 +105,43 @@ feature -- Operations
     end
 
 feature -- Operations
-    
+
     copy(other: like Current) is
     do
         standard_copy(other)
         planets := clone(other.planets)
     end
-    
+
     is_equal(other: like Current): BOOLEAN is
     do
         Result := id = other.id
     end
-    
+
 feature {STORAGE} -- Saving
 
     get_class: STRING is "STAR"
-    
+
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     local
         a: ARRAY[TUPLE[STRING, ANY]]
     do
         create a.make(1, 0)
         a.add_last(["name", name])
-        a.add_last(["kind", kind.box])
-        a.add_last(["size", size.box])
-        a.add_last(["special", special.box])
+        a.add_last(["kind", (kind - kind_min).box])
+        a.add_last(["size", (size - stsize_min).box])
+        a.add_last(["special", (special - stspecial_min).box])
         a.add_last(["x", x.box])
         a.add_last(["y", y.box])
         a.add_last(["wormhole", wormhole])
         add_to_fields(a, "planet", planets.get_new_iterator)
         Result := a.get_new_iterator
     end
-    
+
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
         Result := (<<["id", id.box] >>).get_new_iterator
     end
-    
+
     dependents: ITERATOR[STORABLE] is
     local
         a: ARRAY[STORABLE]
@@ -151,9 +151,9 @@ feature {STORAGE} -- Saving
         add_dependents_to(a, planets.get_new_iterator)
         Result := a.get_new_iterator
     end
-    
+
 feature {STORAGE} -- Retrieving
-   
+
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
@@ -167,7 +167,7 @@ feature {STORAGE} -- Retrieving
             elems.next
         end
     end
-    
+
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         n: INTEGER
@@ -182,13 +182,13 @@ feature {STORAGE} -- Retrieving
                 name ?= elems.item.second
             elseif elems.item.first.is_equal("kind") then
                 i ?= elems.item.second
-                kind := i.item
+                kind := i.item + kind_min
             elseif elems.item.first.is_equal("size") then
                 i ?= elems.item.second
-                size := i.item
+                size := i.item + stsize_min
             elseif elems.item.first.is_equal("special") then
                 i ?= elems.item.second
-                special := i.item
+                special := i.item + stspecial_min
             elseif elems.item.first.is_equal("x") then
                 r ?= elems.item.second
                 x := r.item

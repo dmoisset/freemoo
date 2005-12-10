@@ -134,13 +134,13 @@ feature -- Operations on star system
     end
 
 feature -- Factory Methods
-    
+
     create_planet: like planet_type is
     do
         create Result.make_standard(Current)
     end
-    
-    
+
+
 feature {NONE} -- Creation
 
     make_defaults is
@@ -174,7 +174,7 @@ feature {NONE} -- Creation
         size = s
         no_planets: planets.occurrences (Void) = Max_planets
     end
-    
+
 feature {STAR} -- Representation
 
     planets: ARRAY [like planet_type]
@@ -196,7 +196,7 @@ feature {STAR} -- Representation
     end
 
 feature {NONE} -- Internal
-    
+
     planet_type: PLANET
         -- Anchor for type declarations.
 

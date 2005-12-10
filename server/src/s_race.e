@@ -1,9 +1,9 @@
 class S_RACE
 
 inherit
-RACE
+    RACE
     redefine set_attribute end
-        SERVICE
+    SERVICE
     redefine subscription_message end
     STORABLE
     rename
@@ -162,6 +162,9 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("homeworld_gravity") then
                 i ?= elems.item.second
                 homeworld_gravity := i.item
+            elseif elems.item.first.is_equal("homeworld_richness") then
+                i ?= elems.item.second
+                homeworld_richness := i.item
             elseif elems.item.first.is_equal("ancient_artifacts") then
                 b ?= elems.item.second
                 ancient_artifacts := b.item
@@ -210,6 +213,11 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("transdimensional") then
                 b ?= elems.item.second
                 transdimensional := b.item
+            elseif elems.item.first.is_equal("warlord") then
+                b ?= elems.item.second
+                warlord := b.item
+            else
+                print ("Bad element inside 'race' tag: " + elems.item.first + "%N")
             end
             elems.next
         end

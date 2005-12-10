@@ -21,7 +21,7 @@ creation make
 feature -- Redefined features
 
     orbit_center: S_STAR
-    
+
     owner: S_PLAYER
 
     subscription_message (service_id: STRING): STRING is
@@ -78,7 +78,7 @@ feature -- Redefined features
         Precursor (sh)
         update_clients
     end
-    
+
     join (other: like Current) is
     do
         Precursor (other)
@@ -90,7 +90,7 @@ feature -- Redefined features
         Precursor
         update_clients
     end
-    
+
     move is
     local
         old_msg, new_msg: STRING
@@ -102,7 +102,7 @@ feature -- Redefined features
             send_message("fleet" + id.to_string, new_msg)
         end
     end
-    
+
     colonize_order is
     do
         Precursor
@@ -110,23 +110,23 @@ feature -- Redefined features
     end
 
 feature -- Operations
-    
+
     copy(other: like Current) is
     do
         standard_copy(other)
         ships := clone(other.ships)
     end
-    
+
     is_equal(other: like Current): BOOLEAN is
     do
         Result := id = other.id
     end
-    
+
 
 feature {STORAGE} -- Saving
-    
+
     get_class: STRING is "FLEET"
-    
+
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     local
         a: ARRAY[TUPLE[STRING, ANY]]
@@ -139,16 +139,16 @@ feature {STORAGE} -- Saving
         a.add_last(["destination", destination])
         a.add_last(["has_colonization_orders", has_colonization_orders.box])
         a.add_last(["eta", eta.box])
-        a.add_last(["current_speed", current_speed.box]) 
+        a.add_last(["current_speed", current_speed.box])
         add_to_fields(a, "ship", ships.get_new_iterator_on_items)
         Result := a.get_new_iterator
     end
-    
+
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
         Result := (<<["id", id.box] >>).get_new_iterator
     end
-    
+
     dependents: ITERATOR[STORABLE] is
     local
         a: ARRAY[STORABLE]
@@ -160,9 +160,9 @@ feature {STORAGE} -- Saving
         add_dependents_to(a, ships.get_new_iterator_on_items)
         Result := a.get_new_iterator
     end
-    
+
 feature {STORAGE} -- Retrieving	
-    
+
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
@@ -176,7 +176,7 @@ feature {STORAGE} -- Retrieving
             elems.next
         end
     end
-    
+
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
@@ -211,6 +211,8 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.has_prefix("ship") then
                 s ?= elems.item.second
                 ships.add (s, s.id)
+            else
+                print ("Bad element inside 'fleet' tag: " + elems.item.first + "%N")
             end
             elems.next
         end
@@ -224,9 +226,9 @@ feature
             send_message("fleet" + id.to_string, subscription_message("fleet" + id.to_string))
         end
     end
-    
+
 feature
-    
+
     ship_type: S_SHIP
-    
+
 end -- class S_FLEET

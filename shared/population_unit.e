@@ -94,7 +94,7 @@ feature -- Operation
 
 feature {NONE} -- Creation
 
-    make(r: RACE; c: COLONY) is
+    make(r: like race; c: like colony) is
     require
         r /= Void
         c /= Void

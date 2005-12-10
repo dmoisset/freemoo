@@ -15,7 +15,7 @@ feature {NONE} -- Creation
         p /= Void
         o /= Void
     local
-        first_populator: POPULATION_UNIT
+        first_populator: like populator_type
     do
         make_unique_id
         producing := product_none
@@ -129,7 +129,7 @@ feature -- Access
         end
     end
 
-    populators: HASHED_DICTIONARY[POPULATION_UNIT, INTEGER]
+    populators: HASHED_DICTIONARY[like populator_type, INTEGER]
 
     constructions: ARRAY[CONSTRUCTION]
 
@@ -220,7 +220,7 @@ feature -- Operations
     new_turn is
     local
         new_population: INTEGER
-        new_populator: POPULATION_UNIT
+        new_populator: like populator_type
     do
         recalculate_production
         new_population := population + population_growth
@@ -347,6 +347,10 @@ feature -- Redefined features
             Precursor(new_id)
         end
     end
+
+feature {NONE} -- Anchors
+
+    populator_type: POPULATION_UNIT
 
 feature {CONSTRUCTION} -- Special cases
 

@@ -1,9 +1,9 @@
 class S_COLONY_SHIP
-    
+
 inherit
     S_SHIP
     redefine
-        creator, make, get_class, make_from_storage, fields_array, 
+        creator, make, get_class, make_from_storage, fields_array,
         dependents, subscription_message, serialize_on
     end
     COLONY_SHIP
@@ -11,9 +11,9 @@ inherit
         set_size, set_picture
     redefine creator, make, will_colonize, set_will_colonize, colonize end
     SERVER_ACCESS
-    
+
 creation make
-        
+
 feature
 
     creator: S_PLAYER
@@ -60,7 +60,7 @@ feature -- Redefined features
         c := will_colonize.create_colony(owner)
         will_colonize := Void
         can_colonize := True
-    end    
+    end
 
     serialize_on (s: SERIALIZER2) is
     do

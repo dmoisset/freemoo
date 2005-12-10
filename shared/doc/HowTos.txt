@@ -1,0 +1,38 @@
+ADDING A SERVICE HOWTO:
+
+Suppose we have a FOO in shared/.  If we want to add a service that
+keeps our client's FOOs up to date we should:
+
+- Add the service description in services-fm.txt!
+In S_FOO:
+- Inherit SERVICE, redefining subscription_message
+- Also redefine any setter functions that modify variables or
+  information included in the service to include an update_clients
+- Define update_clients {ANY} to call send_message to the right clients,
+  sending the service's subscription message (remember to check for
+  registry /= Void)
+- Define subscription message {ANY} to return a message as described in
+  services-fm.txt.  If the class provides several services, inspect
+  the service name first.
+In C_FOO:
+- Inherit SUBSCRIBER
+- Define on_message to manage any and all messages we could receive,
+  unpacking them accordingly.
+Someplace:
+- register our S_FOO in the server, and subscribe to the service in
+  the client
+
+
+
+ADDING A STORABLE HOWTO:
+
+Suppose we want to add a FOO to the savegame.
+
+- Add all foo instances to the dependants and fields of classes that
+  refer to FOOs, and restore foos in these classes' make_from_storage
+In S_FOO:
+- Inherit from STORABLE, redefine fields and dependents if necesary.
+- Define hash_code, fields, primary_keys, get_class, set_primary_keys
+  and make_from_storage
+- In S_GAME, register a S_FOO with the storage_xml (in load_game_from_file)
+

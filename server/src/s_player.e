@@ -295,6 +295,8 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.has_prefix("has_visited_star") then
                 star ?= elems.item.second
                 has_visited_star.add(star)
+            else
+                print ("Bad element inside 'player' tag: " + elems.item.first + "%N")
             end
             elems.next
         end

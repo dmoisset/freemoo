@@ -1,5 +1,5 @@
 class S_SHIP
-    
+
 inherit
     SHIP
     redefine creator, set_size, set_picture end
@@ -11,9 +11,9 @@ inherit
     end
     SERVICE
     redefine subscription_message end
-    
+
 creation make
-    
+
 feature
 
     creator: S_PLAYER
@@ -22,7 +22,7 @@ feature
     do
         Precursor(s)
         update_clients
-    end        
+    end
 
     set_picture(p: INTEGER) is
     do

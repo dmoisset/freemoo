@@ -87,7 +87,7 @@ feature {NONE} -- Internal
         register (game.status, "game_status")
         register (game.players, "players_list")
     end
-    
+
     load_game_from_file(filename: STRING) is
     local
         gme: S_GAME
@@ -95,26 +95,33 @@ feature {NONE} -- Internal
         pln: S_PLANET
         str: S_STAR
         st: STORAGE_XML
+        cln: S_COLONY
+        race: S_RACE
+        pop: S_POPULATION_UNIT
     do
         create gme.make_with_options(options)
         create ply.make("prototype", "")
         create str.make_defaults
         create pln.make_standard(str)
         create st.make_with_filename(filename)
+        create cln.make(pln, ply)
+        create race.make
+        create pop.make(race, cln)
         -- Register class prototypes
-        st.register(gme)                              -- S_GAME
-        st.register(gme.galaxy)                       -- S_GALAXY
-        st.register(gme.status)                       -- S_GAME_STATUS
-        st.register(gme.players)                      -- S_PLAYER_LIST
-        st.register(ply)                              -- S_PLAYER
-        st.register(gme.galaxy.limit)                 -- COORDS
-        st.register(str)                              -- S_STAR
-        st.register(create {S_FLEET}.make)            -- S_FLEET
-        st.register(pln)                              -- S_PLANET
-        st.register(create {S_COLONY}.make(pln, ply)) -- S_COLONY
-        st.register(create {S_STARSHIP}.make(ply))    -- S_STARSHIP
-        st.register(create {S_COLONY_SHIP}.make(ply)) -- S_COLONY_SHIP
-        st.register(create {S_RACE}.make)
+        st.register(gme)                                 -- S_GAME
+        st.register(gme.galaxy)                          -- S_GALAXY
+        st.register(gme.status)                          -- S_GAME_STATUS
+        st.register(gme.players)                         -- S_PLAYER_LIST
+        st.register(ply)                                 -- S_PLAYER
+        st.register(gme.galaxy.limit)                    -- COORDS
+        st.register(str)                                 -- S_STAR
+        st.register(create {S_FLEET}.make)               -- S_FLEET
+        st.register(pln)                                 -- S_PLANET
+        st.register(cln)                                 -- S_COLONY
+        st.register(create {S_STARSHIP}.make(ply))       -- S_STARSHIP
+        st.register(create {S_COLONY_SHIP}.make(ply))    -- S_COLONY_SHIP
+        st.register(race)                                -- S_RACE
+        st.register(pop)                                 -- S_POPULATION_UNIT
         st.retrieve
         game ?= st.retrieved
         game.init_game
