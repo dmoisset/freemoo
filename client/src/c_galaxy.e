@@ -111,7 +111,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             s.get_integer
             orbit := s.last_integer
             planet := star.planet_at(orbit)
-            if planet = Void then 
+            if planet = Void then
                 -- Probably we're just arriving at star.  Complete 
                 -- information for the planet shall arrive shortly.
                 star.set_planet(create{C_PLANET}.make_standard (star), orbit)
@@ -123,8 +123,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             count := count - 1
         end
     end
-    
-    
+
+
     unpack_scanner_message (msg: STRING) is
     local
         new_fleets: like fleets
@@ -204,7 +204,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 feature -- Redefined features
 
     last_star: C_STAR
-    
+
     last_fleet: C_FLEET
 
     ship_type: C_SHIP
@@ -218,18 +218,18 @@ feature -- Redefined features
 feature -- Signals
 
     fleets_change: SIGNAL_1 [C_GALAXY]
-    
+
     star_change: SIGNAL_1 [C_STAR]
-    
+
     map_change: SIGNAL_1 [C_GALAXY]
-    
+
 feature -- Redefined features
 
     fleet_changed (fleet: C_FLEET) is
     do
         fleets_change.emit (Current)
     end
-    
+
     star_changed (star: C_STAR) is
     do
         star_change.emit (star)

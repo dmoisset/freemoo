@@ -43,7 +43,7 @@ feature
         Result := s.serialized_form
     end
 
-    
+
 feature {STORAGE} -- Saving
 
     get_class: STRING is "RACE"
@@ -88,7 +88,7 @@ feature {STORAGE} -- Saving
         a.add_last(["warlord", warlord.box])
         Result := a.get_new_iterator
     end
-    
+
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
         Result := (<<["id", id.box] >>).get_new_iterator
@@ -109,9 +109,9 @@ feature {STORAGE} -- Retrieving
             elems.next
         end
     end
-    
+
 feature {STORAGE} -- Retrieving
-    
+
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]

@@ -184,9 +184,9 @@ feature {COLONY} -- Redefined features
 
     remove_colony(c: like colony_type) is
     do
+        Precursor(c)
         server.unregister("colony" + c.id.to_string)
         update_clients
-        Precursor(c)
     end
 
 feature -- Operations

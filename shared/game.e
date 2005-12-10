@@ -207,7 +207,7 @@ feature {NONE} -- Internal
         -- Ask where to combat (dialog)
         new_turn_step := new_turn_step + 1
     end
-    
+
     new_turn_1 is
     require
         new_turn_step = 1
@@ -240,7 +240,7 @@ feature {NONE} -- Internal
         end
         new_turn_step := new_turn_step + 1
     end
-    
+
     new_turn_3 is
     require
         new_turn_step = 3
@@ -280,7 +280,7 @@ feature {NONE} -- Internal
                         from
                             f := galaxy.get_new_iterator_on_fleets
                         until
-                            f.is_off or else 
+                            f.is_off or else
                             (f.item.owner = p.item.colony.owner and
                              f.item.orbit_center = s.item and
                              f.item.destination = Void)
@@ -299,7 +299,7 @@ feature {NONE} -- Internal
                         p.item.colony.clear_shipyard
                     end
                     if p.item.colony.populators.count = 0 then
-                        p.item.set_colony(Void)
+                        p.item.colony.remove
                         -- Add something to the end-of-turn summary?
                     end
                 end
@@ -398,7 +398,7 @@ feature {NONE} -- Internal
         end
         galaxy.fleet_cleanup
     end
-    
+
     init_game is
         -- Called just before setting players state to playing for the
         -- first time
@@ -413,13 +413,13 @@ feature -- Saving
     do
         Result := Current.to_pointer.hash_code
     end
-    
+
 feature {NONE} -- Internal - Saving
-    
+
     save is
     do
     end
-    
+
 feature {NONE} -- Internal
 
     fleet_type: FLEET
@@ -427,10 +427,10 @@ feature {NONE} -- Internal
 
     star_type: STAR
         -- Just an anchor for typing of stars
-    
+
     planet_type: PLANET
         -- Just an anchor for typing of planets
-    
+
 invariant
     map_generator /= Void
     new_turn_step.in_range (0, turn_done)

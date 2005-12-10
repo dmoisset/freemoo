@@ -2,7 +2,7 @@ class C_COLONY
 
 inherit
     COLONY
-    redefine make, set_task end
+    redefine make, set_task, remove end
     SUBSCRIBER
     CLIENT
 
@@ -57,7 +57,11 @@ feature
         end
         population := new_population
         populators := new_populators
-        changed.emit(Current)
+        if populators.count > 0 then
+            changed.emit(Current)
+        else
+            remove
+        end
     end
 
     set_task(pops: HASHED_SET[POPULATION_UNIT]; task: INTEGER) is
@@ -66,6 +70,16 @@ feature
         recalculate_production
         changed.emit(Current)
     end
+
+    remove is
+        -- Remove self from the game
+    do
+        if owner.colonies.has(id) then
+            owner.remove_colony(Current)
+        end
+        location.set_colony (Void)
+    end
+
 
 feature -- Signals
 

@@ -1,6 +1,6 @@
 class C_RACE
 
-inherit 
+inherit
     RACE
     SUBSCRIBER
 
@@ -13,7 +13,6 @@ feature
     local
         s: UNSERIALIZER
     do
-        print ("in race's on_message!%N")
         !!s.start (msg)
         unserialize_from(s)
     end

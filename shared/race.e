@@ -27,17 +27,17 @@ feature -- Access -- Bonuses
 
     industry_bonus: INTEGER
         -- number of production units per population
-    
+
     science_bonus: INTEGER
         -- number of RP per population
-    
+
     money_bonus: INTEGER
         -- number of extra 0.5BC per population
 
     ship_defense_bonus, ship_attack_bonus: INTEGER
-    
+
     ground_combat_bonus: INTEGER
-    
+
     spying_bonus: INTEGER
 
 feature -- Access -- government dependant    
@@ -59,7 +59,7 @@ feature -- Access -- government dependant
     morale_bonus: INTEGER is
         -- Percent morale bonus without marine barracks
     do
-        if government = government_feudal or 
+        if government = government_feudal or
            government = government_dictatorship then
             Result := -20
         end
@@ -110,7 +110,7 @@ feature -- Access -- government dependant
         -- Time taking for a player of this race to assimilate population from
         -- `other' race
     do
-        if other.government = government_feudal then 
+        if other.government = government_feudal then
             -- feudals are assimilated for free
         else
             inspect government
@@ -146,7 +146,7 @@ feature -- Access -- Special
 
     aquatic, subterranean, cybernetic, lithovore, repulsive,
     charismatic, uncreative, creative, tolerant, fantastic_trader,
-    telepathic, lucky, omniscient, stealthy, transdimensional, 
+    telepathic, lucky, omniscient, stealthy, transdimensional,
     warlord: BOOLEAN
 
 feature -- Operations
@@ -264,7 +264,7 @@ feature -- Operations
 
     serialize_on(s: SERIALIZER2) is
     do
-        s.add_tuple(<<name, homeworld_name, picture.box, 
+        s.add_tuple(<<name, homeworld_name, picture.box,
           population_growth.box, farming_bonus.box, industry_bonus.box,
           science_bonus.box, money_bonus.box, ship_defense_bonus.box,
           ship_attack_bonus.box, ground_combat_bonus.box, spying_bonus.box,
@@ -295,15 +295,15 @@ feature -- Operations
         science_bonus := s.last_integer
         s.get_integer
         money_bonus := s.last_integer
-        s.get_integer 
+        s.get_integer
         ship_defense_bonus := s.last_integer
-        s.get_integer 
+        s.get_integer
         ship_attack_bonus := s.last_integer
-        s.get_integer 
+        s.get_integer
         ground_combat_bonus := s.last_integer
-        s.get_integer 
+        s.get_integer
         spying_bonus := s.last_integer
-        s.get_integer 
+        s.get_integer
         government := s.last_integer + government_feudal
         s.get_integer
         homeworld_size := s.last_integer
@@ -345,23 +345,6 @@ feature -- Operations
         transdimensional := s.last_boolean
         s.get_boolean
         warlord := s.last_boolean
-        print ("----%NRace " + id.to_string + "%Nname:" + name + "%Nhomeworld_name:" + homeworld_name
-          + "%Npopulation_growth:" + population_growth.to_string + "%Nfarming_bonus: " + farming_bonus.to_string
-          + "%Nindustry_bonus:" + industry_bonus.to_string + "%Nscience_bonus:" + science_bonus.to_string
-          + "%Nmoney_bonus:" + money_bonus.to_string + "%Nship_defense_bonus:" + ship_defense_bonus.to_string
-          + "%Nship_attack_bonus:" + ship_attack_bonus.to_string + "%Nground_combat_bonus:"
-          + ground_combat_bonus.to_string + "%Nspying_bonus:" + spying_bonus.to_string + "%Ngovernment:"
-          + (government-government_feudal).to_string + "%Nhomeworld_size:" + homeworld_size.to_string
-          + "%Nhomeworld_gravity:" + homeworld_gravity.to_string + "%Nhomeworld_richness:"
-          + homeworld_richness.to_string + "%Nancient_artifacts:" + ancient_artifacts.to_string + "%Naquatic:"
-          + aquatic.to_string + "%Nsubterranean:" + subterranean.to_string + "%Ncybernetic:"
-          + cybernetic.to_string + "%Nlithovore:" + lithovore.to_string + "%Nrepulsive:" + repulsive.to_string
-          + "%Ncharismatic:" + charismatic.to_string + "%Nuncreative:" + uncreative.to_string + "%Ncreative:"
-          + creative.to_string + "%Ntolerant:" + tolerant.to_string + "%Nfantastic_trader:"
-          + fantastic_trader.to_string + "%Ntelepathic:" + telepathic.to_string
-          + "%Nlucky:" + lucky.to_string + "%Nomniscient:" + omniscient.to_string + "%Nstealthy:"
-          + stealthy.to_string + "%Ntransdimensional:" + transdimensional.to_string + "%Nwarlord:"
-          + warlord.to_string + "%N----%N")
     end
 
 feature {NONE} -- Creation

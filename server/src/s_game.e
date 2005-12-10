@@ -34,7 +34,7 @@ feature -- Operations
         players.add (p)
         status.fill_slot
     end
-    
+
     init_game is
     local
         i: ITERATOR [S_PLAYER]
@@ -55,7 +55,6 @@ feature -- Operations
             server.register (Current, i.item.id.to_string+":dialogs")
             server.register (i.item.race, "race" + i.item.race.id.to_string)
             server.register (i.item, "player"+i.item.id.to_string)
-            print ("race" + i.item.race.id.to_string + "%N")
             i.next
         end
         -- Register stars
@@ -173,14 +172,14 @@ feature {STORAGE} -- Saving
     end
 
 feature {STORAGE} -- Operations - Retrieving
-    
+
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     do
     end
-    
+
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     do
-        from 
+        from
         until elems.is_off loop
             if elems.item.first.is_equal("status") then
                 status ?= elems.item.second
@@ -195,7 +194,7 @@ feature {STORAGE} -- Operations - Retrieving
             print("game.e:  Called make_from_storage with nonsensical elems!")
         end
     end
-    
+
 feature {NONE} -- Operations - Saving
 
     save is
@@ -212,11 +211,11 @@ feature {NONE} -- Operations - Saving
     end
 
 feature {NONE} -- Internal
-    
+
     fleet_type: S_FLEET
 
     star_type: S_STAR
-    
+
     planet_type: S_PLANET
-    
+
 end -- class S_GAME

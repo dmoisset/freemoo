@@ -42,17 +42,6 @@ feature {NONE} -- Creation
         producing = product_none
     end
 
-
-    remove is
-        -- Remove self from the game
-    do
-        location.set_colony (Void)
-        owner.remove_colony(Current)
-    ensure
-        location.colony = Void
-        not owner.colonies.has(id)
-    end
-
 feature -- Access
 
     producing: INTEGER
@@ -126,15 +115,17 @@ feature -- Access
             end
             pop_it.next
         end
-        if subterranean and populators.count > 0 then
+        if populators.count > 0 then
             -- This coming code breaks if populators.count = 0
             -- It happens when a colony dies of starvation, on the client, just
             -- before the colony is removed
-            Result := Result - (location.subterranean_maxpop_bonus *
-                                aliens / populators.count).ceiling
-        else
-            Result := Result + (location.subterranean_maxpop_bonus *
-                                aliens / populators.count).floor
+            if subterranean then
+                Result := Result - (location.subterranean_maxpop_bonus *
+                                    aliens / populators.count).ceiling
+            else
+                Result := Result + (location.subterranean_maxpop_bonus *
+                                    aliens / populators.count).floor
+            end
         end
     end
 
@@ -249,25 +240,30 @@ feature -- Operations
             end
         end
         population := new_population
-
-        if populators.count = 0 then
-            remove
-        else
-            inspect
-                producing
-            when product_none then
-                -- Nothing to do this turn
-            when product_starship then
-                ship_factory.create_starship(owner)
-                ship_factory.last_starship.set_name("Enterprise")
-                shipyard := ship_factory.last_starship
-                set_producing(product_colony_ship)
-            when product_colony_ship then
-                ship_factory.create_colony_ship(owner)
-                shipyard := ship_factory.last_colony_ship
-                set_producing(product_starship)
-            end
+        inspect
+            producing
+        when product_none then
+            -- Nothing to do this turn
+        when product_starship then
+            ship_factory.create_starship(owner)
+            ship_factory.last_starship.set_name("Enterprise")
+            shipyard := ship_factory.last_starship
+            set_producing(product_colony_ship)
+        when product_colony_ship then
+            ship_factory.create_colony_ship(owner)
+            shipyard := ship_factory.last_colony_ship
+            set_producing(product_starship)
         end
+    end
+
+    remove is
+        -- Remove self from the game
+    do
+        location.set_colony (Void)
+        owner.remove_colony(Current)
+    ensure
+        location.colony = Void
+        not owner.colonies.has(id)
     end
 
 feature -- Operations
