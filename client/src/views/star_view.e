@@ -48,7 +48,7 @@ feature {NONE} -- Creation
         r.set_with_size (15, 50, 310, 100)
         !!planet_label.make (Current, r, "")
         -- Wormhole label
-        r.set_with_size (209, 208, 120, 20)
+        r.set_with_size (200, 208, 129, 20)
         !!wormhole_label.make(Current, r, "")
         wormhole_label.set_h_alignment(1.0)
 

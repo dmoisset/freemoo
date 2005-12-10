@@ -236,6 +236,7 @@ feature {NONE} -- Planet Generation
                     other := galaxy.stars.item(idx)
                     if other.kind /= kind_blackhole and not dont_touch.has(other) then
                         star.setup_wormhole_to(other)
+                        dont_touch.add(other)
                     end
                 end
             elseif special = stspecial_planetspecial then
@@ -363,6 +364,7 @@ feature -- Operation
         starnams: ARRAY[STRING]
         i: INTEGER
         planets: ARRAY[PLANET]
+        star_it: ITERATOR[STAR]
     do
         galaxy.set_limit(limit)
         !!planets.make(1,0)
@@ -383,15 +385,22 @@ feature -- Operation
             galaxy.last_star.set_kind(star_kinds.random_item)
             galaxy.last_star.set_size(star_sizes.random_item)
             make_planets_on (galaxy.last_star)
-            make_special_on(galaxy.last_star, galaxy)
             i := i + 1
         end
         print ("Placing Orion%N")
         place_orion (galaxy)
-
         print ("Placing HomeWorlds%N")
         !!homeworlds.make (1, players.count)
         place_homeworlds (galaxy, players)
+        print ("Placing specials%N")
+        from
+            star_it := galaxy.stars.get_new_iterator_on_items
+        until
+            star_it.is_off
+        loop
+            make_special_on(star_it.item, galaxy)
+            star_it.next
+        end
         add_omniscient_knowledge(galaxy, players)
     end
 
