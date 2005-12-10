@@ -130,8 +130,6 @@ feature {STORAGE} -- Saving
         a.add_last(["kind", (kind - kind_min).box])
         a.add_last(["size", (size - stsize_min).box])
         a.add_last(["special", (special - stspecial_min).box])
-        a.add_last(["x", x.box])
-        a.add_last(["y", y.box])
         a.add_last(["wormhole", wormhole])
         add_to_fields(a, "planet", planets.get_new_iterator)
         Result := a.get_new_iterator
@@ -139,7 +137,9 @@ feature {STORAGE} -- Saving
 
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
-        Result := (<<["id", id.box] >>).get_new_iterator
+        Result := (<<["id", id.box],
+                     ["x", x.box],
+                     ["y", y.box]>>).get_new_iterator
     end
 
     dependents: ITERATOR[STORABLE] is
@@ -157,12 +157,19 @@ feature {STORAGE} -- Retrieving
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
+        r: REFERENCE [REAL]
     do
         from
         until elems.is_off loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
                 id := i.item
+            elseif elems.item.first.is_equal("x") then
+                r ?= elems.item.second
+                x := r.item
+            elseif elems.item.first.is_equal("y") then
+                r ?= elems.item.second
+                y := r.item
             end
             elems.next
         end
@@ -172,7 +179,6 @@ feature {STORAGE} -- Retrieving
     local
         n: INTEGER
         i: REFERENCE [INTEGER]
-        r: REFERENCE [REAL]
         planet: like planet_type
     do
         from
@@ -189,12 +195,6 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("special") then
                 i ?= elems.item.second
                 special := i.item + stspecial_min
-            elseif elems.item.first.is_equal("x") then
-                r ?= elems.item.second
-                x := r.item
-            elseif elems.item.first.is_equal("y") then
-                r ?= elems.item.second
-                y := r.item
             elseif elems.item.first.is_equal("wormhole") then
                 wormhole ?= elems.item.second
             elseif elems.item.first.has_prefix("planet") then

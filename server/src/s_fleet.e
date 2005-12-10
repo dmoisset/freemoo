@@ -132,8 +132,6 @@ feature {STORAGE} -- Saving
         a: ARRAY[TUPLE[STRING, ANY]]
     do
         create a.make(1, 0)
-        a.add_last(["x", x.box])
-        a.add_last(["y", y.box])
         a.add_last(["orbit_center", orbit_center])
         a.add_last(["owner", owner])
         a.add_last(["destination", destination])
@@ -146,7 +144,9 @@ feature {STORAGE} -- Saving
 
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
-        Result := (<<["id", id.box] >>).get_new_iterator
+        Result := (<<["id", id.box],
+                     ["x", x.box],
+                     ["y", y.box]>>).get_new_iterator
     end
 
     dependents: ITERATOR[STORABLE] is
@@ -166,10 +166,17 @@ feature {STORAGE} -- Retrieving
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
+        r: REFERENCE [REAL]
     do
         from
         until elems.is_off loop
-            if elems.item.first.is_equal("id") then
+            if elems.item.first.is_equal("x") then
+                r ?= elems.item.second
+                x := r.item
+            elseif elems.item.first.is_equal("y") then
+                r ?= elems.item.second
+                y := r.item
+            elseif elems.item.first.is_equal("id") then
                 i ?= elems.item.second
                 id := i.item
             end
@@ -187,13 +194,7 @@ feature {STORAGE} -- Retrieving
         from
             ships.clear
         until elems.is_off loop
-            if elems.item.first.is_equal("x") then
-                r ?= elems.item.second
-                x := r.item
-            elseif elems.item.first.is_equal("y") then
-                r ?= elems.item.second
-                y := r.item
-            elseif elems.item.first.is_equal("orbit_center") then
+            if elems.item.first.is_equal("orbit_center") then
                 orbit_center ?= elems.item.second
             elseif elems.item.first.is_equal("owner") then
                 owner ?= elems.item.second

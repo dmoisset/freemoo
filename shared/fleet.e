@@ -24,14 +24,14 @@ feature -- Access
 
     destination: like orbit_center
         -- Star where to which the fleet is traveling, or Void if none
-    
+
     current_speed: REAL
         -- Represents distance traveled by Current in one turn.
         -- Current_speed should be recalculated each time ships join 
         -- or leave the fleet, calling recalculate_current_speed.  
         -- It represents the fleet's base traveling speed, and is the 
         -- minimum of the fleet's ships' traveling speeds, plus modifiers
-    
+
     eta: INTEGER
         -- Estimated time of arrival when traveling, 0 when not
         -- Should be recalculated each time the fleet receives new 
@@ -60,7 +60,7 @@ feature -- Access
     do
         Result := ships.has (sid)
     end
-    
+
     ship (sid: INTEGER): like ship_type is
         -- Ship in this fleet with id `sid'
     require
@@ -68,7 +68,7 @@ feature -- Access
     do
         Result := ships @ sid
     end
-    
+
     get_new_iterator: ITERATOR[like ship_type] is
         -- Returns an iterator on the fleet's ships
     do
@@ -77,7 +77,7 @@ feature -- Access
 
     splitted_fleet: like Current
 
-    
+
     eta_at(dest: POSITIONAL):INTEGER is
         -- Estimate a time of arrival at `dest'
     require
@@ -92,7 +92,7 @@ feature -- Access
             Result := ((Current |-| dest) / current_speed).ceiling
         end
     end
-    
+
     can_receive_orders: BOOLEAN is
         -- Can this fleet receive new orders at the moment?
         -- In the future it should check owner's modifiers, advances 
@@ -129,7 +129,7 @@ feature -- Access
         loop it.next end
         Result := it.item.as_colony_ship
     end
-    
+
 feature -- Operations
 
     add_ship (s: like ship_type) is
@@ -144,7 +144,7 @@ feature -- Operations
     ensure
         has_ship (s.id)
     end
-    
+
     remove_ship (s: like ship_type) is
         -- Remove `s' from fleet
     do
@@ -206,9 +206,9 @@ feature -- Operations
         recalculate_current_speed
         splitted_fleet.recalculate_current_speed
     ensure
-        same_fleet: (splitted_fleet.eta = eta) and 
+        same_fleet: (splitted_fleet.eta = eta) and
                     (splitted_fleet.owner = owner) and
-                    (splitted_fleet.destination = destination) and 
+                    (splitted_fleet.destination = destination) and
                     (splitted_fleet.orbit_center = orbit_center)
         ship_conservation: splitted_fleet.ship_count + ship_count = old ship_count
     end
@@ -299,7 +299,7 @@ feature -- Operations
     ensure
         eta = e
     end
-    
+
     recalculate_eta is
     require
         not is_stopped
@@ -309,7 +309,7 @@ feature -- Operations
     ensure
         valid_eta: eta >= 0
     end
-    
+
     recalculate_current_speed is
         -- Very dumb for now.
     do
@@ -317,7 +317,7 @@ feature -- Operations
     ensure
         current_speed > 0
     end
-    
+
     set_destination (d: like destination) is
     do
         destination := d
@@ -362,7 +362,7 @@ feature {NONE} -- Auxiliary for scanning
         -- Scanner range considering all our fleet's modifiers.  
         -- Should be reset to 0 after any modification (joining, 
         -- splitting, leader assignment, etc.).
-    
+
     recalculate_scanner_range is
         -- Recalculates `scanner_range' considering all our modifiers.
         -- Quite dumb for now...
@@ -383,11 +383,11 @@ feature {FLEET} -- Representation
 
     ships: HASHED_DICTIONARY [like ship_type, INTEGER]
         -- Ships, indexed by id
-    
+
 feature -- Anchors
-    
-    ship_type: SHIP    
-    
+
+    ship_type: SHIP
+
 invariant
     orbiting_really_here: is_in_orbit implies distance_to (orbit_center) = 0
     nonnegative_speed: current_speed >= 0

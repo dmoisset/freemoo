@@ -10,7 +10,7 @@ inherit
     rename
         hash_code as id
     redefine
-        dependents, primary_keys
+        dependents, primary_keys, copy, is_equal
     end
     SERVICE
         redefine subscription_message end
@@ -76,6 +76,21 @@ feature -- Redefined features
         Precursor(pops, task)
         update_clients
     end
+
+
+feature -- Operations
+
+    copy(other: like Current) is
+    do
+        standard_copy(other)
+        populators := clone(other.populators)
+    end
+
+    is_equal(other: like Current): BOOLEAN is
+    do
+        Result := id = other.id
+    end
+
 
 feature {STORAGE} -- Saving
 

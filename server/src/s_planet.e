@@ -1,21 +1,21 @@
 class S_PLANET
-    
+
 inherit
     PLANET
     redefine colony, orbit_center, create_colony end
-    STORABLE    
-    redefine dependents end
+    STORABLE
+    redefine dependents, primary_keys end
 
 creation make, make_standard
 
 feature
-    
+
     orbit_center: S_STAR
-    
+
     colony: S_COLONY
-    
+
 feature
-    
+
     create_colony(p: S_PLAYER): like colony is
     do
         -- Result := Precursor(p) -- We don't do this because SE chokes
@@ -33,10 +33,14 @@ feature {STORAGE} -- Saving
 
     get_class: STRING is "PLANET"
 
+    primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
+    do
+        Result := (<<["climate", (climate - climate_min).box] >>).get_new_iterator
+    end
+
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     do
         Result := (<<["colony", colony],
-                     ["climate", (climate - climate_min).box],
                      ["mineral", (mineral - mnrl_min).box],
                      ["size", (size - plsize_min).box],
                      ["gravity", (gravity - grav_min).box],
@@ -58,11 +62,21 @@ feature {STORAGE} -- Saving
     end
 
 feature {STORAGE} -- Retrieving
-   
+
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+    local
+        i: REFERENCE [INTEGER]
     do
+        from
+        until elems.is_off loop
+            if elems.item.first.is_equal("climate") then
+                i ?= elems.item.second
+                climate := i.item + climate_min
+            end
+            elems.next
+        end
     end
-    
+
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
@@ -71,9 +85,6 @@ feature {STORAGE} -- Retrieving
         until elems.is_off loop
             if elems.item.first.is_equal("colony") then
                 colony ?= elems.item.second
-            elseif elems.item.first.is_equal("climate") then
-                i ?= elems.item.second
-                climate := i.item + climate_min
             elseif elems.item.first.is_equal("mineral") then
                 i ?= elems.item.second
                 mineral := i.item + mnrl_min
