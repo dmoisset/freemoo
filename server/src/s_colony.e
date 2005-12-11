@@ -140,7 +140,7 @@ feature {STORAGE} -- Retrieving
         until elems.is_off loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
-                id := i.item
+                set_id(i.item)
             end
             elems.next
         end

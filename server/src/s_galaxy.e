@@ -150,7 +150,7 @@ feature {MAP_GENERATOR} -- Generation
 
     last_star: S_STAR
 
-    last_fleet: S_FLEET    
+    last_fleet: S_FLEET
 
 feature -- Access
 
@@ -173,7 +173,7 @@ feature -- Operations
             pl.next
         end
     end
-    
+
     generate_colony_knowledge (pl: ITERATOR [PLAYER]) is
     local
         service_name: STRING
@@ -199,9 +199,9 @@ feature -- Operations
             id.next
         end
     end
-    
+
 feature
-    
+
 
 feature -- Saving
 
@@ -213,7 +213,7 @@ feature -- Saving
 feature {STORAGE} -- Saving
 
     get_class: STRING is "GALAXY"
-    
+
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     local
         a: ARRAY[TUPLE[STRING, ANY]]
@@ -224,7 +224,7 @@ feature {STORAGE} -- Saving
         add_to_fields(a, "fleets", fleets.get_new_iterator_on_items)
         Result := a.get_new_iterator
     end
-    
+
     dependents: ITERATOR[STORABLE] is
     local
         a: ARRAY[STORABLE]
@@ -237,11 +237,11 @@ feature {STORAGE} -- Saving
     end
 
 feature {STORAGE} -- Retrieving
-    
+
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     do
     end
-    
+
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         star: like last_star
@@ -264,9 +264,9 @@ feature {STORAGE} -- Retrieving
             elems.next
         end
     end
-    
+
 feature -- Anchors
-    
+
     ship_type: S_SHIP
-    
+
 end -- S_GALAXY

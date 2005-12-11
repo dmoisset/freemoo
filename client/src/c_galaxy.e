@@ -82,11 +82,11 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         orbit: INTEGER
         s: UNSERIALIZER
         colony: C_COLONY
-        star: STAR
-        planet: PLANET
+        star: C_STAR
+        planet: C_PLANET
         owner: PLAYER
-        star_it: ITERATOR[STAR]
-        planet_it: ITERATOR[PLANET]
+        star_it: ITERATOR[C_STAR]
+        planet_it: ITERATOR[C_PLANET]
     do
         !!s.start (msg)
         -- Remove all _enemy_ colonies

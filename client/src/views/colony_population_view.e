@@ -32,6 +32,7 @@ feature -- Redefined features
         -- Update gui
     require
         colony /= Void
+        colony.populators.count > 0
     local
         s: STRING
         growth: INTEGER

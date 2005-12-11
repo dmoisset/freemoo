@@ -14,6 +14,7 @@ feature
     do
         c.recalculate_production
         name.set_colony(c)
+        system_view.set_colony(c)
         population.set_colony(c)
         populators.set_colony(c)
         production.set_colony(c)
@@ -39,6 +40,12 @@ feature {NONE} -- Widgets
     new_production(where: RECTANGLE) is
     do
         !!production.make(Current, where)
+    end
+
+    new_system_view(where: RECTANGLE) is
+    do
+        !!system_view.make(Current, where)
+        system_view.set_manage_colony_callback(agent set_colony)
     end
 
 end -- class COLONY_WINDOW

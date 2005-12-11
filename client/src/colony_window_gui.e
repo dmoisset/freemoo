@@ -23,6 +23,9 @@ feature {NONE} -- Creation
         r.set_with_size(490, 14, 155, 19)
         new_population(r)
 
+        r.set_with_size(8, 47, 130, 130)
+        new_system_view(r)
+
         r.set_with_size(328, 78, 200, 100)
         new_populators(r)
 
@@ -42,6 +45,7 @@ feature {NONE} -- Widgets
     background: WINDOW_IMAGE
     close_button: BUTTON
     name: COLONY_NAME_VIEW
+    system_view: COLONY_STAR_VIEW
     population: COLONY_POPULATION_VIEW
     populators: COLONY_POPULATORS_VIEW
     production: COLONY_PRODUCTION_VIEW
@@ -49,6 +53,7 @@ feature {NONE} -- Widgets
     new_population (where: RECTANGLE) is deferred end
     new_populators (where: RECTANGLE) is deferred end
     new_production (where: RECTANGLE) is deferred end
+    new_system_view (where: RECTANGLE) is deferred end
 
 feature {NONE} -- Callbacks
 

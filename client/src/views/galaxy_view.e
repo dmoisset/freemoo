@@ -498,20 +498,6 @@ feature {NONE} -- Internal functions
         limit_y := p.y
     end
 
-    pals: ARRAY[ARRAY[INTEGER]] is
-    once
-        !!Result.make(0, 8)
-        Result.put(<<63488, 63488, 63488, 63488, 63488, 63488, 63488>>, 0)
-        Result.put(<<50624, 50624, 50624, 50624, 50624, 50624, 50624>>, 1)
-        Result.put(<<2881, 2881, 2881, 2881, 59196, 2881, 2881>>, 2)
-        Result.put(<<59196, 59196, 59196, 59196, 59196, 59196, 59196>>, 3)
-        Result.put(<<20827, 20827, 20827, 20827, 59196, 20827, 20827>>, 4)
-        Result.put(<<43946, 43946, 43946, 43946, 43946, 43946, 43946>>, 5)
-        Result.put(<<35503, 35503, 35503, 35503, 35503, 35503, 35503>>, 6)
-        Result.put(<<64576, 64576, 64576, 64576, 64576, 64576, 64576>>, 7)
-        Result.put(<<33808, 33808, 33808, 33808, 33808, 33808, 33808>>, 8)
-    end
-
     paint(r: RECTANGLE; star: STAR) is
         -- Colorizes `cache' within `r' according to colonies on `star'
     local

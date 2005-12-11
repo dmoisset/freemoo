@@ -8,7 +8,7 @@ inherit
     STORABLE
     redefine
         dependents
-    end    
+    end
     SERVICE
     redefine
         subscription_message
@@ -69,7 +69,7 @@ feature -- Saving
 feature {STORAGE} -- Saving
 
     get_class: STRING is "PLAYER_LIST"
-    
+
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     local
         a: ARRAY[TUPLE[STRING, ANY]]
@@ -78,14 +78,14 @@ feature {STORAGE} -- Saving
         add_to_fields(a, "player", items.get_new_iterator_on_items)
         Result := a.get_new_iterator
     end
-      
+
     dependents: ITERATOR[STORABLE] is
     do
         Result := items.get_new_iterator_on_items
     end
 
 feature {STORAGE} -- Retrieving
-    
+
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     do
     end

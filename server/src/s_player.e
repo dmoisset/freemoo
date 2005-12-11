@@ -176,9 +176,14 @@ feature -- Redefined features
 feature {COLONY} -- Redefined features
 
     add_colony(c: like colony_type) is
+    local
+        service_id: STRING
     do
         Precursor(c)
-        server.register(c, "colony" + c.id.to_string)
+        service_id := "colony" + c.id.to_string
+        if not server.has(service_id) then
+            server.register(c, service_id)
+        end
         update_clients
     end
 
@@ -249,7 +254,7 @@ feature {STORAGE} -- Retrieving
         until elems.is_off loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
-                id := i.item
+                set_id(i.item)
             end
             if elems.item.first.is_equal("name") then
                 name ?= elems.item.second

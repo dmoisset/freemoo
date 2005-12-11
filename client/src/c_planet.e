@@ -1,12 +1,15 @@
 class C_PLANET
 
-inherit 
+inherit
     PLANET
-    redefine colony end
+    redefine colony, orbit_center end
 
 creation make, make_standard
 
 feature
+
+    orbit_center: C_STAR
+
     colony: C_COLONY
 
 end

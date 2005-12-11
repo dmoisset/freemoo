@@ -258,6 +258,7 @@ feature -- Redefined features
         if handle_ticks then
             tick ?= event
             if tick /= Void then
+                print ("Handling tick!%N")
                 tick.set_handled
             end
         end
@@ -447,7 +448,7 @@ feature -- Once data
 feature {NONE} -- Internal
 
     star: C_STAR
-    
+
     status: C_GAME_STATUS
 
     dirty: BOOLEAN

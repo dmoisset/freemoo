@@ -2,7 +2,7 @@ class C_COLONY
 
 inherit
     COLONY
-    redefine make, set_task, remove end
+    redefine make, set_task, remove, location end
     SUBSCRIBER
     CLIENT
 
@@ -57,6 +57,7 @@ feature
         end
         population := new_population
         populators := new_populators
+        print ("in C_COLONY.on_message: Population: " + population.to_string + " - Populators: " + populators.count.to_string + "%N")
         if populators.count > 0 then
             changed.emit(Current)
         else
@@ -80,6 +81,9 @@ feature
         location.set_colony (Void)
     end
 
+feature -- Redefined features
+
+    location: C_PLANET
 
 feature -- Signals
 
