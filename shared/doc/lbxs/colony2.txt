@@ -1,0 +1,37 @@
+0001: corn  (1 farming)
+0002: pick-axe (1 industry)
+0003: test tube (1 science)
+0004: coin (1 money)
+0005: bag of grain (10 farming)
+0006: pile of ore (10 industry)
+0007: microscope (10 science)
+0008: pile of coins (10 money)
+0009: shadowed corn (1 food given away)
+0010: small radioactive barrel (1 pollution)
+0011: shadowed test tube (?)
+0012: shadowed coin (?)
+0013: shadowed bag of grain (?)
+0014: big radioactive barrel (10 pollution)
+0015: shadowed microscope (?)
+0016: shadowed pile of coins (?)
+0017: happy mask (+10 morale)
+0018: sad mask (-10 morale)
+0019: big radioactive barrel (again?)
+0020: Feudal government shield
+0021: Confederation government shield (Feudal++)
+0022: Dictatorship government shield
+0023: Imperium government shield (Dictatorship++)
+0024: Democracy government shield
+0025: Federation government shield (Democracy++)
+0026: Unification government shield
+0027: Galactic Unification (no good names left, eh?) government shield (Unification++)
+0028-46: Same structure as 1-19, in smaller versions (for Colonies screen)
+
+0047: Some kind of missile?
+0048: R2D2
+0049: An exploding christmas pudding
+0050: Stars in the background
+0051: A planet on fire
+0052: Some popup dialog
+0053: Smaller mouse pointer for when you're dragging population units from one place to another
+

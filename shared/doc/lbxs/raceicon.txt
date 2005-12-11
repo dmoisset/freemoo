@@ -1,0 +1,30 @@
+0001: Alkari, with a broom?
+0002: Alkari farmer
+0003: Alkari, with a club?
+0004: Alkari worker
+0005: Alkari scientist?
+0006: Alkari scientist
+0007: Alkari militia
+0008: Alkari marine
+0009: Alkari power suit
+0010: Alkari Tank
+0011: Alkari Battleoid
+0012: Alkari Spy
+0013: Alkari hostage
+
+0014-0026: Bulrathi, same structure
+0027-0039: Darlok, same structure
+0040-0052: Elerian, same structure
+0053-0065: Gnolam, same structure
+0066-0078: Human, same structure
+0079-0091: Klackon, same structure
+0092-0104: Mecklar, same structure
+0105-0117: Mrrshan, same structure
+0118-0130: Psilon, same structure
+0131-0143: Sakkra, same structure
+0144-0156: Silicoid, same structure
+0157-0169: Trilarian, same structure
+
+0170: Android
+
+0171: Native
