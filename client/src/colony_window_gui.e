@@ -17,14 +17,17 @@ feature {NONE} -- Creation
         !!a.make ("client/colony-window/colony-background.fma")
         !!background.make (Current, 0, 0, a.images @ 1)
 
-        r.set_with_size(93, 19, 255, 19)
+        r.set_with_size(193, 15, 255, 19)
         new_name(r)
 
-        r.set_with_size(393, 19, 155, 19)
+        r.set_with_size(490, 14, 155, 19)
         new_population(r)
 
-        r.set_with_size(45, 72, 200, 115)
+        r.set_with_size(328, 78, 200, 100)
         new_populators(r)
+
+        r.set_with_size(138, 47, 200, 140)
+        new_production(r)
 
         !!a.make ("client/colony-window/close1.fma")
         !!a2.make ("client/colony-window/close2.fma")
@@ -41,9 +44,11 @@ feature {NONE} -- Widgets
     name: COLONY_NAME_VIEW
     population: COLONY_POPULATION_VIEW
     populators: COLONY_POPULATORS_VIEW
+    production: COLONY_PRODUCTION_VIEW
     new_name (where: RECTANGLE) is deferred end
     new_population (where: RECTANGLE) is deferred end
     new_populators (where: RECTANGLE) is deferred end
+    new_production (where: RECTANGLE) is deferred end
 
 feature {NONE} -- Callbacks
 

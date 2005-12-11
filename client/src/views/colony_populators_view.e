@@ -3,7 +3,6 @@ class COLONY_POPULATORS_VIEW
 
 inherit
     WINDOW
-    rename make as window_make end
     CLIENT
 
 creation
@@ -12,22 +11,6 @@ creation
 feature -- Representation
 
    colony: C_COLONY
-
-feature {NONE} -- Creation
-
-    make (w:WINDOW; where: RECTANGLE) is
-        -- build widget without a model
-    local
-        r: RECTANGLE
-    do
-        window_make(w, where)
-        r.set_with_size(0, 0, 55, 14)
-        !!title_label.make (Current, r, "Population:")
-        title_label.set_h_alignment(title_label.horz_align_left)
-        title_label.set_v_alignment(title_label.vert_align_center)
-        r.set_with_size(0, 23, where.width, where.height - 23)
-        !!populators_window.make(Current, r)
-    end
 
 feature -- Redefined features
 
@@ -45,7 +28,7 @@ feature -- Redefined features
     do
         -- Remove populators
         from
-            child := populators_window.children.get_new_iterator
+            child := children.get_new_iterator
         until
             child.is_off
         loop
@@ -62,7 +45,7 @@ feature -- Redefined features
             task := pop.item.task - pop.item.task_farming
             raceicon := get_raceicon(pop.item.race.picture, pop.item.task -
                                      pop.item.task_farming + raceicon_farmer)
-            create button.make(populators_window, x@ task, icon_height * task,
+            create button.make(Current, x@ task, icon_height * task,
                    raceicon, raceicon, raceicon)
             button.set_click_handler(agent switch_task(pop.item))
             x.put(x @ task + icon_width, task)
@@ -111,7 +94,7 @@ feature {NONE} -- Callbacks
 
 feature {NONE} -- Implementation constants
 
-    icon_height: INTEGER is 30
+    icon_height: INTEGER is 33
 
     icon_width: INTEGER is 30
 
@@ -143,13 +126,5 @@ feature {NONE} -- Images
         end
         Result := raceicon_pics.item(picture, role)
     end
-
-
-
-feature {NONE} -- Widgets
-
-    title_label: LABEL
-
-    populators_window: WINDOW
 
 end -- class COLONY_POPULATORS_VIEW
