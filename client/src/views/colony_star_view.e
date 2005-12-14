@@ -2,26 +2,26 @@ class COLONY_STAR_VIEW
     -- Shows a colony's neighbouring planets
 
 inherit
-    WINDOW
-    rename make as window_make end
+    COLONY_VIEW
     CLIENT
     MAP_CONSTANTS
 
 creation
     make
 
-feature -- Representation
+feature -- Operations
 
-    colony: C_COLONY
-    star: C_STAR
+    set_manage_colony_callback(p: PROCEDURE[ANY, TUPLE[C_COLONY]]) is
+    do
+        manage_colony_callback := p
+    end
 
-feature
+feature {NONE} -- Signal callbacks
 
     update_star is
         -- Update gui
     require
         colony /= Void
-        star /= Void
     local
         child: ITERATOR[WINDOW]
         msg: STRING
@@ -31,7 +31,9 @@ feature
         image: WINDOW_IMAGE
         ani: WINDOW_ANIMATED
         planet: C_PLANET
+        star: C_STAR
     do
+        star := colony.location.orbit_center
         -- Remove planets
         from
             child := planets.get_new_iterator
@@ -95,22 +97,6 @@ feature
         end
     end
 
-    set_colony(c: C_COLONY) is
-    do
-        if star /= Void then
-            star.changed.disconnect(agent update_star)
-        end
-        colony := c
-        star := colony.location.orbit_center
-        star.changed.connect(agent update_star)
-        update_star
-    end
-
-    set_manage_colony_callback(p: PROCEDURE[ANY, TUPLE[C_COLONY]]) is
-    do
-        manage_colony_callback := p
-    end
-
 feature {NONE} -- Callbacks
 
     manage_colony(c: C_COLONY) is
@@ -172,6 +158,7 @@ feature {NONE} -- Images
         -- Active (glowing) cursor
     once
         create Result.make("client/colony-view/planets/cursor_active.fma")
+        Result.set_full_loop
     end
 
     cursor_grayed: IMAGE is
@@ -190,6 +177,7 @@ feature {NONE} -- Creation
         i: INTEGER
         r: RECTANGLE
     do
+        my_connect_identifier := agent update_star
         window_make(w, where)
         create planets.make(1,0)
         create labels.make(1, 5) -- Max_planets should be in MAP_CONSTANTS

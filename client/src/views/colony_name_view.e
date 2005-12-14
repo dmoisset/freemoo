@@ -2,15 +2,10 @@ class COLONY_NAME_VIEW
     -- Shows a colony's name
 
 inherit
-    WINDOW
-    rename make as window_make end
+    COLONY_VIEW
 
 creation
     make
-
-feature -- Representation
-
-   colony: C_COLONY
 
 feature {NONE} -- Creation
 
@@ -19,6 +14,7 @@ feature {NONE} -- Creation
     local
         r: RECTANGLE
     do
+        my_connect_identifier := agent update_name
         window_make(w, where)
         r.set_with_size(0, 0, location.width, location.height)
         !!label.make (Current, r, "")
@@ -37,16 +33,6 @@ feature -- Redefined features
     do
         s := "Colony on " + colony.location.name
         label.set_text (s)
-    end
-
-    set_colony(c: C_COLONY) is
-    do
-        if colony /= Void then
-            colony.changed.disconnect(agent update_name)
-        end
-        colony := c
-        colony.changed.connect(agent update_name)
-        update_name
     end
 
 feature {NONE} -- Widgets

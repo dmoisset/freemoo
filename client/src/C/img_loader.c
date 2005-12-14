@@ -482,8 +482,3 @@ void free_FMA (FMA_t *anim)
   return;
 }
 
-
-
-
-
-

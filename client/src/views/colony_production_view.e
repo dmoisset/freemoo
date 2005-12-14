@@ -2,18 +2,22 @@ class COLONY_PRODUCTION_VIEW
     -- Shows a colony's production, with detailed description and everything
 
 inherit
-    WINDOW
---    redefine handle_event end
+    COLONY_VIEW
+--    redefine handle_event end -- for handling clicks
     CLIENT
 
 creation
     make
 
-feature -- Representation
+feature {NONE} -- Creation
 
-   colony: C_COLONY
+    make (w: WINDOW; where: RECTANGLE) is
+    do
+        my_connect_identifier := agent update_production
+        window_make(w, where)
+    end
 
-feature -- Redefined features
+feature {NONE} -- signal callbacks
 
     update_production is
         -- Update gui
@@ -58,16 +62,6 @@ feature -- Redefined features
             end
             item := item + 1
         end
-    end
-
-    set_colony(c: C_COLONY) is
-    do
-        if colony /= Void then
-            colony.changed.disconnect(agent update_production)
-        end
-        colony := c
-        colony.changed.connect(agent update_production)
-        update_production
     end
 
 feature {NONE} -- Auxiliar functions

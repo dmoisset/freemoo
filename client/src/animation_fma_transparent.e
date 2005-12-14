@@ -55,6 +55,12 @@ feature -- Operations
         unchanged := (old_position = position)
     end
 
+    set_full_loop is
+    -- Set loop_frame to images.lower
+    do
+        loop_frame := images.lower
+    end
+
 feature {NONE} -- Representations
 
     images: ARRAY [SDL_IMAGE]

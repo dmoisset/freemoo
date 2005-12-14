@@ -2,15 +2,10 @@ class COLONY_POPULATION_VIEW
     -- Shows a colony's total population and it's growth for next turn
 
 inherit
-    WINDOW
-    rename make as window_make end
+    COLONY_VIEW
 
 creation
     make
-
-feature -- Representation
-
-   colony: C_COLONY
 
 feature {NONE} -- Creation
 
@@ -19,6 +14,7 @@ feature {NONE} -- Creation
     local
         r: RECTANGLE
     do
+        my_connect_identifier := agent update_population
         window_make(w, where)
         r.set_with_size(0, 0, location.width, location.height)
         !!label.make (Current, r, "")
@@ -44,16 +40,6 @@ feature -- Redefined features
         end
         s := s + growth.to_string + "k)"
         label.set_text (s)
-    end
-
-    set_colony(c: C_COLONY) is
-    do
-        if colony /= Void then
-            colony.changed.disconnect(agent update_population)
-        end
-        colony := c
-        colony.changed.connect(agent update_population)
-        update_population
     end
 
 feature {NONE} -- Widgets

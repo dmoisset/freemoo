@@ -2,17 +2,21 @@ class COLONY_POPULATORS_VIEW
     -- Shows a colony's populators in three rows, and allows to rearrange them
 
 inherit
-    WINDOW
+    COLONY_VIEW
     CLIENT
 
 creation
     make
 
-feature -- Representation
+feature {NONE} -- Creation
 
-   colony: C_COLONY
+    make(w: WINDOW; where: RECTANGLE) is
+    do
+        my_connect_identifier := agent update_populators
+        window_make(w, where)
+    end
 
-feature -- Redefined features
+feature {NONE} -- Signal callbacks
 
     update_populators is
         -- Update gui
@@ -52,16 +56,6 @@ feature -- Redefined features
             -- To Do: Consider hostages!
             pop.next
         end
-    end
-
-    set_colony(c: C_COLONY) is
-    do
-        if colony /= Void then
-            colony.changed.disconnect(agent update_populators)
-        end
-        colony := c
-        colony.changed.connect(agent update_populators)
-        update_populators
     end
 
 feature {NONE} -- Callbacks

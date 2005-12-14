@@ -23,7 +23,7 @@ feature {NONE} -- Creation
         r.set_with_size(490, 14, 155, 19)
         new_population(r)
 
-        r.set_with_size(8, 47, 130, 130)
+        r.set_with_size(18, 47, 120, 130)
         new_system_view(r)
 
         r.set_with_size(328, 78, 200, 100)

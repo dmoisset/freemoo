@@ -38,5 +38,4 @@ FMA_t *load_anim (FILE *f) ;
 /* Frees x, y & items (_not_ *items) */
 void free_FMA (FMA_t *anim) ;
 
-
 #endif
