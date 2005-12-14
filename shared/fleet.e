@@ -38,9 +38,6 @@ feature -- Access
         -- orders calling recalculate_eta, and each time a turn 
         -- passes (substracting one)
 
-    has_colonization_orders: BOOLEAN
-        -- has this fleet received orders of colonizing
-
     is_stopped: BOOLEAN is
         -- is stopped?
     do
@@ -99,21 +96,6 @@ feature -- Access
         -- at destination, and other stuff.
     do
         Result := is_in_orbit
-    end
-
-    can_colonize: BOOLEAN is
-        -- Can this fleet colonize a planet?
-    local
-        it: ITERATOR[SHIP]
-    do
-        from
-            it := ships.get_new_iterator_on_items
-        until
-            Result or it.is_off
-        loop
-            Result := it.item.can_colonize
-            it.next
-        end
     end
 
     get_colony_ship: COLONY_SHIP is
@@ -262,20 +244,6 @@ feature -- Operations
         end
     end
 
-    colonize_order is
-    require
-        can_colonize
-    do
-        has_colonization_orders := True
-    ensure
-        has_colonization_orders
-    end
-
-    cancel_colonize_order is
-    do
-        has_colonization_orders := False
-    end
-
 feature -- Operations
 
     copy_from (f: like Current) is
@@ -333,6 +301,74 @@ feature -- Operations
         scanner_range := 0
     ensure
         owner = o
+    end
+
+feature -- Access -- Giving Orders
+
+    has_colonization_orders: BOOLEAN
+        -- has this fleet received orders of colonizing
+
+    can_colonize: BOOLEAN is
+        -- Can this fleet colonize a planet?
+    local
+        it: ITERATOR[SHIP]
+    do
+        from
+            it := ships.get_new_iterator_on_items
+        until
+            Result or it.is_off
+        loop
+            Result := it.item.can_colonize
+            it.next
+        end
+    end
+
+    has_engage_orders: BOOLEAN
+        -- has this fleet received orders of attacking
+
+    can_engage: BOOLEAN is
+        -- Can this fleet engage enemy fleets?
+    local
+        it: ITERATOR[SHIP]
+    do
+        from
+            it := ships.get_new_iterator_on_items
+        until
+            Result or it.is_off
+        loop
+            Result := it.item.can_attack
+            it.next
+        end
+    end
+
+feature -- Access -- Receiving orders
+
+    colonize_order is
+    require
+        can_colonize
+    do
+        has_colonization_orders := True
+    ensure
+        has_colonization_orders
+    end
+
+    cancel_colonize_order is
+    do
+        has_colonization_orders := False
+    end
+
+    engage_order is
+    require
+        can_engage
+    do
+        has_engage_orders := True
+    ensure
+        has_engage_orders
+    end
+
+    cancel_engage_order is
+    do
+        has_engage_orders := False
     end
 
 feature {GALAXY} -- Scanning

@@ -72,6 +72,9 @@ feature -- Modifiers
     can_colonize: BOOLEAN
         -- True for colony ships
 
+    can_attack: BOOLEAN
+        -- True for non-support ships
+
     fuel_range: REAL
         -- Relative to players base fuel range:
         --   1 for normal ships

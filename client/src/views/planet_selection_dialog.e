@@ -6,7 +6,7 @@ inherit
     rename
         make as star_view_make
     redefine
-        planet_click, make_fleets_orbiting
+        planet_click, make_fleets_orbiting, update_title
     end
     CLIENT
 
@@ -22,15 +22,15 @@ feature {NONE} -- Creation
         fleet := f
         dialog_id := id
         star_view_make (w, where, f.orbit_center, server.game_status, server.galaxy)
-        name_label.set_text("Select planet for colonization on " + star.name)
         close_button.set_click_handler (agent cancel_selection)
+        update_title
     end
 
     make_fleets_orbiting(g: C_GALAXY) is
     do
     end
 
-feature -- Commanding
+feature {NONE} -- Callbacks
 
     planet_click(p: C_PLANET) is
     local
@@ -54,6 +54,15 @@ feature -- Commanding
         remove
     end
 
+    update_title is
+    do
+        if star.has_info then
+            name_label.set_text("Select planet for colonization on " + star.name)
+        else
+            name_label.set_text("Colony ship arriving... ")
+        end
+    end
+    
 feature {NONE} -- Internal
 
     fleet: C_FLEET

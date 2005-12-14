@@ -151,9 +151,9 @@ feature {NONE} -- Signal handlers
             end
             child.next
         end
+        update_title
         if star.has_info then
         -- Show info for an known system
-            name_label.set_text("Star System " + star.name)
             if star.wormhole = Void then
                 wormhole_label.set_text("")
             elseif star.wormhole.has_info then
@@ -185,7 +185,6 @@ feature {NONE} -- Signal handlers
             end
         else
         --Show info for an unexplored system
-            name_label.set_text("Star System Unexplored")
             r.set_with_size (58, 95, 240, 130)
             !!msg_label.make (Current, r, starmsgs @ star.kind)
             msg_label.set_justify(false)
@@ -194,6 +193,15 @@ feature {NONE} -- Signal handlers
         end
     end
 
+    update_title is
+    do
+        if star.has_info then
+            name_label.set_text("Star System " + star.name)
+        else
+            name_label.set_text("Star System Unexplored")
+        end
+    end
+    
 feature -- Redefined features
 
     remove is

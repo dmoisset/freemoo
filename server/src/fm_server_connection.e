@@ -71,13 +71,13 @@ feature -- Redefined features
     do
         if player /= Void then
             std_error.put_string (format(l("Connection from player ~1~@~2~:~3~ closed.%N"),
-                                  <<player.name, dq_address, port.box>>))
+                                  <<player.name, dq_address, port.out>>))
             player.set_connection (Void)
             player := Void
             server.game.players.update_clients
         else
             std_error.put_string (format(l("Connection from ~1~:~2~ closed.%N"),
-                                         <<dq_address, port.box>>))
+                                         <<dq_address, port.out>>))
         end
     end
 
