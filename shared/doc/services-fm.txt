@@ -137,7 +137,7 @@ CHAT MESSAGES
           color can be 0 (server message)
 
 DIALOGS
-  Name: "n:dialogs"
+  Name: "n:dialogs" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
   Description: informs about dialogs that client should answer to
   Format:
