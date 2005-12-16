@@ -10,7 +10,7 @@ feature {NONE} -- Creation
 
 feature -- Operations
 
-    generate (galaxy: GALAXY; players: PLAYER_LIST [PLAYER]) is
+    generate (galaxy: STAR_MAP; players: PLAYER_LIST [PLAYER]) is
         -- Generate `galaxy' for a game with `players'
         -- Store homeworld for each player in `homeworlds'
     require
@@ -23,7 +23,7 @@ feature -- Operations
         homeworlds.count = players.count
     end
 
-    add_omniscient_knowledge(galaxy: GALAXY; players: PLAYER_LIST[PLAYER]) is
+    add_omniscient_knowledge(galaxy: STAR_MAP; players: PLAYER_LIST[PLAYER]) is
     local
         pl: ITERATOR[PLAYER]
         st: ITERATOR[STAR]

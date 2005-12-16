@@ -194,7 +194,7 @@ feature {NONE} -- Planet Generation
         Result.set_special(plspecial_nospecial)
     end
 
-    make_special_on (star: STAR; galaxy: GALAXY) is
+    make_special_on (star: STAR; galaxy: STAR_MAP) is
     local
         special, orbit, idx: INTEGER
         other: STAR
@@ -283,7 +283,7 @@ feature {NONE} -- Planet Generation
         end
     end
 
-    place_orion (galaxy: GALAXY) is
+    place_orion (galaxy: STAR_MAP) is
     local
         orion_system: STAR
         orion: PLANET
@@ -310,7 +310,7 @@ feature {NONE} -- Planet Generation
         dont_touch.add (orion_system)
     end
 
-    place_homeworlds(galaxy: GALAXY; players: PLAYER_LIST[PLAYER]) is
+    place_homeworlds(galaxy: STAR_MAP; players: PLAYER_LIST[PLAYER]) is
     local
         i: ITERATOR [PLAYER]
         hmworldpos: COORDS
@@ -358,7 +358,7 @@ feature {NONE} -- Planet Generation
 
 feature -- Operation
 
-    generate (galaxy: GALAXY; players: PLAYER_LIST [PLAYER]) is
+    generate (galaxy: STAR_MAP; players: PLAYER_LIST [PLAYER]) is
     local
         starposs: ARRAY[COORDS]
         starnams: ARRAY[STRING]
