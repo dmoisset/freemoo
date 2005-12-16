@@ -8,6 +8,7 @@ inherit
     GETTEXT
     STRING_FORMATTER
     PLAYER_CONSTANTS
+    DIALOG_KINDS
 
 creation make
 
@@ -142,6 +143,7 @@ feature
     do
         print ("Subscribing for game services%N")
         server.subscribe_init
+        server.dialogs.on_dialog_addition.connect (agent new_dialog)
         print ("Playing now%N")
         from until false loop
             server.get_data (-1)
@@ -214,6 +216,33 @@ feature -- Incredibly smart AI
             end
             i.next
         end
+    end
+
+--Duplicated code with MAIN_WINDOW. refactor
+
+    new_dialog (args: TUPLE[INTEGER, INTEGER, STRING]) is
+    local
+        id, kind: INTEGER
+        dinfo: STRING
+    do
+        id := args.first
+        kind := args.second
+        dinfo := args.third
+        inspect kind
+        when dk_colonization then
+            on_colonize_dialog (id, dinfo)
+        else
+            print ("Unrecognized dialog kind%N")
+        end
+    end
+
+    on_colonize_dialog (id: INTEGER; dinfo: STRING) is
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        s.add_integer (0) -- Do not colonize
+        server.dialog (id, s.serialized_form)
     end
 
 end -- class DUMB_CLIENT
