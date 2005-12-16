@@ -392,6 +392,9 @@ feature {NONE} -- Internal
                 then
                     i.item.colonize_order
                 end
+                if i.item.has_target_at (galaxy) then
+                    i.item.engage_order
+                end
                 galaxy.join_fleets (i.item.orbit_center)
             end
             i.next

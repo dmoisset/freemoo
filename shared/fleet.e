@@ -112,6 +112,38 @@ feature -- Access
         Result := it.item.as_colony_ship
     end
 
+    has_target_at (g: GALAXY): BOOLEAN is
+        -- Is there any attackable target in galaxy `g'?
+    require
+        g /= Void
+        is_in_orbit implies g.has_star (orbit_center.id)
+    local
+        i: INTEGER
+        p: PLANET
+        f: ITERATOR [FLEET]
+    do
+        if is_in_orbit and then can_engage then
+            -- Look for ground targets
+            from i := 1 until i > orbit_center.Max_planets or Result loop
+                p := orbit_center.planet_at (i)
+                Result :=
+                    p /= Void and then
+                    p.colony /= Void and then
+                    p.colony.owner /= owner
+                i := i + 1
+            end
+            -- Look for enemy fleets
+            from
+                f := g.get_new_iterator_on_fleets
+            until Result or f.is_off loop
+                Result :=
+                    f.item.orbit_center = orbit_center and then
+                    f.item.owner /= owner
+                f.next
+            end
+        end
+    end
+
 feature -- Operations
 
     add_ship (s: like ship_type) is
