@@ -244,7 +244,7 @@ feature {NONE} -- Operations
         elseif not player.is_in_range(destination, fleet, ships) then
             print ("move_fleet: Destination out of range%N")
         elseif not fleet.can_receive_orders then
-            print ("Cannot issue orders to that fleet at the moment")
+            print ("Cannot issue orders to that fleet at the moment%N")
         elseif ships.count = 0 then
             print ("move_fleet: non-positive ship count%N")
         elseif ships.count < count then
