@@ -40,7 +40,7 @@ feature {NONE} -- Creation
         !!blackholes_window.make (Current, r)
         -- Array of blackhole windows
         !!bh_windows.make (1, 0)
-        font := create {BITMAP_FONT_FMI}.make ("client/galaxy-view/font2.fmi")
+        create {BITMAP_FONT_FMI}font.make ("client/galaxy-view/font2.fmi")
         -- Hotspots
         !!fleet_hotspots.make
         !!star_hotspots.make

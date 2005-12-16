@@ -495,7 +495,7 @@ feature {NONE} -- Once features
         i: IMAGE_FMI
     once
         !!Result.make(1, 2)
-        i := create {IMAGE_FMI}.make_from_file ("client/fleet-view/cursor.fmi")
+        create i.make_from_file ("client/fleet-view/cursor.fmi")
         Result.put(i, 2)
         Result.put(create {SDL_IMAGE}.make_transparent(i.width, i.height), 1)
     end
