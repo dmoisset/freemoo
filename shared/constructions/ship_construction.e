@@ -58,12 +58,14 @@ feature {NONE} -- Creation
     do
         id := product_colony_ship
         name := l("Colony Ship")
+        create ship_factory
     end
 
     make_starship(new_design: like design) is
     do
         id := product_max + new_design.id
         design := new_design
+        create ship_factory
     end
 
 feature {NONE} -- Auxiliar

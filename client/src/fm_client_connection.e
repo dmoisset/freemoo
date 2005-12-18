@@ -169,6 +169,20 @@ feature -- Operations -- Game commands
         send_package(msgtype_task, s.serialized_form)
     end
 
+    start_building(c: COLONY; prod: CONSTRUCTION) is
+    require
+        c /= Void
+        prod /= Void
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        s.add_tuple(<<c.id.box, (prod.id - prod.product_min).box>>)
+        send_package(msgtype_startbuilding, s.serialized_form)
+        print ("starting to build a "  + prod.name + "%N")
+    end
+
+
     colonize(f: FLEET) is
         -- Give colonize order to `f'
     require

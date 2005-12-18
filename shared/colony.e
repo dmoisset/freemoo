@@ -319,6 +319,7 @@ feature -- Operations
     require newproducing.in_range(product_min, product_max)
     do
         producing := newproducing
+        print ("Colony: Started building a " + newproducing.to_string + "%N")
     ensure
         producing = newproducing
     end

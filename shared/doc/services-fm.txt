@@ -77,8 +77,11 @@ COLONY
   Name: "colony"+id (id is a digit sequesnce = colony.id)
   Provided: Before reporting colony on player.
   Description: Detailed colony description.
-  Format: "iii" <<producing, population, populators_count>>, followed by a sequence of
-          "iibi" <<id, race_id, captive (not assimilated), task>> one per populator
+  Format: "iii" <<producing, population, populators_count, constructions_count>>,
+             followed by a sequence of
+          "iibi" <<id, race_id, captive (not assimilated), task>> one per populator,
+             followed by a sequence of
+          "i" <<product_id>> one per construction.
 
 RACE
   Name: "race"+id (id is a digit sequence = race.id)

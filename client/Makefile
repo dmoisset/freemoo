@@ -7,7 +7,7 @@ LIBS=`sdl-config --cflags --libs` $(CLIBS)\
 TARGET2=dumb_client
 LIBS2=-leifinet
 SOURCEFILES=src/*.e ../shared/*.e src/screens/*.e src/widgets/*.e \
-            src/views/*.e src/C/*.c
+            src/views/*.e src/C/*.c ../shared/constructions/*.e
 
 all: $(TARGET) $(TARGET2)
 

@@ -23,7 +23,7 @@ feature
         -- Action when `msg' arrives from `provider''s `service'
     local
         s: UNSERIALIZER
-        pop_count, pop_id: INTEGER
+        pop_count, pop_id, const_count, const_id: INTEGER
         race: RACE
         new_populators: HASHED_DICTIONARY[POPULATION_UNIT, INTEGER]
         new_population: INTEGER
@@ -35,9 +35,11 @@ feature
         s.get_integer
         new_population := s.last_integer
         s.get_integer
+        pop_count := s.last_integer
+        s.get_integer
+        const_count := s.last_integer
         create new_populators.make
         from
-            pop_count := s.last_integer
         until
             pop_count = 0
         loop
@@ -55,9 +57,22 @@ feature
             new_populators.add(populator, populator.id)
             pop_count := pop_count - 1
         end
+
         population := new_population
         populators := new_populators
         print ("in C_COLONY.on_message: Population: " + population.to_string + " - Populators: " + populators.count.to_string + "%N")
+        from
+            constructions.clear
+        until
+            const_count = 0
+        loop
+            s.get_integer
+            const_id := s.last_integer + product_min
+            check const_id.in_range(product_min, product_max) end
+            constructions.add(owner.known_constructions @ (const_id), const_id)
+            const_count := const_count - 1
+        end
+
         if populators.count > 0 then
             changed.emit(Current)
         else

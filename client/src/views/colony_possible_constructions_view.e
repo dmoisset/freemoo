@@ -61,8 +61,9 @@ feature {NONE} -- Callbacks
 
     start_building(c: CONSTRUCTION) is
     do
-        print ("Started building a " + c.name + "%N")
-        --server.start_building(colony, c)
+        if c.id /= colony.producing then
+            server.start_building(colony, c)
+        end
     end
 
 feature {NONE} -- Auxiliar functions

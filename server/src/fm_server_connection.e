@@ -62,6 +62,8 @@ feature -- Redefined features
             set_task(u)
         when msgtype_colonize then
             colonize(u)
+        when msgtype_startbuilding then
+            startbuilding(u)
         else
             Precursor (ptype)
         end
@@ -304,6 +306,35 @@ feature {NONE} -- Operations
                 -- Send orders
                 colony.set_task(pops, task)
             end
+        end
+    end
+
+
+    startbuilding (u: UNSERIALIZER) is
+    local
+        product_id: INTEGER
+        product: CONSTRUCTION
+        colony: S_COLONY
+    do
+        -- Unserialize
+        u.get_integer
+        if player.colonies.has(u.last_integer) then
+            colony := player.colonies @ u.last_integer
+        end
+        u.get_integer
+        product_id := u.last_integer + player.known_constructions.product_min
+        if player.known_constructions.has(product_id) then
+            product := player.known_constructions @ product_id
+        end
+        -- Check consistency
+        if colony = Void then
+            print ("startbuilding: Invalid colony id%N")
+        elseif product = Void then
+            print ("startbuilding: Invalid product Id%N")
+        elseif not product.can_be_built_on(colony) then
+            print ("startbuilding: " + product.name + " can't be built at colony " + colony.id.to_string + "%N")
+        else
+            colony.set_producing(product_id)
         end
     end
 

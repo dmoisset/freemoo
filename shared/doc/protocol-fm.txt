@@ -147,6 +147,21 @@ CLIENT MESSAGES
   and every population unit should be at the colony.
   *All* population units should be able to perform the task.
 
+
+  * Build
+
+  offset(bytes) name        type    Notes
+  0             msgtype     INTEGER 44
+  4             colony      INTEGER id of a colony the player owns
+  8             product_id  INTEGER id taken from known_constructions
+
+  Start building product_id on colony.  The player must own the colony,
+  the product product_id must be taken from the players known_constructions
+  (this is between product_min and product_max or a valid ship design id)
+  and you should check that the construction can_be_built_on the colony first.
+  Eventually, you won't be able to call this feature if you have already
+    bought something on the colony this turn, either.
+
 SERVER MESSAGES
 
 32: Join-Accept. Login complete.
