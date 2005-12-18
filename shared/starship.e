@@ -32,12 +32,12 @@ feature {NONE} -- Creation
     make(p: like creator) is
     do
         Precursor(p)
-        can_attack := True
         set_starship_attributes
     end
 
     set_starship_attributes is
     do
+        can_attack := True
         ship_type := ship_type_starship
     end
 
