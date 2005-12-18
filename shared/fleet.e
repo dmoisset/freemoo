@@ -166,6 +166,9 @@ feature -- Operations
         if not can_colonize then
             has_colonization_orders := False
         end
+        if not can_engage then
+            has_engage_orders := False
+        end
         scanner_range := 0
         recalculate_current_speed
     ensure
@@ -186,6 +189,9 @@ feature -- Operations
         other.ships.do_all (agent ships.put (?, ?))
         if other.has_colonization_orders then
             has_colonization_orders := True
+        end
+        if other.has_engage_orders then
+            has_engage_orders := True
         end
         other.clear_ships
         scanner_range := 0
@@ -248,6 +254,7 @@ feature -- Operations
     do
         orbit_center := Void
         has_colonization_orders := False
+        has_engage_orders := False
     ensure
         not is_in_orbit
     end
@@ -322,7 +329,10 @@ feature -- Operations
     do
         destination := d
         if destination = orbit_center then destination := Void end
-        if destination /= Void then has_colonization_orders := False end
+        if destination /= Void then
+            has_colonization_orders := False
+            has_engage_orders := False
+        end
     ensure
         d /= orbit_center implies destination = d
     end
@@ -462,4 +472,5 @@ invariant
     nonnegative_eta: eta >= 0
     positive_speed: current_speed > 0
     has_colonization_orders implies orbit_center /= Void
+    has_engage_orders implies orbit_center /= Void
 end -- class FLEET

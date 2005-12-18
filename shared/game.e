@@ -200,11 +200,24 @@ feature {NONE} -- Internal
         -- Calculate new turn, step 0
     require
         new_turn_step = 0
+    local
+        f: ITERATOR [FLEET]
     do
         colony_new_turn
         move_fleets
         -- After this:
         -- Ask where to combat (dialog)
+        from f := galaxy.get_new_iterator_on_fleets until f.is_off loop
+            if
+                f.item.has_engage_orders and then
+                f.item.has_target_at (galaxy)
+            then
+                print (" **** Fleet "+f.item.id.out+" engaging at "+f.item.orbit_center.name+"%N")
+                f.item.cancel_engage_order
+            end
+            f.next
+        end
+        
         new_turn_step := new_turn_step + 1
     end
 
