@@ -3,7 +3,7 @@ class COLONY_PRODUCTION_VIEW
 
 inherit
     COLONY_VIEW
---    redefine handle_event end -- for handling clicks
+    redefine handle_event end
     CLIENT
 
 creation
@@ -16,6 +16,36 @@ feature {NONE} -- Creation
         my_connect_identifier := agent update_production
         window_make(w, where)
     end
+
+feature -- Redefined features
+
+    handle_event (event: EVENT) is
+    local
+        b: EVENT_MOUSE_BUTTON
+        ac: EXPLAINED_ACCUMULATOR[REAL]
+        it: ITERATOR[STRING]
+    do
+        Precursor (event)
+        if not event.handled then
+            b ?= event
+            if b /= Void and then not b.state then
+                event.set_handled
+                if b.button = 1 and b.y < row_height * 4 then
+                    ac := accumulator(b.y // row_height)
+                    from
+                        it := ac.get_new_iterator_on_reasons
+                    until
+                        it.is_off
+                    loop
+                        print (it.item + ": " + (ac @ it.item).to_string + "%N")
+                        it.next
+                    end
+                end
+            end
+        end
+    end
+
+
 
 feature {NONE} -- signal callbacks
 

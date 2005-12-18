@@ -29,7 +29,7 @@ feature {NONE} -- Creation
         r.set_with_size(328, 78, 200, 100)
         new_populators(r)
 
-        r.set_with_size(138, 47, 200, 140)
+        r.set_with_size(138, 47, 168, 140)
         new_production(r)
 
         !!a.make ("client/colony-window/close1.fma")

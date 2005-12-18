@@ -11,10 +11,11 @@ feature {NONE} -- Creation
         set_state (st_setup)
         set_color (min_color)
         fuel_range := 4.0
-        !!race.make
-        !!colonies.make
-        !!knows_star.make
-        !!has_visited_star.make
+        create race.make
+        create colonies.make
+        create knows_star.make
+        create has_visited_star.make
+        create known_constructions.make
         ruler_name := ""
     ensure
         state = st_setup
@@ -36,6 +37,9 @@ feature -- Access
 
     has_visited_star: HASHED_SET[like star_type]
         -- Stars visited by this player
+
+    known_constructions: CONSTRUCTION_BUILDER
+        -- Constructions this player can build
 
     fuel_range: REAL
         -- Distance our ships can travel from our colonies
@@ -209,6 +213,8 @@ feature {MAP_GENERATOR, FLEET}
     end
 
 feature -- Anchors
+
+    construction_type: CONSTRUCTION
 
     colony_type: COLONY
 

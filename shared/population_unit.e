@@ -2,6 +2,7 @@ class POPULATION_UNIT
 inherit
     UNIQUE_ID
     GETTEXT
+    PRODUCTION_CONSTANTS
     STRING_FORMATTER
 
 creation make
@@ -16,8 +17,6 @@ feature -- Access
 
     turns_to_assimilation: INTEGER
         -- Number of turns missing for this populator to be assimilated
-
-    task_farming, task_industry, task_science: INTEGER is unique
 
     task: INTEGER
         -- Task this populator is doing.  Must be one of the task_xxxx constants
@@ -46,19 +45,81 @@ feature -- Access
                   t = task_science and then able_scientist
     end
 
+    production_factor: REAL is
+        -- A value that considers unhealthy (strange gravity) environments
+        -- to penalize production
+    do
+        Result := production_factor_array.item(race.homeworld_gravity,
+                                               colony.location.gravity)
+    end
+
+feature {NONE} -- Auxiliar for `production_factor'
+
+    production_factor_array: ARRAY2[REAL] is
+        --     LG  NG  HG < Planet gravity
+        -- LG   1 .75  .5
+        -- NG .75   1 .75
+        -- HG .75   1   1
+        --  ^ Race's homeworld gravity
+    once
+        create Result.make(-1, 1, colony.location.grav_min, colony.location.grav_max)
+        Result.put(1,    -1, colony.location.grav_lowg)
+        Result.put(0.75, -1, colony.location.grav_normalg)
+        Result.put(0.5,  -1, colony.location.grav_highg)
+        Result.put(0.75,  0, colony.location.grav_lowg)
+        Result.put(1,     0, colony.location.grav_normalg)
+        Result.put(0.75,  0, colony.location.grav_highg)
+        Result.put(0.75,  1, colony.location.grav_lowg)
+        Result.put(1,     1, colony.location.grav_normalg)
+        Result.put(1,     1, colony.location.grav_highg)
+    end
+
 feature -- Operation
+
+    generate_money is
+    local
+        item: REAL
+        total: REAL
+    do
+        colony.money.add(1, l("Taxes Collected"))
+        if race.money_bonus > 0 then
+            colony.money.add(race.money_bonus * 0.5, format(l("~1~ Bonus"), <<race.name>>))
+        elseif race.money_bonus < 0 then
+            colony.money.add(race.money_bonus * 0.5, format(l("~1~ Penalty"), <<race.name>>))
+        end
+        -- Surplus food
+        item := ((colony.farming.total - colony.food_consumption).max(0) /
+                    colony.populators.count) / 2
+        colony.money.add(item, l("Food Surplus"))
+        total := item
+        -- Trade goods
+        if colony.producing = product_trade_goods then
+            item := (colony.industry.total - colony.industry_consumption).max(0) /
+                    colony.populators.count / 2
+            colony.money.add(item, l("Trade Goods"))
+            total := total + item
+        end
+        -- Fantastic traders
+        if race.fantastic_trader then
+            colony.money.add(total, l("Fantastic Traders"))
+        end
+    end
 
     produce is
     do
         inspect
             task
         when task_farming then
-            colony.farming.add(colony.location.planet_farming @ colony.location.climate, l("Produced by farmers"))
+            colony.farming.add(((colony.location.planet_farming @
+                    colony.location.climate) * production_factor).rounded,
+                    l("Produced by farmers"))
             if race.farming_bonus /= 0 then
                 colony.farming.add(race.farming_bonus, format(l("~1~ Bonus"), <<race.name>>))
             end
         when task_industry then
-            colony.industry.add(colony.location.planet_industry @ colony.location.mineral, l("Produced by workers"))
+            colony.industry.add(((colony.location.planet_industry @
+                    colony.location.mineral) * production_factor).rounded,
+                    l("Produced by workers"))
             if race.industry_bonus /= 0 then
                 colony.industry.add(race.industry_bonus, format(l("~1~ Bonus"), <<race.name>>))
             end
@@ -73,11 +134,12 @@ feature -- Operation
         else
             check unexpected_task: False end
         end
-        colony.money.add(1, l("Taxes Collected"))
-        if race.money_bonus > 0 then
-            colony.money.add(race.money_bonus * 0.5, format(l("~1~ Bonus"), <<race.name>>))
-        elseif race.money_bonus < 0 then
-            colony.money.add(race.money_bonus * 0.5, format(l("~1~ Penalty"), <<race.name>>))
+        -- Eat!
+        if race.cybernetic then
+            colony.consume_food(0.5)
+            colony.consume_industry(0.5)
+        else
+            colony.consume_food(1)
         end
     end
 

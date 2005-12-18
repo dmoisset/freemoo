@@ -12,7 +12,7 @@ feature -- Access
         Result := subtotals.get_new_iterator_on_keys
     end
 
-    get_amount_due_to(reason: STRING): E is
+    get_amount_due_to, infix "@" (reason: STRING): E is
     require
         reason /= Void
     do

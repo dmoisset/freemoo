@@ -9,7 +9,7 @@ inherit
     redefine
         add_to_known_list, add_to_visited_list, colony_type,
         star_type, race, set_ruler_name, set_race, set_color, add_colony,
-        remove_colony
+        remove_colony, known_constructions
     select id end
     STORABLE
     rename
@@ -35,6 +35,8 @@ feature -- Redefined Features
     star_type: S_STAR
 
     race: S_RACE
+
+    known_constructions: S_CONSTRUCTION_BUILDER
 
 feature {NONE} -- Creation
 
@@ -126,6 +128,7 @@ feature -- Redefined features
         s: SERIALIZER2
         star_it: ITERATOR [like star_type]
         col_it: ITERATOR [COLONY]
+        const_it: ITERATOR[CONSTRUCTION]
     do
         !!s.make
         -- Validate service_id
@@ -139,6 +142,7 @@ feature -- Redefined features
                 s.add_integer (knows_star.count)
                 s.add_integer (has_visited_star.count)
                 s.add_integer (colonies.count)
+                s.add_integer (known_constructions.count)
                 star_it := knows_star.get_new_iterator
                 from star_it.start until star_it.is_off loop
                     s.add_integer (star_it.item.id)
@@ -155,6 +159,11 @@ feature -- Redefined features
                     s.add_integer (col_it.item.location.orbit)
                     s.add_integer (col_it.item.id)
                     col_it.next
+                end
+                const_it := known_constructions.get_new_iterator
+                from const_it.start until const_it.is_off loop
+                    s.add_integer(const_it.item.id - const_it.item.product_min)
+                    const_it.next
                 end
             end
         end

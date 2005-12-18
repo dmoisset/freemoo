@@ -52,7 +52,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         -- Action when `msg' arrives from `provider''s `service'
     local
         s: UNSERIALIZER
-        knows_count, visited_count, colony_count: INTEGER
+        knows_count, visited_count, colony_count, construction_count,
+        product_id: INTEGER
         orbit: INTEGER
         star: C_STAR
         old_knows: like knows_star
@@ -73,6 +74,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         visited_count := s.last_integer
         s.get_integer
         colony_count := s.last_integer
+        s.get_integer
+        construction_count := s.last_integer
         from
             old_knows := clone (knows_star)
             knows_star.clear
@@ -140,6 +143,16 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 print ("c_player::on_message() - Warning: server reported that we have a colony on a star that isn%'t!%N")
             end
             colony_count := colony_count - 1
+        end
+        from
+        until construction_count = 0 loop
+            s.get_integer
+            product_id := s.last_integer + known_constructions.product_min
+            if not known_constructions.has(product_id) then
+                print("Woot!! Now I know how to build " + product_id.to_string + "s!%N")
+                known_constructions.add_by_id(product_id)
+            end
+            construction_count := construction_count - 1
         end
     end
 

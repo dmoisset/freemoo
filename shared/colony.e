@@ -4,6 +4,7 @@ inherit
     UNIQUE_ID
     redefine set_id end
     GETTEXT
+    PRODUCTION_CONSTANTS
 
 creation make
 
@@ -27,7 +28,7 @@ feature {NONE} -- Creation
         create morale.make
         morale.add(o.race.morale_bonus, l("Government Morale"))
         -- .. Consider morale techs (Virtual Reality Network, Psionics)...
-        create constructions.make(1, 0)
+        create constructions.make
         create populators.make
         location := p
         p.set_colony (Current)
@@ -47,6 +48,9 @@ feature -- Access
     producing: INTEGER
         -- Item being produced, one of the `product_xxxx' constants.
 
+    starship_design: like shipyard
+        -- The starship we're building or refitting
+
     location: PLANET
         -- location of the colony
 
@@ -63,7 +67,7 @@ feature -- Access
         -- Colony's population in Kinhabitants (thousandths of population units)
 
     population_growth: INTEGER is
-        -- Population growth per turn, in Kinhabitants
+        -- Population growth per turn, in KInhabitants
     local
         maxpop: INTEGER
     do
@@ -84,17 +88,16 @@ feature -- Access
         end
         -- Consider Leader Ability
         -- Consider Missing Food
-        if owner.race.cybernetic then
-            Result := Result - 50 * ((populators.count // 2 - farming.total.rounded).max(0) +
-                                    ((populators.count + 1) // 2 - industry.total.rounded).max(0))
-        else
-            Result := Result - 50 * (populators.count - farming.total.rounded).max(0)
+        if not owner.race.lithovore then
+            Result := Result - 50 * ((food_consumption - farming.total).ceiling.max(0) +
+                                     (industry_consumption - industry.total).floor.max(0))
         end
     end
 
     max_population: INTEGER is
         -- Colony's maximum population, in population units.
-        -- Takes players maximum population for the planet and considers constructions and biodiversity.
+        -- Takes players maximum population for the planet and considers
+        -- constructions and biodiversity.
     local
         aliens: REAL
         subterranean: BOOLEAN
@@ -130,35 +133,73 @@ feature -- Access
     end
 
     populators: HASHED_DICTIONARY[like populator_type, INTEGER]
+        -- This colony's populators.  There's one for each 1000 KInhabitants.
 
-    constructions: ARRAY[CONSTRUCTION]
+    constructions: HASHED_DICTIONARY[CONSTRUCTION, INTEGER]
+        -- This colony's constructions.
 
     farming, industry, science, money: EXPLAINED_ACCUMULATOR[REAL]
+        -- A detailed explanation of this colony's per-turn production.
+        -- These values are recalculated in `recalculate_production',
+        -- beware of using them when outdated or uninitialized.
+
+    food_consumption, industry_consumption: REAL
+        -- Food and Industry the populators eat per turn.  These values
+        -- are recalculated with `recalculate_production',
+        -- beware of reading them when outdated or uninitialized.
 
     morale: EXPLAINED_ACCUMULATOR[INTEGER]
+        -- A detailed explanation of this colony's morale status.  This
+        -- value *isn't* recalculated with `recalculate_production', and
+        -- persists from turn to turn.  It's modified with diferent actions,
+        -- like constructions, technologies or enemy blocades.
+
+    maintenance_factor: REAL is
+        -- A value that considers harsh environments to increase maintenance
+        -- costs.
+    do
+        if location.cimate = location.climate_toxic then
+            Result := 1.5
+        elseif location.climate = location.climate_barren or
+               location.climate = location.climate_radiated then
+            Result := 1.25
+        else
+            Result := 1
+        end
+    end
+
+feature -- Operations
 
     recalculate_production is
+        -- Update farming, industry, science, money, food_consumption and
+        -- industry_consumption, considering colonists production, government
+        -- type, constructions, biodiversity, pollution, leaders and the
+        -- kitchen's sink.
     local
-       pop_it: ITERATOR[POPULATION_UNIT]
-       const_it: ITERATOR[CONSTRUCTION]
+        pop_it: ITERATOR[POPULATION_UNIT]
+        const_it: ITERATOR[CONSTRUCTION]
     do
         print ("in recalculate_production%N")
         farming.clear
         industry.clear
         science.clear
         money.clear
-        -- Population Units
+        create census.make(task_farming, task_science)
+        food_consumption := 0
+        industry_consumption := 0
+        -- Population Units (production and consumption)
         from
             pop_it := populators.get_new_iterator_on_items
         until
             pop_it.is_off
         loop
+            census.put((census @ pop_it.item.task) + 1, pop_it.item.task)
             pop_it.item.produce
             pop_it.next
         end
         -- Buildings' proportional
         from
-            const_it := constructions.get_new_iterator
+            const_it := constructions.get_new_iterator_on_items
         until
             const_it.is_off
         loop
@@ -181,7 +222,7 @@ feature -- Access
                  location.plsize_min + 1)).max(0)), l("Pollution Penalty"))
         -- Clean Up Pollution
             from
-                const_it := constructions.get_new_iterator
+                const_it := constructions.get_new_iterator_on_items
             until
                 const_it.is_off
             loop
@@ -191,33 +232,25 @@ feature -- Access
         end
         -- Buildings fixed production
         from
-            const_it := constructions.get_new_iterator
+            const_it := constructions.get_new_iterator_on_items
         until
             const_it.is_off
         loop
             const_it.item.produce_fixed(Current)
             const_it.next
         end
+        -- Generate money in a second loop, so's that surplus industry
+        -- and food are already known
+        from
+            pop_it := populators.get_new_iterator_on_items
+        until pop_it.is_off loop
+            pop_it.item.generate_money
+            pop_it.next
+        end
     end
 
-feature -- Constants
-
-    product_none, product_starship, product_colony_ship,
-    product_housing, product_trade_goods,
-    product_construction, product_spy: INTEGER is unique
-        -- Possible production_items
-
-    product_min: INTEGER is
-        -- Minimum valid for `producing'
-    do Result := product_none end
-
-    product_max: INTEGER is
-        -- Minimum valid for `producing'
-    do Result := product_colony_ship end
-
-feature -- Operations
-
     new_turn is
+        -- Update population, production, and build finished constructions.
     local
         new_population: INTEGER
         new_populator: like populator_type
@@ -240,20 +273,18 @@ feature -- Operations
             end
         end
         population := new_population
-        inspect
-            producing
-        when product_none then
-            -- Nothing to do this turn
-        when product_starship then
+        -- check if production is enough to build before doing this next thing...
+        if producing = product_starship then
+            -- starship_design should be set just before setting producing
+            -- to product_starship.  We're not doing this yet.
             ship_factory.create_starship(owner)
             ship_factory.last_starship.set_name("Enterprise")
-            shipyard := ship_factory.last_starship
-            set_producing(product_colony_ship)
-        when product_colony_ship then
-            ship_factory.create_colony_ship(owner)
-            shipyard := ship_factory.last_colony_ship
-            set_producing(product_starship)
+            starship_design := ship_factory.last_starship
+            shipyard := starship_design
+        elseif producing /= product_none then
+            owner.known_constructions.item(producing).build(Current)
         end
+        producing := product_none
     end
 
     remove is
@@ -269,6 +300,7 @@ feature -- Operations
 feature -- Operations
 
     set_task(pops: HASHED_SET[POPULATION_UNIT]; task: INTEGER) is
+        -- Set all populators in `pops' to do the given `task'
     local
         pop_it: ITERATOR[POPULATION_UNIT]
     do
@@ -283,6 +315,7 @@ feature -- Operations
     end
 
     set_producing (newproducing: INTEGER) is
+        -- Start building a brand new `newproducing'
     require newproducing.in_range(product_min, product_max)
     do
         producing := newproducing
@@ -296,6 +329,22 @@ feature -- Operations
         shipyard := Void
     ensure
         shipyard = Void
+    end
+
+    consume_food(amount: REAL) is
+        -- Increase food_consumption by `amount'
+    do
+        food_consumption := food_consumption + amount
+    ensure
+        food_consumption = old food_consumption + amount
+    end
+
+    consume_industry(amount: REAL) is
+        -- Increase industry_consumption by `amount'
+    do
+        industry_consumption := industry_consumption + amount
+    ensure
+        industry_consumption = old industry_consumption + amount
     end
 
 feature {GALAXY} -- Scanning
@@ -331,6 +380,33 @@ feature {NONE} -- Auxiliary for scanning
         -- Quite dumb for now...
     do
         scanner_range := 2
+    end
+
+feature {CONSTRUCTION} -- Auxiliary for construction production
+
+    census: ARRAY[INTEGER]
+        -- Census of farmers, workers and scientists.  It's value is
+        -- recalculated with `recalculate_production'.
+
+    build_ship(sh: like shipyard) is
+    do
+        shipyard := sh
+    ensure
+        shipyard = sh
+    end
+
+feature {EVOLVER} -- Auxiliary for evolving
+
+    add_populator(task: INTEGER) is
+    require
+        task.in_range(task_farming, task_science)
+    local
+        pop: like populator_type
+    do
+        create pop.make(owner.race, Current)
+        populators.add(pop, pop.id)
+        population := population + 1000
+        pop.set_task(task)
     end
 
 feature -- Redefined features
@@ -371,6 +447,7 @@ feature {CONSTRUCTION} -- Special cases
 invariant
     population // 1000 = populators.count
     valid_producing: producing.in_range (product_min, product_max)
+--    producing = product_starship implies starship_design /= Void
     populators /= Void
     constructions /= Void
     location /= Void

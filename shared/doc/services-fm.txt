@@ -61,13 +61,15 @@ PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
   Provided: Before game_status.started is set
   Description: Detailed player description
-  Format: "siriii" <<ruler_name, money, fuel_range, knows_stars,
-                    visited_stars, colony_count>, followed by a sequence of
+  Format: "siriiii" <<ruler_name, money, fuel_range, knows_stars,
+                    visited_stars, colony_count, known_construction>>, 
+                    followed by a sequence of
           "i" <<star_id>>
                  (this is the known_star list), followed by a sequence of
           "i" <<star_id>>
                  (this is the visited_star list), followed by a sequence of
-          "iii" <<star_id, orbit, colony_id>>
+          "iii" <<star_id, orbit, colony_id>>, followed by a sequence of
+          "i" <<product_id>>
 
 COLONY
   Name: "colony"+id (id is a digit sequesnce = colony.id)
