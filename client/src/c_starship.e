@@ -16,6 +16,11 @@ feature
         s: UNSERIALIZER
     do
         !!s.start (msg)
+        unserialize_completely_from(s)
+    end
+
+    unserialize_completely_from(s: UNSERIALIZER) is
+    do
         s.get_string
         name := s.last_string
         s.get_real

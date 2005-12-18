@@ -8,12 +8,14 @@ inherit
 
 creation make_starship, make_colony_ship
 
+feature -- Redefined features
+
+    design: S_STARSHIP
+
 feature {NONE}-- Redefined features
 
     ship_factory: S_SHIP_FACTORY
 
     colony_type: S_COLONY
-
-    design: S_SHIP
 
 end -- class S_SHIP_CONSTRUCTION

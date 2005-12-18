@@ -30,6 +30,8 @@ feature -- Access
         end
     end
 
+    design: STARSHIP
+
 feature -- Operations
 
     build(c: like colony_type) is
@@ -43,8 +45,6 @@ feature -- Operations
     end
 
 feature {NONE} -- Implementation
-
-    design: SHIP
 
     starship_cost: INTEGER is
         -- Calculate cost from ship design!
@@ -62,7 +62,7 @@ feature {NONE} -- Creation
 
     make_starship(new_design: like design) is
     do
-        id := product_starship
+        id := product_max + new_design.id
         design := new_design
     end
 
@@ -72,6 +72,6 @@ feature {NONE} -- Auxiliar
 
 invariant
 
-    id = product_starship implies design /= Void
+    id > product_max implies design /= Void
 
 end -- class SHIP_CONSTRUCTION

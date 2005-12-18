@@ -26,6 +26,9 @@ feature {NONE} -- Creation
         r.set_with_size(18, 47, 120, 130)
         new_system_view(r)
 
+        r.set_with_size(45, 225, 180, 130)
+        new_possible_constructions (r)
+
         r.set_with_size(328, 78, 200, 100)
         new_populators(r)
 
@@ -49,11 +52,13 @@ feature {NONE} -- Widgets
     population: COLONY_POPULATION_VIEW
     populators: COLONY_POPULATORS_VIEW
     production: COLONY_PRODUCTION_VIEW
+    possible_constructions: COLONY_POSSIBLE_CONSTRUCTIONS_VIEW
     new_name (where: RECTANGLE) is deferred end
     new_population (where: RECTANGLE) is deferred end
     new_populators (where: RECTANGLE) is deferred end
     new_production (where: RECTANGLE) is deferred end
     new_system_view (where: RECTANGLE) is deferred end
+    new_possible_constructions (where: RECTANGLE) is deferred end
 
 feature {NONE} -- Callbacks
 

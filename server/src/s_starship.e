@@ -1,5 +1,5 @@
 class S_STARSHIP
-    
+
 inherit
     S_SHIP
     redefine
@@ -10,9 +10,9 @@ inherit
     undefine
         set_size, set_picture
     redefine creator, make end
-    
+
 creation make
-    
+
 feature
     creator: S_PLAYER
 
@@ -24,12 +24,19 @@ feature
         s.add_tuple(<<size.box, picture.box>>)
     end
 
+    serialize_completely_on(s: SERIALIZER2) is
+        -- Adds private information to the serialized, for SHIPn service
+        -- Or transmitting starship blueprints.
+    do
+        s.add_tuple(<<name, fuel_range.box, is_stealthy.box>>)
+    end
+
     subscription_message (service_id: STRING): STRING is
     local
         s: SERIALIZER2
     do
         !!s.make
-        s.add_tuple(<<name, fuel_range.box, is_stealthy.box>>)
+        serialize_completely_on(s)
         Result := s.serialized_form
     end
 

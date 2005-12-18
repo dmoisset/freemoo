@@ -125,6 +125,7 @@ feature -- Redefined features
     subscription_message (service_id: STRING): STRING is
     local
         serv_id: STRING
+        starship: S_SHIP_CONSTRUCTION
         s: SERIALIZER2
         star_it: ITERATOR [like star_type]
         col_it: ITERATOR [COLONY]
@@ -163,6 +164,11 @@ feature -- Redefined features
                 const_it := known_constructions.get_new_iterator
                 from const_it.start until const_it.is_off loop
                     s.add_integer(const_it.item.id - const_it.item.product_min)
+                    if const_it.item.id > known_constructions.product_max then
+                        starship ?= const_it.item
+                        check starship /= Void end
+                        starship.design.serialize_completely_on(s)
+                    end
                     const_it.next
                 end
             end

@@ -69,7 +69,9 @@ PLAYER
           "i" <<star_id>>
                  (this is the visited_star list), followed by a sequence of
           "iii" <<star_id, orbit, colony_id>>, followed by a sequence of
-          "i" <<product_id>>
+          "i" <<product_id>>.  If at any point a product_id is greater than
+                product_max, it's followed by a starship design, given by
+                a message like provided by the Ship service.
 
 COLONY
   Name: "colony"+id (id is a digit sequesnce = colony.id)

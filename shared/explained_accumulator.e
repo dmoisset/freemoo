@@ -37,7 +37,7 @@ feature -- Operations
         end
         total := total + amount
     ensure
-        get_amount_due_to(reason) = old get_amount_due_to(reason) + amount
+        (old get_amount_due_to(reason) + amount - get_amount_due_to(reason)).abs < 0.000001
         (total - (old total + amount)).abs < 0.000001 -- I really, really hate this hack
     end
 

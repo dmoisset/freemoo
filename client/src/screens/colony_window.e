@@ -18,6 +18,7 @@ feature
         population.set_colony(c)
         populators.set_colony(c)
         production.set_colony(c)
+        possible_constructions.set_colony(c)
     end
 
 feature {NONE} -- Widgets
@@ -40,6 +41,11 @@ feature {NONE} -- Widgets
     new_production(where: RECTANGLE) is
     do
         !!production.make(Current, where)
+    end
+
+    new_possible_constructions(where: RECTANGLE) is
+    do
+        !!possible_constructions.make(Current, where)
     end
 
     new_system_view(where: RECTANGLE) is

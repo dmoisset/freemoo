@@ -60,6 +60,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         old_colonies: like colonies
         colony: C_COLONY
         planet: C_PLANET
+        starship: C_STARSHIP
     do
         !!s.start (msg)
         s.get_string
@@ -148,9 +149,16 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         until construction_count = 0 loop
             s.get_integer
             product_id := s.last_integer + known_constructions.product_min
-            if not known_constructions.has(product_id) then
+            if not known_constructions.has_id(product_id) then
                 print("Woot!! Now I know how to build " + product_id.to_string + "s!%N")
-                known_constructions.add_by_id(product_id)
+                if product_id > known_constructions.product_max then
+                    create starship.make(Current)
+                    starship.set_id(product_id - known_constructions.product_max)
+                    starship.unserialize_completely_from(s)
+                    known_constructions.add_starship_design(starship)
+                else
+                    known_constructions.add_by_id(product_id)
+                end
             end
             construction_count := construction_count - 1
         end
