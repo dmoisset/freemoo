@@ -164,8 +164,13 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             end
             s.get_integer -- Ship count
             shipcount := s.last_integer
+
             fleet.unserialize_from (s)
-            new_fleets.add(fleet, fleet.id) -- If you change this from `add' to `put', explain why
+            if new_fleets.has (fleet.id) then
+                std_error.put_string ("Warning: scanned fleet "+fleet.id.out+" twice%N")
+            end
+            new_fleets.put(fleet, fleet.id)
+
             !!factory
             from until shipcount = 0 loop
                 s.get_integer
