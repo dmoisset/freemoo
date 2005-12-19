@@ -60,7 +60,6 @@ feature
 
         population := new_population
         populators := new_populators
-        print ("in C_COLONY.on_message: Population: " + population.to_string + " - Populators: " + populators.count.to_string + "%N")
         from
             constructions.clear
         until
@@ -74,6 +73,7 @@ feature
         end
 
         if populators.count > 0 then
+            recalculate_production
             changed.emit(Current)
         else
             remove

@@ -179,7 +179,6 @@ feature -- Operations
         pop_it: ITERATOR[POPULATION_UNIT]
         const_it: ITERATOR[CONSTRUCTION]
     do
-        print ("in recalculate_production%N")
         farming.clear
         industry.clear
         science.clear
@@ -281,10 +280,13 @@ feature -- Operations
             ship_factory.last_starship.set_name("Enterprise")
             starship_design := ship_factory.last_starship
             shipyard := starship_design
-        elseif producing /= product_none then
+            producing := product_none
+        elseif producing /= product_none and
+               producing /= product_trade_goods and
+               producing /= product_housing then
             owner.known_constructions.item(producing).build(Current)
+            producing := product_none
         end
-        producing := product_none
     end
 
     remove is
@@ -319,7 +321,6 @@ feature -- Operations
     require newproducing.in_range(product_min, product_max)
     do
         producing := newproducing
-        print ("Colony: Started building a " + newproducing.to_string + "%N")
     ensure
         producing = newproducing
     end

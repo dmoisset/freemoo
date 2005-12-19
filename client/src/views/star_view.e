@@ -100,7 +100,6 @@ feature {NONE} -- Callbacks
             connect_window ?= parent.parent.parent
             connect_window.goto_colony_window(p.colony)
         end
-        print ("Manage Colony on planet on orbit " + p.orbit.to_string + "%N")
     end
 
 feature {NONE} -- Signal handlers

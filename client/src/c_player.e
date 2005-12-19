@@ -150,7 +150,6 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             s.get_integer
             product_id := s.last_integer + known_constructions.product_min
             if not known_constructions.has(product_id) then
-                print("Woot!! Now I know how to build " + product_id.to_string + "s!%N")
                 if product_id > known_constructions.product_max then
                     create starship.make(Current)
                     starship.set_id(product_id - known_constructions.product_max)

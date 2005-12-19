@@ -179,7 +179,6 @@ feature -- Operations -- Game commands
         create s.make
         s.add_tuple(<<c.id.box, (prod.id - prod.product_min).box>>)
         send_package(msgtype_startbuilding, s.serialized_form)
-        print ("starting to build a "  + prod.name + "%N")
     end
 
 

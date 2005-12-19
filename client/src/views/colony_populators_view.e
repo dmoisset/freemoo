@@ -68,18 +68,15 @@ feature {NONE} -- Callbacks
         bag.add(pop)
         if pop.able_worker and (pop.task = pop.task_farming or
            (pop.task = pop.task_science and not pop.able_farmer)) then
-            print ("Switching to worker%N")
             -- Do command locally for quick user feedback
             colony.set_task(bag, pop.task_industry)
             -- And request the server's command
             server.set_task(colony, bag, pop.task_industry)
         elseif pop.able_scientist and (pop.task = pop.task_industry or
            (pop.task = pop.task_farming and not pop.able_worker)) then
-            print ("Switching to scientist%N")
             colony.set_task(bag, pop.task_science)
             server.set_task(colony, bag, pop.task_science)
         elseif pop.able_farmer and pop.task /= pop.task_farming then
-            print ("Switching to farmer%N")
             colony.set_task(bag, pop.task_farming)
             server.set_task(colony, bag, pop.task_farming)
         end
