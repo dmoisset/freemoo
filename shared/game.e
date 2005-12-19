@@ -313,6 +313,7 @@ feature {NONE} -- Internal
                     end
                     if p.item.colony.populators.count = 0 then
                         p.item.colony.remove
+                        -- This colony has just starved to death.
                         -- Add something to the end-of-turn summary?
                     end
                 end

@@ -76,7 +76,7 @@ feature {NONE} -- signal callbacks
         loop
             x := 0
             from
-                prod_missing := accumulator(item).total.floor
+                prod_missing := accumulator(item).total.rounded
             until
                 prod_missing = 0
             loop

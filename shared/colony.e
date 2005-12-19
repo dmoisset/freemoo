@@ -89,8 +89,8 @@ feature -- Access
         -- Consider Leader Ability
         -- Consider Missing Food
         if not owner.race.lithovore then
-            Result := Result - 50 * ((food_consumption - farming.total).ceiling.max(0) +
-                                     (industry_consumption - industry.total).floor.max(0))
+            Result := Result - 50 * ((food_consumption - farming.total.rounded).ceiling.max(0) +
+                                     (industry_consumption - industry.total.rounded).floor.max(0))
         end
     end
 
@@ -158,7 +158,7 @@ feature -- Access
         -- A value that considers harsh environments to increase maintenance
         -- costs.
     do
-        if location.cimate = location.climate_toxic then
+        if location.climate = location.climate_toxic then
             Result := 1.5
         elseif location.climate = location.climate_barren or
                location.climate = location.climate_radiated then
@@ -229,13 +229,14 @@ feature -- Operations
                 const_it.next
             end
         end
-        -- Buildings fixed production
+        -- Buildings fixed production and maintenance
         from
             const_it := constructions.get_new_iterator_on_items
         until
             const_it.is_off
         loop
             const_it.item.produce_fixed(Current)
+            money.add(-const_it.item.maintenance(Current), l("Maintenance"))
             const_it.next
         end
         -- Generate money in a second loop, so's that surplus industry
@@ -287,6 +288,7 @@ feature -- Operations
             owner.known_constructions.item(producing).build(Current)
             producing := product_none
         end
+        owner.update_money(money.total.rounded)
     end
 
     remove is

@@ -200,6 +200,13 @@ feature {COLONY} -- Operations
         not colonies.has (colony.id)
     end
 
+    update_money(amount: INTEGER) is
+    do
+        money := money + amount
+    ensure
+        money = old money + amount
+    end
+
 feature {MAP_GENERATOR, FLEET}
 
     add_to_known_list (star: like star_type) is

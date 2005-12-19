@@ -18,6 +18,7 @@ feature {NONE} -- Creation
     do
         make_unique_id
         name := clone (new_name)
+        create money_changed.make
         player_make
     ensure
         name.is_equal (new_name)
@@ -67,6 +68,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         ruler_name := s.last_string
         s.get_integer
         money := s.last_integer
+        money_changed.emit(Current)
         s.get_real
         fuel_range := s.last_real
         s.get_integer
@@ -129,6 +131,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 s.get_integer
                 if planet.colony = Void then
                     create colony.make(planet, Current)
+                    colony.changed.connect(agent update_money_variation)
                     colony.set_id(s.last_integer)
                 else
                     colony := planet.colony
@@ -163,7 +166,31 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         end
     end
 
+feature -- Callbacks
+
+    update_money_variation is
+    local
+        col_it: ITERATOR[like colony_type]
+    do
+        from
+            money_variation := 0
+            col_it := colonies.get_new_iterator_on_items
+        until
+            col_it.is_off
+        loop
+            money_variation := money_variation + col_it.item.money.total.rounded
+            col_it.next
+        end
+        money_changed.emit(Current)
+    end
+
+feature -- Signals
+
+    money_changed: SIGNAL_1[C_PLAYER]
+
 feature -- Access
+
+    money_variation: INTEGER
 
     connected: BOOLEAN
         -- Player has a connection to the server

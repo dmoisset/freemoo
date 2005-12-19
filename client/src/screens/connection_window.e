@@ -261,7 +261,7 @@ feature {NONE} -- Dialogs
     colony_window: COLONY_WINDOW
 
     end_window: END_WINDOW
-    
+
     safe_hide (w: WINDOW) is
         -- Hide `w' if `w' is not Void
     do

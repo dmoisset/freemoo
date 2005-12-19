@@ -9,7 +9,7 @@ inherit
     redefine
         add_to_known_list, add_to_visited_list, colony_type,
         star_type, race, set_ruler_name, set_race, set_color, add_colony,
-        remove_colony, known_constructions
+        remove_colony, known_constructions, update_money
     select id end
     STORABLE
     rename
@@ -206,6 +206,12 @@ feature {COLONY} -- Redefined features
     do
         Precursor(c)
         server.unregister("colony" + c.id.to_string)
+        update_clients
+    end
+
+    update_money(amount: INTEGER) is
+    do
+        Precursor(amount)
         update_clients
     end
 
