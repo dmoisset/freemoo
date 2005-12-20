@@ -4,7 +4,7 @@ inherit
     COLONY
     redefine
         owner, location, shipyard, ship_factory,
-        new_turn, set_producing, set_task, populator_type
+        new_turn, set_producing, set_task, populator_type, starship_design
     end
     STORABLE
     rename
@@ -36,6 +36,11 @@ feature -- Service related
     do
         !!s.make
         s.add_integer(producing - product_min)
+        if producing > product_max then
+            starship_design.design.serialize_completely_on(s)
+        end
+        s.add_integer(produced)
+        s.add_boolean(has_bought)
         s.add_integer(population)
         s.add_integer(populators.count)
         s.add_integer(constructions.count)
@@ -65,6 +70,8 @@ feature -- Redefined features
     owner: S_PLAYER
 
     shipyard: S_SHIP
+
+    starship_design: S_SHIP_CONSTRUCTION
 
     populator_type: S_POPULATION_UNIT
 
@@ -98,6 +105,7 @@ feature -- Operations
     do
         standard_copy(other)
         populators := clone(other.populators)
+        constructions := clone(other.constructions)
     end
 
     is_equal(other: like Current): BOOLEAN is
@@ -113,9 +121,15 @@ feature {STORAGE} -- Saving
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     local
         a: ARRAY[TUPLE[STRING, ANY]]
+        i: INTEGER
     do
         create a.make(1, 0)
-        a.add_last(["producing", (producing-product_min).box])
+        a.add_last(["producing", (producing - product_min).box])
+        a.add_last(["produced", produced.box])
+        a.add_last(["has_bought", has_bought.box])
+        if starship_design /= Void then
+            a.add_last(["starship_design", starship_design.design])
+        end
         a.add_last(["owner", owner])
         a.add_last(["location", location])
         a.add_last(["population", population.box])
@@ -124,7 +138,14 @@ feature {STORAGE} -- Saving
         a.add_last(["extra_popgrowth", extra_population_growth.box])
         a.add_last(["extra_maxpop", extra_max_population.box])
         add_to_fields(a, "populator", populators.get_new_iterator_on_items)
-        -- Still missing constructions!
+        from
+            i := constructions.lower
+        until
+            i > constructions.upper
+        loop
+            a.add_last(["construction" + i.to_string, constructions.item(i).id])
+            i := i + 1
+        end
         Result := a.get_new_iterator
     end
 
@@ -140,6 +161,9 @@ feature {STORAGE} -- Saving
         create a.make(1, 0)
         a.add_last(owner)
         a.add_last(location)
+        if starship_design /= Void then
+            a.add_last(starship_design.design)
+        end
         add_dependents_to(a, populators.get_new_iterator_on_items)
         Result := a.get_new_iterator
     end
@@ -163,14 +187,22 @@ feature {STORAGE} -- Retrieving
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
+        b: REFERENCE [BOOLEAN]
         p: S_POPULATION_UNIT
     do
         from
             populators.clear
+            constructions.clear
         until elems.is_off loop
             if elems.item.first.is_equal("producing") then
                 i ?= elems.item.second
                 producing := i.item + product_min
+            elseif elems.item.first.is_equal("produced") then
+                i ?= elems.item.second
+                produced := i.item
+            elseif elems.item.first.is_equal("has_bought") then
+                b ?= elems.item.second
+                has_bought := b.item
             elseif elems.item.first.is_equal("owner") then
                 owner ?= elems.item.second
             elseif elems.item.first.is_equal("location") then
@@ -193,6 +225,11 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.has_prefix("populator") then
                 p ?= elems.item.second
                 populators.add (p, p.id)
+            elseif elems.item.first.has_prefix("construction") then
+                i ?= elems.item.second
+                     -- For if our owner hasn't been made_from_storage yet
+                owner.known_constructions.add_by_id(i.item)
+                constructions.add(owner.known_constructions.item(i.item), i.item)
             else
                 print ("Bad element inside 'colony' tag: " + elems.item.first + "%N")
             end

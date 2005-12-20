@@ -34,7 +34,7 @@ feature -- Defined features
 
 feature {NONE} -- Creation
 
-    make(new_id: INTEGER; new_name: STRING) is
+    make(new_name: STRING; new_id: INTEGER) is
     require
         new_id = product_housing or new_id = product_trade_goods
     do

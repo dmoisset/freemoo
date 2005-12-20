@@ -46,9 +46,30 @@ feature {NONE} -- Creation
 feature -- Access
 
     producing: INTEGER
-        -- Item being produced, one of the `product_xxxx' constants.
+        -- Item being produced, one of the `product_xxxx' constants
 
-    starship_design: like shipyard
+    produced: INTEGER
+        -- Accumulated production for `producing'
+
+    has_bought: BOOLEAN
+        -- Has the item being produced already been bought this turn?
+
+    buying_price: INTEGER is
+        -- How much cach needs to be payed to complete current production
+    local
+        total_prod: INTEGER
+    do
+        total_prod := producing.cost(Current)
+        if produced > total_prod // 2 then
+            Result := (total_prod - produced) * 2
+        elseif produced > produced_prod // 4 then
+            Result := (total_prod - produced) * 3
+        else
+            Result := (total_prod - produced) * 4
+        end
+    end
+
+    starship_design: SHIP_CONSTRUCTION
         -- The starship we're building or refitting
 
     location: PLANET
@@ -274,13 +295,10 @@ feature -- Operations
         end
         population := new_population
         -- check if production is enough to build before doing this next thing...
-        if producing = product_starship then
+        if producing > product_max or producing = product_starship then
             -- starship_design should be set just before setting producing
             -- to product_starship.  We're not doing this yet.
-            ship_factory.create_starship(owner)
-            ship_factory.last_starship.set_name("Enterprise")
-            starship_design := ship_factory.last_starship
-            shipyard := starship_design
+            starship_design.build(Current)
             producing := product_none
         elseif producing /= product_none and
                producing /= product_trade_goods and
@@ -325,6 +343,15 @@ feature -- Operations
         producing := newproducing
     ensure
         producing = newproducing
+    end
+
+    set_producing_starship (design: like starship_design) is
+        -- Start building a starship
+    do
+        starship_design := design
+        producing := design.id
+    ensure
+        producing = design.id
     end
 
     clear_shipyard is
@@ -450,9 +477,8 @@ feature {CONSTRUCTION} -- Special cases
 
 invariant
     population // 1000 = populators.count
-    valid_producing: producing.in_range (product_min, product_max)
---    producing = product_starship implies starship_design /= Void
     populators /= Void
+    (producing > product_max or producing = product_starship) implies starship_design /= Void
     constructions /= Void
     location /= Void
     farming /= Void

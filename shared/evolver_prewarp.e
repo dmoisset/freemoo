@@ -14,17 +14,16 @@ feature {NONE} -- Creation
 
 feature -- Operations
 
-    evolve (players: ITERATOR [PLAYER]) is
+    evolve (players: ITERATOR [like player_type]) is
         -- Configure `players' to initial state.
     local
-        p: PLAYER
+        p: like player_type
         c: COLONY
         tech: ITERATOR[INTEGER]
     do
         from until players.is_off loop
             p := players.item
             c := p.colonies.item(p.colonies.lower)
-            c.set_producing (product_starship)
             c.add_populator(task_farming)
             c.add_populator(task_industry)
             c.add_populator(task_industry)
@@ -34,6 +33,10 @@ feature -- Operations
                 p.known_constructions.add_by_id(tech.item)
                 tech.next
             end
+            create starship.make(p)
+            starship.set_name("Scout")
+            p.known_constructions.add_starship_design(starship)
+            c.set_producing_starship(p.known_constructions.last_ship)
             players.next
         end
     end
@@ -47,5 +50,9 @@ feature {NONE} -- Auxiliar
                     product_automated_factory, product_research_laboratory,
                     product_astro_university, product_weather_controller>>
     end
+
+    starship: STARSHIP
+
+    player_type: PLAYER
 
 end -- class EVOLVER_PREWARP

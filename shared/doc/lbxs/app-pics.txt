@@ -1,0 +1,213 @@
+0001: Background grid
+
+0002: Achilles Targeting Unit
+0003: Adamantium Armor
+0004: Advanced City Planning
+0005: Advanced Damage Control
+0006: Alien Management Center
+0007: Android Farmers
+0008: Android Scientists
+0009: Android Workers
+0010: Anti-Grav Harness
+0011: Anti-Matter Bomb
+0012: Anti-Matter Drive
+0013: Anti-Matter Torpedoes
+0014: Anti-Missile Rockets
+0015: Armor Barracks
+0016: Artemis System Net
+0017: Planet Construction
+0018: Assault Shuttles
+0019: Astro University
+0020: Atmospheric Renewer
+0021: Augmented Engines
+0022: Autolab
+0023: Automated Factories
+0024: Automated Repair Unit
+0025: Battleoids
+0026: Battle Pods
+0027: Battle Scanner
+0028: Battlestation
+0029: Bio-Terminator
+0030: Biomorphic Fungi
+0031: Black Hole Generator
+0032: Bomber Bays
+0033: Capitol
+0034: Class I Shield
+0035: Class III Shield
+0036: Class V Shield
+0037: Class VII Shield
+0038: Class X Shield
+0039: Cloaking Device
+0040: Cloning Center
+0041: Colony Base
+0042: Colony Ship
+0043: Confederation
+0044: Cyber-Security Link
+0045: Cybertronic Computer
+0046: Damper Field
+0047: Dauntless Guidance System
+0048: Death Ray
+0049: Death Spores
+0050: Deep Core Mining
+0051: Core Waste Dumps
+0052: Deuterium Fuel Cells
+0053: Dimensional Portal
+0054: Displacement Device
+0055: Disrupter Cannon
+0056: Doom Star Construction
+0057: Reinforced Hull
+0058: Ecm Jammer
+0059: Electronic Computer
+0060: Emissions Guidance System
+0061: Energy Absorber
+0062: Biospheres
+0063: Evolutionary Mutation
+0064: Extended Fuel Tanks
+0065: Fast Missile Racks
+0066: Federation
+0067: Fighter Bays
+0068: Fighter Garrison
+0069: Food Replicators
+0070: Freighters
+0071: Fusion Beam
+0072: Fusion Bomb
+0073: Fusion Drive
+0074: Fusion Rifle
+0075: Gaia Transformation
+0076: Galactic Currency Exchange
+0077: Galactic Cybernet
+0078: Galactic Unification
+0079: Gauss Cannon
+0080: Graviton Beam
+0081: Gyro Destabilizer
+0082: Hard Shields
+0083: Heavy Armor
+0084: Heavy Fighter Bays
+0085: Heightened Intelligence
+0086: High Energy Focus
+0087: Holo Simulator
+0088: Hydroponic Farm
+0089: Hyper Drive
+0090: Megafluxers
+0091: Hyper-X Capacitors
+0092: Hyperspace Communications
+0093: Imperium
+0094: Inertial Nullifier
+0095: Inertial Stabilizer
+0096: Interphased Drive
+0097: Ion Drive
+0098: Ion Pulse Cannon
+0099: Iridium Fuel Cells
+0100: Jump Gate
+0101: Laser Cannon
+0102: Laser Rifle
+0103: Lightning Field
+0104: Marine Barracks
+0105: Mass Driver
+0106: Mauler Device
+0107: Merculite Missile
+0108: Microbiotics
+0109: Microlite Construction
+0110: Outpost Ship
+0111: Moleculartronic Computer
+0112: Multi-Wave Ecm Jammer
+0113: Multi-Phased Shields
+0114: Nano Disassemblers
+0115: Neural Scanner
+0116: Neutron Blaster
+0117: Neutron Scanner
+0118: Neutronium Armor
+0119: Neutronium Bomb
+0120: Nuclear Bomb
+0121: Nuclear Drive
+0122: Nuclear Missile
+0123: Optronic Computer
+0124: Particle Beam
+0125: Personal Shield
+0126: Phase Shifter
+0127: Phasing Cloak
+0128: Phasor
+0129: Phasor Rifle
+0130: Planetary Barrier Shield
+0131: Planetary Flux Shield
+0132: Planetary Gravity Generator
+0133: Planetary Missile Base
+0134: Ground Batteries
+0135: Planetary Radiation Shield
+0136: Planetary Stock Exchange
+0137: Planetary Supercomputer
+0138: Plasma Cannon
+0139: Plasma Rifle
+0140: Plasma Torpedoes
+0141: Plasma Web
+0142: Pleasure Dome
+0143: Pollution Processor
+0144: Positronic Computer
+0145: Powered Armor
+0146: Pulse Rifle
+0147: Proton Torpedoes
+0148: Psionics
+0149: Pulsar
+0150: Pulson Missile
+0151: Quantum Detonator
+0152: Rangemaster Unit
+0153: Recyclotron
+0154: Reflection Field
+0155: Robotic Factory
+0156: Research Laboratory
+0157: Robo-Miners
+0158: Space Scanner
+0159: Scout Lab
+0160: Security Stations
+0161: Sensors
+0162: Shield Capacitors
+0163: Soil Enrichment
+0164: Space Academy
+0165: Spaceport
+0166: Spatial Compressor
+0167: Spy Network
+0168: Standard Fuel Cells
+0169: Star Base
+0170: Star Fortress
+0171: Star Gate
+0172: Stasis Field
+0173: Stealth Field
+0174: Stealth Suit
+0175: Stellar Converter
+0176: Structural Analyzer
+0177: Sub-Space Communications
+0178: Sub-Space Teleporter
+0179: Subterranean Farms
+0180: Survival Pods
+0181: Tachyon Communications
+0182: Tachyon Scanner
+0183: Telepathic Training
+0184: Terraforming
+0185: Thorium Fuel Cells
+0186: Time Warp Facilitator
+0187: Titan Construction
+0188: Titanium Armor
+0189: Tractor Beam
+0190: Transport
+0191: Transporters
+0192: Tritanium Armor
+0193: Troop Pods
+0194: Universal Antidote
+0195: Urridium Fuel Cells
+0196: Virtual Reality Network
+0197: Warp Dissipater
+0198: Warp Interdictor
+0199: Weather Control System
+0200: Wide Area Jammer
+0201: Xeno Psychology
+0202: Xentronium Armor
+0203: Zeon Missile
+0204: Zortrium Armor
+0205: Biology
+0206: Power
+0207: Physics
+0208: Construction
+0209: Fields
+0210: Chemistry
+0211: Computers
+0212: Sociology

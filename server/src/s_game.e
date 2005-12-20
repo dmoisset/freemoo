@@ -5,7 +5,7 @@ inherit
         redefine
             status, players, galaxy, add_player, init_game,
             fleet_type, star_type, planet_type, save,
-            add_dialog, remove_dialog
+            add_dialog, remove_dialog, make_evolver
         end
     SERVER_ACCESS
     STORABLE
@@ -15,6 +15,27 @@ inherit
 
 creation
     make_with_options
+
+feature {NONE} -- Creation
+
+
+    make_evolver is
+    local
+        evoname: STRING
+    do
+        evoname := options.enum_options_names @ "starttech"
+        if evoname.is_equal ("prewarp") then
+            !S_EVOLVER_PREWARP!evolver.make (options)
+--not implemented
+        elseif evoname.is_equal ("medium") then
+        --    !EVOLVER_MEDIUM!evolver.make (options)
+        elseif evoname.is_equal ("advanced") then
+        --    !EVOLVER_ADVANCED!evolver.make (options)
+        else
+-- see what to do here
+           check False end
+        end
+    end
 
 feature -- Access
 

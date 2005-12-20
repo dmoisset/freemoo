@@ -28,10 +28,26 @@ feature
         new_populators: HASHED_DICTIONARY[POPULATION_UNIT, INTEGER]
         new_population: INTEGER
         populator: POPULATION_UNIT
+        design: C_STARSHIP
     do
         !!s.start (msg)
         s.get_integer
         producing := s.last_integer + product_min
+        if producing > product_max then
+            create design.make(owner)
+            design.set_id(producing - product_max)
+            design.unserialize_completely_from(s)
+            if owner.known_constructions.has(design.id) then
+                starship_design ?= owner.known_constructions @ (design.id)
+                check starship_design /= Void end
+            else
+                create starship_design.make_starship(design)
+            end
+        end
+        s.get_integer
+        produced := s.last_integer
+        s.get_boolean
+        has_bought := s.last_boolean
         s.get_integer
         new_population := s.last_integer
         s.get_integer

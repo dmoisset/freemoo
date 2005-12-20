@@ -64,6 +64,7 @@ feature {NONE} -- Creation
     make_starship(new_design: like design) is
     do
         id := product_max + new_design.id
+        name := new_design.name
         design := new_design
         create ship_factory
     end

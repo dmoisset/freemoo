@@ -77,7 +77,11 @@ COLONY
   Name: "colony"+id (id is a digit sequesnce = colony.id)
   Provided: Before reporting colony on player.
   Description: Detailed colony description.
-  Format: "iii" <<producing, population, populators_count, constructions_count>>,
+  Format: "i" <<producing>> if producing is greater than product_max, then
+          this is followed by a complete starship design description, like is
+          described in the SHIPn service.  Then comes
+          "ibiii" <<produced, has_bought, population,
+                         populators_count, constructions_count>>,
              followed by a sequence of
           "iibi" <<id, race_id, captive (not assimilated), task>> one per populator,
              followed by a sequence of

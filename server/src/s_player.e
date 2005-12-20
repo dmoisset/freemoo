@@ -24,6 +24,7 @@ inherit
         subscription_message
     end
     SERVER_ACCESS
+    PRODUCTION_CONSTANTS
 
 creation
     make
@@ -163,8 +164,8 @@ feature -- Redefined features
                 end
                 const_it := known_constructions.get_new_iterator
                 from const_it.start until const_it.is_off loop
-                    s.add_integer(const_it.item.id - const_it.item.product_min)
-                    if const_it.item.id > known_constructions.product_max then
+                    s.add_integer(const_it.item.id - product_min)
+                    if const_it.item.id > product_max then
                         starship ?= const_it.item
                         check starship /= Void end
                         starship.design.serialize_completely_on(s)
@@ -221,6 +222,7 @@ feature -- Operations
     do
         standard_copy(other)
         colonies := clone(other.colonies)
+        known_constructions := clone(other.known_constructions)
         knows_star := clone(other.knows_star)
         has_visited_star := clone(other.has_visited_star)
     end
@@ -232,6 +234,8 @@ feature {STORAGE} -- Saving
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     local
         a: ARRAY[TUPLE[STRING, ANY]]
+        const_it: ITERATOR[CONSTRUCTION]
+        starship: S_SHIP_CONSTRUCTION
     do
         create a.make(1, 0)
         a.add_last(["ruler_name", ruler_name])
@@ -243,6 +247,20 @@ feature {STORAGE} -- Saving
         add_to_fields(a, "colony", colonies.get_new_iterator_on_items)
         add_to_fields(a, "knows_star", knows_star.get_new_iterator)
         add_to_fields(a, "has_visited_star", has_visited_star.get_new_iterator)
+        from
+            const_it := known_constructions.get_new_iterator
+        until
+            const_it.is_off
+        loop
+            starship ?= const_it.item
+            if starship /= Void and then starship.id > product_max then
+                a.add_last(["design" + (starship.id - product_min).to_string, starship.design])
+            else
+                a.add_last(["construction" + (const_it.item.id - product_min).to_string,
+                            (const_it.item.id - product_min).box]) -- Redundant redundancy
+            end
+            const_it.next
+        end
         Result := a.get_new_iterator
     end
 
@@ -256,12 +274,25 @@ feature {STORAGE} -- Saving
     dependents: ITERATOR[STORABLE] is
     local
         a: ARRAY[STORABLE]
+        const_it: ITERATOR[CONSTRUCTION]
+        starship: S_SHIP_CONSTRUCTION
     do
         create a.make(1, 0)
         a.add_last(race)
         add_dependents_to(a, colonies.get_new_iterator_on_items)
         knows_star.do_all(agent a.add_last)
         has_visited_star.do_all(agent a.add_last)
+        from
+            const_it := known_constructions.get_new_iterator
+        until
+            const_it.is_off
+        loop
+            starship ?= const_it.item
+            if const_it.item.id > product_max and starship /= Void then
+                a.add_last(starship.design)
+            end
+            const_it.next
+        end
         Result := a.get_new_iterator
     end
 
@@ -291,6 +322,7 @@ feature {STORAGE} -- Retrieving
         i: REFERENCE [INTEGER]
         colony: S_COLONY
         star: S_STAR
+        design: S_STARSHIP
     do
         from
             colonies.clear
@@ -321,6 +353,12 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.has_prefix("has_visited_star") then
                 star ?= elems.item.second
                 has_visited_star.add(star)
+            elseif elems.item.first.has_prefix("construction") then
+                i ?= elems.item.second
+                known_constructions.add_by_id(i.item + product_min)
+            elseif elems.item.first.has_prefix("design") then
+                design ?= elems.item.second
+                known_constructions.add_starship_design(design)
             else
                 print ("Bad element inside 'player' tag: " + elems.item.first + "%N")
             end
