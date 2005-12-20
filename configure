@@ -43,7 +43,7 @@ else
 fi
 ####################################################
 echo -n "Finding SmartEiffel path... "
-if [ -f "$(dirname $SmartEiffel)/../lib/kernel/general.e" ]; then
+if [ -f "$(dirname $SmartEiffel 2>/dev/null)/../lib/kernel/general.e" ]; then
     SEDIR=$(dirname $SmartEiffel)
     SEDIR="$(dirname $SEDIR)"
     echo "$SEDIR"
