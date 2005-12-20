@@ -383,6 +383,23 @@ feature -- Access -- Giving Orders
         end
     end
 
+    will_engage: like owner
+        -- Player to be engaged at the end of the turn
+
+    will_engage_at: PLANET
+        -- Place to engage enemy
+
+    set_engagement (enemy: like will_engage; location: like will_engage_at) is
+    require
+        has_engage_orders
+        enemy /= Void
+        enemy /= owner
+        location /= Void implies location.colony.owner = enemy
+    do
+        will_engage := enemy
+        will_engage_at := location
+    end
+
 feature -- Access -- Receiving orders
 
     colonize_order is
