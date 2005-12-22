@@ -184,7 +184,7 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
     require
         dest /= Void
     do
-        info_label.set_text(fleet.distance_to(dest).rounded.to_string + " Parsecs")
+        info_label.set_text(fleet.distance_to(dest).ceiling.to_string + " Parsecs")
     end
 
     set_info_black_hole is
