@@ -40,7 +40,8 @@ feature -- Operations
             ship_factory.create_colony_ship(c.owner)
             c.build_ship(ship_factory.last_colony_ship)
         else
-            c.build_ship(design)
+            ship_factory.create_starship_from_design(design)
+            c.build_ship(ship_factory.last_starship)
         end
     end
 

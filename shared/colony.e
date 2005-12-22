@@ -295,7 +295,7 @@ feature -- Operations
         end
         population := new_population
         -- check if production is enough to build before doing this next thing...
-        if producing > product_max or producing = product_starship then
+        if producing > product_max then
             -- starship_design should be set just before setting producing
             -- to product_starship.  We're not doing this yet.
             starship_design.build(Current)
@@ -338,20 +338,14 @@ feature -- Operations
 
     set_producing (newproducing: INTEGER) is
         -- Start building a brand new `newproducing'
-    require newproducing.in_range(product_min, product_max)
+    require owner.known_constructions.has(newproducing)
     do
+        if newproducing > product_max then
+            starship_design ?= owner.known_constructions @ newproducing
+        end
         producing := newproducing
     ensure
         producing = newproducing
-    end
-
-    set_producing_starship (design: like starship_design) is
-        -- Start building a starship
-    do
-        starship_design := design
-        producing := design.id
-    ensure
-        producing = design.id
     end
 
     clear_shipyard is
@@ -478,7 +472,9 @@ feature {CONSTRUCTION} -- Special cases
 invariant
     population // 1000 = populators.count
     populators /= Void
-    (producing > product_max or producing = product_starship) implies starship_design /= Void
+    producing > product_max implies starship_design /= Void
+    producing /= product_starship -- starship designs have id > product_max
+    producing >= product_none
     constructions /= Void
     location /= Void
     farming /= Void

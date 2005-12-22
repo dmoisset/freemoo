@@ -23,20 +23,30 @@ feature -- Operations
         default_owner = owner
     end
 
-    create_starship(owner: like default_owner) is
+    create_default_starship(owner: like default_owner) is
     require
         owner /= Void or default_owner /= Void
     local
         p: like default_owner
-        sh: like last_starship
     do
         if owner = Void then p := default_owner else p := owner end
-        create sh.make(owner)
-        last_ship := sh
-        last_starship := sh
+        create last_starship.make(owner)
+        last_ship := last_starship
     ensure
         last_starship /= Void
         last_ship /= Void
+    end
+
+    create_starship_from_design(design: like last_starship) is
+        -- Creates a starship from the given design.
+        -- The new starship will be identycal to the design, except for the id!
+    do
+        create last_starship.from_design(design)
+        last_ship := last_starship
+    ensure
+        last_starship /= Void
+        last_ship /= Void
+        not last_starship.is_equal(design) -- Different ids!
     end
 
     create_colony_ship(owner: like default_owner) is

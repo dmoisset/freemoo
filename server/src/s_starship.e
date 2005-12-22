@@ -11,7 +11,8 @@ inherit
         set_size, set_picture
     redefine creator, make end
 
-creation make
+creation
+    make, from_design
 
 feature
     creator: S_PLAYER

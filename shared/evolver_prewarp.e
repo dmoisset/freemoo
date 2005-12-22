@@ -36,7 +36,7 @@ feature -- Operations
             create starship.make(p)
             starship.set_name("Scout")
             p.known_constructions.add_starship_design(starship)
-            c.set_producing_starship(p.known_constructions.last_ship)
+            c.set_producing(p.known_constructions.last_ship.id)
             players.next
         end
     end

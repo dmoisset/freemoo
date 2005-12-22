@@ -6,7 +6,7 @@ inherit
     redefine make end
 
 creation
-    make
+    make, from_design
 
 feature -- Access
 
@@ -39,6 +39,18 @@ feature {NONE} -- Creation
     do
         can_attack := True
         ship_type := ship_type_starship
+    end
+
+    from_design(design: like Current) is
+    do
+        name := design.name
+        creator := design.creator
+        owner := design.owner
+        size := design.size
+        picture := design.picture
+        fuel_range := design.fuel_range
+        make_unique_id
+        set_starship_attributes
     end
 
 invariant
