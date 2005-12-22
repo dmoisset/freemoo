@@ -189,6 +189,7 @@ feature {STORAGE} -- Retrieving
         i: REFERENCE [INTEGER]
         b: REFERENCE [BOOLEAN]
         p: S_POPULATION_UNIT
+        design: S_STARSHIP
     do
         from
             populators.clear
@@ -207,6 +208,9 @@ feature {STORAGE} -- Retrieving
                 owner ?= elems.item.second
             elseif elems.item.first.is_equal("location") then
                 location ?= elems.item.second
+            elseif elems.item.first.is_equal("starship_design") then
+                design ?= elems.item.second
+                create starship_design.make_starship(design)
             elseif elems.item.first.is_equal("population") then
                 i ?= elems.item.second
                 population := i.item
