@@ -294,6 +294,7 @@ feature -- Operations
         produced := produced + (industry.total - industry_consumption).rounded.max(0)
         print ("COLONY: Produced towards " + producing.name + ": " + produced.to_string + "%N")
         if produced >= producing.cost(Current) then
+            produced := produced - producing.cost(Current)
             if producing.id /= product_none and
                producing.id /= product_trade_goods and
                producing.id /= product_housing then
