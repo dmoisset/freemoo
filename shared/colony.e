@@ -62,7 +62,7 @@ feature -- Access
         total_prod := producing.cost(Current)
         if produced > total_prod // 2 then
             Result := (total_prod - produced) * 2
-        elseif produced > produced_prod // 4 then
+        elseif produced > total_prod // 4 then
             Result := (total_prod - produced) * 3
         else
             Result := (total_prod - produced) * 4
@@ -291,14 +291,15 @@ feature -- Operations
             end
         end
         population := new_population
-        --produced := produced + (industry.total - industry_consumption).rounded.max(0)
-        --if produced > producing...
-        -- check if production is enough to build before doing this next thing...
-        if producing.id /= product_none and
-           producing.id /= product_trade_goods and
-           producing.id /= product_housing then
-            producing.build(Current)
-            set_producing(product_none)
+        produced := produced + (industry.total - industry_consumption).rounded.max(0)
+        print ("COLONY: Produced towards " + producing.name + ": " + produced.to_string + "%N")
+        if produced >= producing.cost(Current) then
+            if producing.id /= product_none and
+               producing.id /= product_trade_goods and
+               producing.id /= product_housing then
+                producing.build(Current)
+                set_producing(product_none)
+            end
         end
         owner.update_money(money.total.rounded)
     end
@@ -334,7 +335,6 @@ feature -- Operations
         -- Start building a brand new `newproducing'
     require owner.known_constructions.has(newproducing)
     do
-        print ("Producing: " + owner.known_constructions.item(newproducing).name + "%N")
         producing := owner.known_constructions @ newproducing
     ensure
         producing.id = newproducing

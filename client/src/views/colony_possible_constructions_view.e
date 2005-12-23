@@ -41,7 +41,7 @@ feature {NONE} -- signal callbacks
         end
         -- Add constructions again
         from
-            ypos := 0
+            ypos := 2
             it := colony.owner.known_constructions.get_new_iterator
         until
             it.is_off

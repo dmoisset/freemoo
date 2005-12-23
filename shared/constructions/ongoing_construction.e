@@ -8,7 +8,7 @@ class ONGOING_CONSTRUCTION
 inherit
     CONSTRUCTION
     redefine
-        can_be_built_on, build, take_down, name
+        can_be_built_on, build, take_down, name, is_buyable
     end
     GETTEXT
 
@@ -29,6 +29,10 @@ feature -- Defined features
     do
     ensure
         False
+    end
+
+    is_buyable: BOOLEAN is
+    do
     end
 
 

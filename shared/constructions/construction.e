@@ -37,6 +37,12 @@ feature -- Access
     do
     end
 
+    is_buyable: BOOLEAN is
+        -- Can you buy this construction? (False for trade_goods, for example)
+    do
+        Result := True
+    end
+
     description: STRING
         -- A descriptive string to tell people about this construction
 

@@ -26,7 +26,7 @@ feature {NONE} -- Creation
         r.set_with_size(18, 47, 120, 130)
         new_system_view(r)
 
-        r.set_with_size(45, 225, 180, 130)
+        r.set_with_size(22, 210, 184, 230)
         new_possible_constructions (r)
 
         r.set_with_size(328, 78, 200, 100)
@@ -34,6 +34,9 @@ feature {NONE} -- Creation
 
         r.set_with_size(138, 47, 168, 140)
         new_production(r)
+
+        r.set_with_size(524, 47, 90, 123)
+        new_producing(r)
 
         !!a.make ("client/colony-window/close1.fma")
         !!a2.make ("client/colony-window/close2.fma")
@@ -52,11 +55,13 @@ feature {NONE} -- Widgets
     population: COLONY_POPULATION_VIEW
     populators: COLONY_POPULATORS_VIEW
     production: COLONY_PRODUCTION_VIEW
+    producing: COLONY_PRODUCING_VIEW
     possible_constructions: COLONY_POSSIBLE_CONSTRUCTIONS_VIEW
     new_name (where: RECTANGLE) is deferred end
     new_population (where: RECTANGLE) is deferred end
     new_populators (where: RECTANGLE) is deferred end
     new_production (where: RECTANGLE) is deferred end
+    new_producing (where: RECTANGLE) is deferred end
     new_system_view (where: RECTANGLE) is deferred end
     new_possible_constructions (where: RECTANGLE) is deferred end
 
