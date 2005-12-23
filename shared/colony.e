@@ -19,7 +19,7 @@ feature {NONE} -- Creation
         first_populator: like populator_type
     do
         make_unique_id
-        producing := product_none
+        producing := o.known_constructions @ product_none
         create ship_factory
         create farming.make
         create industry.make
@@ -40,13 +40,13 @@ feature {NONE} -- Creation
     ensure
         location = p
         p.colony = Current
-        producing = product_none
+        producing.id = product_none
     end
 
 feature -- Access
 
-    producing: INTEGER
-        -- Item being produced, one of the `product_xxxx' constants
+    producing: CONSTRUCTION
+        -- Item being produced
 
     produced: INTEGER
         -- Accumulated production for `producing'
@@ -68,9 +68,6 @@ feature -- Access
             Result := (total_prod - produced) * 4
         end
     end
-
-    starship_design: SHIP_CONSTRUCTION
-        -- The starship we're building or refitting
 
     location: PLANET
         -- location of the colony
@@ -102,7 +99,7 @@ feature -- Access
         -- Consider constructions and events
         Result := Result + extra_population_growth
         -- Consider Housing Production
-        if producing = product_housing then
+        if producing.id = product_housing then
             Result := Result + (industry.total *
                                (25 * (maxpop - populators.count) /
                                      (maxpop * populators.count)).sqrt).rounded
@@ -294,17 +291,14 @@ feature -- Operations
             end
         end
         population := new_population
+        --produced := produced + (industry.total - industry_consumption).rounded.max(0)
+        --if produced > producing...
         -- check if production is enough to build before doing this next thing...
-        if producing > product_max then
-            -- starship_design should be set just before setting producing
-            -- to product_starship.  We're not doing this yet.
-            starship_design.build(Current)
-            producing := product_none
-        elseif producing /= product_none and
-               producing /= product_trade_goods and
-               producing /= product_housing then
-            owner.known_constructions.item(producing).build(Current)
-            producing := product_none
+        if producing.id /= product_none and
+           producing.id /= product_trade_goods and
+           producing.id /= product_housing then
+            producing.build(Current)
+            set_producing(product_none)
         end
         owner.update_money(money.total.rounded)
     end
@@ -340,12 +334,10 @@ feature -- Operations
         -- Start building a brand new `newproducing'
     require owner.known_constructions.has(newproducing)
     do
-        if newproducing > product_max then
-            starship_design ?= owner.known_constructions @ newproducing
-        end
-        producing := newproducing
+        print ("Producing: " + owner.known_constructions.item(newproducing).name + "%N")
+        producing := owner.known_constructions @ newproducing
     ensure
-        producing = newproducing
+        producing.id = newproducing
     end
 
     clear_shipyard is
@@ -441,7 +433,9 @@ feature -- Redefined features
         -- set_id can be called from within our constructor,
         -- so we can't count on invariants
         if owner /= Void then
-            owner.remove_colony(Current)
+            if owner.colonies.has(id) then
+                owner.remove_colony(Current)
+            end
             Precursor(new_id)
             owner.add_colony(Current)
         else
@@ -472,9 +466,9 @@ feature {CONSTRUCTION} -- Special cases
 invariant
     population // 1000 = populators.count
     populators /= Void
-    producing > product_max implies starship_design /= Void
-    producing /= product_starship -- starship designs have id > product_max
-    producing >= product_none
+    producing /= Void
+    producing.id /= product_starship -- starship designs have id > product_max
+    producing.id >= product_none
     constructions /= Void
     location /= Void
     farming /= Void

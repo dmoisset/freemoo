@@ -77,8 +77,10 @@ feature {NONE} -- signal callbacks
             x := 0
             from
                 prod_missing := accumulator(item).total.rounded
+            variant
+                prod_missing
             until
-                prod_missing = 0
+                prod_missing <= 0
             loop
                 if prod_missing >= 10 then
                     icon := prod_icon.item(item, 1)

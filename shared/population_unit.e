@@ -93,7 +93,7 @@ feature -- Operation
         colony.money.add(item, l("Food Surplus"))
         total := item
         -- Trade goods
-        if colony.producing = product_trade_goods then
+        if colony.producing.id = product_trade_goods then
             item := (colony.industry.total - colony.industry_consumption).max(0) /
                     colony.populators.count / 2
             colony.money.add(item, l("Trade Goods"))

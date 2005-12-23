@@ -65,6 +65,12 @@ feature {STORAGE} -- Saving
                    >>
     end
 
+    primary_keys_array: ARRAY[TUPLE[STRING, ANY]] is
+        -- Array for `primary_keys'
+    do
+        Result := <<["id", id.box]>>
+    end
+
     fields: ITERATOR[TUPLE[STRING, ANY]] is
     do
         Result := fields_array.get_new_iterator
@@ -72,7 +78,7 @@ feature {STORAGE} -- Saving
 
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
     do
-        Result := (<<["id", id.box] >>).get_new_iterator
+        Result := primary_keys_array.get_new_iterator
     end
 
 
@@ -87,14 +93,19 @@ feature {STORAGE} -- Retrieving
     set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
+        unknown_tag: BOOLEAN
     do
         from
-        until elems.is_off loop
+        until elems.is_off or unknown_tag loop
             if elems.item.first.is_equal("id") then
                 i ?= elems.item.second
                 set_id(i.item)
+            else
+                unknown_tag := True
             end
-            elems.next
+            if not unknown_tag then
+                elems.next
+            end
         end
     end
 

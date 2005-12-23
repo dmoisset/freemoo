@@ -137,13 +137,20 @@ Begin
       for i := 0 to pcount-1 do
          if stars[planets[i].star].special = 0 then
          Begin
-             datii[stars[planets[i].star].color].size[planets[i].size] := datii[stars[planets[i].star].color].size[planets[i].size] + 1;
-             datii[stars[planets[i].star].color].climate[planets[i].climate] := datii[stars[planets[i].star].color].climate[planets[i].climate] + 1;
-             datii[stars[planets[i].star].color].mineral[planets[i].mineral] := datii[stars[planets[i].star].color].mineral[planets[i].mineral] + 1;
-             datii[stars[planets[i].star].color].grav[planets[i].G] := datii[stars[planets[i].star].color].grav[planets[i].G] + 1;
-             datii[stars[planets[i].star].color].pType[planets[i].pType] := datii[stars[planets[i].star].color].pType[planets[i].pType] + 1;
-             datii[stars[planets[i].star].color].special[planets[i].special] := datii[stars[planets[i].star].color].special[planets[i].special] + 1;
-             datii[stars[planets[i].star].color].samples := datii[stars[planets[i].star].color].samples + 1;
+             datii[stars[planets[i].star].color].size[planets[i].size] :=
+                 datii[stars[planets[i].star].color].size[planets[i].size] + 1;
+             datii[stars[planets[i].star].color].climate[planets[i].climate] :=
+                 datii[stars[planets[i].star].color].climate[planets[i].climate] + 1;
+             datii[stars[planets[i].star].color].mineral[planets[i].mineral] :=
+                 datii[stars[planets[i].star].color].mineral[planets[i].mineral] + 1;
+             datii[stars[planets[i].star].color].grav[planets[i].G] :=
+                 datii[stars[planets[i].star].color].grav[planets[i].G] + 1;
+             datii[stars[planets[i].star].color].pType[planets[i].pType] :=
+                 datii[stars[planets[i].star].color].pType[planets[i].pType] + 1;
+             datii[stars[planets[i].star].color].special[planets[i].special] :=
+                 datii[stars[planets[i].star].color].special[planets[i].special] + 1;
+             datii[stars[planets[i].star].color].samples :=
+                 datii[stars[planets[i].star].color].samples + 1;
          End;
       Close (inf)
    end;   
@@ -151,7 +158,7 @@ Begin
    for j := 0 to 5 do
    begin
 	WriteLn (colors[j], ' - ', datii[j].samples, ' samples out of ', datii[j].stars, ' stars:');
-{	for i := 0 to 4 do
+	for i := 0 to 4 do
 	    WriteLn (datii[j].size[i], ' ', size[i]);
 	WriteLn;
 	for i := 0 to 9 do
@@ -171,7 +178,7 @@ Begin
 	WriteLn;
 	WriteLn;
 	WriteLn;
-}
+
 
 
     end;

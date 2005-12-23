@@ -23,27 +23,35 @@ feature
         -- Action when `msg' arrives from `provider''s `service'
     local
         s: UNSERIALIZER
-        pop_count, pop_id, const_count, const_id: INTEGER
+        pop_count, pop_id, const_count, const_id, product: INTEGER
         race: RACE
         new_populators: HASHED_DICTIONARY[POPULATION_UNIT, INTEGER]
         new_population: INTEGER
         populator: POPULATION_UNIT
         design: C_STARSHIP
+        builder: CONSTRUCTION_BUILDER
     do
-        !!s.start (msg)
+        create builder
+        create s.start (msg)
         s.get_integer
-        producing := s.last_integer + product_min
-        if producing > product_max then
+        product := s.last_integer + product_min
+        if product > product_max then
             create design.make(owner)
-            design.set_id(producing - product_max)
+            design.set_id(product - product_max)
             design.unserialize_completely_from(s)
-            if owner.known_constructions.has(design.id) then
-                starship_design ?= owner.known_constructions @ (design.id)
-                check starship_design /= Void end
-            else
-                create starship_design.make_starship(design)
-            end
         end
+        if owner.known_constructions.has(product) then
+            set_producing(product)
+        else
+            if product <= product_max then
+                builder.construction_by_id(product)
+            else
+                builder.construction_from_design(design)
+            end
+            producing := builder.last_built
+        end
+        -- so much code just to ensure that...
+        check producing.id = product end
         s.get_integer
         produced := s.last_integer
         s.get_boolean

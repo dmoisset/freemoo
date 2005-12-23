@@ -16,6 +16,7 @@ feature {NONE} -- Creation
         create knows_star.make
         create has_visited_star.make
         create known_constructions.make
+        known_constructions.add_by_id(known_constructions.product_none)
         ruler_name := ""
     ensure
         state = st_setup
@@ -38,7 +39,7 @@ feature -- Access
     has_visited_star: HASHED_SET[like star_type]
         -- Stars visited by this player
 
-    known_constructions: CONSTRUCTION_BUILDER
+    known_constructions: CONSTRUCTION_REPO
         -- Constructions this player can build
 
     fuel_range: REAL
@@ -230,6 +231,7 @@ feature -- Anchors
 invariant
     race /= Void
     ruler_name /= Void
+    known_constructions.has(known_constructions.product_none)
     valid_state: state.in_range (min_state, max_state)
     valid_color: color.in_range (min_color, max_color)
 end -- class PLAYER

@@ -4,7 +4,7 @@ inherit
     COLONY
     redefine
         owner, location, shipyard, ship_factory,
-        new_turn, set_producing, set_task, populator_type, starship_design
+        new_turn, set_producing, set_task, populator_type
     end
     STORABLE
     rename
@@ -33,11 +33,13 @@ feature -- Service related
         s: SERIALIZER2
         pop_it: ITERATOR[POPULATION_UNIT]
         const_it: ITERATOR[CONSTRUCTION]
+        starship: S_SHIP_CONSTRUCTION
     do
         !!s.make
-        s.add_integer(producing - product_min)
-        if producing > product_max then
-            starship_design.design.serialize_completely_on(s)
+        s.add_integer(producing.id - product_min)
+        if producing.id > product_max then
+            starship ?= producing
+            starship.design.serialize_completely_on(s)
         end
         s.add_integer(produced)
         s.add_boolean(has_bought)
@@ -70,8 +72,6 @@ feature -- Redefined features
     owner: S_PLAYER
 
     shipyard: S_SHIP
-
-    starship_design: S_SHIP_CONSTRUCTION
 
     populator_type: S_POPULATION_UNIT
 
@@ -122,14 +122,17 @@ feature {STORAGE} -- Saving
     local
         a: ARRAY[TUPLE[STRING, ANY]]
         i: INTEGER
+        s: S_SHIP_CONSTRUCTION
     do
         create a.make(1, 0)
-        a.add_last(["producing", (producing - product_min).box])
+        if producing.id <= product_max then
+            a.add_last(["producing", (producing.id - product_min).box])
+        else
+            s ?= producing
+            a.add_last(["starship_design", s.design])
+        end
         a.add_last(["produced", produced.box])
         a.add_last(["has_bought", has_bought.box])
-        if starship_design /= Void then
-            a.add_last(["starship_design", starship_design.design])
-        end
         a.add_last(["owner", owner])
         a.add_last(["location", location])
         a.add_last(["population", population.box])
@@ -143,7 +146,8 @@ feature {STORAGE} -- Saving
         until
             i > constructions.upper
         loop
-            a.add_last(["construction" + i.to_string, constructions.item(i).id])
+            a.add_last(["construction" + i.to_string,
+                        (constructions.item(i).id - product_min).box])
             i := i + 1
         end
         Result := a.get_new_iterator
@@ -157,12 +161,14 @@ feature {STORAGE} -- Saving
     dependents: ITERATOR[STORABLE] is
     local
         a: ARRAY[STORABLE]
+        s: S_SHIP_CONSTRUCTION
     do
         create a.make(1, 0)
         a.add_last(owner)
         a.add_last(location)
-        if starship_design /= Void then
-            a.add_last(starship_design.design)
+        if producing.id > product_max then
+            s ?= producing
+            a.add_last(s.design)
         end
         add_dependents_to(a, populators.get_new_iterator_on_items)
         Result := a.get_new_iterator
@@ -190,14 +196,21 @@ feature {STORAGE} -- Retrieving
         b: REFERENCE [BOOLEAN]
         p: S_POPULATION_UNIT
         design: S_STARSHIP
+        builder: S_CONSTRUCTION_BUILDER
+        product: INTEGER
     do
+        create builder
         from
             populators.clear
             constructions.clear
         until elems.is_off loop
             if elems.item.first.is_equal("producing") then
                 i ?= elems.item.second
-                producing := i.item + product_min
+                builder.construction_by_id(i.item + product_min)
+                producing := builder.last_built
+            elseif elems.item.first.is_equal("starship_design") then
+                design ?= elems.item.second
+                create {S_SHIP_CONSTRUCTION}producing.make_starship(design)
             elseif elems.item.first.is_equal("produced") then
                 i ?= elems.item.second
                 produced := i.item
@@ -208,9 +221,6 @@ feature {STORAGE} -- Retrieving
                 owner ?= elems.item.second
             elseif elems.item.first.is_equal("location") then
                 location ?= elems.item.second
-            elseif elems.item.first.is_equal("starship_design") then
-                design ?= elems.item.second
-                create starship_design.make_starship(design)
             elseif elems.item.first.is_equal("population") then
                 i ?= elems.item.second
                 population := i.item
@@ -231,9 +241,10 @@ feature {STORAGE} -- Retrieving
                 populators.add (p, p.id)
             elseif elems.item.first.has_prefix("construction") then
                 i ?= elems.item.second
+                product := i.item + product_min
                      -- For if our owner hasn't been made_from_storage yet
-                owner.known_constructions.add_by_id(i.item)
-                constructions.add(owner.known_constructions.item(i.item), i.item)
+                owner.known_constructions.add_by_id(product)
+                constructions.add(owner.known_constructions @ product, product)
             else
                 print ("Bad element inside 'colony' tag: " + elems.item.first + "%N")
             end

@@ -6,8 +6,6 @@ inherit
         last_ship, starship_type
     end
 
-creation make
-
 feature -- Access
 
     last_ship: S_SHIP_CONSTRUCTION

@@ -3,8 +3,8 @@ class S_STARSHIP
 inherit
     S_SHIP
     redefine
-        creator, fields_array, make_from_storage, serialize_on,
-        subscription_message, make, get_class
+        creator, primary_keys_array, set_primary_keys, make_from_storage,
+        serialize_on, subscription_message, make, get_class
     end
     STARSHIP
     undefine
@@ -45,13 +45,13 @@ feature
 
     get_class: STRING is "STARSHIP"
 
-    fields_array: ARRAY[TUPLE[STRING, ANY]] is
+    primary_keys_array: ARRAY[TUPLE[STRING, ANY]] is
     do
         Result := Precursor
         Result.add_last(["name", name])
     end
-    
-    make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
+
+    set_primary_keys (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     do
         from
         until elems.is_off loop
@@ -59,9 +59,23 @@ feature
             if not elems.is_off then
                 if elems.item.first.is_equal("name") then
                     name ?= elems.item.second
+                else
+                    print("Unknown primary key '" + elems.item.first + "' in STARSHIP element%N")
                 end
+                elems.next
             end
-            elems.next
+        end
+    end
+
+    make_from_storage(elems: ITERATOR[TUPLE[STRING, ANY]]) is
+    do
+        from
+        until elems.is_off loop
+            Precursor(elems)
+            if not elems.is_off then
+                print ("Unknown field '" + elems.item.first + "' in STARSHIP element%N")
+                elems.next
+            end
         end
     end
 

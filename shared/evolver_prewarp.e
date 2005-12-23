@@ -36,7 +36,7 @@ feature -- Operations
             create starship.make(p)
             starship.set_name("Scout")
             p.known_constructions.add_starship_design(starship)
-            c.set_producing(p.known_constructions.last_ship.id)
+            c.set_producing(p.known_constructions.last_added.id)
             players.next
         end
     end
@@ -46,9 +46,11 @@ feature {NONE} -- Auxiliar
 
     granted_technologies: ARRAY[INTEGER] is
     do
-        Result := <<product_housing, product_trade_goods, product_colony_ship,
-                    product_automated_factory, product_research_laboratory,
-                    product_astro_university, product_weather_controller>>
+        Result := <<product_housing, product_trade_goods,
+                    product_colony_ship, product_automated_factory,
+                    product_research_laboratory,
+                    product_astro_university, product_weather_controller,
+                    product_hidroponic_farm>>
     end
 
     starship: STARSHIP
