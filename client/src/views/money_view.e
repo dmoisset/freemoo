@@ -19,8 +19,10 @@ feature {NONE} -- Creation
         player := p
         r.set_with_size(0, 0, location.width, row_height)
         create total.make(Current, r, "")
+        total.set_font (outlined_font)
         r.set_with_size(0, row_height, location.width, row_height)
         create delta.make(Current, r, "")
+        delta.set_font (outlined_font)
         p.money_changed.connect(agent update)
         update
     end
@@ -47,5 +49,10 @@ feature {NONE} -- Representation
     total, delta: LABEL
 
     row_height: INTEGER is 14
+
+    outlined_font: FONT is
+    once
+        create {BITMAP_FONT_FMI}Result.make ("client/gui/outlined-font.fmi")
+    end
 
 end -- class MONEY_VIEW
