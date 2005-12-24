@@ -205,6 +205,8 @@ feature {NONE} -- Internal
     do
         colony_new_turn
         move_fleets
+        galaxy.generate_scans (players.get_new_iterator)
+        galaxy.generate_colony_knowledge(players.get_new_iterator)
         -- After this:
         -- Ask where to combat (dialog)
         from f := galaxy.get_new_iterator_on_fleets until f.is_off loop
