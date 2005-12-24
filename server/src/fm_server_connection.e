@@ -64,6 +64,8 @@ feature -- Redefined features
             colonize(u)
         when msgtype_startbuilding then
             startbuilding(u)
+        when msgtype_buy then
+            buy_production(u)
         else
             Precursor (ptype)
         end
@@ -331,10 +333,33 @@ feature {NONE} -- Operations
             print ("startbuilding: Invalid colony id%N")
         elseif product = Void then
             print ("startbuilding: Invalid product Id%N")
+        elseif colony.has_bought then
+            print ("startbuilding: Colony has already bought this turn!%N")
         elseif not product.can_be_built_on(colony) then
             print ("startbuilding: " + product.name + " can't be built at colony " + colony.id.to_string + "%N")
         else
             colony.set_producing(product_id)
+        end
+    end
+
+    buy_production(u: UNSERIALIZER) is
+    local
+        colony: S_COLONY
+    do
+        u.get_integer
+        if player.colonies.has(u.last_integer) then
+            colony := player.colonies @ u.last_integer
+        end
+        if colony = Void then
+            print ("buy_producing: Invalid colony id%N")
+        elseif colony.has_bought then
+            print ("buy_producing: Colony has already bought this turn%N")
+        elseif not colony.producing.is_buyable then
+            print ("buy_producing: Product '" + colony.producing.name + "' isn't buyable%N")
+        elseif player.money < colony.buying_price then
+            print ("buy_producing: Insuficient funds%N")
+        else
+            colony.buy
         end
     end
 

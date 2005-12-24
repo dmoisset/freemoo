@@ -4,7 +4,7 @@ inherit
     COLONY
     redefine
         owner, location, shipyard, ship_factory,
-        new_turn, set_producing, set_task, populator_type
+        new_turn, set_producing, set_task, populator_type, buy
     end
     STORABLE
     rename
@@ -98,6 +98,11 @@ feature -- Redefined features
         update_clients
     end
 
+    buy is
+    do
+        Precursor
+        update_clients
+    end
 
 feature -- Operations
 

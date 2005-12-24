@@ -35,7 +35,7 @@ feature {NONE} -- Creation
         r.set_with_size(138, 47, 168, 140)
         new_production(r)
 
-        r.set_with_size(215, 185, 200, 145)
+        r.set_with_size(215, 185, 200, 165)
         new_producing(r)
 
         !!a.make ("client/colony-window/close1.fma")

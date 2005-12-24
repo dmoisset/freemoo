@@ -69,6 +69,16 @@ feature -- Access
         end
     end
 
+    buy is
+    require
+        buying_price <= owner.money
+        producing.is_buyable
+    do
+        owner.update_money(-buying_price)
+        produced := producing.cost(Current)
+        has_bought := True
+    end
+
     location: PLANET
         -- location of the colony
 
@@ -302,6 +312,9 @@ feature -- Operations
                 set_producing(product_none)
             end
         end
+        -- Reset 'has_bought' flag
+        has_bought := False
+        -- Contribute money to the race's treasury
         owner.update_money(money.total.rounded)
     end
 

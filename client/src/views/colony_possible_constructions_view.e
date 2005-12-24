@@ -61,7 +61,7 @@ feature {NONE} -- Callbacks
 
     start_building(c: CONSTRUCTION) is
     do
-        if c.id /= colony.producing.id then
+        if c.id /= colony.producing.id and not colony.has_bought then
             server.start_building(colony, c)
         end
     end

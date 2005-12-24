@@ -2,6 +2,7 @@ class COLONY_PRODUCING_VIEW
 
 inherit
     COLONY_VIEW
+    CLIENT
     PRODUCTION_CONSTANTS
     SHIP_PICS
 
@@ -11,9 +12,15 @@ creation
 feature {NONE} -- Creation
 
     make(w: WINDOW; where: RECTANGLE) is
+    local
+        r: RECTANGLE
     do
         my_connect_identifier := agent update_producing
         window_make(w, where)
+        r.set_with_size(0, 0, location.width, 20)
+        create name_label.make(Current, r, "")
+        r.set_with_size(90, location.height - 18, location.width - 90, 15)
+        create missing_label.make(Current, r, "")
         create shadow.make(Current, 2, location.height - 20, buy_imgs @ 1)
         create buy_button.make(Current, 2, location.height - 20,
                             buy_imgs @ 0, buy_imgs @ 2, buy_imgs @ 3)
@@ -27,6 +34,7 @@ feature -- Callbacks
     local
         buyable: BOOLEAN
         r: RECTANGLE
+        missing: INTEGER
     do
         -- Show product
         if showing_product /= colony.producing.id then
@@ -38,11 +46,25 @@ feature -- Callbacks
                             (location.height - 18 - app_pic.height) // 2,
                             app_pic.width, app_pic.height)
             app_pic.move(r)
+            name_label.set_text(colony.producing.name)
             app_pic.send_behind(buy_button)
+        end
+        -- Show missing turns
+        if colony.producing.is_buyable then
+            missing := (colony.industry.total - colony.industry_consumption).floor
+            if missing = 0 then
+                missing := 1000
+            else
+                missing := ((colony.producing.cost(colony)
+                            - colony.produced) / missing).ceiling
+            end
+            missing_label.set_text(missing.to_string + " turn(s)")
+        else
+            missing_label.set_text("")
         end
         -- Update 'buy' button
         buyable := colony.buying_price <= colony.owner.money
-        if buyable and colony.producing.is_buyable then
+        if buyable and colony.producing.is_buyable and not colony.has_bought then
             shadow.hide
             buy_button.show
         else
@@ -52,8 +74,12 @@ feature -- Callbacks
     end
 
     buy is
+    require
+        not colony.has_bought
+        colony.producing.is_buyable
+        colony.buying_price <= colony.owner.money
     do
-        print("Bought!%N")
+        server.buy_production_at(colony)
     end
 
 feature {NONE} -- Widgets
@@ -63,6 +89,8 @@ feature {NONE} -- Widgets
     shadow: WINDOW_IMAGE
 
     app_pic: WINDOW_IMAGE
+
+    name_label, missing_label: LABEL
 
 feature {NONE} -- Representation
 
@@ -114,7 +142,11 @@ feature {NONE} -- Representation
             Result := get_ship_pic(sh.design.owner.color, sh.design.creator.color,
                                    sh.design.size, sh.design.picture, False)
         elseif imgs @ id = Void then
-            if not filenums.has(id) then
+            if id = product_trade_goods then -- Special case for trade goods
+                create a.make("client/colony-view/production/prod01.fma")
+                imgs.put(a.images @ 1, id)
+                Result := imgs @ id
+            elseif not filenums.has(id) then
                 Result := create {SDL_IMAGE}.make(0, 0)
             else
                 create a.make ("client/techs/tech" + (filenums @ id).to_string + ".fma")

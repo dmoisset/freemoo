@@ -172,6 +172,7 @@ feature -- Operations -- Game commands
     start_building(c: COLONY; prod: CONSTRUCTION) is
     require
         c /= Void
+        not c.has_bought
         prod /= Void
     local
         s: SERIALIZER2
@@ -181,6 +182,19 @@ feature -- Operations -- Game commands
         send_package(msgtype_startbuilding, s.serialized_form)
     end
 
+    buy_production_at(c: COLONY) is
+    require
+        c /= Void
+        not c.has_bought
+        c.producing.is_buyable
+        player.money >= c.buying_price
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        s.add_tuple(<<c.id.box>>)
+        send_package(msgtype_buy, s.serialized_form)
+    end
 
     colonize(f: FLEET) is
         -- Give colonize order to `f'
