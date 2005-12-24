@@ -9,12 +9,15 @@ feature -- Constants
     msgtype_start: INTEGER is 35
     msgtype_chat: INTEGER is 36
     msgtype_dialog: INTEGER is 37
+
     msgtype_turn: INTEGER is 40
     msgtype_fleet: INTEGER is 41
     msgtype_colonize: INTEGER is 42
-    msgtype_task: INTEGER is 43
-    msgtype_startbuilding: INTEGER is 44
-    msgtype_buy: INTEGER is 45
+    msgtype_engage: INTEGER is 43
+
+    msgtype_task: INTEGER is 50
+    msgtype_startbuilding: INTEGER is 51
+    msgtype_buy: INTEGER is 52
 
     msgtype_join_accept: INTEGER is 32
     msgtype_join_reject: INTEGER is 33

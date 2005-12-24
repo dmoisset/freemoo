@@ -207,8 +207,23 @@ feature -- Operations -- Game commands
         s: SERIALIZER2
     do
         create s.make
-        s.add_tuple(<<f.id.box>>)
+        s.add_integer(f.id)
         send_package(msgtype_colonize, s.serialized_form)
+    end
+
+    engage (f: FLEET) is
+        -- Give engage order to `f'
+    require
+        f /= Void
+        f.can_engage
+        f.is_in_orbit
+        f.has_target_at (galaxy)
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        s.add_integer(f.id)
+        send_package(msgtype_engage, s.serialized_form)
     end
 
     dialog (id: INTEGER; response: STRING) is

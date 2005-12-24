@@ -94,7 +94,7 @@ feature {NONE} -- Creation
         -- Action buttons
         close_button := make_button (close_button_img, agent remove)
         engage_button := make_button (engage_button_img, agent engage_button_handler)
-        colonize_button := make_button (colonize_button_img, agent colonization_button_handler)
+        colonize_button := make_button (colonize_button_img, agent colonize_button_handler)
 
         -- Toggles
         create toggles.make(0, 8)
@@ -154,11 +154,6 @@ feature {GALAXY_VIEW} -- Auxiliary for commanding
     set_cancel_trajectory_selection_callback (p: PROCEDURE[ANY, TUPLE]) is
     do
         cancel_trajectory_selection_handler := p
-    end
-
-    set_colonization_callback(p: PROCEDURE[ANY, TUPLE]) is
-    do
-        colonization_handler := p
     end
 
     send_selection_to(s: STAR) is
@@ -235,23 +230,19 @@ feature {NONE} -- Callbacks
         update_toggles
     end
 
-    colonization_button_handler is
+    colonize_button_handler is
     do
-        if colonization_handler /= Void then
-            colonization_handler.call([])
-        end
+        server.colonize (fleet)
     end
 
     engage_button_handler is
     do
--- FIXME: stub
+        server.engage (fleet)
     end
 
 feature {NONE} -- Implementation
 
     cancel_trajectory_selection_handler: PROCEDURE[ANY, TUPLE]
-
-    colonization_handler: PROCEDURE[ANY, TUPLE]
 
     fleet_selection: HASHED_SET[SHIP]
 
@@ -442,7 +433,8 @@ feature {NONE} -- Internal features
         update_button (engage_button,
            fleet.can_engage and then
            fleet.orbit_center /= Void and then
-           fleet.destination = Void)
+           fleet.destination = Void and then
+           fleet.has_target_at (server.galaxy))
         update_button (colonize_button,
            fleet.can_colonize and then
            fleet.orbit_center /= Void and then

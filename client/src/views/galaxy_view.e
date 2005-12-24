@@ -377,7 +377,6 @@ feature {NONE} -- Event handlers
         end
         !FLEET_VIEW!fleet_window.make(Current, r, f)
         fleet_window.set_cancel_trajectory_selection_callback(agent cancel_trajectory_selection)
-        fleet_window.set_colonization_callback(agent galaxy.server.colonize (f))
     end
 
     on_left_click (x, y: INTEGER) is

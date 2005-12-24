@@ -58,10 +58,12 @@ feature -- Redefined features
             server.game.dialog_message (u)
         when msgtype_fleet then
             move_fleet (u)
-        when msgtype_task then
-            set_task(u)
         when msgtype_colonize then
             colonize(u)
+        when msgtype_engage then
+            engage(u)
+        when msgtype_task then
+            set_task(u)
         when msgtype_startbuilding then
             startbuilding(u)
         when msgtype_buy then
@@ -379,6 +381,27 @@ feature {NONE} -- Operations
             print("colonize: Fleet cannot colonize%N")
         else
             fleet.colonize_order
+        end
+    end
+
+    engage (u: UNSERIALIZER) is
+    local
+        fleet: S_FLEET
+    do
+        u.get_integer
+        if server.game.galaxy.has_fleet (u.last_integer) then
+            fleet := server.game.galaxy.fleet_with_id(u.last_integer)
+        end
+        if fleet = Void then
+            print("engage: invalid fleet id%N")
+        elseif fleet.orbit_center = Void then
+            print("engage: fleet not in orbit%N")
+        elseif not fleet.can_engage then
+            print("engage: Fleet cannot engage%N")
+        elseif not fleet.has_target_at (server.game.galaxy) then
+            print("engage: no targets to engage%N")
+        else
+            fleet.engage_order
         end
     end
 

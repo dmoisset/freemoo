@@ -14,6 +14,10 @@ CLIENT MESSAGES
 40: End of Turn. Report that player won't play anymore for this turn
 41: Fleet movement. Player gives movement orders to some or all ships in a fleet
 42: Colonize. Player indicates that (s)he wants to colonize some planet.
+43: Engage. Player marks a fleet for enemy engagemnet.
+50: Colony set task
+51: Colony set production
+52: Colony buy
 
   * Join
 
@@ -120,20 +124,28 @@ CLIENT MESSAGES
   offset(bytes) name         type     Notes
   0             msgtype      INTEGER  42
   4             fleet        INTEGER  id of the fleet that'll colonize
-  8             star         INTEGER  id of colonization orbit center
-  12            orbit        INTEGER  orbit of planet to colonize
 
-  This message indicates to the server that the player wishes to colonize a
-  planet.  The fleet must contain at least one colony ship, and the planet
-  should be colonizable (habitable and not already colonized).  A colony ship
-  in the fleet will be marked for colonzation, but the planet will not be
-  colonized until the end of the turn.
+  This message indicates to the server that the player wishes to
+  colonize a planet with a given fleet at the end of the turn.  The
+  fleet must contain at least one colony ship, and be orbiting a system
+  with at least a colonizable planet. The planet will not be colonized
+  until the end of the turn.
 
+  * Colonize
+
+  offset(bytes) name         type     Notes
+  0             msgtype      INTEGER  43
+  4             fleet        INTEGER  id of the fleet that'll engage
+
+  This message indicates to the server that the player wishes to
+  engage with the given fleet at the end of the turn.  The
+  fleet must contain at least one combat-able ship, and be orbiting a system
+  with enemy presence (colony and or fleet).
 
   * Set Task
 
   offset(bytes) name        type    Notes
-  0             msgtype     INTEGER 43
+  0             msgtype     INTEGER 50
   4             colony      INTEGER id of a colony the player owns
   8             task        INTEGER 0-2: farming, industry, science
   12            count       INTEGER number of population units commanded
@@ -151,7 +163,7 @@ CLIENT MESSAGES
   * Build
 
   offset(bytes) name        type    Notes
-  0             msgtype     INTEGER 44
+  0             msgtype     INTEGER 51
   4             colony      INTEGER id of a colony the player owns
   8             product_id  INTEGER id taken from known_constructions
 
@@ -165,7 +177,7 @@ CLIENT MESSAGES
   * Buy
 
   offset(bytes) name        type    Notes
-  0             msgtype     INTEGER 45
+  0             msgtype     INTEGER 52
   4             colony      INTEGER id of a colony the player owns
 
   Buy current production on the given colony.  Colony must be owned by
