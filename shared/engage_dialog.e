@@ -61,9 +61,8 @@ feature -- Operations
         end
         if enemies.has_id (enemy) then
             target := enemies.item_id (enemy)
+            fleet.set_engagement (target, planet)
         end
-        
-        fleet.set_engagement (target, planet)
         close
     end
     

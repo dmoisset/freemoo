@@ -18,11 +18,17 @@ feature {NONE} -- Creation
     require
         f /= Void
         f.orbit_center /= Void
+    local
+        i: IMAGE_FMI
+        p: MOUSE_POINTER
     do
         fleet := f
         dialog_id := id
         star_view_make (w, where, f.orbit_center, server.game_status, server.galaxy)
         close_button.set_click_handler (agent cancel_selection)
+        create i.make_from_file ("client/star-view/colonize-pointer.fmi")
+        create p.make (i, 4, 24)
+        set_pointer (p)
         update_title
     end
 

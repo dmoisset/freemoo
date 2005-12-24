@@ -32,6 +32,8 @@ feature {NONE} -- Creation
         inspect kind
         when dk_colonization then
             on_colonize_dialog (id, dinfo)
+        when dk_engage then
+            on_engagement_dialog (id, dinfo)
         else
             print ("Unrecognized dialog kind%N")
         end
@@ -46,6 +48,17 @@ feature {NONE} -- Creation
         u.get_integer
         f := server.galaxy.fleet_with_id (u.last_integer)
         galaxy.select_planet_for_colonization (id, f)
+    end
+
+    on_engagement_dialog (id: INTEGER; dinfo: STRING) is
+    local
+        u: UNSERIALIZER
+        f: C_FLEET
+    do
+        create u.start (dinfo)
+        u.get_integer
+        f := server.galaxy.fleet_with_id (u.last_integer)
+        galaxy.select_target (id, f)
     end
 
 feature -- Operations
@@ -109,4 +122,5 @@ feature {NONE} -- Callbacks
     do
         galaxy.zoom_out (galaxy.width//2, galaxy.height//2)
     end
+
 end -- class MAIN_WINDOW

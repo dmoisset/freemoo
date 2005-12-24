@@ -391,13 +391,13 @@ feature -- Access -- Giving Orders
 
     set_engagement (enemy: like will_engage; location: like will_engage_at) is
     require
-        has_engage_orders
         enemy /= Void
         enemy /= owner
         location /= Void implies location.colony.owner = enemy
     do
         will_engage := enemy
         will_engage_at := location
+        print (" **** Fleet "+id.out+" engaging at "+orbit_center.name+"%N")
     end
 
 feature -- Access -- Receiving orders

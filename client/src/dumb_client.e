@@ -9,6 +9,7 @@ inherit
     STRING_FORMATTER
     PLAYER_CONSTANTS
     DIALOG_KINDS
+    PKG_USER
 
 creation make
 
@@ -21,6 +22,7 @@ feature
     local
         i: INTEGER
     do
+        pkg_system.make_with_config_file ("freemoo.conf")
         !!options.make
         -- Hardcoded defaults
         options.parse_add ("server=localhost")
@@ -231,6 +233,8 @@ feature -- Incredibly smart AI
         inspect kind
         when dk_colonization then
             on_colonize_dialog (id, dinfo)
+        when dk_engage then
+            on_engage_dialog (id, dinfo)
         else
             print ("Unrecognized dialog kind%N")
         end
@@ -245,4 +249,14 @@ feature -- Incredibly smart AI
         server.dialog (id, s.serialized_form)
     end
 
+    on_engage_dialog (id: INTEGER; dinfo: STRING) is
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        s.add_integer (0) 
+        s.add_integer (0) -- Do not engage
+        server.dialog (id, s.serialized_form)
+    end
+    
 end -- class DUMB_CLIENT

@@ -96,7 +96,7 @@ feature -- Access
         end
         -- Check players
         from ip := players.get_new_iterator until ip.is_off or Result loop
-            Result := ip.item.knows_star.count = count
+            Result := ip.item.has_visited_star.count = count
             ip.next
         end
     end
@@ -212,7 +212,7 @@ feature {NONE} -- Internal
                 f.item.has_engage_orders and then
                 f.item.has_target_at (galaxy)
             then
-                print (" **** Fleet "+f.item.id.out+" engaging at "+f.item.orbit_center.name+"%N")
+                add_dialog (create {ENGAGE_DIALOG}.make(f.item, players))
                 f.item.cancel_engage_order
             end
             f.next

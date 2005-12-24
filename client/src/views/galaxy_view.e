@@ -114,6 +114,22 @@ feature -- Operations
         create colonization_dialog.make(Current, r, f, id)
     end
 
+    select_target (id: INTEGER; f: C_FLEET) is
+        -- Select a target for `f' to engage
+        -- Answer should return to dialog `id'
+    require
+        f /= Void
+        f.orbit_center /= Void
+        f.can_engage
+    local
+        r: RECTANGLE
+    do
+        r.set_with_size((width - star_window_width) // 2,
+                        (height - star_window_height) // 2,
+                        star_window_width, star_window_height)
+        create engagement_dialog.make(Current, r, f, id)
+    end
+
 feature {NONE} -- Signal handlers
 
     on_map_change (g: C_GALAXY) is
@@ -560,6 +576,8 @@ feature {NONE} -- Internal data
         -- Window used to display a fleet
 
     colonization_dialog: PLANET_SELECTION_DIALOG
+
+    engagement_dialog: ENEMY_SELECTION_DIALOG
 
     trajectory_window: WINDOW_IMAGE
         -- Window used for doing fleet trajectory selection
