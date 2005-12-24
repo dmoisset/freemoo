@@ -76,6 +76,7 @@ feature {NONE} -- Callbacks
     do
         create s.make
         s.add_integer (0)
+        s.add_integer (0)
         server.dialog (dialog_id, s.serialized_form)
         remove
     end
