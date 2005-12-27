@@ -323,6 +323,7 @@ feature {STORAGE} -- Retrieving
         colony: S_COLONY
         star: S_STAR
         design: S_STARSHIP
+        product: INTEGER
     do
         from
             colonies.clear
@@ -355,8 +356,9 @@ feature {STORAGE} -- Retrieving
                 has_visited_star.add(star)
             elseif elems.item.first.has_prefix("construction") then
                 i ?= elems.item.second
-                if not known_constructions.has(i.item + product_min) then
-                    known_constructions.add_by_id(i.item + product_min)
+                product := i.item + product_min
+                if not known_constructions.has(product) then
+                    known_constructions.add_by_id(product)
                 end
             elseif elems.item.first.has_prefix("design") then
                 design ?= elems.item.second

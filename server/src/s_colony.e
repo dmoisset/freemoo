@@ -203,10 +203,12 @@ feature {STORAGE} -- Retrieving
         design: S_STARSHIP
         builder: S_CONSTRUCTION_BUILDER
         product: INTEGER
+        saved_population: INTEGER
+        saved_populators: HASHED_DICTIONARY[S_POPULATION_UNIT, INTEGER]
     do
         create builder
+        create saved_populators.make
         from
-            populators.clear
             constructions.clear
         until elems.is_off loop
             if elems.item.first.is_equal("producing") then
@@ -228,7 +230,7 @@ feature {STORAGE} -- Retrieving
                 location ?= elems.item.second
             elseif elems.item.first.is_equal("population") then
                 i ?= elems.item.second
-                population := i.item
+                saved_population := i.item
             elseif elems.item.first.is_equal("preclimate") then
                 i ?= elems.item.second
                 preclimate := i.item
@@ -243,18 +245,21 @@ feature {STORAGE} -- Retrieving
                 extra_max_population := i.item
             elseif elems.item.first.has_prefix("populator") then
                 p ?= elems.item.second
-                populators.add (p, p.id)
+                saved_populators.add (p, p.id)
             elseif elems.item.first.has_prefix("construction") then
                 i ?= elems.item.second
                 product := i.item + product_min
-                     -- For if our owner hasn't been made_from_storage yet
-                owner.known_constructions.add_by_id(product)
+                if not owner.known_constructions.has(product) then
+                    owner.known_constructions.add_by_id(product)
+                end
                 constructions.add(owner.known_constructions @ product, product)
             else
                 print ("Bad element inside 'colony' tag: " + elems.item.first + "%N")
             end
             elems.next
         end
+        population := saved_population
+        populators := saved_populators
     end
 
 end -- class S_COLONY

@@ -15,7 +15,7 @@ feature {NONE} -- Creation
     do
         orbit_center := star
         size := plsize_min
-        climate := climate_min
+        climate := climate_terran
         mineral := mnrl_min
         gravity := grav_min
         type := type_min

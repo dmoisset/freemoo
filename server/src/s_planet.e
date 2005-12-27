@@ -72,6 +72,8 @@ feature {STORAGE} -- Retrieving
             if elems.item.first.is_equal("climate") then
                 i ?= elems.item.second
                 climate := i.item + climate_min
+            else
+                print ("Unknown primary key '" + elems.item.first + "' in PLANET element%N")
             end
             elems.next
         end
