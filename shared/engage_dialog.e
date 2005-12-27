@@ -8,15 +8,15 @@ create
 
 feature {NONE} -- Creation
 
-    make (f: FLEET; l: PLAYER_LIST [PLAYER]) is
+    make (f: FLEET; g: GAME) is
     require
         f /= Void
         f.can_engage
         f.is_in_orbit
-        l /= Void
+        g /= Void
     do
         fleet := f
-        enemies := l
+        game := g
     end
 
 feature -- Access
@@ -59,9 +59,10 @@ feature -- Operations
         if orbit.in_range (1, fleet.orbit_center.Max_planets) then
             planet := fleet.orbit_center.planet_at (orbit)
         end
-        if enemies.has_id (enemy) then
-            target := enemies.item_id (enemy)
+        if game.players.has_id (enemy) then
+            target := game.players.item_id (enemy)
             fleet.set_engagement (target, planet)
+            game.add_attack (fleet.owner, target, fleet.orbit_center)
         end
         close
     end
@@ -70,8 +71,8 @@ feature {NONE} -- Representation
 
     fleet: FLEET
     
-    enemies: PLAYER_LIST [PLAYER]
-
+    game: GAME
+    
 invariant
     fleet /= Void
 

@@ -175,6 +175,50 @@ feature {DIALOG} -- Operations
         end
     end
 
+feature -- Combat resolution
+
+    attacks: HASHED_DICTIONARY [COMBAT_RESOLUTION, STAR]
+        -- Initiative for each star
+
+    pending_attacks: INTEGER
+        -- Number of attacks left to solve this round
+    
+    pending_at: HASHED_DICTIONARY [INTEGER, STAR]
+        -- Number of attacks that can be solved now at each star
+
+    init_attacks is
+    local
+        s: ITERATOR [STAR]
+        r: COMBAT_RESOLUTION
+    do
+        if attacks = Void then create attacks.make end
+        if pending_at = Void then create pending_at.make end
+        from s := galaxy.get_new_iterator_on_stars until s.is_off loop
+            if attacks.has (s.item) then
+                attacks.at (s.item).clear
+            else
+                create r.make (players)
+                attacks.put (r, s.item)
+            end
+            attacks.at (s.item).set_colonized_from (s.item)
+            attacks.at (s.item).set_turn (status.date)
+            pending_at.put (0, s.item)
+            s.next
+        end
+        pending_attacks := 0
+    end
+
+    add_attack (attacker, defender: PLAYER; location: STAR) is
+    require
+        attacks /= Void
+        galaxy.has_star (location.id)
+        players.has_id (attacker.id)
+        players.has_id (defender.id)
+    do
+        attacks.at (location).add_combat (attacker, defender)
+        pending_attacks := pending_attacks + 1
+    end
+
 feature {NONE} -- Internal
 
     map_generator: MAP_GENERATOR
@@ -209,12 +253,13 @@ feature {NONE} -- Internal
         galaxy.generate_colony_knowledge(players.get_new_iterator)
         -- After this:
         -- Ask where to combat (dialog)
+        init_attacks
         from f := galaxy.get_new_iterator_on_fleets until f.is_off loop
             if
                 f.item.has_engage_orders and then
                 f.item.has_target_at (galaxy)
             then
-                add_dialog (create {ENGAGE_DIALOG}.make(f.item, players))
+                add_dialog (create {ENGAGE_DIALOG}.make(f.item, Current))
                 f.item.cancel_engage_order
             end
             f.next
@@ -226,12 +271,26 @@ feature {NONE} -- Internal
     new_turn_1 is
     require
         new_turn_step = 1
+    local
+        s: ITERATOR [STAR]
+        ps: ARRAY [PLAYER]
     do
-        -- Assign fleet combats
-        -- After this:
-        -- Solve combat (dialog)
-        -- Solve bombardment/ground combat (dialog)
-        new_turn_step := new_turn_step + 1
+        if pending_attacks > 0 then
+            -- Assign fleet combats
+            from s := galaxy.get_new_iterator_on_stars until s.is_off loop
+                if pending_at @ s.item = 0  and attacks.at (s.item).count > 0 then
+                    -- New round of attacks at s
+                    ps := attacks.at (s.item).next_attackers
+                    ps.do_all (agent start_combat (s.item, ?))
+                end
+                s.next
+            end
+        else
+            -- After this:
+            -- Solve combat (dialog)
+            -- Solve bombardment/ground combat (dialog)
+            new_turn_step := new_turn_step + 1
+        end
     end
 
     new_turn_2 is
@@ -416,6 +475,14 @@ feature {NONE} -- Internal
             i.next
         end
         galaxy.fleet_cleanup
+    end
+
+    start_combat (location: STAR; attacker: PLAYER) is
+    do
+        print ("Combat at "+location.name+", attacker="+attacker.name+"%N")
+        -- Combat complete
+        attacks.at (location).remove_combat (attacker)
+        pending_attacks := pending_attacks - 1
     end
 
     init_game is
