@@ -188,6 +188,7 @@ feature -- Operations -- Game commands
         not c.has_bought
         c.producing.is_buyable
         player.money >= c.buying_price
+        c.produced < c.producing.cost(c)
     local
         s: SERIALIZER2
     do

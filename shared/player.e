@@ -202,7 +202,7 @@ feature {COLONY} -- Operations
     end
 
     update_money(amount: INTEGER) is
-    require money + amount > 0
+    require money + amount >= 0
     do
         money := money + amount
     ensure

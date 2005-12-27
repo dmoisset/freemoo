@@ -182,7 +182,9 @@ CLIENT MESSAGES
 
   Buy current production on the given colony.  Colony must be owned by
   the current player, and the player should have enough money to buy the
-  production.  Colony shouldn't have already bought this turn.
+  production.  Colony shouldn't have already bought this turn, and 
+  accumulated production should be less than what's required to build
+  current production.
 
 SERVER MESSAGES
 

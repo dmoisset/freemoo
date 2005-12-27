@@ -34,7 +34,7 @@ feature -- Callbacks
     local
         buyable: BOOLEAN
         r: RECTANGLE
-        missing: INTEGER
+        produced: INTEGER
     do
         -- Show product
         if showing_product /= colony.producing.id then
@@ -51,20 +51,21 @@ feature -- Callbacks
         end
         -- Show missing turns
         if colony.producing.is_buyable then
-            missing := (colony.industry.total - colony.industry_consumption).floor
-            if missing = 0 then
-                missing := 1000
+            produced := (colony.industry.total - colony.industry_consumption).floor
+            if produced = 0 then
+                missing_label.set_text("(No production)")
             else
-                missing := ((colony.producing.cost(colony)
-                            - colony.produced) / missing).ceiling
+                missing_label.set_text(((colony.producing.cost(colony)
+                            - colony.produced) / produced).ceiling.max(0).to_string
+                            + " turn(s)")
             end
-            missing_label.set_text(missing.to_string + " turn(s)")
         else
             missing_label.set_text("")
         end
         -- Update 'buy' button
         buyable := colony.buying_price <= colony.owner.money
-        if buyable and colony.producing.is_buyable and not colony.has_bought then
+        if buyable and colony.producing.is_buyable and not colony.has_bought and
+            colony.produced < colony.producing.cost(colony) then
             shadow.hide
             buy_button.show
         else
@@ -78,6 +79,7 @@ feature -- Callbacks
         not colony.has_bought
         colony.producing.is_buyable
         colony.buying_price <= colony.owner.money
+        colony.produced < colony.producing.cost(colony)
     do
         server.buy_production_at(colony)
     end

@@ -360,6 +360,8 @@ feature {NONE} -- Operations
             print ("buy_producing: Product '" + colony.producing.name + "' isn't buyable%N")
         elseif player.money < colony.buying_price then
             print ("buy_producing: Insuficient funds%N")
+        elseif colony.produced >= colony.producing.cost(colony) then
+            print ("buy_producing: No production missing to buy")
         else
             colony.buy
         end
