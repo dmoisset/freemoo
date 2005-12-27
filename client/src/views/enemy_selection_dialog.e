@@ -1,10 +1,17 @@
 class ENEMY_SELECTION_DIALOG
     -- Dialog to select a target for engagement
+    -- Mixes WINDOW_MODAL into a regular STAR_VIEW
 
 inherit
+    WINDOW_MODAL
+        rename
+            make as make_modal
+        undefine handle_event, redraw end
     STAR_VIEW
         rename
             make as star_view_make
+        undefine
+            remove, show, hide
         redefine
             planet_click, update_title
         end
@@ -21,7 +28,8 @@ feature {NONE} -- Creation
     do
         fleet := f
         dialog_id := id
-        star_view_make (w, where, f.orbit_center, server.game_status, server.galaxy)
+        make_modal(w, where)
+        make_widgets (f.orbit_center, server.game_status, server.galaxy)
         close_button.set_click_handler (agent cancel_selection)
         fleets_orbiting.set_fleet_click_handler (agent fleet_click)
         update_title

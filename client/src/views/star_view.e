@@ -19,12 +19,21 @@ feature {NONE} -- Creation
         s /= Void
         g /= Void
         new_status /= Void
+    do
+        window_make(w, where)
+        make_widgets(s, new_status, g)
+    end
+
+    make_widgets(s: C_STAR; new_status: C_GAME_STATUS; g: C_GALAXY) is
+    require
+        s /= Void
+        g /= Void
+        new_status /= Void
     local
         a: FMA_FRAMESET
         r: RECTANGLE
         d: DRAG_HANDLE
     do
-        window_make(w, where)
         -- Register on star
         star_changed_handler := agent star_changed
         star := s

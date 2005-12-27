@@ -60,4 +60,11 @@ feature {NONE} -- Widgets
         system_view.set_manage_colony_callback(agent set_colony)
     end
 
+feature -- Operations
+
+    show_detailed_production(accumulator: EXPLAINED_ACCUMULATOR[REAL]) is
+    local
+    do
+    end
+
 end -- class COLONY_WINDOW

@@ -1,13 +1,20 @@
 class PLANET_SELECTION_DIALOG
     -- Dialog to select a planet from a star system (Used for colonization)
+    -- Mixes WINDOW_MODAL into a regular STAR_VIEW
 
 inherit
+    WINDOW_MODAL
+        rename
+            make as make_modal
+        undefine handle_event, redraw end
     STAR_VIEW
-    rename
-        make as star_view_make
-    redefine
-        planet_click, make_fleets_orbiting, update_title
-    end
+        rename
+            make as star_view_make
+        undefine
+            remove, show, hide
+        redefine
+            planet_click, make_fleets_orbiting, update_title
+        end
     CLIENT
 
 creation make
@@ -24,7 +31,8 @@ feature {NONE} -- Creation
     do
         fleet := f
         dialog_id := id
-        star_view_make (w, where, f.orbit_center, server.game_status, server.galaxy)
+        make_modal(w, where)
+        make_widgets (f.orbit_center, server.game_status, server.galaxy)
         close_button.set_click_handler (agent cancel_selection)
         create i.make_from_file ("client/star-view/colonize-pointer.fmi")
         create p.make (i, 4, 24)

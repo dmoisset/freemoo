@@ -24,6 +24,8 @@ feature -- Redefined features
         b: EVENT_MOUSE_BUTTON
         ac: EXPLAINED_ACCUMULATOR[REAL]
         it: ITERATOR[STRING]
+        info: POPUP_INFO
+        msg: STRING
     do
         Precursor (event)
         if not event.handled then
@@ -33,13 +35,21 @@ feature -- Redefined features
                 if b.button = 1 and b.y < row_height * 4 then
                     ac := accumulator(b.y // row_height)
                     from
+                        msg := ""
                         it := ac.get_new_iterator_on_reasons
                     until
                         it.is_off
                     loop
-                        print (it.item + ": " + (ac @ it.item).to_string + "%N")
+                        if ac @ it.item > 0 then
+                            msg := msg + "+"
+                        end
+                        msg := msg + ((ac @ it.item).to_string_format(1)
+                                   + " " + it.item + "%N")
                         it.next
                     end
+                    msg := msg + "------------------%N"
+                               + ac.total.to_string_format(1) + " Total"
+                    create info.make(parent, msg)
                 end
             end
         end
