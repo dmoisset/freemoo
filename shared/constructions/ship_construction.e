@@ -41,6 +41,7 @@ feature -- Operations
             c.build_ship(ship_factory.last_colony_ship)
         else
             ship_factory.create_starship_from_design(design)
+                check c.owner = design.owner end
             c.build_ship(ship_factory.last_starship)
         end
     end
@@ -50,7 +51,7 @@ feature {NONE} -- Implementation
     starship_cost: INTEGER is
         -- Calculate cost from ship design!
     do
-        Result := 40
+        Result := 4
     end
 
 feature {NONE} -- Creation

@@ -389,17 +389,7 @@ feature -- Access -- Giving Orders
     will_engage_at: PLANET
         -- Place to engage enemy
 
-    set_engagement (enemy: like will_engage; location: like will_engage_at) is
-    require
-        enemy /= owner
-        location /= Void implies location.colony.owner = enemy
-    do
-        will_engage := enemy
-        will_engage_at := location
-        print (" **** Fleet "+id.out+" will engage at "+orbit_center.name+"%N")
-    end
-
-feature -- Access -- Receiving orders
+feature -- Operations -- Receiving orders
 
     colonize_order is
     require
@@ -424,9 +414,66 @@ feature -- Access -- Receiving orders
         has_engage_orders
     end
 
+    set_engagement (enemy: like will_engage; location: like will_engage_at) is
+    require
+        enemy /= owner
+        location /= Void implies location.colony.owner = enemy
+    do
+        will_engage := enemy
+        will_engage_at := location
+    end
+
     cancel_engage_order is
     do
         has_engage_orders := False
+    end
+
+feature -- Combat
+
+    offensive_power: INTEGER is
+    local
+        i: ITERATOR [SHIP]
+    do
+        from i := get_new_iterator until i.is_off loop
+            if i.item.can_attack then Result := Result + 1 end
+            i.next
+        end
+    end
+
+    damage (amount: INTEGER) is
+    require
+        amount >= 0
+    local
+        left: INTEGER
+        fighters: INTEGER
+    do
+        from
+            fighters := offensive_power
+            left := amount
+        until fighters = 0 or left = 0 loop
+            take_hit
+            fighters := fighters - 1
+            left := left - 1
+        end
+        if fighters = 0 then
+            -- Fleet destroyed
+            from until ships.count = 0 loop
+                remove_ship (ships.item (ships.lower))
+            end
+        end
+    end
+
+    take_hit is
+        -- Remove fighter from fleet
+    local
+        i: ITERATOR [like ship_type]
+    do
+        from i := get_new_iterator until
+            i.is_off or else i.item.can_attack
+        loop
+            i.next
+        end
+        if not i.is_off then remove_ship (i.item) end
     end
 
 feature {GALAXY} -- Scanning

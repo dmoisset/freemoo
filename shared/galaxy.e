@@ -3,6 +3,8 @@ class GALAXY
 inherit
     STAR_MAP
         rename make as make_stars end
+    FLEET_MAP
+        rename make as make_fleets redefine star_type end
 
 creation
     make
@@ -12,7 +14,7 @@ feature {NONE} -- Creation
     make is
     do
         make_stars
-        !!fleets.make
+        make_fleets
         !!scans.make
         !!enemy_colony_knowledge.make
     end
@@ -145,29 +147,6 @@ feature -- Access
         -- all visible information, to show the colonies as each player 
         -- knew them.
 
-feature -- Access -- fleet list
-
-    get_new_iterator_on_fleets: ITERATOR [like last_fleet] is
-    do
-        Result := fleets.get_new_iterator_on_items
-    end
-
-    has_fleet (fid: INTEGER): BOOLEAN is
-        -- Is there a fleet with id `fid'?
-    do
-        Result := fleets.has (fid)
-    end
-
-    fleet_with_id (fid: INTEGER): like last_fleet is
-        -- Fleet with id `fid'
-    require
-        has_fleet (fid)
-    do
-        Result := fleets @ fid
-    end
-
-    last_fleet: FLEET
-
 feature -- Operations
 
     generate_scans (pl: ITERATOR [PLAYER]) is
@@ -196,147 +175,10 @@ feature -- Operations
         end
     end
     
-    add_fleet (new_fleet: like last_fleet) is
-    require
-        new_fleet /= Void
-        not has_fleet (new_fleet.id)
-    do
-        fleets.add(new_fleet, new_fleet.id)
-    ensure
-        fleets.has(new_fleet.id)
-    end
-
-    remove_fleet (f: like last_fleet) is
-    require
-        f /= Void
-    do
-        if f.is_in_orbit then f.leave_orbit end
-        fleets.remove (f.id)
-    end
-
-    fleet_orders (fleet: like last_fleet; destination: like last_star; ships: HASHED_SET[like ship_type]) is
-        -- Set fleet orders of `fleet', sending its `ships' toward 
-        -- `destination'
-    require
-        fleet /= Void and destination /= Void and ships /= Void
-        has_star (destination.id)
-        has_fleet (fleet.id)
-        not ships.is_empty
-        -- ships.for_all (agent fleet.has_ship (?))
-    local
-        f: like last_fleet
-    do
-        f := fleet
-        if ships.count /= f.ship_count then
-            f.split (ships.get_new_iterator)
-            f := f.splitted_fleet
-            f.set_destination (destination)
-            add_fleet (f)
-        else
-            f.set_destination (destination)
-            if f.destination /= Void then
-                f.recalculate_eta
-            end
-        end
-        if f.orbit_center /= Void then
-            join_fleets (f.orbit_center)
-            fleet_cleanup
-        end
-    end
-
-    join_fleets (s: like last_star) is
-        -- Join fleets at `s' sharing destination
-    require
-        has_star (s.id)
-    local
-        fs: ARRAY [like last_fleet]
-        fleet: ITERATOR[like last_fleet]
-        sorter: COLLECTION_RELATION_SORTER [like last_fleet]
-        i: INTEGER
-        f, g: FLEET
-    do
-        -- Get and group fleets at s
-        !!fs.make (1, 0)
-        from
-            fleet := get_new_iterator_on_fleets
-        until
-            fleet.is_off
-        loop
-            if fleet.item.orbit_center = s then
-                fs.add_last(fleet.item)
-            end
-            fleet.next
-        end
-        sorter.set_order (agent fleet_ungrouping(?, ?))
-        sorter.sort (fs)
-        -- Join
-        from i := fs.lower until i >= fs.upper loop -- >= instead of > because we compare each pair
-            f := fs @ i
-            g := fs @ (i+1)
-            if not fleet_ungrouping (f, g) then
-                    check f.owner = g.owner end
-                    check f.destination = g.destination end
-                f.join (g)
-                fs.remove (i+1)
-            else
-                i := i + 1
-            end
-        end
-    end
-
-    fleet_cleanup is
-        -- Remove all 0-sized (i.e. dead) fleets
-    local
-        i: ITERATOR [like last_fleet]
-        dead: HASHED_SET [like last_fleet]
-    do
-        create dead.make
-        from i := fleets.get_new_iterator_on_items until i.is_off loop
-            if i.item.ship_count = 0 then
-                dead.add(i.item)
-            end
-            i.next
-        end
-        dead.do_all(agent remove_fleet)
-    end
-
-feature {NONE} -- Auxiliar
-
-    fleet_ungrouping (f, g: FLEET): BOOLEAN is
-    do
-        if f.owner.id < g.owner.id then
-            Result := true
-        elseif f.owner.id = g.owner.id then
-            if f.destination = Void then
-                Result := g.destination /= Void
-            elseif g.destination = Void then
-                Result := False
-            else
-                Result := f.destination.id < g.destination.id
-            end
-        end
-    end
-
-feature -- Factory methods
-
-    create_fleet: like last_fleet is
-    do
-        !!Result.make
-        last_fleet := Result
-    end
-
-feature {MAP_GENERATOR} -- Representation
-
-    fleets: HASHED_DICTIONARY [like last_fleet, INTEGER]
-        -- All fleets in space
-    
 feature -- Anchors
-
-    ship_type: SHIP
 
     planet_type: PLANET
 
-invariant
-    fleets /= Void
+    star_type: like last_star
 
 end -- class GALAXY

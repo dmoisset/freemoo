@@ -341,7 +341,6 @@ feature {NONE} -- Internal
     local
         s: ITERATOR [like star_type]
         p: ITERATOR [like planet_type]
-        f: ITERATOR [like fleet_type]
         fleet: like fleet_type
     do
         s := galaxy.get_new_iterator_on_stars
@@ -351,18 +350,9 @@ feature {NONE} -- Internal
                 if p.item /= Void and then p.item.colony /= Void then
                     p.item.colony.new_turn
                     if p.item.colony.shipyard /= Void then
-                        from
-                            f := galaxy.get_new_iterator_on_fleets
-                        until
-                            f.is_off or else
-                            (f.item.owner = p.item.colony.owner and
-                             f.item.orbit_center = s.item and
-                             f.item.destination = Void)
-                        loop
-                            f.next
-                        end
-                        if not f.is_off then
-                            f.item.add_ship(p.item.colony.shipyard)
+                        fleet := galaxy.local_fleet (s.item, p.item.colony.owner)
+                        if fleet /= Void  then
+                            fleet.add_ship(p.item.colony.shipyard)
                         else
                             fleet := galaxy.create_fleet
                             fleet.set_owner(p.item.colony.owner)
@@ -387,12 +377,13 @@ feature {NONE} -- Internal
     colonize_all is
         -- Colonization
     local
+--FIXME: S_stuff here?!
         candidates: HASHED_DICTIONARY[HASHED_SET[S_COLONY_SHIP], S_PLANET]
-        fleet_back_reference: HASHED_DICTIONARY[S_FLEET, S_COLONY_SHIP]
+        fleet_back_reference: HASHED_DICTIONARY[FLEET, COLONY_SHIP]
         colony_ship: S_COLONY_SHIP
-        f_it: ITERATOR[S_FLEET]
-        s_it: ITERATOR[S_SHIP]
-        cs_it: ITERATOR[S_COLONY_SHIP]
+        f_it: ITERATOR[FLEET]
+        s_it: ITERATOR[SHIP]
+        cs_it: ITERATOR[COLONY_SHIP]
         ships: ITERATOR[HASHED_SET[S_COLONY_SHIP]]
     do
         create candidates.make
@@ -478,11 +469,33 @@ feature {NONE} -- Internal
     end
 
     start_combat (location: STAR; attacker: PLAYER) is
+    local
+        f, g: FLEET
+        c: COLONY
+        p, q: INTEGER -- Attack power
     do
-        print ("Combat at "+location.name+", attacker="+attacker.name+"%N")
+        -- Find fleet
+        f := galaxy.local_fleet (location, attacker)
+        if f /= Void then
+            g := galaxy.local_fleet (location, f.will_engage)
+            if f.will_engage_at /= Void then 
+                c := f.will_engage_at.colony
+            end
+            p := f.offensive_power
+            if c /= Void then 
+                q := c.offensive_power (g)
+                f.damage (q)
+                c.damage (p, g)
+            elseif g /= Void then
+                q := g.offensive_power
+                f.damage (q)
+                g.damage (p)
+            end
+        end
         -- Combat complete
         attacks.at (location).remove_combat (attacker)
         pending_attacks := pending_attacks - 1
+        galaxy.fleet_cleanup
     end
 
     init_game is

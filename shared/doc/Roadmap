@@ -1,15 +1,18 @@
 0.1 - Evolver pre-warp (pone una colonia)
       Manejar flotas
 
-0.2 - Controlar la produccion (solo se producen ships, y colony ships)
+0.2 - Controlar la produccion
       Colonizar
+      Cargar/guardar
+      Racial modifiers
+      colonies (population, production)
+      combat (basic)
+
 
 Research
 
-Cargar/guardar
-Racial modifiers
-colonies (population, production)
 ship designs
+racial modifiers (full)
 combat
 bombardeo/ground combat
 heroes

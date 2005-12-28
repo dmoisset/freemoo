@@ -65,6 +65,13 @@ feature -- Operations
         picture = p
     end
 
+    set_owner (o: like owner) is
+    require
+        o /= Void
+    do
+        owner := o
+    end
+
 feature -- Modifiers
 
     is_stealthy: BOOLEAN

@@ -421,6 +421,9 @@ feature {CONSTRUCTION} -- Auxiliary for construction production
         -- recalculated with `recalculate_production'.
 
     build_ship(sh: like shipyard) is
+    require
+        sh /= Void
+        sh.owner = owner
     do
         shipyard := sh
     ensure
@@ -439,6 +442,44 @@ feature {EVOLVER} -- Auxiliary for evolving
         populators.add(pop, pop.id)
         population := population + 1000
         pop.set_task(task)
+    end
+
+feature -- Combat
+
+    offensive_power (f: FLEET): INTEGER is
+        -- Offensive power, assisted by `f'
+    do
+        if f /= Void then 
+            Result := f.offensive_power
+        end
+        Result := Result + 3
+    end
+
+    damage (amount: INTEGER; f: FLEET) is
+    local
+       p: INTEGER
+    do
+       if f /= Void then
+           p := amount - f.offensive_power - 3
+           f.damage (amount)
+       else
+           p := amount - 3
+       end
+       from until p < 0 or populators.count = 0 loop
+           take_hit
+           p := p - 1
+       end
+    end
+
+    take_hit is
+    do
+        if populators.count >= 1 then
+            populators.remove(populators.item(populators.upper).id)
+            population := population - 1000
+        end
+        if populators.count = 0 then
+            remove
+        end
     end
 
 feature -- Redefined features
@@ -479,6 +520,7 @@ feature {CONSTRUCTION} -- Special cases
         -- Increased maximum population for this colony
 
 invariant
+    shipyard /= Void implies shipyard.owner = owner
     population // 1000 = populators.count
     populators /= Void
     producing /= Void
