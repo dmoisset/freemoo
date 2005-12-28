@@ -3,6 +3,7 @@ class STAR_VIEW
 
 inherit
     MAP_CONSTANTS
+    CLIENT
     WINDOW
         rename make as window_make
         redefine redraw, handle_event, remove end
@@ -105,7 +106,7 @@ feature {NONE} -- Callbacks
     local
         connect_window: CONNECTION_WINDOW
     do
-        if p.colony /= Void then
+        if p.colony /= Void and then p.colony.owner.id = server.player.id then
             connect_window ?= parent.parent.parent
             connect_window.goto_colony_window(p.colony)
         end
@@ -209,7 +210,7 @@ feature {NONE} -- Signal handlers
             name_label.set_text("Star System Unexplored")
         end
     end
-    
+
 feature -- Redefined features
 
     remove is
