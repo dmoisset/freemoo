@@ -131,6 +131,8 @@ TURN SUMMARY
           "i" <<kind>>, followed by a kind-dependent format per event:
           event_explored: "i" <<id>>, id of explored star.
           event_finished_production: "iis" <<id, kind, name>>, id of colony; product kind; name when it is a ship.
+          event_starvation: "iii" <<id, food, production>> id of colony; food shortage; production shortage
+          event_space_flux: no data needed
 
 NEW FLEETS
   Name: n+":new_fleets" (n is a digit sequence = player id)

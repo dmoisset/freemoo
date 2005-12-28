@@ -63,13 +63,15 @@ feature -- Operations
         f: ITERATOR [like fleet_type]
         s: ITERATOR [S_SHIP]
     do
-        -- This feature is public because it must be called when loading a game
+        -- This feature is public because it must be called from FM_SERVER
+        -- when loading a game
         Precursor
         -- Register galaxy
         server.register (galaxy, "galaxy")
         -- Register player-specific services
         i := players.get_new_iterator
         from i.start until i.is_off loop
+            server.register (i.item, i.item.color.to_string+":turn_summary")
             server.register (galaxy, i.item.id.to_string+":scanner")
             server.register (galaxy, i.item.id.to_string+":enemy_colonies")
             server.register (galaxy, i.item.id.to_string+":new_fleets")

@@ -16,6 +16,7 @@ feature {NONE} -- Creation
         create knows_star.make
         create has_visited_star.make
         create known_constructions.make
+        create turn_summary.make(1, 0)
         known_constructions.add_by_id(known_constructions.product_none)
         ruler_name := ""
     ensure
@@ -209,6 +210,15 @@ feature {COLONY} -- Operations
         money = old money + amount
     end
 
+feature -- Operations
+
+    summary_message(msg: TURN_SUMMARY_ITEM) is
+    require
+        msg /= Void
+    do
+        turn_summary.add_last(msg)
+    end
+
 feature {MAP_GENERATOR, FLEET}
 
     add_to_known_list (star: like star_type) is
@@ -220,6 +230,10 @@ feature {MAP_GENERATOR, FLEET}
     do
         has_visited_star.add (star)
     end
+
+feature {NONE} -- Internal
+
+    turn_summary: ARRAY[TURN_SUMMARY_ITEM]
 
 feature -- Anchors
 

@@ -6,6 +6,7 @@ inherit
     rename
         make as player_make
     redefine colony_type, race end
+    TURN_SUMMARY_CONSTANTS
     SUBSCRIBER
     CLIENT
 
@@ -51,6 +52,17 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 
     on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
         -- Action when `msg' arrives from `provider''s `service'
+    do
+        if service.is_equal(color.to_string + ":turn_summary") then
+            decode_turn_summary_message(msg, provider)
+        elseif service.is_equal("player" + id.to_string) then
+            decode_player_message(msg, provider)
+        else
+            check unexpected_service: False end
+        end
+    end
+
+    decode_player_message(msg: STRING; provider: SERVICE_PROVIDER) is
     local
         s: UNSERIALIZER
         knows_count, visited_count, colony_count, construction_count,
@@ -163,6 +175,37 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 end
             end
             construction_count := construction_count - 1
+        end
+    end
+
+    decode_turn_summary_message(msg: STRING; provider: SERVICE_PROVIDER) is
+    require
+        msg.count >= 4
+    local
+        u: UNSERIALIZER
+        count, kind: INTEGER
+        event: TURN_SUMMARY_ITEM
+    do
+        create u.start(msg)
+        u.get_integer
+        count := u.last_integer
+        turn_summary.clear
+        from variant count until count = 0 loop
+            u.get_integer
+            kind := u.last_integer + event_min
+            inspect kind
+            when event_explored then
+                create {C_TURN_SUMMARY_ITEM_EXPLORED}event.unserialize_from(u)
+            when event_finished_production then
+                create {TURN_SUMMARY_ITEM_PRODUCED}event.unserialize_from(u)
+            when event_starvation then
+                create {C_TURN_SUMMARY_ITEM_STARVATION}event.unserialize_from(u)
+            else
+                check unexpected_event_kind: False end
+            end
+            turn_summary.add_last(event)
+            print (event.get_message)
+            count := count - 1
         end
     end
 

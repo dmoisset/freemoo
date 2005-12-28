@@ -11,9 +11,9 @@ feature {NONE} -- Creation
     make_with_options (opt: SERVER_OPTIONS) is
     do
         options := opt
-        !!status.make_with_options (options)
-        !!players.make
-        !!galaxy.make
+        create status.make_with_options (options)
+        create players.make
+        create galaxy.make
         make_mapgenerator
         make_evolver
         make -- Dialog handler
@@ -122,6 +122,7 @@ feature -- Operations
             map_generator.generate (galaxy, players)
             evolver.evolve (players.get_new_iterator)
 --FIXME: Start what has to start
+-- Does this still apply?  What does it mean??
             init_game
             status.start
             players.set_all_state (st_playing_turn)
@@ -182,7 +183,7 @@ feature -- Combat resolution
 
     pending_attacks: INTEGER
         -- Number of attacks left to solve this round
-    
+
     pending_at: HASHED_DICTIONARY [INTEGER, STAR]
         -- Number of attacks that can be solved now at each star
 
@@ -264,7 +265,7 @@ feature {NONE} -- Internal
             end
             f.next
         end
-        
+
         new_turn_step := new_turn_step + 1
     end
 
@@ -478,11 +479,11 @@ feature {NONE} -- Internal
         f := galaxy.local_fleet (location, attacker)
         if f /= Void then
             g := galaxy.local_fleet (location, f.will_engage)
-            if f.will_engage_at /= Void then 
+            if f.will_engage_at /= Void then
                 c := f.will_engage_at.colony
             end
             p := f.offensive_power
-            if c /= Void then 
+            if c /= Void then
                 q := c.offensive_power (g)
                 f.damage (q)
                 c.damage (p, g)

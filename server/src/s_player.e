@@ -9,7 +9,7 @@ inherit
     redefine
         add_to_known_list, add_to_visited_list, colony_type,
         star_type, race, set_ruler_name, set_race, set_color, add_colony,
-        remove_colony, known_constructions, update_money
+        remove_colony, known_constructions, update_money, set_state
     select id end
     STORABLE
     rename
@@ -88,6 +88,13 @@ feature -- Operations
         end
     end
 
+    send_turn_summary is
+    do
+        check registry /= Void end
+        send_message (color.to_string + ":turn_summary", turn_summary_message)
+        turn_summary.clear
+    end
+
     serialize_on (s: SERIALIZER2) is
     local
         rlname, rcname: STRING
@@ -132,10 +139,10 @@ feature -- Redefined features
         col_it: ITERATOR [COLONY]
         const_it: ITERATOR[CONSTRUCTION]
     do
-        !!s.make
         -- Validate service_id
         if service_id.has_prefix("player") then
-            !!serv_id.copy(service_id)
+            !!s.make
+                !!serv_id.copy(service_id)
             serv_id.remove_prefix("player")
             if serv_id.is_integer and then serv_id.to_integer = id then
                 s.add_string(ruler_name)
@@ -173,6 +180,25 @@ feature -- Redefined features
                     const_it.next
                 end
             end
+            Result := s.serialized_form
+        elseif service_id.is_equal(color.to_string + ":turn_summary") then
+            Result := turn_summary_message
+        end
+    end
+
+    turn_summary_message: STRING is
+    local
+        s: SERIALIZER2
+        msg: ITERATOR[TURN_SUMMARY_ITEM]
+    do
+        print ("S_PLAYER: turn_summary_message%N")
+        create s.make
+        s.add_integer (turn_summary.count)
+        from
+            msg := turn_summary.get_new_iterator
+        until msg.is_off loop
+            msg.item.serialize_on(s)
+            msg.next
         end
         Result := s.serialized_form
     end
@@ -187,6 +213,17 @@ feature -- Redefined features
     do
         Precursor (star)
         update_clients
+    end
+
+feature {PLAYER_LIST} -- Operations
+
+    set_state (new_state: INTEGER) is
+    do
+        Precursor(new_state)
+        if new_state = st_playing_turn then
+            send_turn_summary
+        end
+        state := new_state
     end
 
 feature {COLONY} -- Redefined features

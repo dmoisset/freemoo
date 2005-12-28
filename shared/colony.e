@@ -117,10 +117,7 @@ feature -- Access
         end
         -- Consider Leader Ability
         -- Consider Missing Food
-        if not owner.race.lithovore then
-            Result := Result - 50 * ((food_consumption - farming.total.rounded).ceiling.max(0) +
-                                     (industry_consumption - industry.total.rounded).floor.max(0))
-        end
+        Result := Result - 50 * (food_starvation + industry_starvation)
     end
 
     max_population: INTEGER is
@@ -194,6 +191,22 @@ feature -- Access
             Result := 1.25
         else
             Result := 1
+        end
+    end
+
+    food_starvation: INTEGER is
+        -- Only makes sense after recalculate_production
+    do
+        if not owner.race.lithovore then
+            Result := (food_consumption - farming.total.rounded).ceiling.max(0)
+        end
+    end
+
+    industry_starvation: INTEGER is
+        -- Only makes sense after recalculate_production
+    do
+        if not owner.race.lithovore then
+            Result := (industry_consumption - industry.total.rounded).floor.max(0)
         end
     end
 
@@ -285,6 +298,10 @@ feature -- Operations
         new_populator: like populator_type
     do
         recalculate_production
+        if food_starvation > 0 or industry_starvation > 0 then
+            owner.summary_message(create {TURN_SUMMARY_ITEM_STARVATION}.make(id,
+                 food_starvation, industry_starvation))
+        end
         new_population := population + population_growth
         from
             -- First create population_units and then add to maintain class

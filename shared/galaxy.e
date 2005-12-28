@@ -140,7 +140,7 @@ feature -- Access
 
     scans: HASHED_DICTIONARY [ARRAY [like last_fleet], INTEGER]
         -- Fleets scanned by each player
-    
+
     enemy_colony_knowledge: HASHED_DICTIONARY [HASHED_SET [COLONY], INTEGER]
         -- Enemy colonies known by each player.
         -- Eventually should be changed for something that contains
@@ -161,7 +161,7 @@ feature -- Operations
             pl.next
         end
     end
-    
+
     generate_colony_knowledge (pl: ITERATOR [PLAYER]) is
         -- Store in `enemy_colony_knowledge' current knowledge of 
         -- enemy colonies for all players in `pl'
@@ -174,7 +174,7 @@ feature -- Operations
             pl.next
         end
     end
-    
+
 feature -- Anchors
 
     planet_type: PLANET
