@@ -259,7 +259,7 @@ feature -- Operations
     do
         standard_copy(other)
         colonies := clone(other.colonies)
-        known_constructions := clone(other.known_constructions)
+        create known_constructions.make -- Known constructions aren't copied
         knows_star := clone(other.knows_star)
         has_visited_star := clone(other.has_visited_star)
     end
