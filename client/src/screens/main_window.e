@@ -96,6 +96,11 @@ feature {NONE} -- Widgets
         create money.make(Current, where, server.player)
     end
 
+    new_turn_summary is
+    do
+        create turn_summary_window.make(Current, server.player)
+    end
+
 feature {NONE} -- Callbacks
 
     end_turn is

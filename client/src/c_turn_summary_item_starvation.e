@@ -22,7 +22,7 @@ feature
             Result := Result + " and "
         end
         if industry > 0 then
-            Result := Result + industry.to_string + "industry"
+            Result := Result + industry.to_string + " industry"
         end
         Result := Result + ")%N"
     end

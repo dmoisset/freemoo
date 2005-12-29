@@ -20,6 +20,7 @@ feature {NONE} -- Creation
         make_unique_id
         name := clone (new_name)
         create money_changed.make
+        create turn_summary_changed.make
         player_make
     ensure
         name.is_equal (new_name)
@@ -204,8 +205,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 check unexpected_event_kind: False end
             end
             turn_summary.add_last(event)
-            print (event.get_message)
             count := count - 1
+        end
+        if turn_summary.count > 0 then
+            turn_summary_changed.emit(Current)
         end
     end
 
@@ -230,6 +233,8 @@ feature -- Callbacks
 feature -- Signals
 
     money_changed: SIGNAL_1[C_PLAYER]
+
+    turn_summary_changed: SIGNAL_1[C_PLAYER]
 
 feature -- Access
 

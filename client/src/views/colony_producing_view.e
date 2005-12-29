@@ -52,7 +52,7 @@ feature -- Callbacks
         -- Show missing turns
         if colony.producing.is_buyable then
             produced := (colony.industry.total - colony.industry_consumption).floor
-            if produced = 0 then
+            if produced <= 0 then
                 missing_label.set_text("(No production)")
             else
                 missing_label.set_text(((colony.producing.cost(colony)

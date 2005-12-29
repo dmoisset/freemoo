@@ -52,6 +52,12 @@ feature -- Access
     race: RACE
         -- The race this player rules
 
+    iterator_on_turn_summary: ITERATOR[TURN_SUMMARY_ITEM] is
+        -- Get a new iterator on this turn's events
+    do
+        Result := turn_summary.get_new_iterator
+    end
+
 feature -- Access
 
     --
