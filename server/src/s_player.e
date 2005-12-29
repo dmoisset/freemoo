@@ -191,7 +191,6 @@ feature -- Redefined features
         s: SERIALIZER2
         msg: ITERATOR[TURN_SUMMARY_ITEM]
     do
-        print ("S_PLAYER: turn_summary_message%N")
         create s.make
         s.add_integer (turn_summary.count)
         from
@@ -206,6 +205,7 @@ feature -- Redefined features
     add_to_known_list (star: like star_type) is
     do
         Precursor (star)
+        add_summary_message(create {TURN_SUMMARY_ITEM_EXPLORED}.make(star.id))
         update_clients
     end
 

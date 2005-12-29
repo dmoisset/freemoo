@@ -197,7 +197,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             when event_explored then
                 create {C_TURN_SUMMARY_ITEM_EXPLORED}event.unserialize_from(u)
             when event_finished_production then
-                create {TURN_SUMMARY_ITEM_PRODUCED}event.unserialize_from(u)
+                create {C_TURN_SUMMARY_ITEM_PRODUCED}event.unserialize_from(u)
             when event_starvation then
                 create {C_TURN_SUMMARY_ITEM_STARVATION}event.unserialize_from(u)
             else

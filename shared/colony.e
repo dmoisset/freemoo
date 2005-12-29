@@ -299,7 +299,7 @@ feature -- Operations
     do
         recalculate_production
         if food_starvation > 0 or industry_starvation > 0 then
-            owner.summary_message(create {TURN_SUMMARY_ITEM_STARVATION}.make(id,
+            owner.add_summary_message(create {TURN_SUMMARY_ITEM_STARVATION}.make(id,
                  food_starvation, industry_starvation))
         end
         new_population := population + population_growth
@@ -320,11 +320,12 @@ feature -- Operations
         end
         population := new_population
         produced := produced + (industry.total - industry_consumption).rounded.max(0)
-        print ("COLONY: Produced towards " + producing.name + ": " + produced.to_string + "%N")
         if producing.is_buyable then
             if produced >= producing.cost(Current) then
                 produced := produced - producing.cost(Current)
                 producing.build(Current)
+                owner.add_summary_message(create {TURN_SUMMARY_ITEM_PRODUCED}.make(id,
+                    producing.id, producing.name))
                 set_producing(product_none)
             end
         else

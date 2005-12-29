@@ -23,6 +23,7 @@ feature -- Access
 
     unserialize_from(u: UNSERIALIZER) is
     do
+        kind := event_explored
         u.get_integer
         star_id := u.last_integer
     end

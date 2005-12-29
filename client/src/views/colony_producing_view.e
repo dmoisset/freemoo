@@ -56,7 +56,7 @@ feature -- Callbacks
                 missing_label.set_text("(No production)")
             else
                 missing_label.set_text(((colony.producing.cost(colony)
-                            - colony.produced) / produced).ceiling.max(0).to_string
+                            - colony.produced) / produced).ceiling.max(1).to_string
                             + " turn(s)")
             end
         else

@@ -17,6 +17,7 @@ feature {NONE} -- Creation
     do
         create constructions.make
         create builder
+        add_by_id(product_none)
     end
 
 feature -- Access
@@ -77,5 +78,9 @@ feature -- Operations
 feature {NONE} -- Anchors
 
     starship_type: STARSHIP
+
+invariant
+
+    has(product_none)
 
 end -- class CONSTRUCTION_REPO

@@ -17,7 +17,6 @@ feature {NONE} -- Creation
         create has_visited_star.make
         create known_constructions.make
         create turn_summary.make(1, 0)
-        known_constructions.add_by_id(known_constructions.product_none)
         ruler_name := ""
     ensure
         state = st_setup
@@ -212,7 +211,7 @@ feature {COLONY} -- Operations
 
 feature -- Operations
 
-    summary_message(msg: TURN_SUMMARY_ITEM) is
+    add_summary_message(msg: TURN_SUMMARY_ITEM) is
     require
         msg /= Void
     do
@@ -246,7 +245,6 @@ feature -- Anchors
 invariant
     race /= Void
     ruler_name /= Void
-    known_constructions.has(known_constructions.product_none)
     valid_state: state.in_range (min_state, max_state)
     valid_color: color.in_range (min_color, max_color)
 end -- class PLAYER
