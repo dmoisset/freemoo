@@ -1,0 +1,1903 @@
+Contains the following strings:
+
+No Tech
+No description
+Achilles Targeting Unit
+Triples the chance of striking an enemy's weapon and shield systems and completely  bypasses the target ship's armor.
+Adamantium Armor
+Ships with this armor have 8 times the base structure and armor points. The hit points of fighters are multiplied by 4. Adds +25 to ground troop combat strengths.
+Advanced City Planning
+Pre-planned, organized colony design techniques. The improvements in organization increase the maximum population that can live on all planets owned by the empire by +5 million colonists.
+Advanced Damage Control
+Completely repairs ships between battles. Automatically included on all ships once the technology is researched.
+Alien Management Center
+Provides better control of occupied alien populations: aliens work harder, assimilate into your empire twice as fast, and are half as likely to revolt.
+Android Farmers
+Mechanical workers with a +3 food production bonus. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and generate no income.
+Android Scientists
+Mechanical workers that generate 3 research points per turn. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and cannot generate income.
+Android Workers
+Mechanical workers with a +3 production bonus. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and cannot generate income.
+Anti-Grav Harness
+Allows ground troops and armor to fly, increasing their mobility and defense. Adds +10 to their ground combat rating.
+Antimatter Bomb
+A high-yield orbital bombardment device engineered to destroy ground forces and colony installations, inflicting 5-40 points of damage per bomb.
+Antimatter Drive
+Capable of moving a ship 5 parsecs a turn. All ship drives are automatically upgraded when this technology is discovered.
+Anti-Matter Torpedoes
+These torpedoes are balls of antimatter that explode on contact. They travel at a speed of 20 and inflict 25 points of damage and fire every other turn.  Modifications: overloaded, enveloping and ECCM.
+Anti-Missile Rockets
+Can only target missiles. They have a maximum range of 15 squares and will fire defensively against approaching missiles if not yet fired in that turn. The  chance to score a hit is 85% minus 5% per square distance.
+Armor Barracks
+Creates tank battalions. It has 2 units when built, and adds 1 unit every 10 turns, up to half the planet's population. Eliminates the morale penalty for dictatorships and feudal governments.
+Artemis System Net
+Network of mines. Ships have a chance of damage based on size: frigate-20%, destroyer-30%, cruiser-40%, battleship-50%, titan-80%, doomstar-100%. Damage is 100-500 points less shields.
+Planet Construction
+A colony that has an asteroid field or gas giant within its star system can create a complete artificial planet capable of supporting life.
+Assault Shuttles
+Squadron of 4 shuttles used to move 1 unit of marines each from the launching ship  onto enemy ships. They take 3 hits to destroy, modified by your best armor, and move at a speed of 6.
+Astro University
+Using the most advanced teaching methods available, the efficiency of farmers, workers, and scientists is increased. Each receives a +1 bonus.
+Atmospheric Renewer
+Eliminates many dangerous particles from the atmosphere of a planet. The amount of production is quartered before calculating pollution. Effects are cumulative with a pollution processor.
+Augmented Engines
+Increases ship's combat speed by +5.
+Autolab
+A completely automated research facility. Generates 30 research points.
+Automated Factories
+Aid industry workers in their building of finished products. Generates 5  production and increases the production each worker generates by +1.
+Automated Repair Unit
+Repairs a ship during combat, restoring 20% of the armor or structure and 10% of the ship's internal systems each turn during combat. After combat, the ship is completely repaired.
+Battleoids
+Giant robot fighting vehicles superior in power and mobility to conventional tanks. They have a +10 bonus to their combat rating and take 3 hits to destroy.
+Battle Pods
+Battle Pods increase the available space on a ship by 50%.
+Battle Scanner
+Increases a ship's chance to hit with beam weapons by +50%. Adds +2 parsecs to galactic scanning range.
+Battlestation
+Heavily armed star base, with +4 parsec scanning range bonus. Adds +10% to the offense of ships in combat around it. Replaces a star base.
+Bio-Terminator
+The most advanced biochemical weapon ever devised, with a 20% chance of killing one million colonists. Use of biological weapons incurs a major diplomatic penalty with all other races.
+Biomorphic Fungi
+Edible plants that grow anywhere, increasing the food output of all planets by +1 food per farmer, including worlds with 0 food output.
+Black Hole Generator
+Creates an artificial black hole. The target ship is trapped in an intense gravity pocket and cannot move. Unless the generator or the equipped ship can be destroyed in 2 turns, the black hole will destroy the target.
+Bomber Bays
+Short range ships carrying a bomb that can be dropped on a planet or detonated on a ship. They carry one bomb each of the best type available. They move in groups of 4 at a speed of 10.
+Capitol
+The heart of your empire's government, the capitol is required to maintain proper order. Losing the colony that has the capitol building will have severe effects,  depending on your type of government. It can be rebuilt if destroyed,  but otherwise can not be built.
+Class I Shield
+Protects ships from physical and energy attacks. Absorbs up to 5 times the ship's size in damage before failing, with each attack reduced by 1 point of damage. Regenerates 30% per combat turn.
+Class III Shield
+Protects ships from physical and energy attacks. Absorbs up to 15 times the ship's size in damage before failing, with each attack reduced by 3 points of damage. Regenerates 30% per combat turn.
+Class V Shield
+Protects ships from physical and energy attacks. Absorbs up to 25 times the ship's size in damage before failing, with each attack reduced by 5 points of damage. Regenerates 30% per combat turn.
+Class VII Shield
+Protects ships from physical and energy attacks. Absorbs up to 35 times the ship's size in damage before failing with each attack reduced by 7 points of damage. Regenerates 30% per combat turn.
+Class X Shield
+Protects ships from physical and energy attacks. Absorbs up to 50 times the ship's size in damage before failing, with each attack reduced by 10 points of damage. Regenerates 30% per combat turn.
+Cloaking Device
+Completely hides a ship from long range scans. In combat, it adds +80 to the ship's beam defense and missiles have a 50% chance to miss as long as the ship does not attack. Must wait one turn without firing to recloak.
+Cloning Center
+Allows doctors to replace failing or damaged organs, increasing the population growth by +100K each turn as long as the current population is below the planetary maximum.
+Colony Base
+Creates a colony on another planet inside the same star system as the building colony.
+Colony Ship
+Capable of creating a colony in a distant star system. Will not engage in combat and will be destroyed when attacked if not escorted by a military ship.
+Confederation
+An advanced form of feudal government on a galactic scale. Eliminates automatic assimilation into enemy empires and reduces the cost of building ships to 1/3 normal costs.
+Cyber-Security Link
+Provides a direct mental link to computers, allowing spies to circumvent many automated security systems. Adds +10 to all spy rolls.
+Cybertronic Computer
+Learns and adapts using a neural net similar to the biological brain. Equipped on all ships, it adds +100% chance to hit with beam weapons.  Attack bonuses are eliminated if the computer is damaged or destroyed.
+Damper Field
+Surrounds a ship with an energy dampening field that reduces the damage a ship takes by 3/4. Has a 50% chance of distorting a transporter beam attempting to move troops onto the equipped ship, killing the troops instantly.
+Dauntless Guidance System
+Provides friend-or-foe recognition guidance to missiles and torpedoes. They will retarget the nearest enemy ship if their first target is destroyed.
+Death Ray
+Fires an intense beam of cosmic rays inflicting 50-100 points of damage. Any damage that penetrates the shields kills 1 marine unit for every 5 points of internal damage. Modifications: heavy mount, continuous.
+Death Spores
+Engineered viruses that attack organic lifeforms. Introduced by orbital bombardment, each launch has a 10% chance to kill one million colonists. Use of biological  weapons incurs a major diplomatic penalty with all other races.
+Deep Core Mining
+Allows miners to build stable tunnels deep into a planet. Generates 15  production and increases the productivity of each worker by +3 production each.
+Core Waste Dumps
+Take man-made toxic/polluting agents and store them deep within the surface of a planet, far below surface water supplies. Planetary pollution is completely  eliminated.
+Deuterium Fuel Cells
+Supplies sufficient energy to propel a ship up to 6 parsecs before refueling.
+Dimensional Portal
+Allows ships to cross into the dimension of the Antaran home world. To use it, select a fleet in the same system as the portal and press the 'Attack Antarans' button on the fleet pop-up.
+Displacement Device
+All weapons targeted against an equipped ship have a 30% chance of missing completely, regardless of any other considerations.
+Disrupter Cannon
+Fires intense bolts of energy that inflict 40 points of damage. Damage from  disrupter bolts is not reduced by range. Modifications: autofire, heavy mount.
+Doom Star Construction
+Mobile planetoid bases. They are the largest ships that can be built.
+Reinforced Hull
+Triples the structural integrity of a ship and provides more protection for the ship's drive system, tripling the amount of damage required to destroy it.
+ECM Jammer
+Creates a magnetic pulse jamming both weapon tracking systems and missile guidance units, adding +70% to the ship's missile evasion.
+Electronic Computer
+Directs starship weapons' fire and is automatically equipped on all ships, increasing chance to hit by +25%. This bonus is lost if the computer is damaged or destroyed.
+Emissions Guidance System
+Tracks the warp signature of a vehicle. If the missile penetrates the shields, all damage is applied to the ship's drive, bypassing any armor. Requires 4 times the space and costs 4 times more than regular missiles.
+Energy Absorber
+One quarter of all damage inflicted on a ship is instead stored in the  energy absorber.  The ship must fire this stored energy at an enemy ship in the next turn or it is lost.
+Biospheres
+Enables a colony to better control environmental conditions, allowing  colonization of the more intolerable areas of the planet. Maximum planetary population is increased by +2 million.
+Evolutionary Mutation
+Allows you to mutate your race, altering their abilities. When evolutionary mutation is researched, you may choose 4 additional points of race development picks, to either remove disadvantages or increase advantages.
+Extended Fuel Tanks
+Increase the overall range of a ship by +50%, but at the cost of a considerable amount of space.
+Fast Missile Racks
+Allow a ship to fire two volleys of missiles in one turn. Will only fire one per turn after that, unless the ship takes one full turn without firing missiles to reload.
+Federation
+Advanced form of Democracy. The research and income bonus is increased to +75%.
+Fighter Bays
+Allows a ship to carry a group of 4 short-range fighters. They carry one beam  weapon of the best type that can have the point defense modification, and can  fire it 4 times before returning to the launching ship.
+Fighter Garrison
+Planetary base that houses 10-interceptors.  Fighter garrisons are equipped  with 6-bomber, or 4-heavy fighter squadrons when the appropriate technology becomes available. New fighters become available every 10 combat turns.
+Food Replicators
+Alter the molecular structure of inorganic material to create edible food. Having a facility in a colony allows you to convert 2 units of production (energy) into 1 unit of food, as needed by the colony.
+Freighters
+A group of ships to transport food or colonists as needed between worlds. Each fleet contains 5 freighters. The fleet can transport 5 food units or one population unit per turn.
+Fusion Beam
+Projects a tetrium stream of charged particles, inflicting 2-6 points of damage Modifications: heavy mount, continuous, point defense, enveloping.
+Fusion Bomb
+A high-yield orbital bombardment device engineered to destroy ground forces and colony installations, inflicting 4-24 points of damage.
+Fusion Drive
+Capable of faster than light travel, moving a ship 3 parsecs a turn. All ship  drives are automatically upgraded when this technology is discovered.
+Fusion Rifle
+A powerful hand-held rifle that increases the combat rating of militia, troops, and armor by +10. The bonus is not cumulative with other rifles.
+Gaia Transformation
+Creates an environment suited to both plant and animal growth by introducing genetically-engineered microorganisms into the world. Can only be applied to terran environments.
+Galactic Currency Exchange
+Eliminates the need for hard currency, replacing it with instantaneous electronic exchanges. Increases the money generated by all colonies by +50%.
+Galactic Cybernet
+Nearly instantaneous galaxy-wide communications, allowing quick exchange of information and ideas. The cybernet generates 15 research points and each scientist generates +3 research each.
+Galactic Unification
+Connects all beings within the race in a collective consciousness, allowing each to act in total harmony.  Farmer and worker production is increased by +100%. Only races that began with unification can research it.
+Gauss Cannon
+An extremely powerful linear accelerator which inflicts 18 points of damage regardless of range. Modifications: autofire, armor piercing, heavy mount.
+Graviton Beam
+Gravitic waves that tear a target apart. Inflicts 3-15 points of damage. Any damage penetrating the ship's shields inflicts extra structural damage. Modifications: heavy mount, continuous.
+Gyro Destabilizer
+Creates a sudden rift in a ship's subspace field. Weakens the inertial controls of the ship, spinning it in random directions, inflicting 1-4 points of structural damage times the ship's size class. Range is 15 squares.
+Hard Shields
+Reduces the damage of any attack by an additional 3 points. Allows operation of all shields in a nebula and prevents the use of enemy transporters even after  shields have been dropped. Immune to shield-piercing weapons.
+Heavy Armor
+Heavy armor negates armor piercing effects and reinforces the armor of a ship, tripling the amount of damage the armor can absorb.
+Heavy Fighter Bays
+Allow ships to carry heavy fighters equipped with 2 of the best point defense  beam weapons and 2 of the best bombs available. They have 5 hits, modified by your best armor, and move at speed 12.
+Heightened Intelligence
+Through genetic engineering, the average intelligence of the entire race is substantially improved, increasing the research of all scientists by +1.
+High Energy Focus
+Allows a ship to channel the fire of its energy weapons more efficiently, increasing damage by +50% over base regardless of range. It does not improve the chances of hitting distant targets.
+Holo Simulator
+Capable of creating realistic 3-D images from holographic projections. Increases a planet's morale by +20%.
+Hydroponic Farms
+An automated, sealed environment in which food can be grown, even on lifeless worlds. It increases the food output of a world by +2 food.
+Hyper Drive
+Capable of moving a ship 6 parsecs a turn. All ship drives are automatically  upgraded when this technology is discovered.
+Megafluxers
+Conduct and magnify energy transmission in less space, giving a ship more space for equipment. Increases the amount of equipment it can carry by +25%. Megafluxers  are used automatically on all ships once acquired.
+Hyper-X Capacitors
+Allow ship beam weapons to fire twice in a turn. After firing twice, one turn must be spent without firing beam weapons; otherwise the weapons can only fire once per turn.
+Hyperspace Communications
+Allow you to communicate with any ship already in hyperspace so you can change its destination. Increases the command points of star bases, battle stations and star fortresses by +3 points.
+Imperium
+Advanced form of dictatorship. Total command points generated are increased by +50% and all defensive spy rolls are at +20.
+Inertial Nullifier
+Creates a warp field that can operate in normal space. Increases ship mobility and makes it harder to target. Adds +100 to the ship's beam defense, and allows it to change direction without movement cost.
+Inertial Stabilizer
+Creates a partial warp field that can operate in normal space. It vastly  improves the ship's mobility and makes it considerably harder to target, adding +50 to ship's beam defense and halving movement cost for turning.
+Interphased Drive
+Capable of moving a ship 7 parsecs a turn. All ship drives are automatically  upgraded when this technology is discovered.
+Ion Drive
+Capable of moving a ship 4 parsecs a turn. All ship drives are automatically  upgraded when this technology is discovered.
+Ion Pulse Cannon
+Fires a particle wave that overloads ships' systems and inflicts 2-10 points of  damage, bypassing all armor and structure. Completely ineffective against  monsters and Antaran ships. Modifications: autofire, and continuous.
+Irridium Fuel Cells
+Supplies sufficient energy to propel a ship 9 parsecs before refueling.
+Jump Gate
+Forms a controlled wormhole between two points, increasing the speed of ships moving through it by 3 parsecs a turn. Once discovered, all colonies will automatically be equipped with one.
+Laser Cannon
+Highly focused, coherent beams of light which deliver 1-4 points of damage. Modifications: autofire, armor piercing, heavy mount, continuous, point defense, no range dissipation.
+Laser Rifle
+A hand-held weapon that increases the combat rating of militia, troops, and armor by +5. The bonus is not cumulative with other rifles.
+Lightning Field
+Surrounds a ship in a powerful energized field capable of overloading the targeting system of any missile, torpedo or fighter. Has a 50% chance of destroying these weapons before they damage the ship.
+Marine Barracks
+Lets the colony train troops for ground invasion protection. Begins with 4 marine units, then trains 1 unit every 5 turns, up to the planet's maximum population. Eliminates morale penalties for dictatorships and feudal governments.
+Mass Driver
+A rail gun firing a hyper-velocity projectile. Inflicts 6 points of damage. Damage is not reduced by range. Modifications: autofire, armor piercing, heavy mount, point defense.
+Mauler Device
+Fires a bolt of pure energy that always hits. Inflicts 100 points of damage, but with double the range penalties for dissipation. Modifications: heavy mount.
+Merculite Missile
+Carries a powerful, chemically-based explosive warhead capable of delivering 14 points of damage. Modifications: MIRV, emissions guidance, fast, armored, and ECCM.
+Microbiotics
+Microorganisms used to create drugs. Increases the population growth rate of all planets by +25% and halves the percentage chance for death spores and bio-terminators to kill colonists.
+Microlite Construction
+Uses microscopic nano-machines to construct buildings and ships with less metal, but with the same strength and durability. Increases productivity of all workers by +1 production.
+Outpost Ship
+Capable of creating an outpost on any uninhabited planet. Outposts function like a colony, except no population units may be moved there. Outpost ships are unarmed and will be destroyed if not escorted by military ships.
+Moleculartronic Computer
+Directs all starship weapon fire, adding +125% to the chance to hit. If the computer is destroyed, the ship loses the bonus.
+Multi-Wave ECM Jammer
+Jamming frequencies across the entire spectrum this device adds +100 to the ships missile evasion rating.
+Multi-Phased Shields
+Allow ships to rapidly change the frequency of their shields, increasing the maximum strength by +50%.
+Nano Disassemblers
+Microscopic nano-machines capable of breaking down environmental contaminants. Doubles the number of production units a planet can produce before any pollution is created.
+Neural Scanner
+With improved data processing methods, the pathways of the brain can be mapped and analyzed. Provides a near perfect lie detector used by spies to elicit information, adding +10 to all spy rolls.
+Neutron Blaster
+Fires an intense beam of lethal radiation. Inflicts 3-12 points of damage to shields. Any damage that penetrates the shields kills 1 marine unit for every 5 points of internal damage. Modifications: heavy mount, continuous.
+Neutron Scanner
+Detects enemy ships. Has a base detection range of 5 parsecs. Ships in transit can be detected at 1 parsec per size class of ship greater range. Neutron scanners  reduce enemy ship's missile evasion by -40.
+Neutronium Armor
+Ships with this armor have 6 times the base structure and armor points. The hit points of fighters are multiplied by 5. Adds +20 to ground troop combat strengths.
+Neutronium Bomb
+A high-yield orbital bombardment device engineered to destroy ground forces and colony installations, inflicting 10-60 points of damage.
+Nuclear Bomb
+A high-yield orbital bombardment device engineered to destroy ground forces and colony installations, inflicting 3-12 points of damage.
+Nuclear Drive
+Capable of moving a ship 2 parsecs per turn. This is the first ship drive that makes interstellar travel possible.
+Nuclear Missile
+Carries a high-yield nuclear warhead that inflicts 8 points of damage.  Modifications: MIRV, emissions guidance, fast, heavily armored and ECCM.
+Optronic Computer
+Directs all starship weapons fire, adding +50 to the chance to hit. Bonus is lost if the computer is destroyed.
+Particle Beam
+Fires a stream of matter in a focused energy beam that is naturally shield piercing,  and inflicts 10-30 points of damage. Modifications: continous, heavy mount, and  point defense.
+Personal Shield
+Deflects physical and energy attacks, increasing the combat rating of militia, troops and armor by +20.
+Phase Shifter
+A derivative of a subspace teleporter that allows the equipped ship to teleport itself or another ship 18 squares in combat.
+Phasing Cloak
+Allows a ship to temporarily enter another dimension instead of just visually disappearing. While cloaked, the ship cannot be detected or attacked. Can only function for 10 turns, after which it will act like an ordinary cloaking device.
+Phasor
+Fires a trans-warp beam of phased energy that actually exists in several dimensions simultaneously, inflicting 5-20 points of damage. Modifications: autofire, continuous, heavy mount, point defense, shield piercing.
+Phasor Rifle
+A hand held rifle that can almost disintegrate an opponent with one blast, increasing the combat rating of militia, troops and armor by +20. The bonus is not cumulative with other rifles.
+Planetary Barrier Shield
+Seals a planet in an energy field. Converts Radiated climates to Barren climates. Reduces damage against a planet by 20 points. Ground troops and biological weapons cannot pass.
+Planetary Flux Shield
+Seals planet in an energy field. Converts Radiated climates into Barren. Reduces damage against the planet 10 points. It replaces any planetary radiation shield already built.
+Planetary Gravity Generator
+Creates artificial gravity to normalize a planet to standard gravity limits. Gravity generators eliminate the negative effects of low and heavy gravity fields.
+Planetary Missile Base
+Contains 300 space units of your best missiles, with unlimited ammo.
+Ground Batteries
+Ground installation that contains 300 space units of heavy mount and point defense  versions of the best available beam weapons.
+Planetary Radiation Shield
+Reduces solar and cosmic bombardment so lifeforms can comfortably move about the surface. Radiated climates become Barren.  Reduces damage against a planet by 5 points.
+Planetary Stock Exchange
+Increases the revenues earned on a planet by +100%.
+Planetary Supercomputer
+Supplies researchers with a vast amount of information. Generates 10 research  points and increases the research each scientist produces by +2.
+Plasma Cannon
+Fires a blast of plasma energy inflicting 6-30 points of damage to all 4 shields of  the target. Only focuses well over a short range, doubling all range penalties.  Modifications: heavy mount, and continuous fire.
+Plasma Rifle
+The most powerful held weapon, increasing the combat rating of militia, troops, and armor by +30. The bonus is not cumulative with other rifle bonuses.
+Plasma Torpedoes
+Plasma warhead capable of 120 points of damage. Travels with a combat speed of 24, losing 5 points of strength for each square traveled and firing every other turn.  Modifications: overloaded, enveloping, ECCM, no range dissipation.
+Plasma Web
+An energy web that envelopes a target within a 15 square range. Inflicts 5-25  points of damage per turn. This damage persists, dissipating at a rate of  5 points per turn.
+Pleasure Dome
+The ultimate in virtual holographic entertainment, creating completely immersive entertainment environments. It increases morale by +30% and is  cumulative with holo simulator.
+Pollution Control Facility
+Uses advanced chemicals to process factory waste. Only half of  the actual production of the planet used to calculate pollution.
+Positronic Computer
+Directs all ship beam weapons fire, adding a +75% chance to hit.  If the computer is damaged or destroyed, the ship loses the attack bonus.
+Powered Armor
+Provides troops with superior power and mobility by mechanically magnifying their natural strength. Powered armor equipped troops have a +10 bonus to their combat rating and take +1 hits to kill.
+Pulse Rifle
+Hand-held weapon that fires high-velocity projectiles.
+Proton Torpedoes
+Energy projectiles traveling at trans-warp speed, striking their target the turn they are fired. They inflict 40 points of damage. Can be fired every other turn, with a max range of 24 squares. Modifications: overloaded, enveloping, ECCM.
+Psionics
+Allows you to create psychic beings of immense power. Spying bonuses are raised by +10. Morale on all planets is increased by 10% for dictatorships and imperium government.
+Pulsar
+When fired, causes violent vibrations in ships, missiles and fighters adjacent to the equipped ships. Inflicts 2-24 points of damage per size class of the ship damaged.
+Pulson Missile
+Carries a powerful high-energy pulse capable of delivering 20 points of damage. Modifications: MIRV, emissions guidance, fast, armored, and ECCM.
+Quantum Detonator
+Creates an interphase reaction when the ship is destroyed or self destructs, tripling the destructive power of the ship's explosion.  Ships equipped with  a quantum detonator have a 50% chance to self-destruct when captured.
+Rangemaster Unit
+Corrects for long-range targeting inaccuracies, the actual range is  divided by three for purposes of to-hit bonuses only.
+Recyclotron
+Allows scrap material reuse, reducing construction costs. Every unit of population generates +1 production. This increase does not count toward the planetary pollution level.
+Reflection Field
+Subspace field that reflects beam weapons back on the attacker. Chance to reflect is the ratio of reflection field strength of 10 to the sum of weapon attack damage and reflection field strength.
+Robotic Factory
+Builds mechanical workers that add production dependent on a colony's mineral resources 5, 8, 10, 15 or 20.
+Research Laboratory
+Houses state-of-the-art computer equipment, creating a superior research environment. Generates 5 research points and increases the research each  scientist produces by +1.
+Robo-Miners
+Automate many difficult tasks, increasing the productivity of industrial workers. Generates 10 production and increases the production each worker  produces by +2.
+Space Scanner
+Detects enemy ships. Base detection range is 1 parsec. Ships in transit can  be detected 1 parsec further per size class of ship.
+Scout Lab
+A computer assisted laboratory that generates an amount of research dependent on ship size: 1, 2, 4, 8, 16, or 32. Also adds +10 per size class to the attack roll of all ships in a fleet fighting space monsters or Antarans.
+Security Stations
+Automatically controls and monitors vital sections of ship, attacking intruders with computer-controlled weapons. Adds +20 to the combat rolls of marines when defending against enemy boarders.
+Sensors
+Detects enemy ships. Has a base detection range of 8 parsecs.  Ships in transit can be detected 1 parsec further per size class of ship. Sensors reduce enemy  ship's missile evasion by -70.
+Shield Capacitors
+Increases the recharge rate of ship shields by +70% of their maximum strength.
+Soil Enrichment
+Using nano-machines, planetary soil can be molecularly enriched and fertilized, increasing the food a farmer can harvest by +1. Soil enrichment will not work in barren, radiated, and toxic planets.
+Space Academy
+Trains ship crews, adding 1 to their starting level. Ships stationed in the system gain 2 experience each turn.
+Spaceport
+Site for commercial transactions, increasing the money generation of a colony by +50%.
+Spatial Compressor
+Creates an instantaneous subspace distortion in a 2-square radius about the equipped ship.  Everything in the area sustains 4-32 structural hits times its size class, ignoring shields.
+Spy Networks
+Trains a number of spies that you can either use as defensive agents or active spies to steal technology or sabotage enemy installations.
+Standard Fuel Cells
+Supplies sufficient energy to propel a ship 4 parsecs before refueling.
+Star Base
+Armed orbital platforms used to service military ships.  They are equipped with extensive weaponry, the best available scanner with a +2 scanning range bonus and a star dock capable of building ships larger than destroyers.
+Star Fortress
+A large military orbital platform. Has a +6 parsec scan range bonus and adds +20% to both the offense and defense of all ships in combat around it. Replaces battlestations and star bases.
+Star Gate
+Allows instantaneous movement between any of your colonies. All colonies are automatically equipped with one once the technology is researched.
+Stasis Field
+Places target in suspended animation. It cannot fire, recharge weapons, cloak or be attacked. Field has a 3-square range and will hold the  target ship until the stasis field is turned off or destroyed.
+Stealth Field
+Reduces the gravitic emissions from FTL drives. Ships equipped with stealth fields can not be detected at any range on the main screen.
+Stealth Suit
+Renders a person virtually invisible, blending the wearer into the background. Adds +10 all spy rolls.
+Stellar Converter
+A plasma cannon that can be mounted on a ship or a planet. Automatically inflicts 400 hits to all shields of any ship, regardless of range and defense. Completely destroys a planet when used for orbital bombardment.
+Structural Analyzer
+Links to ship's weapons array to more accurately choose target's weak armor points. All damage that penetrates the target's shields is doubled.
+Subspace Communications
+Allows you to issue orders to any ship within 6 squares of a star system with a starbase, battlestation, or star fortress. Increases the command points given by a base by +2 points.
+Subspace Teleporter
+Allows a ship to execute a hyperspace jump of up to 20 squares. The jump does not change the ship's direction; it must rotate normally to change facing.
+Subterranean Farms
+An underground cavern system of automated farms. Increases the food output of a planet by +4.
+Survival Pods
+Provide suspended animation facilities for legendary officers if their ship is destroyed. At least one friendly ship must survive the combat to rescue any  surviving officers.
+Tachyon Communications
+Integrated into star bases, battlestations and star fortresses. Emits  signals which penetrate hyperspace. Ships within 3 parsecs can receive your orders.  Increases the command points of these bases by +1.
+Tachyon Scanner
+Detect enemy ships. Has a base detection range of 3 parsecs. Ships in transit  can be detected 1 parsec further per size class of ship. Tachyon scanners reduce enemy ship's missile evasion by -20.
+Telepathic Training
+Develops the talents of naturally telepathic members of your race. Enables you to form a more effective police force with an ability to get at the truth in a new way. Adds +5% to all spying rolls.
+Terraforming
+Makes a planet more hospitable. Barren becomes desert or tundra, deserts become arid, tundras become swamp, oceans, swamps and arid become terran. Each use on  a planet increases cost by 250 production.
+Thorium Fuel Cells
+Advanced fuel system that self-regenerates, providing all ships with an unlimited fuel supply and range.
+Time Warp Facilitator
+Allows a ship to shift in and out of the time-space continuum, enabling it to take an additional turn at the end of every combat turn.
+Titan Construction
+The titan class of starship is gigantic in proportion to other ships, and requires advanced engineering techniques to both construct and integrate ship systems.
+Titanium Armor
+The standard armor of ships.
+Tractor Beam
+It requires 1 tractor beam per size class of target ship to completely stop  the target. Ships not held completely lose a portion of movement. Motionless  ships can be boarded and are easy targets to hit.
+Transport
+Troop carrier for landing 4 marine units on a planet. They do not engage in combat and will be destroyed when attacked if not escorted by military ships. Once used, they are dismantled. Can only be built on planets with marine barracks.
+Transporters
+Allow a ship to move marines to an enemy ship at a range of 12 squares, as long as the shield facing the ship is down. Can also be used to drop bombs on planets up to 12 squares away.
+Tritanium Armor
+Ships with this armor have twice the base structure and armor points. The hit points of fighters are multiplied by 1.5. Adds +10 to ground troop combat strengths.
+Troop Pods
+Troop pods house additional detachments of space marines, doubling the number of marines on board a ship. The additional marines can defend the ship or board enemy ships.
+Universal Antidote
+Increases the population growth rate of all colonies by +50% and quarters the chance for death spores and bio-terminators to kill a population.  Not cumulative with microbiotics.
+Urridium Fuel Cells
+Supply sufficient energy to propel a ship 12 parsecs before refueling.
+Virtual Reality Network
+Creates a galaxy wide cyberspace connection which individuals can tap into to experience alternate realities. Increases morale +20% throughout your entire empire.
+Warp Dissipator
+Creates a large radius field about a ship that prevents any ship from entering into hyperspace. Enemy ships cannot retreat while the dissipator is functioning.
+Warp Interdictor
+Creates a warp destabilizing field around the star system in which it is built. Generates a field 2 parsecs in radius about the system that slows all enemy movement to 1 parsec per turn.
+Weather Control System
+Modifies a planet's weather patterns to create a more stable farming environment. Food production is increased by +2 per farmer.
+Wide Area Jammer
+Adds +130 to a ship's missile evasion rating, adds +70 to the missile evasion of other ships in the fleet. The fleet's bonus is not  cumulative with any missile evasion bonus given by other jammers. Only the best  bonus will apply.
+Xeno Psychology
+Focuses on the motivations of other races in an attempt to form deals that are more appealing. The effect is to permanently add +30 diplomatic points to every deal offered to your opponents.
+Xentronium Armor
+Ships with this armor have 10 times the base structure and armor points. The hit points of fighters are multiplied by 5. Adds +30 to ground troop combat strengths.
+Zeon Missile
+Carries a powerful explosive warhead capable of delivering 30 points of damage. Modifications: MIRV, emissions guidance, fast traveling, armored and ECCM.
+Zortrium Armor
+Ships with this armor have 4 times the base structure and armor points. The hit points of fighters are multiplied by 2. Adds +15 to ground troop combat strengths.
+Hyper Biology
+Hyper advances in Biology serve to increase the miniaturization levels of all genetics applications and are worth +5 points to your score.
+Hyper Power
+Hyper advances in Power serve to increase the miniaturization levels of all power applications and are worth +5 points to your score.
+Hyper Physics
+Hyper advances in Physics serve to increase the miniaturization levels of all physics applications and are worth +5 points to your score.
+Hyper Construction
+Hyper advances in Construction serve to increase the miniaturization levels of all construction applications and are worth +5 points to your score.
+Hyper Fields
+Hyper advances in Fields serve to increase the miniaturization levels of all fields applications and are worth +5 points to your score.
+Hyper Chemistry
+Hyper advances in Chemistry serve to increase the miniaturization levels of all chemistry applications and are worth +5 points to your score.
+Hyper Computers
+Hyper advances in Computers serve to increase the miniaturization levels of all computer applications and are worth +5 points to your score.
+Hyper Sociology
+Hyper advances in Sociology serve to increase the miniaturization levels of all sociology applications and are worth +5 points to your score.
+Create New Colonies
+If you want to create a new colony within the same system as a colony you  already own, choose to build a COLONY BASE from the Colony Production screen.  Once built, you will be asked to select the planet you wish to place it on.  One unit of the building colony's population is also transfered to the new  colony. To create a colony in a new star system, choose to build a COLONY  SHIP. When done, the building colony transfers one population unit to the  ship, which can then be sent to a new system. Once it arrives, you will be  prompted to select a planet to land on. Colony ships can be moved like any  other ship, or can be sent using the SEND COLONY SHIP button on the  Planets screen.
+Move Ships
+To move a ship from one system to another, click on its icon on the main  Galaxy Map.  This will display all ships currently in orbit around that  system. All ships highlighted in blue are currently selected. Clicking on  individual pictures selects/deselects them, clicking on ALL  selects/deselects all ships in that fleet. Once you have highlighted the  ships you wish to move, move the cursor over the star system to wish to send  them to. A green line indicates that it is within range, and the popup lists  the ETA in turns. If the line is red, the system is out of range. The popup  indicates how many parsecs away it is from your nearest colony.
+Move Colonists
+There are two ways to transfer colonists. You can select the colony you wish to transfer from, then click on the population unit you wish to move. A TRANSFER COLONISTS button will appear. Clicking on this button brings up a list of your colonies, with icons representing their current population. Place the colonist you selected in the box corresponding to the colony you are sending it to. You can also transfer colonists by clicking on the COLONIES button on the main Galaxy Map screen. Select the unit of population you wish to move, and put in the appropriate occupation box of the colony you wish to move it to. In both cases, you will receive a warning if the colony you selected is already at maximum population.
+Assign Leaders
+To assign a leader to a planet or ship, click on the LEADERS button on either the main Galaxy Map screen or on the Colony screen. You can toggle between colony leaders and ship officers by  clicking on the buttons in the top left corner. Select the ship or star system you wish to assign a leader to, then select which leader you are sending.
+Go to Antares
+First you must build a Dimensional Portal. If you are not a trans-dimensional race, you can research this application under Multi-Dimensional Physics. Once a colony has built the portal, click on the ships orbiting that colony that you wish to send. An ATTACK ANTARES button will appear; selecting it sends the fleet to Antares.
+Invade Planets
+You must have a TRANSPORT SHIP in your fleet to capture a planet. Send the fleet to the system and select the planet you wish to capture. If you lose the combat, your transport ships will retreat. If you win, you will be promted to either BOMBARD or INVADE. You can choose to bombard slowly, then stop and invade after the colony's defenses have been destroyed. If your invasion is sucessful, you can elect to annihilate the occupants, or force them to serve you. Specific race characteristics and technologies will affect your ability to do either.
+Capture Ships
+You must have a ship equipped with TRANSPORTERS to capture a ship. Transporters allow a ship to move marines to an enemy ship at a range of 12 squares, as long as the enemy's shield facing the ship is down. Once the transportes reach the enemy, a quick combat occurs. If you are sucessful, the enemy ship is taken over, and becomes yours at the end of the space combat.
+Change Tax Rates
+Left click on the TREASURY WINDOW on the main Galaxy Map screen. This brings up a popup from which you can set your new rate. The percentage value of the tax rate is the percentage of all production from your colonies to be turned into cash.
+Prevent Supernovas
+If threat of a supernova occurs in one of your star systems, you need to maximize research within that system. The total number of research points generated by all colonies in the system are applied to research on a solar regenerator. If your total accumulated research points exceeds the strength of the supernova before time is up, the disaster is prevented.
+Cure a Plague
+Once a plague occurs on one of your colonies, you need to maximize the amount of research being done in that colony. All research points generated in that colony are applied to discovering a cure. Once your total accumulated research points exceeds the strength of the plague, the disaster ends.
+End Pirate Activity
+To end pirate activity in a star system, you need to increase the fleet orbiting that system. Once the fleet strength (determined by number of ships and ship size) is greater than the strength of the pirate's fleet, the pirates cease to destroy freighters.
+Destroy a Comet
+If one of your colonies is threatened by a comet, you need to increase the number of ships in orbit around that system.  If the total fleet strength (determined by the number and size of the ships) is greater than the  strength of the comet before time is up, the comet is destroyed.
+Refit Ships
+This option is not available in Strategic Combat games. To update the systems or weapons of existing ships in your fleet, select a colony in the system the ship is orbiting. Click the REFIT button on the Colony Production screen.  Select which ship you wish to refit. The ship will be upgraded with any new armor or shields that you have developed. Changes to systems and weapons can then be made on the Ship Design screen (see How to Design Ships).
+Design Ships
+Not available in Strategic Combat games. Click on the DESIGN button on the Colony Production screen and select which size you want to design. The ship will automatically be equipped  with your best drive, armor, computer, and shields. To change a weapon, click on the its name. This calls up a list of all available weapons. Click on the new weapon, choosing any modifications you may want. Click ACCEPT to include that weapon in the design. To delete  a weapon from the design, select NO WEAPON. To add a weapon, run the cursor to the bottom of the current ship weapons list. If there is enough room onboard, you will see an ADD NEW WEAPON option. Add systems in the same way.
+Get More Help
+Right click on most items, buttons, screens throughtout the game to obtain a detailed definition or explanation.
+Pick New Colonies
+Each planet has a specific size, climate, gravity, and mineral classification. Choose a planet that best suits your needs: Gaia, Terran, Ocean, Desert, and Tundra climates will allow you to farm. Abundant, Rich, and Ultra Rich mineral classifications will increase your production. Heavy or low gravities will have negative effects on your production if you have no special racial immunities. Remember that building freighters will allow you to transport food to planets with no farming, and enable you to establish colonies  that focus on research or production.
+No Modifications
+You shouldn't ever see this
+Heavy Mount
+Increases the damage of a weapon by +50% and doubles the range of the weapon  at the cost of double the space.
+Increased Damage
+Increases the maximum damage of the weapon by +50%.
+Point Defense
+Weapons take up half the normal space but range damage penalties are doubled for purposes of energy weapon strength loss. Point defense weapons have a +25% chance to hit bonus.
+Auto Fire
+Allows the weapon to be fired three separate times with a -20 chance to hit each time. Auto Fire increases the cost and space of a weapon by +50%.
+Armor Piercing
+Halves the value of enemy armor and adds a +3 chance to breach the armor and inflict internal damage
+Shield Piercing
+Shield piercing weapons are completely unaffected by any shields except those with the Hard Shields special device.
+Continuous
+Increases the chance of the weapon to hit by +30.
+No Range Penalty
+The strength of the weapon will not be reduced by range.
+Enveloping
+Inflicts normal damage to all four shields of the target, simultaneously.
+Heavily Armored
+Missiles take 10 hits instead of 4 to be destroyed.
+Fast
+Missiles move +4 squares faster per turn than normal.
+Evasive
+Allows a missile to dodge enemy attack. Adds +30% to a missile's defense.
+Info Screen
+The Info Screen allows you to look up information, view current and historical data, check messages, review your technology, change your current research, adjust tax rates, and turn the Resource and Galaxy windows on and off.
+Info: Subscreen Buttons
+Select the subscreen you wish to view with these buttons.
+Info: Maintenance Chart
+This window shows your current income and your maintanence costs as a percentage of income in each of six categories.
+Info: Reference
+This subscreen allows you to select a category or "how to" topic for more information.
+Reference: Category Subscreen
+Provides information on the topics within the selected category.
+Reference: "How to" Subscreen
+Provides information on the selected "how to" topic.
+Info: Turn Summary
+This screen displays a current, scrollable, list of messages requiring your attention. If you click on a colony-related message, you will be transported to the appropriate colony to deal with the situation there, then brought back to this subscreen when finished.
+Info: Race Statistics
+Information about yourself and each of the races you are currently in contact with is displayed on this subscreen. If there are more than four races to be displayed, clicking on the "More" button will show you the others.
+Info: Tech Review
+All the technology you have researched or otherwise received is displayed in the scrollable list window. Pointing to an item will display a picture and description of that item.
+Info: History Graph
+This screen provides you with a graphical representation of how you and the other races you are in contact with are doing. You can change the information that is integrated into the graphs by clicking on any of the factor buttons below the graph.
+TECH_DESC
+Right-click on any application to display a brief description of that appliction.
+TECH_SELECTION
+Left-click on the either the field name or any application to select that technology for research.
+TECH_CAT_LIST
+Click on a category button to display a list of other fields under that category.
+Select New Research
+All the technologies available to you for your next research project are shown under their appropriate categories (Construction, Biology, etc.) along with their research cost.
+Change Current Research
+All the technologies available to you for research projects are shown under their appropriate categories (Construction, Biology, etc.) along with their research costs adjusted for any prior research. The field you are currently researching is displayed in a different color. 
+Left-click on "CANCEL" if you do not wish to change research projects.
+Technology List
+This display shows the fields yet to be researched within a given category. If the current or previous project is within the selected category, it will be shown in a different color. 
+Left-click the "CANCEL" button or anywhere outside of the list window to close it and return to the selection window.
+Races Screen
+This is your primary diplomacy screen. Here you can check on your relationships, treaties and spies. You can also assign spies to other races, move them from race to race or bring them home. Pick up a spy by left-clicking on a spy icon. Then click again to drop the spy where you wish.
+Races: Individual Displays
+The multi-color bar in the middle of an individual race display shows you your current relative relationship with the race. To the right of that, you can see your current treaty status. 
+The spies you  currently have assigned to this race are shown as icons and their  current mission is indicated by one of the highlighted buttons at the  bottom of the display. Espionage has the spies attempting to steal  technology.  Sabotage has the spies attempting to destroy buildings.  Hide just has the spies awaiting orders.  You can change the spies' mission  by clicking on a different button. 
+Finally, at the bottom right corner of  the screen you see your current supply of unassigned agents along with your  current agent bonus.
+Races: Agents
+Your current supply of unassigned agents is shown here along with your current agent bonus.
+Races: Ignore Button
+Clicking on this button will allow you to pick a race whose diplomatic overtures you wish to ignore. When the mouse pointer turns to "who?" click on the picture of the race you want to ignore.
+Races: Report Button
+Clicking on this button will allow you to select a race for which you wish to see a current report. When the mouse pointer turns to "who?" click on the picture of the race on which you want a report made.
+Races: Audience Button
+Clicking on this button will allow you to select a race you wish to make diplomatic contact with. When the mouse pointer turns to "who?" click on the picture of the race you want to contact.
+Report: Subscreen
+This screen shows you the latest information available on the selected race. It includes a picture of the race's leader, a description of their personality, any known spies they have in your empire, a list of their alliances and wars, and a list of their technological achievements. The age of the report should be considered when relying on the report's informational accuracy.
+xAudience: Main Menu
+Select a category of diplomatic action from the menu of choices. Selections that are presently unavailable are shown in reduced intensity.
+ ^ TREATIES
+This selection allows you to discuss make or break a treaty, declare war, or encourage the other race to act against a third party.
+ ^ TRADE
+This lets you forge or break a trade agreement.
+ ^ TECHNOLOGY
+Picking this will let you discuss a research swap.
+ ^ TRIBUTE
+"Tribute" is the selection you want if appeasement is your goal.
+ ^ THREATEN
+Threatening people is the last resort for some, the first choice for others, but rarely makes friends.
+xTreaties Menu
+This menu gives you options related to treaties and declarations of war. Selections that are presently unavailable are shown in reduced intensity.
+ ^ Make a Treaty
+   ^ Alliance
+   ^ Non-Agression Pact
+   ^ Peace Treaty
+ ^ Break a Treaty
+   ^ (current treaty)
+   ^ Break a Treaty with...
+ ^ War
+   ^ Declare War
+   ^ Declare War with...
+CANCEL
+Select "CANCEL" to return to the previous menu.
+Treaties: Select Race
+Select the race you wish this race to break their treaty with.
+War: Select Race
+Select the race you wish this race to declare war upon.
+Trade Menu
+From this menu you may choose to make either a cash or technology trade agreement. You may also elect to break a current trade agreement if one exists.
+Trade: Cash Amount
+Select the cash value for your trade agreement.
+Trade: Technology
+Select the technology level you wish to include in the trade agreement.
+Technology: Select Technology
+From the scrollable list of offered technology, select an item to swap for an item of yours. The other race will then decide if they like what you offer and pick something of yours they want in exchange.
+Tribute Menu
+Select the type of tribute you want to give to this race.
+Tribute: Cash Amount
+Select the cash value of your "gift."
+Tribute: Technology
+From the scrollable list, select the item of technology you wish to provide to this race as a token of your esteem.
+Star Date
+The star date tells you how long you've been playing the game. Each time  you press next turn, the star date increases by .1
+Game Button
+From this popup, you can change game settings, load a previously-saved game or save the current game. In addition, you can turn game music on or off. Also, sound effects can be toggled on or off.
+Treasury Window
+From this window you see the current number of credits (BC for billion credits) at your disposal. You may left-click in this window to change your tax rate
+Income Window
+This window displays your current income or, more precisely, the  number of credits (BC) you receive each turn. If this number is negative,  it will appear in red.
+Command Points Window
+Command points affect the maintenance you pay for ships in your fleet.  Each ship you build removes points from your reserve, while each station  you build adds points to the reserve. Warlords gain 2 per colony, while  Imperium goverments increases your reserve by 50% You may left-click in this window to get a summary of your command points.
+ The first number in this window shows your current command point reserve.  If this number is positive, you can safely build more ships. 
+ If the number is negative, each point is costing you 10 BC per turn.  The second number, displayed in parentheses, shows your total command points. 
+ The following chart breaks down how command points are calculated.
+Command_Point_Table
+X3.Frigate
+X97.-1 
+X150.Star Base
+X270.+1
+X3.Destroyer
+X97.-2 
+X150.Battlestation
+X270.+2
+X3.Cruiser
+X97.-3 
+X150.Star Fortress
+X270.+3
+X3.Battleship
+X97.-4 
+X150.Tachyon Comm
+X270.+1/base
+X3.Titan Ship
+X97.-5 
+X150.Subspace Comm
+X270.+2/base
+X3.Doom Star
+X97.-6 
+X150.Hyperspace Comm
+X270.+3/base
+Food Window
+This window displays how much NET food is being produced each turn,  throughout your empire.
+Freighters Window
+This window displays two pieces of data relating to freighters. The first value is the amount of available freighters, or those NOT in use. The total number of freighters appears second and in parentheses.  You may "sell back" freighters by "left-clicking" in this window.
+Research Window
+This windows shows the status of your current research efforts. During most of the research, your progress is shown in turns. This is an approximate value. When your accumulated research points reach the stated  cost of the item you are researching, you will be given a percent chance  to achieve the breakthrough each turn thereafter.
+ The second line in this window shows  the current number of research points (RPs) your empire generates each turn. You may left-click in this window to change your current field of research.
+Colony Overview
+Pressing the "Colonies" button takes you to the Colony Overview screen.  You will see all of your colonies, what they are currently producing and  the amount of population assigned to farming, production and research.  You can alter these values here or jump directly to the Colony screen.
+Planet Overview
+Pressing the "Planets" button takes you to the Planet Overview screen. Here you will see all of the planets you have discovered. Using filters,  you can reduce the list to show planets that are not enemy-controlled,  planets that produce food, planets where production is not hindered, etc.
+ Once filtered, you can deploy ships to colonize a planet.
+Fleet Overview
+Pressing the "Fleet" button takes you to the Fleet Overview screen where you can manage all the ships in your empire. Scrapping ships, relocating ships to another system, and assigning or removing officers can be done  here. You may also give movement orders to any ship from this screen.
+Next Turn Button
+Press the "Turn" button when you are done entering orders for the current  turn. If you are in a "hot-seat" game, play continues with the next player.  If you are in a "network" game, play continues when all players have  entered their orders. Otherwise, non-player opponents will plot their moves  and the computer will display the results in the "reports" phase of the  next turn.
+Leader Overview
+Pressing the "Leaders" button takes you to the Leader Screen. Here you can assign or dismiss current leaders, hire leaders currently in the "for hire" queue, or deactivate assigned leaders to a "waiting" pool.  This screen shows information on all available leaders, so you can see how  much maintenance a leader costs or will cost, and any skills that he or she  brings to your empire. Detailed help on leader skills is available here.
+Race Overview
+Pressing the "Races" button takes you to the Race Screen. Here you  will get an overview of your contacts with other races in the game. You  can set and/or nullify peace treaties and assign spies to any one of several nefarious missions.
+Info Overview
+Press the "Info" button to take you to the Info Screen. Here you will get detailed help on every aspect of the game, from technology advances to  effects of different governments. Bars and charts show your empire's  development relative to all of your opponents.
+Zoom In Button
+BUFFER0.LBX
+Pressing the "+" button zooms IN from your current map, allowing you a closer look at the galaxy. A "zoom box" will appear. Move the box with  your mouse to the area you want to see in more detail. When you press the left mouse, the map will zoom in. Alternatively, you may continue pressing the "-" button. The zoom box will get smaller as you are, in effect,  zooming in further.
+Zoom Out Button
+BUFFER0.LBX
+Pressing the "-" button zooms OUT from your current map, condensing the number of stars and allowing you to see MORE of the galaxy.
+Diplomacy Lights
+This is where you will be notified if a player seeks to negotiate  with you. If you see one of the circles lit, go to the RACES screen to initiate diplomatic interactions. Only available in multiplayer games
+Multi-Player Done Lights
+This is where you will be notified when a player has completed his turn. As each player completes his turn in a multi-player game, a circle will be filled with his player-color
+Close Fleet Operations Box
+BUFFER0.LBX
+Closes the fleet operations box. Clicking on any fleet opens the box. You can re-open it and cycle to your "next" fleet, by pressing F2. Pressing F1 goes back one fleet. If you have no fleets, an enemy fleet may be substituted
+Attack Anatares
+BUFFER0.LBX
+If you have a Dimensional Portal, you may, at any time, send a fleet through the portal to attack the mighty Antaran empire. All ships selected will be sent at the start of the next turn.
+Colonize Planet
+BUFFER0.LBX
+If you have a colony ship in the current fleet, you may use it to colonize any planet in the system you are orbiting. A system display will replace the fleet operations box. From this box, you will select a planet to colonize.
+Engage Enemy Forces
+BUFFER0.LBX
+You may engage enemy forces in the system you are orbiting by selecting this button. All selected ships will be sent into battle. The attack will be launched during the following turn.
+Unload Transports
+BUFFER0.LBX
+Selecting this button will unload your marines to reinforce a planet. You will be shown a special screen where you will be given limited control over the  bombarment
+Build Outpost
+BUFFER0.LBX
+If you have an outpost ship in the fleet and are orbiting a system  containing at least one planet, you can place an outpost by selecting  this button. Building the outpost comsumes the ship. Outposts are helpful when you want to extend your range but don't want to force colonisists to live on a worthless rock-world
+Fleet Operations
+From this box, ships will be given orders. To select or de-select a ship,  left-click on its picture. You can select or de-select more than one ship  by holding down the left mouse button and moving the mouse across all  ships you wish to select. Pressing the ALL button will toggle all ships  on and off. Detailed ship information can be obtained by right-clicking on the ship picture.
+FLEETOP2
+After you have selected one or more ships, you can send them to a star by  left-clicking on a destination star on the map. As you run your mouse over  a star, a line will be drawn from the fleet icon to the star. Green lines denote valid moves, red denotes invalid ones. A move may be invalid if the  destination is out of range, blocked by a black hole, etc. In the fleet operations box, look at the status line for more information.
+FLEETOP3
+Once you click on a destination star, all selected ships will be  separated into another fleet as they depart the star. If multiple fleets  are leaving a star for separate destinations, they will overlap on the  main map. You may have to click on a fleet icon more than once to see all  fleets at a single location.
+Colony Leaders Button
+OFFICER.LBX
+Sends you to the Colony Leaders screen, where you can manage all the  colony leaders in your empire.
+Ship Officers Button
+OFFICER.LBX
+Sends you to the Ship Officers screen, where you can manage all the  ship officers in your empire.
+Colony Leaders Star System
+Shows the current star system. You can scan planets and fleets to get a brief description of each.
+Colony Leader Descriptions
+This area lists all the colony leaders at your disposal. Each window shows one leader, his or her picture, and pertinent skills. You may press the RIGHT mouse button on each skill to get a brief description of each. If you press the RIGHT mouse button on the leader's picture, the star  system display will flip to the star where he or she is stationed. 
+ If the leader has not been hired yet, you may attempt to hire him or her by pressing the LEFT mouse button while over the picture. 
+ Once hired, you may assign the officer to a star system. When you select a leader (left-click on his or her picture), you are assigning him or her  to the star being displayed in the star system window. To change the star system, you must deselect the officer and select a different star system.
+Colony Leader Desc2
+Note that it takes an officer 5 turns to travel from star system to star system, or from the Pool to any star system. The Officer Pool exists on your home star, so travel from the Pool to your home star is instantaneous.
+Colony Leaders Star Description
+This is where information will appear as you scan over fleets or planets in the star system display. If a star system has a leader assigned, his or her name will apear in parentheses
+Previous Officers Star System
+OFFICER.LBX
+When you click this button, the star system display will "go back" one star in the list of all stars you have colonized.
+Next Officers Star System
+OFFICER.LBX
+When you click this button, the star system display will advance to the next star in the list of all stars you have colonized
+Officer Screen Galaxy Map
+This is a scaled-down version of the entire galaxy. Stars are shown in the color of its owner, or in a neutral color if it is unowned or undiscovered. If a ship is within contact range, it will be shown here. As you scan  fleets and stars, a brief description is shown in the box below. If you select a star in this window, you will see the planets and their orbits in the  Star System display above.
+Officer Screen Galaxy Map Description
+As your mouse scans over fleets, information on scanned stars and ships appears here.
+Officer Screen Hire Button
+OFFICER.LBX
+Officers that are initially REJECTED will be placed in a "Hiring Queue". They will stay in this queue for 30 turns, after which they will leave to search out better jobs. They may or may not return again. To place them into your service, you must actually "hire" them.
+ Pressing the HIRE button places you in HIRE mode. While in this mode, you can scan over leader pictures and retrieve cost and maintenance  information about a particular leader. If you wish to hire a leader, select his or her picture. You must have enough BC's to cover the initial cost. Maintenance is subtracted each turn from your treasury. Hired officers are placed in your Officer Pool for later assignment.
+ To exit HIRE mode, select the CANCEL button.
+Officer Screen Pool Button
+OFFICER.LBX
+Moves the officer from his/her current position into the Officer Pool. It does not take any time to move from a star system to the Pool.
+Officer Screen Dismiss Button
+OFFICER.LBX
+Officers may be dismissed at any time. Once dismissed, an officer is not gone for good, he/she may come back at a later time.
+Leave Leader Screen
+OFFICER.LBX
+Pressing the RETURN button will exit the Leader screen.
+Ship Officers Star System
+Shows the current star system. You can scan planets and fleets to get a breif description of each.
+Ship Officer Descriptions
+This area lists all the leaders at your disposal. Each window shows a leader, his/her picture, and pertinent skills. You may press the RIGHT mouse button on each skill to get a brief description of each. If you press the RIGHT mouse button on the leader's picture, the fleet  display will flip to the fleet where he/she is stationed. 
+ If the leader has not been hired yet, you may attempt to hire him/her by press the LEFT mouse button while over the picture. 
+ Once hired, you may assign the officer to a ship. After selecting a leader (left-click on his/her picture), a bright border will appear. Then, select any ship in your empire. If the ship is located in the same system as your home star, the assignment is instantaneous. Otherwise, it  will take 5 turns for the leader to travel to the ship. To select a ship from a fleet other than the one shown, either click on the ship in the galaxy map window, or use the left and right arrows to cycle through all your fleets.
+Ship Officers Ship Description
+This is where information will appear as you scan over ships in the current fleet. If a leader has been assigned, his/her name will apear in  parentheses.
+Previous Officers Fleet Button
+OFFICER.LBX
+When you click this button, the display will "go back" one fleet in  the list of all fleets in your empire.
+Next Officers Fleet Button
+OFFICER.LBX
+When you click this button, the fleet display will advance to the next fleet in the list of all fleet in your empire.
+Ship Officer Screen Galaxy Map
+This is a scaled-down version of the entire galaxy. Stars are shown in the color of its owner, or in a neutral color if it is unowned or undiscovered. If a ship is within contact range, it will be shown here. As you scan  fleets and stars, a breif description is shown in the box below. If you select a fleet in this window, you will see each ship in that fleet displayed in  the fleet display above.
+Ship Officers Fleet Grid
+Each ship in a fleet is displayed here. As you scan each ship, its name and leader will be seen in the box below. If you wish to assign a leader, you  may select a ship, then select any leader. You may "right-click" on a ship to get more detailed information.
+Ship Officers Up Button
+OFFICER.LBX
+Use the up arrow the scroll up one row of ships.
+Ship Officers Scroll Bar
+Use the scroll bar to scroll quickly up and down the list of all ships in the current fleet.
+Ship Officers Down Button
+OFFICER.LBX
+Use the down arrow the scroll down one row of ships.
+Planet Summary
+Here you will see a list of all known planets. The list can be  sorted by climate, size, or mineral abundance. If a SEND button is selected, the mouse pointer will either be a red circle with a line through it or an arrow pointing to a planet. The red circle indicates that you cannot  send a ship to this system. Once a SEND button has been selected, click on  any valid planet to deploy a ship to that system.
+Planet
+This column shows the planet in graphic representation, its name (in player colors) and any planet specials or guardian monsters
+Climate
+This column shows the planet's CLIMATE and its effect on food production
+Gravity
+This column shows the planet's GRAVITY and its effect on worker productivity
+Minerals
+This column shows the planet's MINERAL abundance and how it affects  the amount each worker can produce
+Size
+This column shows the planet's SIZE and its effect on maximum population
+Galaxy Map
+Within this window, you will see a representation of the entire galaxy. Each colony  ship in your fleet is represented as a "C". Each outpost ship is  represented as an "O". Destination lines show the current destination of  each ship. You may left-click on a star in the galaxy map to move the list  to the first planet in that system.
+Star description box
+As you move the mouse pointer over each star in the galaxy map, its name  will appear in the box below. Likewise, if you move the mouse over a planet in the list to the left, the name of the system will appear in the box. If  the "SEND COLONY SHIP" or "SEND OUTPOST SHIP" button is selected,  a destination line will be drawn from the closest colony or outpost ship, and travel time, in turns, will be displayed.
+Scroll Up
+PLNTSUM.LBX
+The scroll up button can be used to scroll up one line at a time
+Scroll Bar
+Use the scroll bar to scroll one screen at a time
+Scroll Down
+PLNTSUM.LBX
+The scroll down button can be used to scroll down one line at a time
+Sort By Climate
+PLNTSUM.LBX
+When "Climate" sort is chosen, the list of known planets will be  sorted by food production, which is the effect different climates have on a planet.
+Sort By Minerals
+PLNTSUM.LBX
+When "Mineral" sort is chosen, the list of known planets will be  sorted by worker productivity, which is the effect mineral abundance has on each planet.
+Sort By Size
+PLNTSUM.LBX
+When "Size" sort is chosen, the list of known planets will be sorted by maximum population, which is the effect size has on each planet.
+Enemy Presence Filter
+PLNTSUM.LBX
+When this button is active, the list of known planets will be stripped of all planets that have an enemy presence in the system. An "enemy presence" is any enemy ship or monster orbiting the system.
+Normal Gravity Filter
+PLNTSUM.LBX
+When this button is active, the list of known planets will be stripped  of all planets that would receive a negative worker productivity bonus.
+Hostile Environment Filter
+PLNTSUM.LBX
+When this button is active, the list of known planets will be stripped  of all planets with a hostile climate. Hostile climates are those that do not produce food.
+Mineral Abundant Filter
+PLNTSUM.LBX
+When this button is active, the list of known planets will be stripped  of all planets that have a low mineral abundance. These are planets that  do not have at least one production per worker.
+Planets In Range Filter
+PLNTSUM.LBX
+When this button is active, the list of known planets will include planets that are in range of one of your colonies. You might want to turn this filter off to see which planets are nearby. As your fuel cell technology increases, or you expand out, more planets will be in range.
+Send Colony Ships
+PLNTSUM.LBX
+To send a colony ship to a system, you must activate this button. If the button  will not activate, then you have no colony ships to deploy.
+Send Outpost Ships
+PLNTSUM.LBX
+To send an outpost ship to a system, you must activate this button. If the button  will not activate, then you have no outpost ships to deploy.
+Leave Planet Screen
+PLNTSUM.LBX
+Pressing the RETURN button will exit the Planets screen and return you  to the main game screen.
+Fleet Screen Galaxy Map
+The entire galaxy is displayed here. Each planet is represented in the  color of its owner. If a planet is unowned or undiscovered, it will appear in a neutral color. As the mouse pointer scans over each planet, its name will appear in the galaxy map description box below. If a leader has been assigned to the star, his/her name will appear in parenthesis.
+  When the "Relocate" button has been selected, you will select source and destination stars from this window. 
+  As you select individual ships from the grid to the right, you can assign  destinations by clicking on a star from this window. 
+ A fleet will only appear in the galaxy map if it is within contact range. As your mouse pointer scans over each fleet, its owner will appear in the box below. As you select fleets from this window, they will be displayed in detail to the right.
+Fleet Screen Ship Grid
+From this window, each fleet will be displayed in detail. As you enter the screen, if you had a fleet selected in the "Fleet Movement" box on  the MAIN screen, it will be displayed here. Otherwise the first fleet in your empire will be displayed. 
+ By scanning each ship, you can get a short description in the ship  description to the lower left of this screen. By pressing the RIGHT mouse button while over any of your ships, you will get a more-detailed  description. After selecting ships from this grid, you may then give them "move" orders to any star within range by selecting a star from the  galaxy map window. If ships are selected as you scan stars, a green line indicates a valid destination. Red lines denote invalid destinations.
+Fleet Screen Scroll Up
+FLEET.LBX
+Only sixteen ships may displayed at one time. If the fleet has in excess of sixteen ships, you may scroll up row of ships by selecting this button
+Fleet Screen Scroll Bar
+Moving the scroll bar up and down is a quick way to adjust the current range of ships being displayed.
+Fleet Screen Galaxy Description
+This window displays infomation as you scan ships and stars in the galaxy map window
+Fleet Screen Previous Fleet Button
+FLEET.LBX
+Pressing this button will "go back" one fleet in the list of all fleets in your empire. Note that as the filter buttons are selected,  a fleet may be skipped. For example, if you are filtering out combat ships,  then a fleet must contain at least one non-combat ship to be selected
+Fleet Screen Next Fleet Button
+FLEET.LBX
+Pressing this button will display the next fleet in your empire. Note  that as the filter buttons are selected, a fleet may be skipped. For example, if you are filtering out non-combat ships, then fleets containing at least one combat ship will be selected.
+Fleet Screen Ship Descrption
+As you scan ships in the grid window to the right, a brief description of the ship will appear here. If a ship officer is on board, his/her picture will be displayed as well. For a more detailed description, press the  RIGHT mouse button when the pointer is over the ship (in the grid window).
+Fleet Screen Scroll Down
+FLEET.LBX
+If the fleet has in excess of sixteen ships, you may scroll down row  of ships by selecting this button.
+Fleet Screen All Button
+FLEET.LBX
+Pressing the ALL button will select all ships in the fleet
+Fleet Screen Relocate Button
+FLEET.LBX
+Pressing the RELOCATE button allows you to send ships built at one star to be given orders to move to another star. As soon as the ship construction is complete, the ship will be given orders to move to a destination star. The travel time does not change. Be warned that the ships will be sent irrespective of the conditions at the destination  star. Which, is to say, that if there are enemy ships or enemy star bases there, combat will ensue.
+ You may cancel relocation orders at star by selecting the the same  source and destination stars. You may cancel all relocation orders by pressing ALT-F5.
+ You may direct all ships built to be sent to the same star by pressing F4 and then selecting destination star.
+ Pressing the RELOCATE button again will take you out of relocation mode.
+Fleet Screen Scrap Button
+FLEET.LBX
+This button allows you to scrap one or more ships. First, select the ships you want the scrap and press the SCRAP button. Your treasury will increase by the scrap value of each ship. In addition, as you dismantle captured enemy ships, there is a chance you will be able to learn new technology. This is the ONLY way you can learn ANTARAN technology!
+Fleet Screen Officers Button
+FLEET.LBX
+This button takes you to the Officer Screen, where you can manage all the officers in your empire. This button will be inactive if you have no officers.
+Fleet Screen Support Button
+FLEET.LBX
+The support button allows you to determine whether support (non-combat) ships appear in the ship grid window above. If the button is lit,  support ships will be shown. Additionally, if this button is NOT lit, fleets with only support ships will be skipped as you cycle through all fleets
+Fleet Screen Combat Button
+FLEET.LBX
+The support button allows you to determine whether combat ships appear  in the ship grid window above. If the button is lit, combat ships will  be shown. Additionally, if this button is NOT lit, fleets with only combat ships will be skipped as you cycle through all fleets.
+Leave Fleet Screen
+FLEET.LBX
+Pressing the RETURN button will exit the Fleet screen and return you  to the main game screen.
+Designed Ship Name
+Click here to change the name of your ship, up to a maximum of 14  characters.
+Drives and Armor
+The left panel shows the current drive and armor type. Hyperspace drives have two pertinent pieces of data -- distance (parsecs/turn) and combat speed.  Distance is used outside of combat and determines the maximum distance your ship can travel in one turn. Fuel Cell technology also affects distance.  Combat speed determines how far your ship can travel in one combat round.
+ Armor is non-ablative and provides basic protection in two ways. It can  reinforce the hull, allowing it to take more structural points before the ship is destroyed. It will provide sturdy outer shell, which must be pierced before internal damage can be done. 
+ Each ship will be fitted with the best armor and hyperspace drives  available.
+Shields and Computers
+The right panel shows information on shields, computers, and ship combat modifiers. Shields protect the ship from incoming missile, torpedo, and beam fire. The strength of the shield is ablative. As each shield takes damage, its strength is reduced. When the strength reaches 0, armor points are reduced. The class rating of a shield is important in that this is the amount of damage taken off EACH attack as long as the shield generator is working. This amount comes off BEFORE any damage  is done to shield strength. So, even if the strength of a shield is 0,  as long as the shield generator is intact, a class 5 shield takes off 5 points of damage. 
+ Each ship equipped with shields has 4 shields spread in 90-degree arcs. 
+ Computers make it easy to hit with all beam weapons. 
+ Missile evasion refers to the ship's ability to dodge incoming missiles. Each point reduces the chance to hit by 1. So that 50% evasion reduces each missile's chance to hit by 50.
+Hull Sizes
+The following table shows hull sizes and pertinent data:
+X3.Hull Size 
+X95.Space 
+X150.Marines 
+X212.Armor 
+X265.Structure 
+X3.Frigate 
+X105.25 
+X165.5 
+X222.4 
+X275.4 
+X3.Destroyer 
+X105.60 
+X165.8 
+X222.10 
+X275.10 
+X3.Cruiser * 
+X105.120 
+X165.12 
+X222.30 
+X275.30 
+X3.Battleship * 
+X105.250 
+X165.20 
+X222.50 
+X275.50 
+X3.Titan * 
+X105.500 
+X165.30 
+X222.150 
+X275.150 
+X3.Doom Star * 
+X105.1200 
+X165.50 
+X222.150 
+X275.150 
+           * Ships larger than destroyers can only be built on planets with a star base, battle station,  or star fortress. In addition, certain technology is required to build Titan and Doom Star class ships
+Design Ship Picture
+This window shows which icon will represent your ship in the game.
+Previous Ship Picture
+DESIGN.LBX
+You can "go back" one picture in the list by pressing this button.
+Next Ship Picture
+DESIGN.LBX
+You can show the next ship picture in the list by pressing this button.
+Maximum Space Allowed
+This window shows the maximum space allowed for the current class of ships. To change the class, select a size from the buttons to the right.
+Ships' Weapons
+This area shows the weapons currently loaded onto your ship. Just to the  left of each weapon name, + and - buttons allow you to change the number of weapons mounted in each slot. To the right, you will see a brief overview of each weapon, including damage, arcs of fire, cost, space, and any special effects. Bear in mind this data refers to ONE weapon, so that if you have 10 weapons mounted, each taking up 5 space, the whole slot takes up 50 space.
+WEAPONS2
+To add extra weapons, click in the open area just below the last weapon  displayed, if any. The words "Add new weapon" will appear. If these words do not appear, then you are unable to add any more weapons, due to space restrictions. You may only have 8 different types of weapons on each ship. 
+ To replace a weapon, click on its slot. The weapon text will highlight just before you click. Whether you click on an open slot or an occupied slot, you will then see a list of available weapons. 
+ If you to clear a weapon slot, select "NO WEAPON" on the list of  available weapons.
+Special Systems
+This window will show any special systems currently on your ship. By clicking on an open slot, watch for the words "Add New Special System" to appear before clicking. Like weapons, if you select an occupied slot, you will be replacing the system with a new one. When replacing a system,  if you select "No System" on the list of available systems, the slot will be cleared.
+Spec-Sys-Cancel
+DESIGN.LBX
+Click the CANCEL button to exit without adding a special system.
+Clear Design
+DESIGN.LBX
+Clicking the Clear button cancels all modifications you have made to  the current design and starts with a new, empty design template.
+Cancel Design
+DESIGN.LBX
+To cancel the current design and undo all changes, click the Cancel button. After clicking the cancel button, you will return to the Colony Build screen.
+Build Design
+DESIGN.LBX
+When you click the Build button, your current design will be saved.
+ You will be taken to the Colony Build screen, where you must then add the  designed ship to the list of buildings and ships to be built. 
+ If you try to put too much equipment on a ship, space available falls below 0, and you will be unable to complete the design. The Build button will be unselectable.
+Ship Cost
+Cost of the ship in production points.
+Space Available
+Amount of space left in the current design. This value is updated and made  available in the background as you replace weapons and special systems. If this number is below 0, you will not be able to complete the design, and the BUILD button will appear dimmed.
+Beam Weapons In Display
+DESIGN.LBX
+When this button is selected, all BEAM weapons are removed from the list of  weapon replacements.
+Missile Weapons In Display
+DESIGN.LBX
+When this button is selected, all MISSILE weapons are removed from the list of  weapon replacements.
+Bomb Weapons In Display
+DESIGN.LBX
+When this button is selected, all BOMB weapons are removed from the list of  weapon replacements.
+Special Device Weapons In Display
+DESIGN.LBX
+When this button is selected, all SPECIAL DEVICE weapons are removed from  the list of weapon replacements.
+Cancel Weapon Replacement
+DESIGN.LBX
+Selecting this button will cancel the current weapon choice and return to the main design screen. You may also cancel by clicking outside the  replacement box.
+Accept Weapon Replacement
+DESIGN.LBX
+Selecting this button, or clicking on a selecting weapon, will accept the  current weapon choice and return to the main design screen. If you select NO WEAPON the current weapon design slot will be cleared.
+Weapon Arcs
+Weapon arcs are changed by selecting arcs from this menu. Arcs are in 120 degrees extending from the FORWARD, FORWARD-EXTENDED, BACK, AND BACK-EXTENDED areas of the ship. You may have only one arc per weapon. Note that missiles and torpedoes have 360 degree (FULL) weapon arcs.
+Weapon Racks
+Missiles and torpedoes have racks. Each rack stores one missile volley. As you fire missiles, one volley of missiles get expended. When you are out of volleys, you may not fire that missile weapon again until the next combat.
+Weapon Modifications
+Weapons may be modified to enhance their effectiveness. You must first have  researched the modifications for the particular weapon, and not all weapons  allow all modifications. The abbreviation for each modification appears in parentheses.
+Heavy Mount (HV)
+Heavy Mount (HV) weapons are larger platform versions of the normal weapon,  inflicting one and a half times the normal amount of damage, halving the actual range for purposes of dissipation and to hit penalties, and requiring double the base amount of space and cost. Heavy mount weapons can not fire at missiles or fighters due to their slow targeting.  Heavy mount and point defense are mutually exclusive.
+Point Defense (PD)
+Point Defense weapons take up only half the normal amount of space normally  required and cost half the normal amount, but inflict only half damage. Furthermore, the  effective range is doubled for purposes of computing the energy dissipation and to hit  penalties, but point defense weapons have a +25% bonus to hit.  Finally, point defense  weapons will always fire just before a missile hits a ship or fighters engage the ship if  the point defense weapons have not yet fired.  Heavy Mount and Point Defense are  mutually exclusive.
+Armor Piercing (AP)
+Armor piercing weapons automatically penetrate any type of armor except  xentronium, damaging the ships structure and internals directly.  Armor piercing increases the size and cost of a weapon system by +50% and requires 1 level of  refinement to be used.
+Continuous (CO)
+Continuous allows a beam weapon to fire over a longer duration, increasing the  weapons chance to hit by +25. Continuous increases the size and cost of a weapon  system by +50% and requires 1 level of refinement to be used.
+Not Reduced By Range (NR)
+Not Reduced By Range applies to energy weapons and torpedoes that diminish in strength by  range. By focusing the beam and eliminating the decrease in damage. No range  dissipation increases the size and cost of a weapon system by +25%, and requires 1  level of refinement to employ.
+Shield Piercing (SP)
+Shield Piercing allows the weapon to ignore all aspects of shield. Shield piercing  requires +50% more space and cost, and cannot be used until 1 levels of refinement  have been achieved with a weapon.
+Autofire (AF)
+Autofire allows the weapon to fire 3 separate times in rapid succession,  each with a -20% chance to hit. Autofire increase the size and cost of a weapon  system by +50% and requires 2 levels of refinement to be used.
+Enveloping (ENV)
+Enveloping surrounds the target with the blast and strikes to all four sides of  the ship, simultaneously. Enveloping increases the size and cost of a weapon by  +100% and requires 2 levels of refinement to employ.
+Mirv (MV)
+Mirv missiles carry 4 separate warheads, which separate from the missile just  before impact. Mirv missiles increase the size and cost of a weapon system by +100%  and requires 2 levels of refinement to be used.
+ECCM (ECCM)
+ECCM missiles equipped with electronic counter measures, halve the chance of  a missile being jammed by enemy electronic counter measures. ECCM increases the size  and cost of a missile by +25% and requires 1 level of refinement to be used.
+Armored Missiles (ARM)
+Armored missiles are take twice the amount of damage to destroy. Armored  increase the cost and space of a missile by +25%  and require 1 level of  refinement to be used.
+Fast Missiles (FST)
+Fast Missiles increase the speed of a missile in combat by +4. There is also a  corresponding increase in the missile's defense. Fast missiles increase the cost and  space of a missile by +25% and require 1 level of refinement to be used.
+Emissions Guidance (EMG)
+Tracks the warp signature of a vehicle. If the missile penetrates the shields, all damage is applied to the ship's drive, bypassing any armor. Requires 4 times the space and costs 4 times more than regular missiles.
+Overloaded (OVR)
+Overloaded increases the warhead strength of torpedoes by +50%, with a  corresponding increase in size and cost by +50%. Overloaded requires 1 level of  refinement to employ.
+Game Popup Exit
+Clicking here will exit the popup and send you back to the MAIN screen. If you are on the SETTINGS popup, all settings will be saved.
+Game Save Button
+GAME.LBX
+Displays the SAVE game screen, where you can save the current game.
+Game Load Button
+GAME.LBX
+Displays the LOAD game screen, where you can load a previously-saved game. Note that in multi-player games, this option is disabled. You may only load multi-players games from the main menu.
+New Game Button
+GAME.LBX
+Leaves the current game and takes you to the NEW game screen where you will be able to start a the game anew.
+Quit Game Button
+GAME.LBX
+Quits Master of Orion II
+Change Music Volume
+GAME.LBX
+To change the music volume, position the mouse over the bar and press the  left mouse button. The further to the right you press, the higher the  music. You can hold the mouse button down and drag the bar to get a good feel for how loud you want the music. If the bar is placed close to the left, the music will turn off.
+Change Sound Effects Volume
+GAME.LBX
+To change the sound effects volume, position the mouse over the bar and  press the left mouse button. The further to the right you press, the  higher the sound effects. You can hold the mouse button down and drag the  bar to get a good feel for how loud you want the sound effects. If the  bar is placed close to the left, the sound effects will turn off.
+Change Game Settings
+GAME.LBX
+To change the current game settings, press this button.
+Return to Main Screen
+GAME.LBX
+To return to the main screen, press this button
+Games to be Loaded
+To load a game, click on the desired slot. The slot must have a  valid entry. Entries listed as "empty" cannot be loaded.
+Cancel Load
+GAME.LBX
+If you decide not to load a game, click on this button. You will be sent back to the main GAME screen.
+Load Game Button
+GAME.LBX
+Clicking on the load button will load the game which is highlighted. When  you save a game, the slot number is saved, so that you can "quick-load" the last saved game. You can quick-load using "GLL" keystrokes from the main menu.
+Saving Games
+Click on a slot to save the game. You will be given the chance to enter a 25 character description. Press ENTER or click on the SAVE button to save the game. If you double-click on the same slot, the game will be saved with the same description.
+Save Game Button
+GAME.LBX
+Clicking on the save button will save the game which is highlighted. When  you save a game, the slot number is saved, so that you can "quick-load" the last saved game. You can quick-save using "GSS" keystrokes from the main menu.
+End of Turn Summary
+When this option is ON, the player is given an end-of-turn summary. New ships and buildings built, new discoveries, and player contacts are all  examples of what might appear in the summary. Some information, such as starvation and negative income, will always be dispalyed.
+End of Turn Wait
+When this option is ON, each time the player clicks the TURN button,  one turn is executed. When end-of-turn-wait is OFF, one click of the  TURN button will cause successive turns to go by until "something interesting happens". Any end-of-turn-summary report or GNN report stops the turns from executing automatically. Alternatively, you may click anywhere on the screen to stop the automatic turn sequence.
+Enemy Moves
+If ON this option allows you to see the enemy moves.
+Expanding Boxes
+When turned ON, the fleet movement and system display boxes explode out when opened.
+Auto Select Ships
+When turned ON, this option selects all ships in the fleet when the box is first opened.
+Animations
+When turned ON, all frames of each animation is played out. To skip the cinematics, and speed up play, turn this option OFF.
+Auto Select Colony
+When ON, this option bypasses the System Display box and displays colony information for the last colony selected.
+Show Relocation Lines
+When a star has its ship production relocated to another star, a line will appear, connecting the two stars, in dark green.
+Show GNN Report Screen
+When ON, the reports will be interrupted to show the GNN screen. If you turn this option off, you will still be notified of special events as  part of the normal turn summary.
+Remove Housing and Trade Goods
+When this option is turned on, housing and trade goods will be deleted from the building list if it appears before another application.
+Auto Saves
+When this option is turned on, every 4 turns the game will be saved to the  last save slot (SAVE10.GAM). When you select "Continue" from the MAIN MENU  screen, this is the game that will be loaded. If you do not wish to save the  game in this manner, turn this option off.
+Show Only Serious Turn Summary Reports
+When this option is turned on, you will receive a turn summary only if it contains serious reports e.g. starvation, rebellions, and forced scrapping due  to lack of BC's to pay maintenance.
+Ship Initiative
+When this option is turned on, ships in tactical combat move in order of their initiative, from highest to lowest. A ship's initiative is equal to its modified beam offense bonus divided by 10 plus the ship's current combat speed.
+Accept Options Button
+GAME.LBX
+Press the accept button when you are done changing the game options. You will be sent back to the main GAME screen.
+Population Growth
+These bonuses affect the rate at which the population grows.  The amount of population growth is  multiplied by this bonus.  Low population growth rates are a result of shorter life spans, health weakness,  etc., while higher growth rates result from the opposite.  Population growth modifiers include -50% growth  [-4], +50% growth [3], +100% growth [6]. 
+Farming
+Farming bonuses affect the amount of food that each farmer can grow.  Races with farming bonuses have  developed advanced agricultural techniques, while races with penalties lack farming aptitude.  Races with  farming penalties cannot be reduced below 1 food per farmer if the world has any life bearing  environment.  Farming modifiers include -1/2 food [-3], +1 food [4], +2 food [7].   
+Industry
+Industry bonuses affect the amount of production that each factory worker can produce. Races with  industry bonuses have developed advanced manufacturing techniques, while races with penalties lack  manufacturing aptitude.  Races with industrial penalties cannot be reduced below 1 unit of production per  worker.  Industry modifiers include -1 production [-3], +1 production [3], +2 production [6].  
+Science
+Science bonuses affect the amount of research that each scientist  generates.  Races with science bonuses  have developed advanced research techniques, while races with penalties lack scientific aptitude.  Races  with science penalties cannot be reduced below 1 unit of research per scientist.  Science modifiers include   -1 research [-3], +1 research [3], +2 research [6]. 
+Money
+Money bonuses affect the amount in credits a population can be taxed.  Races with monetary bonuses  have developed advanced commercial concepts, while races with penalties lack economic skills.  Monetary modifiers include -0.5 BC [-4], +0.5 BC [5], +1 BC [8].  
+Ship Defense
+Ship Defense bonuses decrease the chances of enemy fire hitting you in ship to ship combat.  Races with  bonuses in defense have developed keen evasion senses and have a much better chance of misleading an  attacker.  Penalties, on the other hand, indicate the race has difficulty visualizing complex 3 dimensional  motions.  Defense modifiers include -20 defense [-2], +25 defense [3], +50 defense [7].  
+Ship Attack
+Ship Attack bonuses improve the chances of a ship engaged in combat to hit its target.  Races with  bonuses have developed the ability to anticipate a target's motion, and have a much better chance of hitting  the target.  Penalties, on the other hand, indicate a race with poor depth perception and tracking skills.   Attack modifiers include -20 attack [-2], +20 attack [2], +50 attack [4].
+Ground Combat
+Ground Combat bonuses affect the combat effectiveness of troops engaged in planetary combat or ship  boarding actions. Higher bonuses are normally indicative of races with extraordinary strength and agility,  while lower combat bonuses indicate the lack thereof.  Ground combat modifiers include -10 [-2], +10 [2],  +20 [4]
+Spying
+Spying bonuses affect the sabotage and espionage skills of a race.  Races with high spying bonuses have  specialized disguise abilities or advanced espionage equipment.  All offensive spies sent on missions will  receive the full bonus/penalty, while defensive spies receive one-half the amount.  Modifiers include -10  [-3], +10 [3], +20 [6].
+Low Gravity
+Cost[-5]:  Races which come from low gravity worlds are considerably weaker than races from  normal-G worlds, and have great difficulty adapting to more intense gravity fields.  Colonists can operate  only in low-G worlds without penalty, and suffer half the heavy-G penalty in normal-G environments.   Finally, Low-G troops are weaker and suffer a -10 ground combat penalty.  Low-G and Heavy-G are  mutually exclusive.
+High Gravity
+Cost[6]:  Races which come from heavy gravity worlds are considerably hardier than races  from normal-G worlds, and colonists can operate in both heavy-G and normal-G worlds without penalty. In  addition, ground troops can sustain substantially more physical damage than other troops, taking 1 more hit  than normal troops before being slain in ground combats.  Heavy-G and Low-G are mutually exclusive 
+Aquatic
+Cost[5]: Aquatic races originated on ocean worlds, and therefore can more easily adapt to primarily  water based environments. Aquatic races treat Tundra and Swamp worlds as Terran and Ocean and  Terran as Gaia environments both for food production and maximum planetary population.
+Subterranean
+Cost[6]: Races which were originally subterranean are better adapted to living underground, and  are capable of building expansive complexes below the surface of a planet.  As a result, these races'  maximum population on all worlds is increased by twice that world's size class. Also, subterranean  ground troops receive a +10 combat bonus when defending their colonies.
+Large Home World
+Cost[1]: The home world of your race is large instead of the normal  medium size.
+Rich Home World
+Cost[2]:  The home world of your race is mineral rich, producing a base 5 production per worker. Rich Home World and Poor Home World are mutually exclusive.
+Poor Home World
+Cost[-1]:  The home world of your race is mineral poor, producing a base 2  production per worker. Poor Home World and Rich Home World are mutually exclusive.
+Artifacts World
+Cost[3]:  The home world of your race has ancient artifacts.  All scientists produce +2 research on this planet.
+Cybernetic
+Cost[4]:  Races which are cybernetic use mechanical appendages and  artificial organs to sustain life. They consume only one half food unit each, and  supplement the other half with one half production unit.  Cybernetics also have an  enhanced ability to repair their ships due to the ease with which they interface with  mechanical devices,  10% of a ship's armor and structure and 5% of a ship's  internal systems will be repaired each round of combat.  All damage to cybernetic  ships is repaired after combat. Cybernetics and Lithovore are mutually exclusive.
+Lithovore
+Cost[10]:  These are races which consume rocks instead of food, and thus  can subsist on any planet simply by eating the minerals.  Lithovores do not require  any food whatsoever. Lithovore and Cybernetics are mutually exclusive.
+Repulsive
+Cost[-6]: Other races find dealing with repulsive races impossible.  Therefore, repulsive races are unable to form any agreements with other races.  They can only use the diplomacy system to declare war and to sue for peace.  Legendary  officers demand an increase of 50% to their cost of hiring to serve with  repulsive races.  Furthermore,  these races assimilate conquered colonists into their population at half the normal rate.  Repulsive and Charismatic are  mutually exclusive.
+Charismatic
+Cost[3]: Races which are extremely charismatic are quick to make allies and  can almost always talk themselves out of problems.  This ability doubles the effect  of all good diplomatic actions, and halves that of all negative ones.  When proposing  deals, charismatic races have a +50% bonus to their chance of the opponent  accepting. Charismatic races attract more legendary officers and leaders, halving  their hiring cost and increasing the frequency with which heroes ask to be hired.  In  addition, they double the rate at which conquered colonists are assimilated into  their empire.  Charismatic and Repulsive are mutually exclusive.
+Uncreative
+Cost[-4]:  Races which are not particularly creative have great difficulty in  coming up with difficult new technology ideas.  Uncreative races will be able to research only 1 application selected randomly in any field. Uncreative and  Creative are mutually exclusive.
+Creative
+Cost[8]:  Races which are creative have little difficulty in coming up with new  technology ideas.  As a result, these races will gain every application in the fields  that they research, instead of only the specific application selected.  Creative and  Uncreative are mutually exclusive.
+Environmentally Tolerant
+Cost[10]: These races typically regenerate, or have a  metabolism quite unlike that of a standard humanoid.  Races that are  environmentally tolerant treat all planet environments as Terran for purposes of  maximum population.  Tolerant races also ignore pollution, not spending any  industry to clean it up.  On multi-racial colonies, the proportion of non-tolerant  population to tolerant population determines the amount of pollution that must be  cleaned.  For example, If there are 3 tolerant and 7 non-tolerant population units  7/10 of the pollution must be cleaned up.
+Fantastic Traders
+Cost[4]: Races which are fantastic traders possess a keen  understanding of economics and deal making.  They add +25% bonus to the profit  they receive from trade treaties, and receive 1 BC per surplus food created.  In  addition, they receive a +100% bonus to the amount of money they receive for  building trade goods.
+Telepathic
+Cost[6]:  Telepathic races are capable of reading the minds of other beings,  allowing them to exactly isolate the motivations of anyone that they are attempting  to negotiate with. As a result, telepathic races gain a +25% diplomacy bonus when  conducting negations with other races.  Telepaths can also use their mental abilities  for mind control. Telepathic fleets with at least one cruiser or larger ship can mind control a planet instead of bombarding or invading it.  Mind Control  gains ownership of the colony for all purposes instantly assimilating all population.  Finally, telepathic spies are extremely adept at evading enemy  agents and receive a +10% bonus to all spy actions.
+Lucky
+Cost[3]:  Races which are lucky do not suffer from random galactic disasters, and  have a greater chance of benefiting from good events.  Antarans will also have a  tendency to overlook the colonies of lucky players.
+Omniscient
+Cost[3]:  Omniscient races are visionaries capable of spanning the galaxy  with their minds.  This allows you to know all star system and planetary data  throughout the entire galaxy at the start of the game.  In addition, enemy fleets are  automatically detected, regardless of stealth special abilities or technologies.
+Stealthy Ships
+Cost[4]:  Races with stealthy ships have managed to completely mask  their ships from long range sensors. This special ability has no effect on  ship combat, but their ships will remain unseen on the main screen.
+Trans-Dimensional
+Cost[5]:  Trans-dimensional beings are capable of folding the fabric  of space with their minds, allowing them to increase the speed at which ships travel  through the galaxy by 2 parsecs per turn. Furthermore, trans-dimensional races gain  +4 to their combat speed.
+Warlord
+Cost[4]:  Races with the warlord special ability have all of their crews function as one  level of experience higher than normal, and the crews have the potential to  eventually become ultra-elites.  Warlords double the rate at which marines and  tanks are built and allows barracks to support twice the normal number of troops.  Each colony produces 2 command points.
+Feudal
+Cost[-4]:  Feudal Governments are ruled by powerful families similiar to  medieval Europe.  Due to the fragmented and warlike nature of these  governments they receive certain benefits and penalties.
+ ^	Ship costs are reduced by 1/3.
+ ^	Planets suffer a -20% morale penalty unless 	they have a marine or armor barracks.
+ ^	Feudal governments have all research 	generated by scientists reduced by 50%.
+ ^	Feudal governments assimilate captured population 	at the rate of 1 population every 8 turns.
+ ^	Feudal populations instantly assimilate when 	conquered by any other race.  There are always 	local barons looking out for themselves.
+Dictatorship
+Cost[0]:  In this form of government, one being has absolute power.  All orders and decisions made are  final and the general populace is ruled with an iron hand.  This control confers several benefits and  disadvantages to dictatorships.
+ ^	Defensive agents receive a +10 bonus due to 	increased internal security.
+ ^	Planets suffer a -20% morale penalty unless 	they have a marine or armor barracks.
+ ^	Dictatorships assimilate captured population 	at the rate of 1 population every 8 turns.
+Democracy
+Cost[7]: The people elect representatives to run the government. No single body  of people directly controls the government and the personal freedoms are  greatest of all forms of governments.
+ ^	Defensive agents are penalized -10  due to the emphasis on personal freedoms.
+ ^	Democracies assimilate captured population 	at the rate of 1 population every 4 turns.
+ ^	Due to the free exchange of ideas all research generated by scientists is increased +50%.
+ ^	The government's concern with promoting trade increases all tax revenues by +50%.
+ ^	Democracies are prohibited from annihilating captured populations.
+Unification
+Cost[6]: Only a few races are genetically capable of forming a unified government.   The population exists harmoniously without jealousy, envy or concern for individual advancement.  Each individual works for the improvement of the whole, instead of the desires of  the individual. The unified government is the social equivalent of a colony of bees.
+ ^	Defensive agents receive a +15 bonus due to 	the lack of traitors.
+ ^	All morale affects and any buildings modifying morale are ignored by unification governments.
+ ^	Unification governments assimilate captured population 	at the rate of 1 population every 20 turns.
+ ^	Increased productivity results in a +50% bonus to all industrial production.
+ ^	Increased productivity results in a +50% bonus to all food production.
+Clear
+raceopt.lbx
+Clears all racial advantages and disadvantages.
+Picks
+Each player starts with 10 race development picks with which to design  a race.  Picks left may go negative, but no race will be accepted until  picks left is non-negative.
+Score
+A player's final score in the game will be multiplied by this value.  If all race development picks are not used, a player's score will be increased.
+Accept
+raceopt.lbx
+Accepts the selected advantages and disadvantages for use in the game and continues on with the game setup.
+ESC key
+Pressing the 'ESC' key will abort the race customization process and return to the Race Selection Screen
+Colony Screen : General Help
+This is the colony screen. It allows you to view all relavent information  about a single colony. It also allows you to change the production of a  colony, and make any other changes which can occur on the given colony.
+Status Warning Bar
+The status warning bar alerts you to potentially dangerous threats to the colony,  such as being blockaded, or a bad random event. Nothing is printed here if  nothing bad is effecting the colony at this time
+Colony Name
+This displays the name of the colony including its specialization if any. The specialization of a colony is purely cosmetic in effect. 
+Population
+ This displays the population of the colony, in the following format: 10,500 k (+ 55). In this case this means 10 million people, or 10 population units, plus 5 hundred  thousand or you are halfway to gaining the next population unit, and the part in parenthesis  is your growth rate.  It can be either positive or negative, indicating respectively  growth or loss of new members of the colonial population. In multiracial colonies this  display becomes less directly indicative of the time you gain your next full population  unit, as each race is growing at a seperate rate, and you are seeing the sum of all the  growth rates added to the number of functioning pop units. 
+System Display
+The Colony Screen System Display shows you the other planets in the system, and if they are colonized, will let you go there by left-clicking on the planet. Clicking on the text will give a  summary description of the planet.
+Current Production
+ This window displays the current building or unit being constructed at this  colony, along with a turn counter and a product completion bar showing how  close to completion the product is at this time. 
+BCs Display
+ This display shows the monetary disposition for this colony, with gold coins showing one BC and stacks representing ten BC's
+ BC's can be imported, exported or used locally. These uses are displayed as follows. First comes the amount used here, separated by a space, followed by either exports, which are bright, or by imports, which are darkened. The amounts of each are calculated automatically.  
+Government and Morale Display
+ This display show the government, and the current morale for this colony.  First is the Government, being a small version of the government symbol followed by positive morale represented as Smiling/Comedy masks or negative morale represented as Frowning/Drama masks. Each of these represents a 10% change in  the total output of the colony. 
+Jobs Output
+The production window displays the output of a colonies workers for each of the three jobs,  Farmers, Workers and Scientists.
+ Resources, such as food, can be imported, exported or used locally. These uses are displayed as follows.
+ First comes the amount used here, separated by a space, followed by either exports, which are bright, or by imports, which are darkened. The amounts of each are calculated automatically.
+Farmers
+ Farmers produce food, as displayed by stalks of corn for one unit and bags of corn to display  10 units of food. To import food you must have one freighter per unit of food. Exported food which is not imported is sold for 1/2BCs each(unless you are a fantastic trader, which doubles  this amount). 
+Workers
+ Workers produce industry which is used to build buildings and units on the production screen. A pick is one unit and a pick on a pile of ore is 10 units. Industry can neither be imported nor exported. 
+Scientists
+ Scientists produce research, which is used to gain new technology. A test tube represents one  research point, a microscope represents 10 research points. science can neither be imported nor exported 
+Population Job Display
+ This display show exactly how many population units (1,000,000 people each) are in each given job, Farmer, Worker or Scientist. 
+Units Display
+ This display shows the number of infantry or armor you have at this colony.  Infantry can either be Normal or Powersuited, and Armor can be either Tanks or Battleoids 
+Change Button
+COLPUPS.LBX
+ This button takes you to the Colony Building Queue Screen, where you can change what the colony is currently producing 
+Buy Button
+COLPUPS.LBX
+ This button will let you spend BCs to accelerate the production of the currently produced product, assuming you currently have enough BCs in your reserve to do the job. 
+Leaders Button
+COLPUPS.LBX
+ This button will take you to the Leaders Screen, where you hire move and fire leaders. 
+Return Button
+COLPUPS.LBX
+Allows you to return to the previous screen
+Buildings List
+Shows a list of all the buildings you are currently able to build  at this colony. To add a building to the Queue, left click on it once.  Buildings already in the queue are drawn darkened and can be clicked  on again to remove them from the queue
+Current Product Picture
+Shows the picture of the top element of the queue, or of the product  currently being scanned.
+Current Product Summary
+Shows the name, cost and other summary information for the top element  of the queue, or of the product currently being scanned.
+Military Units
+Shows the list of all military and civilian units you can build at the colony.  Left clicking on them adds them to the queue.
+Current Product Description
+Shows the description for the top element of the queue, or of the product  currently being scanned.
+Product Queue
+Shows up to seven buildings or units which are either currently being built,  or waiting their turn to be built.
+Clicking on a entry in the queue selects it. Clicking again on a selected entry deletes the entry. 
+Clicking on another entry, while one is selected,  moves the current entry to the spot immediatly below the clicked on entry, compacting the queue first if applicable. Clicking on a building or unit, while an entry is selected, adds the  product to the queue, if there is space, immediately above the current  entry, unless it is a building which is already in the queue, in which  case it deletes it, and leaves the selected entry selected. 
+Auto Build Button
+colbldg.LBX
+This button, if active, shows that the computer is currently making all  decisions about which building to build at the current colony. If no building is chosen,  trade goods will be selected. Autobuild will never build a ship or other unit.
+Refit Button
+colbldg.LBX
+Calles the refit ship popup.
+Design Button
+colbldg.LBX
+Sets the cursor to the 'Which Ship' cursor, allowing you to click on  a ship in the units list and goto the Design screen the change the  design in that slot.
+Repeat Build Button
+colbldg.LBX
+Sets the cursor to the 'What' cursor, allowing you to select a unit to be built repeatedly, until either you delete it from the queue, or the  rules do not allow another to be built
+Ok Button
+colbldg.LBX
+Allows you return to the previous screen, saving any changes you have made.
+Building Queue Screen : General Help
+This screen allows you to make any an all building and unit choice decisions you desire to make for the given colony.
+Colony Summary Screen : General Help
+The Colony Summary Screen!
+Scroll Up Button
+colpups.lbx
+It scrolls the list up
+Name Display Window
+Shows the name of the colony 
+Farmers Display Window
+Shows the number of farmers. Farmers produce food. 
+Workers Display Window
+Shows the number of workers. Workers produce industry.
+Scientists Display Window
+Shows the number of Scientists. Scientists produce research.
+Production Display Window
+Shows the amount of production of the currently scanned colony
+Buy Buttons
+colsum.lbx
+Allows you to attempt to purchase the current product in the queue
+Scroll Slider Bar
+Allows you to scroll the list up
+Scroll Down Button
+colpups.lbx
+Allows you to scroll down the list of colonies which you currently have.
+Colony Info Summary Window
+Lists information about the colony you are currently scanning
+Colony Scanned Products Window
+Shows the icons for the number of each kind of production for the currently scanned colony
+Galaxy Map Window
+Shows the galaxy map, the currently scanned star, the source and destination stars when moving colonists.
+Empire Info Window
+Shows the summary information for your entire empire
+Sort By Name Button
+colsum.lbx
+Allows you to sort the colonies by the name of the colonies
+Sort By Pop Button
+colsum.lbx
+Allows you to sort the colonies by the population of the colonies
+Sort By Food Button
+colsum.lbx
+Allows you to sort the colonies by the amount of food produced on the colonies
+Sort By Industry Button
+colsum.lbx
+Allows you to sort the colonies by the amount of industry produced on the colonies
+Sort By Science Button
+colsum.lbx
+Allows you to sort the colonies by the amount of research produced on the colonies
+Sort By Producing Button
+colsum.lbx
+Allows you to sort the colonies by the products being produced on the colonies
+Sort By BC Button
+colsum.lbx
+Allows you to sort the colonies by the amount of BC's produced on the colonies
+Refit Ship Popup : General Help
+Allows you to select a ship from the list of ship which are at the star to refit
+Ship List
+Shows the list of ship which are at this star and available to be refitted.
+Ship Info Window
+Shows the information for the ship which you are currently pointing at.
+Cancel Button
+refitpup.lbx
+Allows you to exit without making any changes.
+Population Display Window
+show the current pops for the given colony.
+Transport Popup : General Help
+This screen allows you to quickly move population from one colony to another without going to the colony summary screen
+Colony Ground Combat Screen
+The Colony Ground Combat Screen allows you to watch the invasion of a planet occur,   waiting or clicking once begins the combat, clicking again accelerates it to the end,   after it has ended, clicking again exits the screen 
+Attack Summary
+Shows the bonuses and units available on this plant to invade
+Defend Summary
+Shows the bonuses and units available on this plant to defend against invaders
+Occupation Policy Popup
+The occupation policy popup allows you choose to annihilate all the colonists which are not of your race.
+Galaxy Age
+ Left clicking here allows you to cycle through the  different galaxy ages, mineral rich, normal and organic rich. Mineral rich increases the chance of planets which have mineral  resources and decreases the chance of generating ones which create food. Organic rich does the opposite. 
+New Game Screen
+The New Game screen allows you to select the options for the game you are about to begin.
+Game Difficulty
+Clicking here allows you to choose between the various levels of the game difficulty, Tutor, Ease, Average, Hard and Impossible.
+Galaxy Size
+Clicking here allows you to choose between the various levels of galaxy size, which effect the number of stars and overall  volume of space included in the galaxy about to be created 
+Tech Level : Advanced
+Clicking here allows you to choose between the various levels of starting technology. Prewarp, Average, and Advanced.
+ Advanced Civilization starts you with a larger empire, filling up your  share of the galaxy depending on size and number of players.  It also starts you with several levels of technological advancement,  and a fleet which uses up all of your command points. 
+Tech Level : Average
+Clicking here allows you to choose between the various levels of starting technology. Prewarp, Average, and Advanced.
+ Average Civilization starts you at a single star, on the very cusp of interstellar travel. You begin with two scouts and a colony ship, and only the most basic of technology. 
+Tech Level : Prewarp
+Clicking here allows you to choose between the various levels of starting technology. Prewarp, Average, and Advanced.
+ Prewarp Civilization starts you at a single star, with no ships, and even  the most basic of technology must be researched before you can build  even your first interstellar ship. 
+Tech Level
+Clicking here allows you to choose between the various levels of starting technology. Prewarp, Average, and Advanced.
+Number Of Players
+Clicking here allows you to choose the number of players, including yourself, to be in the game. 
+Random Events Button
+NEWGAME.LBX
+Clicking here allows you to turn on and off the Random Events 
+Tactical Combat Button
+NEWGAME.LBX
+Clicking here allows you to change between Tactical and Strategic Combat. Strategic combat means that the computer will play out any combats for you, returning you the results, and design all the ships for you as well. 
+Antarans Attack Button
+NEWGAME.LBX
+Clicking here allows you to turn on and off the Antarans attacking players in this game. 
+Accept Button
+NEWGAME.LBX
+Clicking here allows you to accept the current settings and continue with the game.
+Cancel Button 
+NEWGAME.LBX
+Allows you to exit without making any changes.
+Player Attacked Popup
+This popup informs you when a player is attacked and by whom.
+New Colony Confirmation Box
+This popup gives you summary information on the potential colony and  allows you to decide whether or not to colonize it.
+Tax Rate Popup
+This popup allows you to set your tax rate. The percentage value of the  tax rate is the percentage of all production from all your colonies to be  turned into cash
+Dragon New Star Popup
+This popup allows you to bribe a space dragon not to attack your system,  and to select what other system you would like it to goto next.
+New System Discovery Popup
+This popup tells shows you all the relevant information about a given newly explored system, including specials if any.
+Planet Selection Popup
+ This popup allows you to select a planet to perform one of the following operations on, build a new colony, outpost, artificial planet, or drop troops on a planet to reinforce  its defenses. If you are building from a ship, and hit cancel, you will not be prompted again to build here until you hit the appropriate button on the fleet popup. 
+Officer Information Popup
+ This popup informs you of the occurence of one of several things. It can tell you about  when an officer gains a level, or when a marooned officer joins you or fails to join because you have  no room for it.  
+Combat Colony Selection Popup
+This popup allows you to select a colony or fleet to attack, or to select not  to attack at all. Hitting cancel chooses not to attack, and you will not  be prompted again until either the situation at the star changes (new ships etc) or you hit the attack button on the fleet. popup
+Audience: Main Menu
+Select a category of diplomatic action from the menu of choices. Selections that are presently unavailable are darkened.
+Propose Treaty
+Suggest forming an alliance, peace treaty, trade treaty, research treaty, or non-aggression treaty.
+Break Treaty
+Cancel an existing treaty or alliance.
+Demand
+Require this Empire to perform a specific action to appease you.
+Offer Gift
+Offer a tribute, tech, or star system to appease the selected Emperor.
+Exchange Tech
+Suggest trading an application you have discovered for one the selected Race posesses.
+Declare War
+Formal declaration of war against this Empire.
+Surrender
+Turn control of your Empire over to the selected Emperor.
+Audience: Goodbye
+Exits from this screen.
+Treaties Menu
+Select a treaty to offer. Unavailable selections appear darkened.
+Offer Trade Treaty
+A Trade treaty generates income based on the minimum of the two empires population.  The  break-even point is 5 turns and it will take at least 10 turns to reach the maximum.
+Offer Research Treaty
+A Research treaty generates research points based on the minimum of the two empires population.  The  break-even point is 5 turns and it will take at least 10 turns to reach the maximum.
+Offer Peace Treaty
+Propose an end to the current war with this Empire.
+Offer Non-Aggression Treaty
+Propose that neither race will mount an offensive against the other.
+Offer Alliance
+Propose that neither race will mount an offensive against the other.  Allies also get to  use each others colonies for range purposes.
+Break Treaties Selection
+Select the treaty that you wish to cancel. Unavailable selections appear darkened.
+Break Trade Treaty
+End the current Trade Treaty with this Empire.
+Break Research Treaty
+End the current Research Treaty with this Empire.
+Break Tribute Treaty
+End the current Tribute Treaty with this Empire.
+Break Non-Aggression Treaty
+End the current Non-Aggression Treaty with this Empire.
+Break Alliance
+End the current Alliance with this Empire.
+Demand Menu
+Select the action you require to be taken. Unavailable options appear darkened.
+Demand: Declare War On
+Choose a third race you wish this Emperor to declare war against.
+Demand: Make Peace With
+Choose a third race you wish this Emperor to sign a peace treaty with.  This option is  not available in multi-player games.
+Demand: Break Alliance With
+Choose a third race you wish this Emperor to end their alliance with.
+Demand: Annual 5% Tribute
+Require this Emperor to pay you an annual sum equal to 5% of their treasury.
+Demand: Annual 10% Tribute
+Require this Emperor to pay you an annual sum equal to 10% of their treasury.
+Demand: Stop Spying
+Require this Emperor to remove all spies from your territory.
+Demand: Technology
+Choose an application you want this Emperor to give you.
+Demand: Surrender System
+Choose a star sytem you want this Emperor to give you.
+Demand: Remove Fleet From My System
+Call for this Emperor to remove all ships in orbit around your colonies.
+Offer Gift Menu
+Select a gift to give this Emperor to improve diplomatic relations.
+Offer: Annual 5% Tribute
+Pay this Emperor an annual sum equal to 5% of your treasury.
+Offer: Annual 10% Tribute
+Pay this Emperor an annual sum equal to 10% of your treasury.
+Offer: Technology Gift
+Offer a technology application to give this Emperor.
+Offer: System Gift
+Offer a star system to give this Emperor.
+Offer: Money
+Offer this Emperor a specific amount of money.
+Technology Gift Selection
+Select which technology application you want to offer this Emperor.
+Offer: System Gift Selection
+Select which star system you wish to give this Emperor using the reduced map.
+Demand: Declare War On Selection
+Choose which race you wish this Emperor to declare war against. Unavailable selections appear darkened.
+Demand: Make Peace With Selection
+Choose which race you wish this Emperor to sign a peace treaty with. Unavailable selections appear darkened.
+Demand: Break Alliance With Selection
+Choose which race you wish this Emperor to end their alliance with. Unavailable selections appear darkened.
+Demand: Technology Selection
+Choose which application you want this Emperor to give you.
+Demand: Surrender System Selection
+Choose which star sytem you want this Emperor to give you using the reduced map.
+Exchange Tech Selection
+Choose which technology you wish this Emperor to give you. Choose 'next page' and 'previous page' to scroll though the list
+Exchange Tech Response
+This Emperor is willing to give you this application in exchange for the one you offered.
+Surrender Verification
+Indicate whether you really wish to turn your entire Empire over to this Emperor.
+Diplomacy Cancel
+Exits this screen.
+Declare War Verification
+Indicate whether you really wish to declare on this Empire.
+Offer Money: Selection
+Select the amount, in BC, you wish to give this Empire.
+Offer: Offer System Selection
+Choose which star sytem you want to offer this Emperor using the reduced map.
+Options Button
+Pressing the options button will slide up a panel that allows the setting of  various combat options and giving self-destruct orders to the current ship.
+Current Ship Display
+This window displays the currently active ship.  Left clicking anywhere in this  window will center the main viewport on the current ship. The stars at the upper left of the ship display window denote crew levels.  If there is a leader present on this ship there will be a (L) in the upper right corner of the display.
+Damage Bar
+The blue, red, and yellow bars display types of damage to the ship.  The blue  bar shows damage to armor, the red bar shows damage to structure, and the yellow bar shows damage to internal systems.
+Map Display
+The map display shows the entire area of the combat.  Ships are shown as blips in the appropriate color.  Missiles and fighters are displayed as white dots. Left clicking anywhere on the map centers the main viewport on that point.
+Missile Warning Panel
+The missile warning appears when the current ship has been ordered to make a move that will allow enemy missiles to hit the ship.  Clicking in this box will remove  the warning and allow the current ship to continue moving.  This warning can be turned completely off on the options menu.
+Internals/Target Display
+Generally, this display shows the current damage points of the major internal systems and the remaining movement points of the current ship.  When the mouse pointer is over a ship, this display changes to show target information.
+Auto Button
+This button gives control of all your ships to the computer AI.  The combat  will proceed without any input from you.  Clicking anywhere on the screen will return control of your ships back to you after the current ship has finished its turn.
+ NOTE: Your ships will not retreat from combat under any circumstances while  under computer control.
+Scan Button
+Clicking this button toggles scan mode on and off.  While in scan mode clicking on any ship will bring up a detailed display of that ship.  Moving the current viewport is the only other command accepted while in scan mode.
+Board Button
+Clicking this button toggles boarding mode on and off.  While in boarding mode clicking on an enemy ship will cause the currently active ship to attempt to board it.  To board an enemy ship it must be immobilized due to damage to its drive or  the effect of tractor beams or the current ship must be equipped with transporters.
+Retreat Button
+This button will give the current ship orders to retreat.  The retreat from combat  will take place at the start of your next turn.  If you win the combat retreated ships will rejoin your fleet.  If you lose, retreated ships will be given orders  to move to your nearest colony or outpost, even if it is in the same system.
+Wait Button
+This button cycles to the next active ship in your fleet, and leaves the current active ship still in the active list.
+Done Button
+This button cycles to the next active ship in your fleet, and removes the current active ship from the active list.
+Weapons Display
+Displays weapons on current ship.  Right clicking on an individual weapon will  display information on that weapon. Weapon status is displayed by color:
+ Green: this weapon will is available to fire.
+ Orange: this weapon is on standby. It will not fire the next time the ship fires,  but will then revert to normal status.
+ Red: this weapon has been turned off. It will not fire until manually turned on.  Point  Defense weapons will still fire on missiles before they impact.
+Alkari
+The Alkari are an avian race which have descended from great flying reptiles.  Alkari pilots  are reared from a young age on the dynamics of 3-dimensional motion.  As a result the  Alkari boast superior pilots, gaining a +50 defensive bonus in space combat. Furthermore,  the Alkari homeworld was once colonized by the Orions, and still possesses ancient  artifacts. The Alkari have a dictatorial government.
+Bulrathi
+The Bulrathi are a large bear-like people that possess tremendous strength and hardiness.  The Bulrathi home world is a heavy gravity planet, making the race exceptionally  strong and able to perform in all heavy-G worlds without penalty. Due to their aggressive nature they recieve a +20 bonus to offense in space combat. In addition, the Bulrathi  have a +10 bonus in ground combat and have a dictatorial form of government.
+Darloks
+The Darlok people are shape shifters, who can assume almost any humanoid form.  As a  result, all Darlok spies gain a +20 bonus to any spy mission.  Furthermore, Darloks have  the ability to render their ships invisible to long range detection.  They have a dictatorial  form of government.
+Elerians
+The Elerian people are humanoid, with strong angular facial features, almost elf-like. They  follow an order of female mystics that are omniscient and know about all of the planets  when the game begins, and can always sense the presence of enemy fleets, regardless of  range. Furthermore, the mystics can see slightly into the future giving them tactical  advantages in space combat, adding +20 to their offense and +25 to their defense. The greatest  of the Elerian mystics are telepathic, allowing them to mind control and automatically  capture undefended enemy worlds and gain immediate use of captured ships. In addition, their  telepathic ability grants the Elerians +10% to all spy actions. Elerians have a feudal form  of government.
+Gnolams
+The Gnolams are a dwarf-like people, with a society that focuses almost exclusively on  monetary gains.  As a result, the Gnolams are fantastic traders, doubling the gains they  make from trade treaties.  The capitalistic nature of the Gnolam is so intense that each  Gnolam generates a bonus of +1 BC per  population. Gnolams are lucky, and will never be  affected by random disasters, and are more likely to be affected by good events.  The  Gnolams are small in stature and come from a Low-G homeworld and suffer from significant  industry and farming penalties on normal and heavy-G worlds, as well as having a  -10  penalty to all ground combat engagements. Gnolams have a dictatorial form of government.
+Humans
+Humans are the most charismatic deal makers of the game.  They gain a +50% diplomacy  bonus when dealing with other races and pay half price to hire legendary officers and  leaders. Humans are the only race with a democratic form of government.
+Klackons
+The Klackons are an insectoid people who are completely satisfied with their life.  Their hive  mind allows communication to pass swiftly and effectively, with each worker acting with  great conviction, operating as one. As a result, Klackons are the only race with a unified  government. In addition, Klackons are extremely industrious workers, adding +1 to both  their food and industry production. Unfortunately,they are uncreative and have  great difficulty in coming up with new technologies
+Meklars
+The Meklars are a cybernetic race that have become extremely dependent on their  cybernetic exoskeletons, to the point that their bodies have atrophied to small fragile  frames.  Unlike other races, Meklars consume 1/2 production and 1/2 food each, rounded  up. Their cybernetic interfaces allow them to completely repair their ships  after combat. In addition 10% of their ship's structure and 5% of their ship's internal  systems are repaired each round of combat. Meklar factory workers produce +2 production each. Meklars have a dictatorial form of government.
+Mrrshan
+The Mrrshan are a cat-like race with keen senses, giving them  a +50 to hit bonus to all of  their ship beam attacks. The Mrrshan possess a strict warrior code and are warlords by  nature, doubling the start, rate and maximum number of troops and armor that can be  stationed on a planet. Furthermore, they increase the level of their crew and their legendary officers and leaders by one. They have a mineral rich homeworld and a dictatorial form of government.
+Psilons
+The Psilons are a delicate race of brilliant researchers from a Low-G home world. Each Psilon scientist produces 2 more research than the galactic norm. In  addition, the Psilons are very creative, and they never ignore a potential  avenue of research. Thus, all technologies are available to their scientists. Their large home world doesn't hurt either. They are ruled by a Dictatorship.
+Sakkra
+The Sakkra are a race of reptiles with impressive regenerative capabilities.   As a result, their population grows at twice the normal rate.  They are  subterranean, living both under and above the surface of a planet, increasing  the maximum population a planet can support by twice the planet's size. The Sakkra  are very good at agriculture giving them a bonus of +1 food per farmer, but somewhat  inept at spying with a -10 to all spying activities. The Sakkra come from a  large home world and have a feudal form of government.
+Silicoids
+The Silicoids are crystalline beings that are lithovores, eating minerals instead of food.  They  are environmentally tolerant but suffer from half the standard population growth rate.  Silcoids are also repulsive, incapable of effectively comprehending the nature  of other beings, making it extremely difficult to negotiate with other races and doubling the cost of hiring legendary officers and leaders. They have a dictatorial form of government.
+Trilarians
+Trilarians are aquatic based life forms and as such they treat all tundra and swamp worlds as ocean and ocean and terrans as gaias. Their homeworld is an ocean world and therefore can support more colonists and  grows 3 food per farmer. Trilarians are also trans-dimensional and can fold space with their  minds, increasing the speed of their ships on the galactic map by 2 parsecs per turn and increasing their combat speed by 4.  Trilarians have a dictatorial form of government.
+Custom
+Allows the player to completely customize all racial advantages and disadvantages.
+Race Select Screen
+Select the race you will play or choose custom to design your own race.
+Continue A Game
+By selecting "Continue Game", you can continue with the previously-played game at the point it was last saved. Every four turns the game is saved  automatically to SAVE10.GAM.
+Load A Game
+"Load Game" will show a menu of possible saves, from which you will  select the game you wish to continue. If no games have been saved, this option will appear dull and will be unselectable.
+Start A New Game
+This option will allow you to start a new game. After generating a new  universe, the game will be automatically saved to SAVE10.GAM.
+Multi Player Game Options
+If you wish to play Master Of Orion II with multiple human players, select this option.
+Hall Of Fame
+To show a list of the "elite" Master of Orion II players, select the Hall Of Fame option.
+Quit Master Of Orion II
+Selecting this option will quit the game and return you to the operating system.
+Network Game
+MULTIGM.LBX
+In order to start, load, or join a network game, press this button. When starting a new network game or loading a saved network game, the host will then select "START" or "LOAD" to the right, all other players should  select "JOIN".
+Modem Game
+MULTIGM.LBX
+In order to start, load, or join a game via modem, press this button. The  player intending to initiate the call should select "START" or "LOAD" as appropriate. If you intend to wait for the host to call you, select "JOIN".
+Null Modem Game
+MULTIGM.LBX
+In order to start, load, or join a game via null modem cable, press this  button. The host will select "START" or "LOAD" as appropriate, while the client should select "JOIN".
+Hot-Seat Game
+MULTIGM.LBX
+To play a game on one computer with more than one human player, select this button. Each player will be asked to choose a race, color, and player name.
+Cancel Multi-Player Game
+MULTIGM.LBX
+To return to the main menu screen, choose this option.
+Start New Multi-Player Game
+MULTIGM.LBX
+To start a new multi-player game, select this option. The HOST should be  the only one to select this option. He/she will have direct control over  galaxy generation parameters. All non-host players, should select  "JOIN GAME".
+Load Multi-Player Game
+MULTIGM.LBX
+To load a previously-saved multi-player game, select this option. You may continue network games as hot-seat, or vice-versa. Modem and null-modem games may also be played as either hot-seat or network games. The HOST should be  the only one to select this option. He/she will have direct control over  galaxy generation parameters. All non-host players, should select  "JOIN GAME".
+Join Multi-Player Game
+MULTIGM.LBX
+To join a multi-player game, select this option. You may only join games which are currently open. If you are joining a network game, a list of open games will follow. Make sure you know which game to join before selecting this option. Only non-host players should select this option.
+Change Communications Parameters
+MULTIGM.LBX
+Here is where you may change modem and null-modem parameters to fit your  computer's configuration.
+Scrapping Freighters
+Scrapping freighters will save you some maintenance costs each turn. You  will not receive any BC's, as there is not much scrap value in a freighter.
+Scrapping Freighters2
+The number in the left-most box is the minimum number of freighers you can scrap. In the right-most box is the maximum number of freighters you  may scrap. The center box shows the numbers of freighters you plan to scrap.
+Scrapping Freighters3
+MAINPUPS.LBX
+The left arrow button moves the bar to the left and decreases the number of freighters you wish to scrap by 1.
+Scrapping Freighters4
+MAINPUPS.LBX
+The right arrow button moves the bar to the right and increases the number of freighters you wish to scrap by 1.
+Scrapping Freighters5
+MAINPUPS.LBX
+If you press the CANCEL button, you will abort this operation and no  freighters will be scrapped.
+Scrapping Freighters6
+MAINPUPS.LBX
+Pressing the ACCEPT button scraps the number of freighters you specified in the center box.
+Communications Port
+To play a modem or null-modem game, MOO2 needs to know which communications port to use for data transmission. This is usually the same port as your serial  card. Consult the documentation that came with your computer for more  information. 
+ When you select this field, another window will appear  showing you all of the available options. Select one from COM1 - COM7 and press the left mouse button.
+Baud Rate
+To change the speed at which data is transmitted in modem and null-modem  games, select this box. Another window will appear showing you all of the available options. Select one by pressing the left mouse button when your choice is highlighted.
+Phone Number
+Click on this box to change the phone number of your opponents computer.
+Clear String
+This is the modem string to clear the buffer. Click on the box to change the default string. Consult the documentation that came with your modem to insure  that the default is correct.
+Initialization String
+This is the modem string to initialize the modem. Click on the box to change the default string. Consult the documentation that came with your modem to insure  that the default is correct.
+Hang-Up String
+This is the string to hang-up the modem when you are done. Click on the box to change the default string. Consult the documentation that came with your modem to insure  that the default is correct.
+Tone / Pulse Dial
+Most phone systems today use TONE dialing. However, if you live in an older  neighborhood, your modem may not be able to use TONE dialing. Click in this  box and the value will switch between TONE and PULSE. Consult the documentation that came with your modem to insure  that the default is correct.
+Cancel Setup Changes
+MULTIGM.LBX
+Pressing this button will cancel all changes you have made and return you to the main set-up screen.
+Accept Setup Changes
+MULTIGM.LBX
+Pressing this button will accept all changes you have made and return you to the main set-up screen. These changes will be saved to a setup file so that  once you have made changes, you will not have to do so again.
+Input Box
+This box allows you to enter text. If you press the BACKSPACE key before pressing any other keys, all text in the box will be erased. You may also erase text by hitting CTRL-BACKSPACE at any time. When you are done, you may either press ENTER, click the RETURN button, or click inside the text area  where you are typing. To cancel, press the ESCAPE key.
+Select Banner
+Click on the banner of the color you wish to play in the upcoming game. In multi-player games, empty boxes denote colors already selected by other players.
+Diplomacy Request
+When another player wishes to engage in diplomacy with your race, you will see this screen. You have three options, ACCEPT, IGNORE, or WAIT.
+Accept Diplomacy Request
+BUFFER0.LBX
+If you ACCEPT another player's diplomacy request, you will be taken  immediately to the diplomacy screen. Upon return, you will be sent back to the main map screen.
+Ignore Diplomacy Request
+BUFFER0.LBX
+If you IGNORE another player's diplomacy request, the requesting race will be notified and you will not be bothered with diplomacy requests from that  player. When you go to the RACES screen, you will see which races you are currently "ignoring". You will continue to ignore diplomacy requests until YOU initiate diplomacy some time in the future.
+Wait on Diplomacy Request
+BUFFER0.LBX
+If you select WAIT, then the requesting player will be informed that you are temporarily unable to honor the request, but that you intend to meet later in the same turn. The requesting player will be informed that you intend to meet, but not immediately. He may cancel the request at any time. When you decide to meet, then go to the RACES screen and select an AUDIENCE with that race.
+Shield Replacement
+This screen allows you to change the shield type. You may remove the shield entirely by selecting NO SHIELD.
+Exit Shield Replacement
+Clicking outside the box exits back to the main design screen without  changing the shield type.
+Cancel Shield Replacement
+DESIGN.LBX
+Click the CANCEL button to exit without changing the shield type.
+Computer Replacement
+This screen allows you to change the computer type. You may remove the computer entirely by selecting NO COMPUTER.
+Exit Computer Replacement
+Clicking outside the box exits back to the main design screen without  changing the computer type.
+Cancel Computer Replacement
+DESIGN.LBX
+Click the CANCEL button to exit without changing the computer type.
+Special System Cancel Button
+DESIGN.LBX
+Clicking the CANCEL button will return you to the main design screen. Regardless  of whether you were adding or replacing a system, all changes will be cancelled.
+Exit Weapon Replacement Box
+Clicking outside the weapon will return you to the main design screen. Regardless of whether you were adding or replacing a weapon, all changes will be cancelled.
+Exit Systems Replacement Box
+Clicking outside the weapon will return you to the main design screen. Regardless of whether you were adding or replacing a system, all changes will be cancelled.
+"No Weapon"
+By selecting this item, you will clear the current weapon slot.
+"No Special System"
+By selecting this item, you will clear the current special system slot.
+"No Shield"
+By selecting this item, you will be removing all shields from the current design.
+"No Computer"
+By selecting this item, you will be removing all computers from the current design.
+Diplomacy Options
+Select the appropriate action given the current situation.
+Self Destruct
+This allows you to cause an explosion in your ship's drive, destroying the ship and damaging everything near it.
+Missile Warning
+Toggles on/off the missile warning panel that stops a ship's movement right before a missile or fighter impacts on the ship.
+Fast Animations
+Turning Fast Animations on will speed up combat resolution at the expense of  some graphics.
+Show Legal Moves
+Toggles on/off the tinting of all the squares to which the current ship can move.
+Show Shield Arcs
+Toggles on/off the display of lines showing the shield arcs for the current ship.
+Display Grid
+Toggles on/off the display of the square grid used to regulate movement and comabt.
+Hot Seat Game Setup
+This screen allows you to add human players to a hot seat game. While playing the game in hot-seat mode, each player takes turns playing against one another, and, perhaps, one or more computer-controlled opponenets. All players take turns using one computer which will moderate the results. After each player takes a "turn", a special menu will come up allowing you to  choose who goes next. The order of play is unimportant. 
+ Notice that to the right you will see colored squares. These denote the number of players currently added. When you are done, press  "BEGIN GAME".
+Add Human Player
+MULTIGM.LBX
+Press this button to add another human player. You will be taken through the race setup process, ie, selecting a race, race name, banner color, etc.
+Begin Game
+MULTIGM.LBX
+Press this button to start the game. Empty slots will be filled with  computer-controlled opponents.
+Cancel Hot Seat Setup
+MULTIGM.LBX
+Press this button to cancel hot seat setup and return to the main menu.
+PLAY MASTER OF ORION II ONLINE
+Combatting computerized Klackons is fine and dandy, but fighting  head-to-head with other humans on the Total Entertainment Network is the ultimate test of cosmic conquest. To play on TEN, you need to install  the TEN software. Go to the TEN folder in your Master of Orion directory  (default installation: c:\program files\microprose\orion2\TEN) and run the  SETUP.EXE program.
+TEN 2
+This will guide you through the TEN installation process.  After  installation, use the installed shortcut or double-click on the TEN.EXE  icon to launch TEN! 
+ ENJOY MASTER OF ORION II ON TEN!!
+Advanced City Planning
+Alien Management Center
+Capitol
+Confederation
+Federation
+Galactic Currency Exchange
+Galactic Unification
+Imperium
+Planetary Stock Exchange
+Planet Construction
+Colony Base
+Fighter Garrison
+Planetary Barrier Shield
+Planetary Flux Shield
+Planetary Gravity Generator
+Planetary Missile Base
+Ground Batteries
+Planetary Radiation Shield
+Planetary Supercomputer
+Spaceport
+Stellar Converter
+Artemis System Net
+Battlestation
+Dimensional Portal
+Doom Star Construction
+Jump Gate
+Star Base
+Star Fortress
+Star Gate
+Subspace Communications
+Tachyon Communications
+Warp Interdictor
+Achilles Targeting Unit
+Battle Pods
+Battle Scanner
+Colony Ship
+Cybertronic Computer
+Displacement Device
+Electronic Computer
+Energy Absorber
+Freighters
+Heavy Fighter Bays
+High Energy Focus
+Megafluxers
+Outpost Ship
+Moleculartronic Computer
+Neutron Scanner
+Optronic Computer
+Phase Shifter
+Positronic Computer
+Quantum Detonator
+Rangemaster Unit
+Space Scanner
+Scout Lab
+Sensors
+Shield Capacitors
+Space Academy
+Structural Analyzer
+Subspace Teleporter
+Survival Pods
+Titan Construction
+Tractor Beam
+Transporters
+Troop Pods
+Antimatter Drive
+Augmented Engines
+Deuterium Fuel Cells
+Extended Fuel Tanks
+Fusion Drive
+Hyper Drive
+Inertial Nullifier
+Inertial Stabilizer
+Interphased Drive
+Ion Drive
+Irridium Fuel Cells
+Nuclear Drive
+Standard Fuel Cells
+Thorium Fuel Cells
+Time Warp Facilitator
+Urridium Fuel Cells
+Anti-Missile Rockets
+Automated Repair Unit
+Class I Shield
+Class III Shield
+Class V Shield
+Class VII Shield
+Class X Shield
+Cloaking Device
+Damper Field
+Reinforced Hull
+ECM Jammer
+Hard Shields
+Heavy Armor
+Lightning Field
+Multi-Wave ECM Jammer
+Multi-Phased Shields
+Phasing Cloak
+Reflection Field
+Security Stations
+Stealth Field
+Titanium Armor
+Wide Area Jammer
+Anti-Matter Torpedoes
+Assault Shuttles
+Black Hole Generator
+Bomber Bays
+Death Ray
+Disrupter Cannon
+Fighter Bays
+Fusion Beam
+Gauss Cannon
+Graviton Beam
+Gyro Destabilizer
+Hyper-X Capacitors
+Ion Pulse Cannon
+Laser Cannon
+Mass Driver
+Mauler Device
+Neutron Blaster
+Particle Beam
+Phasor
+Plasma Cannon
+Plasma Torpedoes
+Plasma Web
+Proton Torpedoes
+Pulsar
+Spatial Compressor
+Stasis Field
+Stellar Converter
+Warp Dissipator
+Antimatter Bomb
+Dauntless Guidance System
+Emissions Guidance System
+Fast Missile Racks
+Fusion Bomb
+Merculite Missile
+Neutronium Bomb
+Nuclear Bomb
+Nuclear Missile
+Pulson Missile
+Zeon Missile
+Anti-Grav Harness
+Armor Barracks
+Battleoids
+Bio-Terminator
+Death Spores
+Fusion Rifle
+Laser Rifle
+Marine Barracks
+Personal Shield
+Phasor Rifle
+Plasma Rifle
+Powered Armor
+Pulse Rifle
+Transport
+Android Farmers
+Android Scientists
+Android Workers
+Astro University
+Cloning Center
+Evolutionary Mutation
+Holo Simulator
+Pleasure Dome
+Virtual Reality Network
+Automated Factories
+Biomorphic Fungi
+Deep Core Mining
+Food Replicators
+Hydroponic Farms
+Recyclotron
+Robotic Factory
+Robo-Miners
+Soil Enrichment
+Subterranean Farms
+Atmospheric Renewer
+Biospheres
+Nano Disassemblers
+Pollution Control Facility
+Terraforming
+Weather Control System
+Cyber-Security Link
+Neural Scanner
+Psionics
+Spy Networks
+Stealth Suit
+Telepathic Training
+Adamantium Armor
+Advanced Damage Control
+Autolab
+Core Waste Dumps
+Gaia Transformation
+Galactic Cybernet
+Heightened Intelligence
+Hyperspace Communications
+Microbiotics
+Microlite Construction
+Neutronium Armor
+Research Laboratory
+Tachyon Scanner
+Tritanium Armor
+Universal Antidote
+Xeno Psychology
+Xentronium Armor
+Zortrium Armor
+Hyper Biology
+Hyper Power
+Hyper Physics
+Hyper Construction
+Hyper Fields
+Hyper Chemistry
+Hyper Computers
+Hyper Sociology
+Create New Colonies
+Move Ships
+Move Colonists
+Assign Leaders
+Go to Antares
+Invade Planets
+Capture Ships
+Change Tax Rates
+Prevent Supernovas
+Cure a Plague
+End Pirate Activity
+Destroy a Comet
+Refit Ships
+Design Ships
+Get More Help
+Pick New Colonies
+No Modifications
+Heavy Mount
+Increased Damage
+Point Defense
+Auto Fire
+Armor Piercing
+Shield Piercing
+Continuous
+No Range Penalty
+Enveloping
+Heavily Armored
+Fast
+Evasive

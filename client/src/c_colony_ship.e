@@ -2,9 +2,9 @@ class C_COLONY_SHIP
 
 inherit
     COLONY_SHIP
-    redefine make, will_colonize end
+    redefine make, planet_to_colonize, owner end
     C_SHIP
-    redefine make, on_message, unserialize_from end
+    redefine make, on_message, unserialize_from, owner end
 
 creation make
 
@@ -17,6 +17,8 @@ feature {NONE} -- Creation
     end
 
 feature -- Redefined features
+
+    owner: like creator
 
     on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
         -- Action when `msg' arrives from `provider''s `service'
@@ -32,12 +34,12 @@ feature -- Redefined features
         s.get_integer
         if s.last_integer = -1 then
             s.get_integer
-            will_colonize := Void
+            planet_to_colonize := Void
         else
             star := server.galaxy.star_with_id(s.last_integer)
             check star /= Void end
             s.get_integer
-            will_colonize := star.planet_at(s.last_integer)
+            planet_to_colonize := star.planet_at(s.last_integer)
         end
     end
 
@@ -51,6 +53,6 @@ feature -- Redefined features
 
 feature -- Access
 
-    will_colonize: C_PLANET
+    planet_to_colonize: C_PLANET
 
 end -- class C_COLONY_SHIP

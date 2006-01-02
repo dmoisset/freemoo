@@ -209,6 +209,8 @@ feature {COLONY} -- Operations
         not colonies.has (colony.id)
     end
 
+feature -- Operations
+
     update_money(amount: INTEGER) is
     require money + amount >= 0
     do
@@ -223,8 +225,6 @@ feature {COLONY} -- Operations
     ensure
         research = old research + amount
     end
-
-feature -- Operations
 
     add_summary_message(msg: TURN_SUMMARY_ITEM) is
     require

@@ -5,7 +5,7 @@ inherit
         redefine
             status, players, galaxy, add_player, init_game,
             fleet_type, star_type, planet_type, save,
-            add_dialog, remove_dialog, make_evolver
+            add_dialog, remove_dialog, make_evolver, colonize_all
         end
     SERVER_ACCESS
     STORABLE
@@ -97,6 +97,98 @@ feature -- Operations
                 s.next
             end
             f.next
+        end
+    end
+
+    colonize_all is
+    local
+        fleet_back_reference: HASHED_DICTIONARY[FLEET, COLONY_SHIP]
+        candidates: HASHED_DICTIONARY[HASHED_SET[S_COLONIZER], S_PLANET]
+        colony_ship: S_COLONY_SHIP
+        colonizer: S_COLONIZER
+        f_it: ITERATOR[S_FLEET]
+        s_it: ITERATOR[S_SHIP]
+        p_it: ITERATOR[S_PLAYER]
+        cs_it: ITERATOR[S_COLONIZER]
+        colonizers: ITERATOR[HASHED_SET[S_COLONIZER]]
+    do
+        create candidates.make
+        create fleet_back_reference.make
+        -- First Build a list of candidates
+        -- (from fleets...)
+        from
+            f_it := galaxy.get_new_iterator_on_fleets
+        until
+            f_it.is_off
+        loop
+            from
+                s_it := f_it.item.get_new_iterator
+            until
+                s_it.is_off
+            loop
+                colony_ship ?= s_it.item
+                if colony_ship /= Void and then colony_ship.planet_to_colonize /= Void then
+                    if f_it.item.destination = Void and
+                       f_it.item.orbit_center /= Void and then
+                        colony_ship.planet_to_colonize.orbit_center = f_it.item.orbit_center then
+                        if not candidates.has(colony_ship.planet_to_colonize) then
+                            candidates.add(create {HASHED_SET[S_COLONIZER]}.make, colony_ship.planet_to_colonize)
+                        end
+                        candidates.reference_at(colony_ship.planet_to_colonize).add(colony_ship)
+                        fleet_back_reference.add(f_it.item, colony_ship)
+                    else
+                        colony_ship.set_planet_to_colonize(Void)
+                    end
+                end
+                s_it.next
+            end
+            f_it.next
+        end
+        -- (from colonies...)
+        from
+            p_it := players.get_new_iterator
+        until
+            p_it.is_off
+        loop
+            from
+                cs_it := p_it.item.colonies.get_new_iterator_on_items
+            until
+                cs_it.is_off
+            loop
+                if cs_it.item.planet_to_colonize /= Void then
+                    if not candidates.has(cs_it.item.planet_to_colonize) then
+                        candidates.add(create {HASHED_SET[S_COLONIZER]}.make, cs_it.item.planet_to_colonize)
+                    end
+                    candidates.reference_at(cs_it.item.planet_to_colonize).add(cs_it.item)
+                end
+                cs_it.next
+            end
+            p_it.next
+        end
+        -- Do Colonization or cancel draws
+        from
+            colonizers := candidates.get_new_iterator_on_items
+        until
+            colonizers.is_off
+        loop
+            if colonizers.item.count = 1 then
+                colonizer := colonizers.item.item(colonizers.item.lower)
+                colony_ship ?= colonizer
+                if colony_ship /= Void then
+                    fleet_back_reference.at(colony_ship).remove_ship(colony_ship)
+                end
+                colonizer.colonize
+            else
+                from
+                    cs_it := colonizers.item.get_new_iterator
+                until
+                    cs_it.is_off
+                loop
+                    cs_it.item.set_colonization_orders(False)
+                    cs_it.next
+                end
+            end
+            colonizers.next
         end
     end
 

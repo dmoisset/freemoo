@@ -21,18 +21,16 @@ creation make
 
 feature {NONE} -- Creation
 
-    make (w: WINDOW; where: RECTANGLE; f: C_FLEET; id: INTEGER) is
+    make (w: WINDOW; where: RECTANGLE; new_star: C_STAR; id: INTEGER) is
     require
-        f /= Void
-        f.orbit_center /= Void
+        new_star /= Void
     local
         i: IMAGE_FMI
         p: MOUSE_POINTER
     do
-        fleet := f
         dialog_id := id
         make_modal(w, where)
-        make_widgets (f.orbit_center, server.game_status, server.galaxy)
+        make_widgets (new_star, server.game_status, server.galaxy)
         close_button.set_click_handler (agent cancel_selection)
         create i.make_from_file ("client/star-view/colonize-pointer.fmi")
         create p.make (i, 4, 24)
@@ -76,10 +74,8 @@ feature {NONE} -- Callbacks
             name_label.set_text("Colony ship arriving... ")
         end
     end
-    
-feature {NONE} -- Internal
 
-    fleet: C_FLEET
+feature {NONE} -- Internal
 
     dialog_id: INTEGER
 

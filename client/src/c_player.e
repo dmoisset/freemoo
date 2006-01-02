@@ -189,7 +189,6 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         count, kind: INTEGER
         event: TURN_SUMMARY_ITEM
     do
-        print(colonies.item(colonies.lower).id.to_string)
         create u.start(msg)
         u.get_integer
         count := u.last_integer

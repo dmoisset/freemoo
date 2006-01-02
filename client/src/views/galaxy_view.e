@@ -97,21 +97,19 @@ feature -- Operations
         end
     end
 
-    select_planet_for_colonization (id: INTEGER; f: C_FLEET) is
-        -- Select a planet for `f' to colonize
+    select_planet_for_colonization (id: INTEGER; s: C_STAR) is
+        -- Select a planet for to colonize.  If 
         -- Answer should return to dialog `id'
     require
-        f /= Void
-        f.orbit_center /= Void
-        f.can_colonize
-        f.orbit_center.has_info implies f.orbit_center.has_colonizable_planet
+        s /= Void
+        s.has_info implies s.has_colonizable_planet
     local
         r: RECTANGLE
     do
         r.set_with_size((width - star_window_width) // 2,
                         (height - star_window_height) // 2,
                         star_window_width, star_window_height)
-        create colonization_dialog.make(Current, r, f, id)
+        create colonization_dialog.make(Current, r, s, id)
     end
 
     select_target (id: INTEGER; f: C_FLEET) is

@@ -3,8 +3,13 @@ class S_COLONY
 inherit
     COLONY
     redefine
-        owner, location, shipyard, ship_factory,
-        new_turn, set_producing, set_task, populator_type, buy
+        owner, location, shipyard, ship_factory, set_id,
+        new_turn, set_producing, set_task, populator_type, buy,
+        planet_to_colonize
+    end
+    S_COLONIZER
+    redefine
+        owner, set_id, planet_to_colonize
     end
     STORABLE
     rename
@@ -67,6 +72,8 @@ feature -- Service related
 
 feature -- Redefined features
 
+    planet_to_colonize: S_PLANET
+
     location: S_PLANET
 
     owner: S_PLAYER
@@ -102,6 +109,11 @@ feature -- Redefined features
     do
         Precursor
         update_clients
+    end
+
+    set_id(new_id: INTEGER) is
+    do
+        Precursor{COLONY}(new_id)
     end
 
 feature -- Operations

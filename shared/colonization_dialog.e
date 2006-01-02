@@ -4,11 +4,11 @@ inherit
     FM_DIALOG
 
 create
-    make
+    make_for_fleet, make_for_colony_base
 
 feature {NONE} -- Creation
 
-    make (f: FLEET) is
+    make_for_fleet (f: FLEET) is
     require
         f /= Void
         f.can_colonize
@@ -16,14 +16,24 @@ feature {NONE} -- Creation
         f.orbit_center.has_colonizable_planet
     do
         fleet := f
+        star := f.orbit_center
+        player := f.owner
+    end
+
+    make_for_colony_base (c: COLONY) is
+    require
+        c /= Void
+        c.has_colonization_orders
+        c.location.orbit_center.has_colonizable_planet
+    do
+        colony := c
+        star := c.location.orbit_center
+        player := c.owner
     end
 
 feature -- Access
 
-    player: PLAYER is
-    do
-        Result := fleet.owner
-    end
+    player: PLAYER
 
     kind: INTEGER is
     local
@@ -37,7 +47,7 @@ feature -- Access
         s: SERIALIZER2
     do
         create s.make
-        s.add_integer (fleet.id)
+        s.add_integer (star.id)
         Result := s.serialized_form
     end
 
@@ -53,22 +63,37 @@ feature -- Operations
         create u.start (message)
         u.get_integer
         orbit := u.last_integer
-        if orbit.in_range (1, fleet.orbit_center.Max_planets) then
-            colonizer := fleet.get_colony_ship
-            planet := fleet.orbit_center.planet_at (orbit)
+        if orbit.in_range (1, star.Max_planets) then
+            planet := star.planet_at (orbit)
             if planet /=  Void and then planet.is_colonizable then
-                colonizer.set_will_colonize (planet)
+                if fleet /= Void then
+                    colonizer := fleet.get_colony_ship
+                    colonizer.set_planet_to_colonize (planet)
+                else
+                    colony.set_planet_to_colonize(planet)
+                end
             else
                 print ("Invalid colonization request. Ignored%N")
+            end
+        else
+            -- Give refund if this was a colony base
+            if colony /= Void then
+                player.update_money(100)
             end
         end
         close
     end
-    
+
 feature {NONE} -- Representation
+
+    colony: COLONY
 
     fleet: FLEET
 
+    star: STAR
+
 invariant
-    fleet /= Void
+
+    fleet /= Void xor colony /= Void
+
 end -- class COLONIZATION_DIALOG

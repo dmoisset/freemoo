@@ -117,6 +117,8 @@ feature -- Operations
             last_productive.set_farming(2, 0)
             last_productive.set_description("Modifies a planet's weather patterns to create a more stable farming environment. Food production is increased by +2 per farmer.")
             last_built := last_productive
+        when product_colony_base then
+            create {CONSTRUCTION_COLONY_BASE}last_built.make
         end
     ensure
         last_built.id = id

@@ -4,17 +4,26 @@ inherit
     S_SHIP
     redefine
         creator, make, get_class, make_from_storage, fields_array,
-        dependents, subscription_message, serialize_on
+        dependents, subscription_message, serialize_on, owner
+    end
+    S_COLONIZER
+    redefine
+        owner, planet_to_colonize, set_planet_to_colonize, colonize
     end
     COLONY_SHIP
     undefine
         set_size, set_picture
-    redefine creator, make, will_colonize, set_will_colonize, colonize end
+    redefine
+        creator, make, planet_to_colonize, set_planet_to_colonize, owner,
+        colonize
+    end
     SERVER_ACCESS
 
 creation make
 
 feature
+
+    owner: like creator
 
     creator: S_PLAYER
 
@@ -34,9 +43,9 @@ feature
     do
         !!s.make
         s.add_tuple(<<is_stealthy.box, can_colonize.box>>)
-        if will_colonize /= Void then
-            s.add_tuple(<<will_colonize.orbit_center.id.box,
-                will_colonize.orbit.box>>)
+        if planet_to_colonize /= Void then
+            s.add_tuple(<<planet_to_colonize.orbit_center.id.box,
+                planet_to_colonize.orbit.box>>)
         else
             s.add_tuple(<<(-1).box, (0).box>>)
         end
@@ -45,21 +54,17 @@ feature
 
 feature -- Redefined features
 
-    will_colonize: S_PLANET
-
-    set_will_colonize(p: like will_colonize) is
-    do
-        Precursor(p)
-        update_clients
-    end
+    planet_to_colonize: S_PLANET
 
     colonize is
-    local
-        c: S_COLONY
     do
-        c := will_colonize.create_colony(owner)
-        will_colonize := Void
-        can_colonize := True
+        Precursor{COLONY_SHIP}
+    end
+
+    set_planet_to_colonize(p: like planet_to_colonize) is
+    do
+        Precursor{COLONY_SHIP}(p)
+        update_clients
     end
 
     serialize_on (s: SERIALIZER2) is
@@ -74,13 +79,13 @@ feature -- Saving
     fields_array: ARRAY[TUPLE[STRING, ANY]] is
     do
         Result := Precursor
-        Result.add_last(["will_colonize", will_colonize])
+        Result.add_last(["planet_to_colonize", planet_to_colonize])
         Result.add_last(["can_colonize", can_colonize.box])
     end
 
     dependents: ITERATOR[STORABLE] is
     do
-        Result := (<<creator, owner, will_colonize>>).get_new_iterator
+        Result := (<<creator, owner, planet_to_colonize>>).get_new_iterator
     end
 
 
@@ -92,12 +97,13 @@ feature -- Saving
         until elems.is_off loop
             Precursor(elems)
             if not elems.is_off then
-                if elems.item.first.is_equal("will_colonize") then
-                    will_colonize ?= elems.item.second
+                if elems.item.first.is_equal("planet_to_colonize") then
+                    planet_to_colonize ?= elems.item.second
                 end
                 if elems.item.first.is_equal("can_colonize") then
                     b ?= elems.item.second
                     can_colonize := b.item
+                    has_colonization_orders := not can_colonize
                 end
             end
             elems.next
@@ -105,5 +111,5 @@ feature -- Saving
     end
 
 invariant
-    can_colonize = (will_colonize = Void)
+    can_colonize = (planet_to_colonize = Void)
 end -- class S_COLONY_SHIP

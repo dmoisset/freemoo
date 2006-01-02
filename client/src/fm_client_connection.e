@@ -321,6 +321,7 @@ feature -- Redefined features
     end
 
 invariant
+
     is_joining implies not has_joined
 
 end -- class FM_CLIENT_CONNECTION

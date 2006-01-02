@@ -5,6 +5,8 @@ inherit
     redefine set_id end
     GETTEXT
     PRODUCTION_CONSTANTS
+    COLONIZER
+    redefine owner end
 
 creation make
 
@@ -298,12 +300,11 @@ feature -- Operations
         new_populator: like populator_type
     do
         recalculate_production
-        if food_starvation > 0 or industry_starvation > 0 then
+        new_population := population + population_growth
+        if (food_starvation > 0 or industry_starvation > 0) and new_population > 1000 then
             owner.add_summary_message(create {TURN_SUMMARY_ITEM_STARVATION}.make(id,
                  food_starvation, industry_starvation))
-            print ("I'm starving! (id: " + id.to_string + " owner: " + owner.id.to_string + " color: " + owner.color.to_string + ")%N")
         end
-        new_population := population + population_growth
         from
             -- First create population_units and then add to maintain class
             -- invariants in colony and population_unit
@@ -470,7 +471,7 @@ feature -- Combat
     offensive_power (f: FLEET): INTEGER is
         -- Offensive power, assisted by `f'
     do
-        if f /= Void then 
+        if f /= Void then
             Result := f.offensive_power
         end
         Result := Result + 3

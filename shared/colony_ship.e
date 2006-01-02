@@ -3,8 +3,11 @@ class COLONY_SHIP
 
 inherit
     SHIP
-        redefine make end
-
+        redefine owner, make end
+    COLONIZER
+        redefine
+            owner, set_planet_to_colonize, colonize
+        end
 creation
     make
 
@@ -25,8 +28,7 @@ feature {NONE} -- Creation
 
 feature -- Access
 
-    will_colonize: PLANET
-        -- Planet on which we shall establish a colony at the end of the turn
+    owner: like creator
 
     as_colony_ship: COLONY_SHIP is
     do
@@ -35,26 +37,16 @@ feature -- Access
 
 feature -- Operations
 
-    set_will_colonize(p: like will_colonize) is
-    require
-        p /= Void implies p.is_colonizable
+    set_planet_to_colonize(p: like planet_to_colonize) is
     do
-        will_colonize := p
-        can_colonize := will_colonize = Void
-    ensure
-        will_colonize = p
+        Precursor(p)
+        can_colonize := planet_to_colonize = Void
     end
 
     colonize is
-    require
-        will_colonize /= Void
-        will_colonize.is_colonizable
-    local
-        c: COLONY
     do
-        c := will_colonize.create_colony(owner)
-        will_colonize := Void
+        Precursor
         can_colonize := True
-    end    
+    end
 
 end -- class COLONY_SHIP

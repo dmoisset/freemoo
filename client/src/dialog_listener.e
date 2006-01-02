@@ -18,7 +18,7 @@ feature -- Signals
 
     on_dialog_addition: SIGNAL_1 [TUPLE[INTEGER, INTEGER, STRING]]
         -- arguments: id, kind, info
-    
+
     on_dialog_removal: SIGNAL_1 [INTEGER]
         -- arguments: id
 

@@ -299,16 +299,30 @@ feature {NONE} -- Internal
         new_turn_step = 2
     local
         f: ITERATOR [FLEET]
+        p: ITERATOR [PLAYER]
+        c: ITERATOR [COLONY]
     do
         -- Bombardment/ground combat
         -- After this:
         -- ask where to colonize (dialogs)
+        from p := players.get_new_iterator until p.is_off loop
+            from c := p.item.colonies.get_new_iterator_on_items until c.is_off loop
+                if c.item.has_colonization_orders and then
+                   c.item.location.orbit_center.has_colonizable_planet
+                then
+                    add_dialog (create {COLONIZATION_DIALOG}.make_for_colony_base(c.item))
+                    c.item.set_colonization_orders (False)
+                end
+                c.next
+            end
+            p.next
+        end
         from f := galaxy.get_new_iterator_on_fleets until f.is_off loop
             if
                 f.item.has_colonization_orders and then
                 f.item.orbit_center.has_colonizable_planet
             then
-                add_dialog (create {COLONIZATION_DIALOG}.make(f.item))
+                add_dialog (create {COLONIZATION_DIALOG}.make_for_fleet(f.item))
                 f.item.cancel_colonize_order
             end
             f.next
@@ -377,69 +391,7 @@ feature {NONE} -- Internal
 
     colonize_all is
         -- Colonization
-    local
---FIXME: S_stuff here?!
-        candidates: HASHED_DICTIONARY[HASHED_SET[S_COLONY_SHIP], S_PLANET]
-        fleet_back_reference: HASHED_DICTIONARY[FLEET, COLONY_SHIP]
-        colony_ship: S_COLONY_SHIP
-        f_it: ITERATOR[FLEET]
-        s_it: ITERATOR[SHIP]
-        cs_it: ITERATOR[COLONY_SHIP]
-        ships: ITERATOR[HASHED_SET[S_COLONY_SHIP]]
     do
-        create candidates.make
-        create fleet_back_reference.make
-        -- First Build a list of candidates
-        from
-            f_it := galaxy.get_new_iterator_on_fleets
-        until
-            f_it.is_off
-        loop
-            from
-                s_it := f_it.item.get_new_iterator
-            until
-                s_it.is_off
-            loop
-                colony_ship ?= s_it.item
-                if colony_ship /= Void and then colony_ship.will_colonize /= Void then
-                    if f_it.item.destination = Void and
-                       f_it.item.orbit_center /= Void and then
-                       colony_ship.will_colonize.orbit_center = f_it.item.orbit_center then
-                        if not candidates.has(colony_ship.will_colonize) then
-                            candidates.add(create {HASHED_SET[S_COLONY_SHIP]}.make, colony_ship.will_colonize)
-                        end
-                        candidates.reference_at(colony_ship.will_colonize).add(colony_ship)
-                        fleet_back_reference.add(f_it.item, colony_ship)
-                    else
-                        colony_ship.set_will_colonize(Void)
-                    end
-                end
-                s_it.next
-            end
-            f_it.next
-        end
-        -- Do Colonization or cancel draws
-        from
-            ships := candidates.get_new_iterator_on_items
-        until
-            ships.is_off
-        loop
-            if ships.item.count = 1 then
-                colony_ship := ships.item.item(ships.item.lower)
-                colony_ship.colonize
-                fleet_back_reference.at(colony_ship).remove_ship(colony_ship)
-            else
-                from
-                    cs_it := ships.item.get_new_iterator
-                until
-                    cs_it.is_off
-                loop
-                    cs_it.item.set_will_colonize(Void)
-                    cs_it.next
-                end
-            end
-            ships.next
-        end
     end
 
     move_fleets is

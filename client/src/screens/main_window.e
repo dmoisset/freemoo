@@ -42,12 +42,12 @@ feature {NONE} -- Creation
     on_colonize_dialog (id: INTEGER; dinfo: STRING) is
     local
         u: UNSERIALIZER
-        f: C_FLEET
+        s: C_STAR
     do
         create u.start (dinfo)
         u.get_integer
-        f := server.galaxy.fleet_with_id (u.last_integer)
-        galaxy.select_planet_for_colonization (id, f)
+        s := server.galaxy.star_with_id (u.last_integer)
+        galaxy.select_planet_for_colonization (id, s)
     end
 
     on_engagement_dialog (id: INTEGER; dinfo: STRING) is
