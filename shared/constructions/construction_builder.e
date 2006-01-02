@@ -117,8 +117,24 @@ feature -- Operations
             last_productive.set_farming(2, 0)
             last_productive.set_description("Modifies a planet's weather patterns to create a more stable farming environment. Food production is increased by +2 per farmer.")
             last_built := last_productive
+        when product_spaceport then
+            create last_productive.make(l("Spaceport"), product_spaceport)
+            last_productive.set_cost(80)
+            last_productive.set_maintenance(1)
+            last_productive.set_money(50)
+            last_productive.set_description("Site for commercial transactions, increasing the money generation of a colony by +50%%.")
+            last_built := last_productive
+        when product_stock_exchange then
+            create last_productive.make(l("Planetary Stock Exchange"), product_stock_exchange)
+            last_productive.set_cost(150)
+            last_productive.set_maintenance(2)
+            last_productive.set_money(100)
+            last_productive.set_description("Increases the revenues earned on a planet by +100%%.")
+            last_built := last_productive
         when product_colony_base then
             create {CONSTRUCTION_COLONY_BASE}last_built.make
+        when product_gravity_generator then
+            create {CONSTRUCTION_GRAVITY_GENERATOR}last_built.make
         end
     ensure
         last_built.id = id

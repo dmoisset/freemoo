@@ -280,7 +280,7 @@ feature -- Operations
             const_it.is_off
         loop
             const_it.item.produce_fixed(Current)
-            money.add(-const_it.item.maintenance(Current), l("Maintenance"))
+            money.add(-(const_it.item.maintenance(Current) * maintenance_factor), l("Maintenance"))
             const_it.next
         end
         -- Generate money in a second loop, so's that surplus industry
@@ -290,6 +290,15 @@ feature -- Operations
         until pop_it.is_off loop
             pop_it.item.generate_money
             pop_it.next
+        end
+        -- Buildings' money
+        from
+            const_it := constructions.get_new_iterator_on_items
+        until
+            const_it.is_off
+        loop
+            const_it.item.generate_money(Current)
+            const_it.next
         end
     end
 
@@ -343,7 +352,17 @@ feature -- Operations
 
     remove is
         -- Remove self from the game
+    local
+        cit: ITERATOR[CONSTRUCTION]
     do
+        from
+            cit := constructions.get_new_iterator_on_items
+        until
+            cit.is_off
+        loop
+            cit.item.take_down(Current)
+            cit.next
+        end
         location.set_colony (Void)
         owner.remove_colony(Current)
     ensure
@@ -540,6 +559,13 @@ feature {CONSTRUCTION} -- Special cases
 
     extra_max_population: INTEGER
         -- Increased maximum population for this colony
+
+    set_pregrav is
+    do
+        pregrav := location.gravity
+    ensure
+        pregrav = location.gravity
+    end
 
 invariant
     shipyard /= Void implies shipyard.owner = owner

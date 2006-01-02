@@ -50,7 +50,9 @@ feature {NONE} -- Auxiliar
                     product_colony_ship, product_automated_factory,
                     product_research_laboratory,
                     product_astro_university, product_weather_controller,
-                    product_hidroponic_farm, product_colony_base>>
+                    product_hidroponic_farm, product_colony_base,
+                    product_spaceport, product_stock_exchange,
+                    product_gravity_generator>>
     end
 
     starship: STARSHIP

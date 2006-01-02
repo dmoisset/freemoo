@@ -24,6 +24,7 @@ feature {NONE} -- Signal callbacks
         colony /= Void
     local
         x: ARRAY[INTEGER]
+        new_children: ARRAY[ARRAY[WINDOW]]
         button: BUTTON_IMAGE
         raceicon: IMAGE
         child: ITERATOR[WINDOW]
@@ -40,6 +41,10 @@ feature {NONE} -- Signal callbacks
             child.next
         end
         create x.make(0, 3)
+        create new_children.make(0, 2)
+        new_children.put(create {ARRAY[WINDOW]}.make(1, 0), 0)
+        new_children.put(create {ARRAY[WINDOW]}.make(1, 0), 1)
+        new_children.put(create {ARRAY[WINDOW]}.make(1, 0), 2)
         -- Add populators again
         from
             pop := colony.populators.get_new_iterator_on_items
@@ -53,9 +58,13 @@ feature {NONE} -- Signal callbacks
                    raceicon, raceicon, raceicon)
             button.set_click_handler(agent switch_task(pop.item))
             x.put(x @ task + icon_width, task)
+            new_children.item(task).add_last(button)
             -- To Do: Consider hostages!
             pop.next
         end
+        readjust_positions(new_children @ 0, x @ 0)
+        readjust_positions(new_children @ 1, x @ 1)
+        readjust_positions(new_children @ 2, x @ 2)
     end
 
 feature {NONE} -- Callbacks

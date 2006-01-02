@@ -32,6 +32,15 @@ feature -- Access
 
     design: STARSHIP
 
+    produce_proportional, produce_fixed, clean_up_pollution, take_down,
+    generate_money(c: like colony_type) is
+    do
+    end
+
+    maintenance(c: like colony_type): INTEGER is
+    do
+    end
+
 feature -- Operations
 
     build(c: like colony_type) is

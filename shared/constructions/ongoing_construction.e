@@ -31,6 +31,15 @@ feature -- Defined features
         False
     end
 
+    produce_fixed, produce_proportional, generate_money,
+    clean_up_pollution(c: like colony_type) is
+    do
+    end
+
+    cost, maintenance(c: like colony_type): INTEGER is
+    do
+    end
+
     is_buyable: BOOLEAN is
     do
     end

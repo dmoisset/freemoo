@@ -32,6 +32,29 @@ feature -- Operations
         my_connect_identifier.call([])
     end
 
+feature {NONE} -- Auxiliar
+
+    readjust_positions(imgs: ARRAY[WINDOW]; xpos: INTEGER) is
+    local
+        factor: DOUBLE
+        r: RECTANGLE
+        it: ITERATOR[WINDOW]
+    do
+        if xpos > width then
+            factor := width / xpos
+            from
+                it := imgs.get_new_iterator
+            until
+                it.is_off
+            loop
+                r := it.item.location
+                r.set_with_size((r.x * factor).rounded, r.y, r.width, r.height)
+                it.item.move(r)
+                it.next
+            end
+        end
+    end
+
 invariant
 
     my_connect_identifier /= Void

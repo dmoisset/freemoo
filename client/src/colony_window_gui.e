@@ -29,7 +29,7 @@ feature {NONE} -- Creation
         r.set_with_size(22, 210, 184, 230)
         new_possible_constructions (r)
 
-        r.set_with_size(328, 78, 200, 100)
+        r.set_with_size(328, 78, 168, 100)
         new_populators(r)
 
         r.set_with_size(138, 47, 168, 140)

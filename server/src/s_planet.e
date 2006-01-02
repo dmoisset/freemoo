@@ -2,7 +2,7 @@ class S_PLANET
 
 inherit
     PLANET
-    redefine colony, orbit_center, create_colony end
+    redefine colony, orbit_center, create_colony, set_gravity end
     STORABLE
     redefine dependents, primary_keys end
 
@@ -20,6 +20,12 @@ feature
     do
         -- Result := Precursor(p) -- We don't do this because SE chokes
         create Result.make (Current, p)
+    end
+
+    set_gravity(new_grav: INTEGER) is
+    do
+        Precursor(new_grav)
+        orbit_center.update_clients
     end
 
 feature -- Saving

@@ -2,10 +2,6 @@ class CONSTRUCTION_COLONY_BASE
 
 inherit
     CONSTRUCTION
-    redefine
-        can_be_built_on, cost, build, take_down, name
-    end
-    PRODUCTION_CONSTANTS
     GETTEXT
 
 create
@@ -32,6 +28,15 @@ feature
                       p.item.colony = Void
             p.next
         end
+    end
+
+    produce_proportional, produce_fixed, generate_money,
+    clean_up_pollution(c: like colony_type) is
+    do
+    end
+
+    maintenance(c: like colony_type): INTEGER is
+    do
     end
 
     cost(c: like colony_type): INTEGER is

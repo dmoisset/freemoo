@@ -16,25 +16,25 @@ feature -- Access
 
     name: STRING is
         -- Canonical name of the construction
-    do
+    deferred
     end
 
     can_be_built_on(c: like colony_type): BOOLEAN is
         -- Can this construction be built on `c'?
     require c /= Void
-    do
+    deferred
     end
 
     cost(c: like colony_type): INTEGER is
         -- Industry needed to build this construction at `c'
     require c /= Void
-    do
+    deferred
     end
 
     maintenance(c: like colony_type): INTEGER is
         -- Maintenance cost per turn
     require c /= Void
-    do
+    deferred
     end
 
     is_buyable: BOOLEAN is
@@ -48,34 +48,39 @@ feature -- Access
 
 feature -- Operations
 
+    generate_money(c: like colony_type) is
+        -- Generate money on `c'
+    deferred
+    end
+
     produce_proportional(c: like colony_type) is
         -- Increase production on `c' proportionally to `c''s population
     require c /= Void
-    do
+    deferred
     end
 
     produce_fixed(c: like colony_type) is
         -- Increase production on `c' by a fixed amount
     require c /= Void
-    do
+    deferred
     end
 
     clean_up_pollution(c: like colony_type) is
         -- Reduce pollution penalty on colony `c'
     require c /= Void
-    do
+    deferred
     end
 
     build(c: like colony_type) is
         -- Do whatever this construction does when it is built
     require c /= Void
-    do
+    deferred
     end
 
     take_down(c: like colony_type) is
         -- Undo whatever this construction did when built
     require c /= Void
-    do
+    deferred
     end
 
     set_description(newdescription: STRING) is

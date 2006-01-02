@@ -8,9 +8,9 @@ class BASIC_PRODUCTIVE_CONSTRUCTION
 inherit
     CONSTRUCTION
     redefine
-        can_be_built_on, cost, maintenance, produce_proportional,
-        produce_fixed, build, take_down, name
+        name
     end
+    GETTEXT
 
 creation
     make
@@ -36,6 +36,12 @@ feature -- Access
 
 feature -- Operations
 
+    generate_money(c: like colony_type) is
+    do
+        c.money.add(((c.money.total - c.money.get_amount_due_to(l("Maintenance")))
+                     * money_percentage) / 100, name)
+    end
+
     produce_proportional(c: like colony_type) is
     do
         c.farming.add(farming_proportional * (c.census @ task_farming), name)
@@ -43,11 +49,15 @@ feature -- Operations
         c.science.add(science_proportional * (c.census @ task_science), name)
     end
 
-    produce_fixed(c: COLONY) is
+    produce_fixed(c: like colony_type) is
     do
         c.farming.add(farming_fixed, name)
         c.industry.add(industry_fixed, name)
         c.science.add(science_fixed, name)
+    end
+
+    clean_up_pollution(c: like colony_type) is
+    do
     end
 
     build(c: COLONY) is
@@ -63,6 +73,7 @@ feature -- Operations
 feature -- Configuration
 
     set_farming(proportional, fixed: INTEGER) is
+        -- Set farming generation values
     require
         proportional >= 0
         fixed >= 0
@@ -76,6 +87,7 @@ feature -- Configuration
 
 
     set_industry(proportional, fixed: INTEGER) is
+        -- Set industry generation values
     require
         proportional >= 0
         fixed >= 0
@@ -89,6 +101,7 @@ feature -- Configuration
 
 
     set_science(proportional, fixed: INTEGER) is
+        -- Set science generation values
     require
         proportional >= 0
         fixed >= 0
@@ -98,6 +111,14 @@ feature -- Configuration
     ensure
         science_proportional = proportional
         science_fixed = fixed
+    end
+
+    set_money(new_money: INTEGER) is
+        -- Set money generation factor to `new_money'
+    do
+        money_percentage := new_money
+    ensure
+        money_percentage = new_money
     end
 
     set_cost(newcost: INTEGER) is
@@ -129,5 +150,6 @@ feature {NONE} -- Implementation
     farming_proportional, farming_fixed,
     industry_proportional, industry_fixed,
     science_proportional, science_fixed: INTEGER
+    money_percentage: INTEGER
 
 end -- BASIC_PRODUCTIVE_CONSTRUCTION
