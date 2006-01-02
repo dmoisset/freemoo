@@ -1,4 +1,4 @@
-class MONEY_VIEW
+class RESEARCH_VIEW
 
 inherit
     WINDOW
@@ -18,8 +18,8 @@ feature {NONE} -- Creation
         window_make(w, where)
         player := p
         r.set_with_size(0, 0, location.width, row_height)
-        create total.make(Current, r, "")
-        total.set_font (outlined_font)
+        create turns.make(Current, r, "")
+        turns.set_font (outlined_font)
         r.set_with_size(0, row_height, location.width, row_height)
         create delta.make(Current, r, "")
         delta.set_font (outlined_font)
@@ -31,22 +31,23 @@ feature -- Operations
 
     update is
     local
-        sign: STRING
+        missing: INTEGER
     do
-        total.set_text(player.money.to_string + " BC")
-        if player.money_variation > 0 then
-            sign := "+"
+        if player.research_variation > 0 then
+            missing := (250 - player.research) // player.research_variation
+                -- Imagine we're researching a 250RP item just for now
+            turns.set_text("~" + missing.to_string + " turns")
         else
-            sign := ""
+            turns.set_text("Never")
         end
-        delta.set_text(sign + player.money_variation.to_string + " BC")
+        delta.set_text(player.research_variation.to_string + " RP")
     end
 
 feature {NONE} -- Representation
 
     player: C_PLAYER
 
-    total, delta: LABEL
+    turns, delta: LABEL
 
     row_height: INTEGER is 14
 
@@ -55,4 +56,4 @@ feature {NONE} -- Representation
         create {BITMAP_FONT_FMI}Result.make ("client/gui/outlined-font.fmi")
     end
 
-end -- class MONEY_VIEW
+end -- class RESEARCH_VIEW

@@ -34,7 +34,7 @@ feature -- Access
         industry := u.last_integer
     end
 
-feature {NONE} -- Representation
+feature -- Representation
 
     colony_id: INTEGER
 

@@ -49,6 +49,8 @@ feature -- Access
 
     money: INTEGER
 
+    research: INTEGER
+
     race: RACE
         -- The race this player rules
 
@@ -215,6 +217,13 @@ feature {COLONY} -- Operations
         money = old money + amount
     end
 
+    update_research(amount: INTEGER) is
+    do
+        research := research + amount
+    ensure
+        research = old research + amount
+    end
+
 feature -- Operations
 
     add_summary_message(msg: TURN_SUMMARY_ITEM) is
@@ -236,7 +245,7 @@ feature {MAP_GENERATOR, FLEET}
         has_visited_star.add (star)
     end
 
-feature {NONE} -- Internal
+feature {PLAYER} -- Internal
 
     turn_summary: ARRAY[TURN_SUMMARY_ITEM]
 

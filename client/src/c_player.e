@@ -19,7 +19,7 @@ feature {NONE} -- Creation
     do
         make_unique_id
         name := clone (new_name)
-        create money_changed.make
+        create colonies_changed.make
         create turn_summary_changed.make
         player_make
     ensure
@@ -81,7 +81,9 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         ruler_name := s.last_string
         s.get_integer
         money := s.last_integer
-        money_changed.emit(Current)
+        s.get_integer
+        research := s.last_integer
+        colonies_changed.emit(Current)
         s.get_real
         fuel_range := s.last_real
         s.get_integer
@@ -144,7 +146,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 s.get_integer
                 if planet.colony = Void then
                     create colony.make(planet, Current)
-                    colony.changed.connect(agent update_money_variation)
+                    colony.changed.connect(agent update_colony_variation)
                     colony.set_id(s.last_integer)
                 else
                     colony := planet.colony
@@ -187,6 +189,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         count, kind: INTEGER
         event: TURN_SUMMARY_ITEM
     do
+        print(colonies.item(colonies.lower).id.to_string)
         create u.start(msg)
         u.get_integer
         count := u.last_integer
@@ -214,31 +217,35 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
 
 feature -- Callbacks
 
-    update_money_variation is
+    update_colony_variation is
     local
         col_it: ITERATOR[like colony_type]
     do
         from
             money_variation := 0
+            research_variation := 0
             col_it := colonies.get_new_iterator_on_items
         until
             col_it.is_off
         loop
             money_variation := money_variation + col_it.item.money.total.rounded
+            research_variation := research_variation + col_it.item.science.total.rounded
             col_it.next
         end
-        money_changed.emit(Current)
+        colonies_changed.emit(Current)
     end
 
 feature -- Signals
 
-    money_changed: SIGNAL_1[C_PLAYER]
+    colonies_changed: SIGNAL_1[C_PLAYER]
 
     turn_summary_changed: SIGNAL_1[C_PLAYER]
 
 feature -- Access
 
     money_variation: INTEGER
+
+    research_variation: INTEGER
 
     connected: BOOLEAN
         -- Player has a connection to the server

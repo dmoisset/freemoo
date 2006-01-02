@@ -9,7 +9,8 @@ inherit
     redefine
         add_to_known_list, add_to_visited_list, colony_type,
         star_type, race, set_ruler_name, set_race, set_color, add_colony,
-        remove_colony, known_constructions, update_money, set_state
+        remove_colony, known_constructions, update_money, update_research,
+        set_state
     select id end
     STORABLE
     rename
@@ -147,6 +148,7 @@ feature -- Redefined features
             if serv_id.is_integer and then serv_id.to_integer = id then
                 s.add_string(ruler_name)
                 s.add_integer(money)
+                s.add_integer(research)
                 s.add_real(fuel_range)
                 s.add_integer (knows_star.count)
                 s.add_integer (has_visited_star.count)
@@ -253,6 +255,12 @@ feature {COLONY} -- Redefined features
         update_clients
     end
 
+    update_research(amount: INTEGER) is
+    do
+        Precursor(amount)
+        update_clients
+    end
+
 feature -- Operations
 
     copy(other: like Current) is
@@ -262,6 +270,7 @@ feature -- Operations
         create known_constructions.make -- Known constructions aren't copied
         knows_star := clone(other.knows_star)
         has_visited_star := clone(other.has_visited_star)
+        turn_summary := clone(other.turn_summary)
     end
 
 feature {STORAGE} -- Saving
@@ -277,6 +286,7 @@ feature {STORAGE} -- Saving
         create a.make(1, 0)
         a.add_last(["ruler_name", ruler_name])
         a.add_last(["money", money.box])
+        a.add_last(["research", money.box])
         a.add_last(["color", color.box])
         a.add_last(["state", state.box])
         a.add_last(["password", password])
@@ -372,6 +382,9 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("money") then
                 i ?= elems.item.second
                 money := i.item
+            elseif elems.item.first.is_equal("research") then
+                i ?= elems.item.second
+                research := i.item
             elseif elems.item.first.is_equal("password") then
                 password ?= elems.item.second
             elseif elems.item.first.is_equal("color") then

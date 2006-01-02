@@ -96,6 +96,11 @@ feature {NONE} -- Widgets
         create money.make(Current, where, server.player)
     end
 
+    new_research(where: RECTANGLE) is
+    do
+        create research.make(Current, where, server.player)
+    end
+
     new_turn_summary is
     do
         create turn_summary_window.make(Current, server.player)

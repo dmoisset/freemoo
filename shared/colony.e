@@ -301,6 +301,7 @@ feature -- Operations
         if food_starvation > 0 or industry_starvation > 0 then
             owner.add_summary_message(create {TURN_SUMMARY_ITEM_STARVATION}.make(id,
                  food_starvation, industry_starvation))
+            print ("I'm starving! (id: " + id.to_string + " owner: " + owner.id.to_string + " color: " + owner.color.to_string + ")%N")
         end
         new_population := population + population_growth
         from
@@ -335,6 +336,8 @@ feature -- Operations
         has_bought := False
         -- Contribute money to the race's treasury
         owner.update_money(money.total.rounded)
+        -- Contribute research to the race's development
+        owner.update_research(science.total.rounded)
     end
 
     remove is

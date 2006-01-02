@@ -113,6 +113,7 @@ feature -- Configuration
     ensure
         base_maintenance = newmaintenance
     end
+
 feature {NONE} -- Creation
 
     make(newname: STRING; newid: INTEGER) is

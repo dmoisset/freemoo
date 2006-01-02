@@ -72,6 +72,8 @@ feature {NONE} -- Creation
         new_date (r)
         r.set_with_size (549, 90, 63, 28)
         new_money (r)
+        r.set_with_size (549, 390, 63, 28)
+        new_research (r)
         r.set_with_size (73, 5, 11*8, 14)
         new_player_status (r)
 
@@ -83,6 +85,7 @@ feature -- Widgets
 
     galaxy: GALAXY_VIEW
     money: MONEY_VIEW
+    research: RESEARCH_VIEW
     turn_summary_window: TURN_SUMMARY_VIEW
     game_button,
     end_turn_button,
@@ -93,6 +96,7 @@ feature -- Widgets
     new_galaxy (where: RECTANGLE) is deferred end
     new_date (where: RECTANGLE) is deferred end
     new_money (where: RECTANGLE) is deferred end
+    new_research (where: RECTANGLE) is deferred end
     new_player_status (where: RECTANGLE) is deferred end
     new_turn_summary is deferred end
 

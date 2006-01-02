@@ -43,18 +43,21 @@ feature -- Operations
             last_productive.set_cost(60)
             last_productive.set_maintenance(1)
             last_productive.set_industry(1, 5)
+            last_productive.set_description("Aid industry workers in their building of finished products. Generates 5  production and increases the production each worker generates by +1.")
             last_built := last_productive
         when product_robo_mining_plant then
             create last_productive.make(l("Robo Mining Plant"), product_robo_mining_plant)
             last_productive.set_cost(150)
             last_productive.set_maintenance(2)
             last_productive.set_industry(2, 10)
+            last_productive.set_description("Automate many difficult tasks, increasing the productivity of industrial workers. Generates 10 production and increases the production each worker  produces by +2.")
             last_built := last_productive
         when product_deep_core_mine then
             create last_productive.make(l("Deep Core Mine"), product_deep_core_mine)
             last_productive.set_cost(250)
             last_productive.set_maintenance(3)
             last_productive.set_industry(3, 15)
+            last_productive.set_description("Allows miners to build stable tunnels deep into a planet. Generates 15  production and increases the productivity of each worker by +3 production each.")
             last_built := last_productive
         when product_astro_university then
             create last_productive.make(l("Astro University"), product_astro_university)
@@ -63,48 +66,56 @@ feature -- Operations
             last_productive.set_farming(1, 0)
             last_productive.set_industry(1, 0)
             last_productive.set_science(1, 0)
+            last_productive.set_description("Using the most advanced teaching methods available, the efficiency of farmers, workers, and scientists is increased. Each receives a +1 bonus.")
             last_built := last_productive
         when product_research_laboratory then
             create last_productive.make(l("Research Laboratory"), product_research_laboratory)
             last_productive.set_cost(60)
             last_productive.set_maintenance(1)
             last_productive.set_science(1, 5)
+            last_productive.set_description("Houses state-of-the-art computer equipment, creating a superior research environment. Generates 5 research points and increases the research each  scientist produces by +1.")
             last_built := last_productive
         when product_supercomputer then
             create last_productive.make(l("Planetary Supercomputer"), product_supercomputer)
             last_productive.set_cost(150)
             last_productive.set_maintenance(2)
             last_productive.set_science(2, 10)
+            last_productive.set_description("Supplies researchers with a vast amount of information. Generates 10 research  points and increases the research each scientist produces by +2.")
             last_built := last_productive
         when product_autolab then
             create last_productive.make(l("Autolab"), product_autolab)
             last_productive.set_cost(200)
             last_productive.set_maintenance(3)
             last_productive.set_science(0, 30)
+            last_productive.set_description("A completely automated research facility. Generates 30 research points.")
             last_built := last_productive
         when product_galactic_cybernet then
             create last_productive.make(l("Galactic Cybernet"), product_galactic_cybernet)
             last_productive.set_cost(250)
             last_productive.set_maintenance(3)
             last_productive.set_science(3, 15)
+            last_productive.set_description("Nearly instantaneous galaxy-wide communications, allowing quick exchange of information and ideas. The cybernet generates 15 research points and each scientist generates +3 research each.")
             last_built := last_productive
         when product_hidroponic_farm then
             create last_productive.make(l("Hidroponic Farm"), product_hidroponic_farm)
             last_productive.set_cost(60)
             last_productive.set_maintenance(2)
             last_productive.set_farming(0, 2)
+            last_productive.set_description("An automated, sealed environment in which food can be grown, even on lifeless worlds. It increases the food output of a world by +2 food.")
             last_built := last_productive
         when product_subterranean_farms then
             create last_productive.make(l("Subterranean Farms"), product_subterranean_farms)
             last_productive.set_cost(150)
             last_productive.set_maintenance(4)
             last_productive.set_farming(0, 4)
+            last_productive.set_description("An underground cavern system of automated farms. Increases the food output of a planet by +4.")
             last_built := last_productive
         when product_weather_controller then
             create last_productive.make(l("Weather Controller"), product_weather_controller)
             last_productive.set_cost(200)
             last_productive.set_maintenance(3)
             last_productive.set_farming(2, 0)
+            last_productive.set_description("Modifies a planet's weather patterns to create a more stable farming environment. Food production is increased by +2 per farmer.")
             last_built := last_productive
         end
     ensure
