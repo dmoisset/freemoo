@@ -26,7 +26,7 @@ feature {NONE} -- Creation
         r.set_with_size(18, 47, 120, 130)
         new_system_view(r)
 
-        r.set_with_size(22, 210, 184, 230)
+        r.set_with_size(22, 215, 181, 250)
         new_possible_constructions (r)
 
         r.set_with_size(328, 78, 168, 100)

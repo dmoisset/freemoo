@@ -11,9 +11,18 @@ creation
 feature {NONE} -- Creation
 
     make (w: WINDOW; where: RECTANGLE) is
+    local
+        r, s: RECTANGLE
     do
         my_connect_identifier := agent update_possible_constructions
         window_make(w, where)
+        r.set_with_size(width - 14, 2, 10, height - 4)
+        s.set_with_size(2, 2, width - 4, height - 4)
+        create list.make(Current, s, r, create {SDL_SOLID_IMAGE}.make(0, 0, 0, 30, 150))
+        list.set_button_images(imgs@0, imgs@1, imgs@2)
+        list.set_up_images(up_imgs@0, up_imgs@1, up_imgs@2)
+        list.set_down_images(down_imgs@0, down_imgs@1, down_imgs@2)
+        list.set_click_handler(agent start_building)
     end
 
 feature {NONE} -- signal callbacks
@@ -23,38 +32,10 @@ feature {NONE} -- signal callbacks
     require
         colony /= Void
     local
-        it: ITERATOR[CONSTRUCTION]
-        child: ITERATOR[WINDOW]
-        label: LABEL
-        button: BUTTON_IMAGE
-        ypos: INTEGER
-        r: RECTANGLE
+        tuple: TUPLE[ARRAY[CONSTRUCTION], ARRAY[STRING]]
     do
-        -- Remove constructions
-        from
-            child := children.get_new_iterator
-        until
-            child.is_off
-        loop
-            child.item.remove
-            child.next
-        end
-        -- Add constructions again
-        from
-            ypos := 2
-            it := colony.owner.known_constructions.get_new_iterator
-        until
-            it.is_off
-        loop
-            if it.item.can_be_built_on(colony) then
-                r.set_with_size(0, ypos, location.width, row_height)
-                create label.make(Current, r, it.item.name)
-                create button.make(Current, 0, ypos, imgs@0, imgs@1, imgs@2)
-                button.set_click_handler(agent start_building(it.item))
-                ypos := ypos + row_height + 1
-            end
-            it.next
-        end
+        tuple := get_constructions
+        list.from_collections(tuple.first, tuple.second)
     end
 
 feature {NONE} -- Callbacks
@@ -65,6 +46,51 @@ feature {NONE} -- Callbacks
             server.start_building(colony, c)
         end
     end
+
+feature {NONE} -- Auxiliar
+
+    get_constructions: TUPLE[ARRAY[CONSTRUCTION], ARRAY[STRING]] is
+    require
+        colony /= Void
+    local
+        constructions: ARRAY[CONSTRUCTION]
+        names: ARRAY[STRING]
+        it: ITERATOR[CONSTRUCTION]
+    do
+        create constructions.make(1, 0)
+        create names.make(1, 0)
+        from
+            it := colony.owner.known_constructions.get_new_iterator
+        until
+            it.is_off
+        loop
+            if it.item.can_be_built_on(colony) then
+                constructions.add_last(it.item)
+                names.add_last(it.item.name)
+            end
+            it.next
+        end
+        Result := [constructions, names]
+    end
+
+    get_names(constructions: HASHED_DICTIONARY[CONSTRUCTION, INTEGER]): ARRAY[STRING] is
+    local
+        it: ITERATOR[CONSTRUCTION]
+    do
+        create Result.with_capacity(constructions.count, 0)
+        from
+            it := constructions.get_new_iterator_on_items
+        until
+            it.is_off
+        loop
+            Result.add_last(it.item.name)
+            it.next
+        end
+    end
+
+feature {NONE} -- Widgets
+
+    list: SCROLLED_LIST[CONSTRUCTION]
 
 feature {NONE} -- Auxiliar functions
 
@@ -78,6 +104,28 @@ feature {NONE} -- Images
         Result.put(create {IMAGE_FMI}.make_from_file("client/colony-window/construction-button-u.fmi"), 0)
         Result.put(create {IMAGE_FMI}.make_from_file("client/colony-window/construction-button-p.fmi"), 1)
         Result.put(create {IMAGE_FMI}.make_from_file("client/colony-window/construction-button-d.fmi"), 2)
+    end
+
+    up_imgs: ARRAY[IMAGE] is
+    local
+        a: FMA_FRAMESET
+    once
+        create Result.make(0, 2)
+        create a.make("client/turnsum/up.fma")
+        Result.put(a.images @ 1, 0)
+        Result.put(a.images @ 1, 1)
+        Result.put(a.images @ 2, 2)
+    end
+
+    down_imgs: ARRAY[IMAGE] is
+    local
+        a: FMA_FRAMESET
+    once
+        create Result.make(0, 2)
+        create a.make("client/turnsum/down.fma")
+        Result.put(a.images @ 1, 0)
+        Result.put(a.images @ 1, 1)
+        Result.put(a.images @ 2, 2)
     end
 
 end -- class COLONY_POSSIBLE_CONSTRUCTIONS_VIEW
