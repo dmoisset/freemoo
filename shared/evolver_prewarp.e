@@ -54,7 +54,9 @@ feature {NONE} -- Auxiliar
                     product_spaceport, product_stock_exchange,
                     product_gravity_generator, product_terraforming,
                     product_radiation_shield, product_flux_shield,
-                    product_barrier_shield>>
+                    product_barrier_shield, product_cloning_center,
+                    product_starbase, product_battlestation,
+                    product_star_fortress>>
     end
 
     starship: STARSHIP

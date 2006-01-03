@@ -2,29 +2,21 @@ class CONSTRUCTION_TERRAFORMING
 
 inherit
     CONSTRUCTION
+        rename
+            make as construction_make
+        redefine
+            can_be_built_on, cost, build
+        end
     GETTEXT
+    RANDOM_ACCESS
 
 create make
 
 feature
 
-    name: STRING is
-    do
-        Result := l("Terraforming")
-    end
-
     can_be_built_on(c: like colony_type): BOOLEAN is
     do
         Result := terraforming_results.has(c.location.climate)
-    end
-
-    produce_proportional, produce_fixed, generate_money,
-    clean_up_pollution, take_down(c: like colony_type) is
-    do
-    end
-
-    maintenance(c: like colony_type): INTEGER is
-    do
     end
 
     cost(c: like colony_type): INTEGER is
@@ -33,32 +25,44 @@ feature
     end
 
     build(c: like colony_type) is
+    local
+        outcomes: HASHED_SET[INTEGER]
     do
-        c.terraform_to(terraforming_results.at(c.location.climate))
+        outcomes := terraforming_results.at(c.location.climate)
+        rand.next
+        c.terraform_to(outcomes.item(rand.last_integer(outcomes.count)))
     end
 
 feature {NONE} -- Creation
 
     make is
     do
+        name := l("Terraforming")
         id := product_terraforming
-        description := "Makes a planet more hospitable. Barren becomes desert or tundra, deserts become arid, tundras become swamp, oceans, swamps and arid become terran. Each use on  a planet increases cost by 250 production."
+        description := l("Makes a planet more hospitable. Barren becomes desert or tundra, deserts become arid, tundras become swamp, oceans, swamps and arid become terran. Each use on  a planet increases cost by 250 production.")
     end
 
 feature {NONE} -- Auxiliar
 
-    terraforming_results: HASHED_DICTIONARY[INTEGER, INTEGER] is
+    terraforming_results: HASHED_DICTIONARY[HASHED_SET[INTEGER], INTEGER] is
     local
         c: MAP_CONSTANTS
     once
         create c
         create Result.make
-        Result.add(c.climate_tundra, c.climate_barren)
-        Result.add(c.climate_arid, c.climate_desert)
-        Result.add(c.climate_swamp, c.climate_tundra)
-        Result.add(c.climate_terran, c.climate_ocean)
-        Result.add(c.climate_terran, c.climate_swamp)
-        Result.add(c.climate_terran, c.climate_arid)
+        Result.add(create {HASHED_SET[INTEGER]}.make, c.climate_barren)
+        Result.at(c.climate_barren).add(c.climate_tundra)
+        Result.at(c.climate_barren).add(c.climate_desert)
+        Result.add(create {HASHED_SET[INTEGER]}.make, c.climate_desert)
+        Result.at(c.climate_desert).add(c.climate_arid)
+        Result.add(create {HASHED_SET[INTEGER]}.make, c.climate_tundra)
+        Result.at(c.climate_tundra).add(c.climate_swamp)
+        Result.add(create {HASHED_SET[INTEGER]}.make, c.climate_ocean)
+        Result.at(c.climate_ocean).add(c.climate_terran)
+        Result.add(create {HASHED_SET[INTEGER]}.make, c.climate_swamp)
+        Result.at(c.climate_swamp).add(c.climate_terran)
+        Result.add(create {HASHED_SET[INTEGER]}.make, c.climate_arid)
+        Result.at(c.climate_arid).add(c.climate_terran)
     end
 
 end -- class CONSTRUCTION_TERRAFORMING

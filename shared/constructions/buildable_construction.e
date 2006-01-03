@@ -1,16 +1,13 @@
-class BUILDABLE_CONSTRUCTION
+deferred class BUILDABLE_CONSTRUCTION
+--
 -- Makes a construction buildable, buyable, and maintainable
+--
 
 inherit
     CONSTRUCTION
-    redefine name end
-
-create
-    make
+    redefine cost, maintenance end
 
 feature -- Access
-
-    name: STRING
 
     cost(c: like colony_type): INTEGER is
     do
@@ -38,13 +35,7 @@ feature -- Operations
         base_maintenance = newmaintenance
     end
 
-    make(new_name: STRING; new_id: INTEGER) is
-    do
-        id := new_id
-        name := new_name
-    end
-
-feature {NONE} -- Implementation
+feature {CONSTRUCTION} -- Implementation
 
     base_cost, base_maintenance: INTEGER
 

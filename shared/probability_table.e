@@ -1,6 +1,9 @@
 deferred class PROBABILITY_TABLE [E]
     -- Probabilities for events of type E
 
+inherit
+    RANDOM_ACCESS
+
 feature -- Access
 
     item (p: DOUBLE): E is
@@ -21,20 +24,6 @@ feature -- Access
         Result := item (rand.last_double)
     ensure
         Result /= Void
-    end
-
-feature {NONE}
-
-    rand: STD_RAND is
-        -- Random number generator
-    local
-        today, epoch: TIME
-        valid: BOOLEAN
-    once
-        today.update
-        valid := epoch.set (1970, 1, 1, 0, 0, 0)
-            check valid end -- Because 1/1/1970 IS a valid date
-        !!Result.with_seed (epoch.elapsed_seconds (today).rounded)
     end
 
 end -- deferred class PROBABILITY_TABLE

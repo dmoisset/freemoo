@@ -352,8 +352,6 @@ feature -- Operations
 
     remove is
         -- Remove self from the game
-    local
-        c: CONSTRUCTION
     do
         from
         variant

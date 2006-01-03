@@ -3,7 +3,7 @@ class SHIP_CONSTRUCTION
 inherit
     CONSTRUCTION
     redefine
-        can_be_built_on, cost, build, name
+        can_be_built_on, cost, build
     end
     GETTEXT
 
@@ -11,8 +11,6 @@ creation
     make_starship, make_colony_ship, make_transport, make_outpost
 
 feature -- Access
-
-    name: STRING
 
     can_be_built_on(c: like colony_type): BOOLEAN is
     do
@@ -31,15 +29,6 @@ feature -- Access
     end
 
     design: STARSHIP
-
-    produce_proportional, produce_fixed, clean_up_pollution, take_down,
-    generate_money(c: like colony_type) is
-    do
-    end
-
-    maintenance(c: like colony_type): INTEGER is
-    do
-    end
 
 feature -- Operations
 

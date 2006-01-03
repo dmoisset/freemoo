@@ -8,7 +8,7 @@ class ONGOING_CONSTRUCTION
 inherit
     CONSTRUCTION
     redefine
-        can_be_built_on, build, take_down, name, is_buyable
+        can_be_built_on, build, take_down, is_buyable
     end
     GETTEXT
 
@@ -16,8 +16,6 @@ creation
     make
 
 feature -- Defined features
-
-    name: STRING
 
     can_be_built_on(c: like colony_type): BOOLEAN is
     do
@@ -31,26 +29,8 @@ feature -- Defined features
         False
     end
 
-    produce_fixed, produce_proportional, generate_money,
-    clean_up_pollution(c: like colony_type) is
-    do
-    end
-
-    cost, maintenance(c: like colony_type): INTEGER is
-    do
-    end
-
     is_buyable: BOOLEAN is
     do
-    end
-
-
-feature {NONE} -- Creation
-
-    make(new_name: STRING; new_id: INTEGER) is
-    do
-        id := new_id
-        name := new_name
     end
 
 end -- ONGOING_CONSTRUCTION

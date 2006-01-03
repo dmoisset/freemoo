@@ -15,7 +15,8 @@ feature -- Constants
     product_weather_controller, product_spy, product_colony_base,
     product_spaceport, product_stock_exchange,
     product_gravity_generator, product_terraforming, product_radiation_shield,
-    product_flux_shield, product_barrier_shield: INTEGER is unique
+    product_flux_shield, product_barrier_shield, product_cloning_center,
+    product_starbase, product_battlestation, product_star_fortress: INTEGER is unique
         -- Possible production_items
 
     product_min: INTEGER is
@@ -24,7 +25,7 @@ feature -- Constants
 
     product_max: INTEGER is
         -- Minimum valid for `producing'
-    do Result := product_barrier_shield end
+    do Result := product_star_fortress end
 
     task_farming, task_industry, task_science: INTEGER is unique
         -- Possible tasks for population_units

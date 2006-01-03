@@ -14,27 +14,25 @@ feature -- Access
     id: INTEGER
         -- One of the product_* constants
 
-    name: STRING is
+    name: STRING
         -- Canonical name of the construction
-    deferred
-    end
 
     can_be_built_on(c: like colony_type): BOOLEAN is
         -- Can this construction be built on `c'?
     require c /= Void
-    deferred
+    do
     end
 
     cost(c: like colony_type): INTEGER is
         -- Industry needed to build this construction at `c'
     require c /= Void
-    deferred
+    do
     end
 
     maintenance(c: like colony_type): INTEGER is
         -- Maintenance cost per turn
     require c /= Void
-    deferred
+    do
     end
 
     is_buyable: BOOLEAN is
@@ -50,37 +48,50 @@ feature -- Operations
 
     generate_money(c: like colony_type) is
         -- Generate money on `c'
-    deferred
+    require
+        c /= Void
+        is_buyable
+    do
     end
 
     produce_proportional(c: like colony_type) is
         -- Increase production on `c' proportionally to `c''s population
-    require c /= Void
-    deferred
+    require
+        c /= Void
+        is_buyable
+    do
     end
 
     produce_fixed(c: like colony_type) is
         -- Increase production on `c' by a fixed amount
-    require c /= Void
-    deferred
+    require
+        c /= Void
+        is_buyable
+    do
     end
 
     clean_up_pollution(c: like colony_type) is
         -- Reduce pollution penalty on colony `c'
-    require c /= Void
-    deferred
+    require
+        c /= Void
+        is_buyable
+    do
     end
 
     build(c: like colony_type) is
         -- Do whatever this construction does when it is built
-    require c /= Void
-    deferred
+    require
+        c /= Void
+        is_buyable
+    do
     end
 
     take_down(c: like colony_type) is
         -- Undo whatever this construction did when built
-    require c /= Void
-    deferred
+    require
+        c /= Void
+        is_buyable
+    do
     end
 
     set_description(newdescription: STRING) is
@@ -91,6 +102,20 @@ feature -- Operations
         description := newdescription
     ensure
         description = newdescription
+    end
+
+
+feature {NONE} -- Creation
+
+    make(new_name: STRING; new_id: INTEGER) is
+    require
+        new_name /= Void
+    do
+        name := new_name
+        id := new_id
+    ensure
+        name = new_name
+        id = new_id
     end
 
 feature {NONE} -- Anchors

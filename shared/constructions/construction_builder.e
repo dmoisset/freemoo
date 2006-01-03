@@ -20,6 +20,10 @@ feature -- Access
 
     last_ship: SHIP_CONSTRUCTION
 
+    last_persistent: PERSISTENT_CONSTRUCTION
+
+    last_replaceable: REPLACEABLE_CONSTRUCTION
+
 feature -- Operations
 
     construction_by_id(id: INTEGER) is
@@ -155,6 +159,7 @@ feature -- Operations
             last_shield.set_shield_power(10)
             last_shield.set_description("Seals planet in an energy field. Converts Radiated climates into Barren. Reduces damage against the planet 10 points. It replaces any planetary radiation shield already built.")
             last_shield.add_replacement(product_barrier_shield)
+            last_shield.add_replaces(product_radiation_shield)
             last_built := last_shield
         when product_barrier_shield then
             create last_shield.make(l("Planetary Barrier Shield"), product_barrier_shield)
@@ -162,7 +167,40 @@ feature -- Operations
             last_shield.set_maintenance(5)
             last_shield.set_shield_power(20)
             last_shield.set_description("Seals a planet in an energy field. Converts Radiated climates to Barren climates. Reduces damage against a planet by 20 points. Ground troops and biological weapons cannot pass.")
+            last_shield.add_replaces(product_radiation_shield)
+            last_shield.add_replaces(product_flux_shield)
             last_built := last_shield
+        when product_cloning_center then
+            create last_persistent.make(l("Cloning Center"), product_cloning_center)
+            last_persistent.set_description("Allows doctors to replace failing or damaged organs, increasing the population growth by +100K each turn as long as the current population is below the planetary maximum.")
+            last_persistent.set_cost(100)
+            last_persistent.set_maintenance(2)
+            last_built := last_persistent
+        when product_starbase then
+            create last_replaceable.make(l("Star Base"), product_starbase)
+            last_replaceable.set_description("Armed orbital platforms used to service military ships.  They are equipped with extensive weaponry, the best available scanner with a +2 scanning range bonus and a star dock capable of building ships larger than destroyers.")
+            last_replaceable.set_cost(400)
+            last_replaceable.set_maintenance(2)
+            last_replaceable.add_replacement(product_battlestation)
+            last_replaceable.add_replacement(product_star_fortress)
+            last_built := last_replaceable
+        when product_battlestation then
+            create last_replaceable.make(l("Battlestation"), product_battlestation)
+            last_replaceable.set_description("Heavily armed star base, with +4 parsec scanning range bonus. Adds +10%% to the offense of ships in combat around it. Replaces a star base.")
+            last_replaceable.set_cost(1000)
+            last_replaceable.set_maintenance(3)
+            last_replaceable.add_replaces(product_starbase)
+            last_replaceable.add_replacement(product_star_fortress)
+            last_built := last_replaceable
+        when product_star_fortress then
+            create last_replaceable.make(l("Star Fortress"), product_star_fortress)
+            last_replaceable.set_description("A large military orbital platform. Has a +6 parsec scan range bonus and adds +20%% to both the offense and defense of all ships in combat around it. Replaces battlestations and star bases.")
+            last_replaceable.set_cost(2500)
+            last_replaceable.set_maintenance(4)
+            last_replaceable.add_replaces(product_starbase)
+            last_replaceable.add_replaces(product_battlestation)
+            last_built := last_replaceable
+--        when 
         end
     ensure
         last_built.id = id

@@ -6,9 +6,10 @@ class BASIC_PRODUCTIVE_CONSTRUCTION
 --
 
 inherit
-    BUILDABLE_CONSTRUCTION
+    PERSISTENT_CONSTRUCTION
     redefine
-        name
+        can_be_built_on, produce_proportional, produce_fixed, generate_money,
+        clean_up_pollution
     end
     GETTEXT
 
@@ -16,8 +17,6 @@ creation
     make
 
 feature -- Access
-
-    name: STRING
 
     can_be_built_on(c: like colony_type): BOOLEAN is
     do
@@ -48,16 +47,6 @@ feature -- Operations
 
     clean_up_pollution(c: like colony_type) is
     do
-    end
-
-    build(c: COLONY) is
-    do
-        c.constructions.add(Current, id)
-    end
-
-    take_down(c: COLONY) is
-    do
-        c.constructions.remove(id)
     end
 
 feature -- Configuration

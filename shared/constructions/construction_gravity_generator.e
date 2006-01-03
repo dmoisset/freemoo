@@ -2,28 +2,23 @@ class CONSTRUCTION_GRAVITY_GENERATOR
 
 inherit
     CONSTRUCTION
+        rename
+            make as construction_make
+        redefine
+            can_be_built_on, maintenance, cost, build, take_down
+        end
     GETTEXT
 
 create
     make
 
-feature
-
-    name: STRING is
-    do
-        Result := l("Planetary Gravity Generator")
-    end
+feature -- Access
 
     can_be_built_on(c: like colony_type): BOOLEAN is
     do
         Result := not c.constructions.has(id) and then
                   c.location.gravity /= c.owner.race.homeworld_gravity
                                         + c.location.grav_normalg
-    end
-
-    produce_proportional, produce_fixed, generate_money,
-    clean_up_pollution(c: like colony_type) is
-    do
     end
 
     maintenance(c: like colony_type): INTEGER is
@@ -35,6 +30,8 @@ feature
     do
         Result := 120
     end
+
+feature -- Operations
 
     build(c: like colony_type) is
     do
@@ -55,9 +52,8 @@ feature {NONE} -- Creation
     make is
     do
         id := product_gravity_generator
-        description := "Creates artificial gravity to normalize a planet to standard gravity limits. Gravity generators eliminate the negative effects of low and heavy gravity fields."
+        name := l("Planetary Gravity Generator")
+        description := l("Creates artificial gravity to normalize a planet to standard gravity limits. Gravity generators eliminate the negative effects of low and heavy gravity fields.")
     end
-
-
 
 end -- class CONSTRUCTION_GRAVITY_GENERATOR

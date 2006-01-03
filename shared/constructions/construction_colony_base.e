@@ -2,17 +2,17 @@ class CONSTRUCTION_COLONY_BASE
 
 inherit
     CONSTRUCTION
+        rename
+            make as construction_make
+        redefine
+            can_be_built_on, cost, build, take_down
+        end
     GETTEXT
 
 create
     make
 
 feature
-
-    name: STRING is
-    do
-        Result := l("Colony Base")
-    end
 
     can_be_built_on(c: like colony_type): BOOLEAN is
     local
@@ -28,15 +28,6 @@ feature
                       p.item.colony = Void
             p.next
         end
-    end
-
-    produce_proportional, produce_fixed, generate_money,
-    clean_up_pollution(c: like colony_type) is
-    do
-    end
-
-    maintenance(c: like colony_type): INTEGER is
-    do
     end
 
     cost(c: like colony_type): INTEGER is
@@ -60,7 +51,8 @@ feature {NONE} -- Creation
     make is
     do
         id := product_colony_base
-        description := "Creates a colony on another planet inside the same star system as the building colony."
+        name := l("Colony Base")
+        description := l("Creates a colony on another planet inside the same star system as the building colony.")
     end
 
 end -- class CONSTRUCTION_COLONY_BASE

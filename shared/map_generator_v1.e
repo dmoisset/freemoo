@@ -6,6 +6,7 @@ inherit
     MAP_CONSTANTS
     MAP_PROBABILITIES
     PKG_USER
+    RANDOM_ACCESS
 
 feature{NONE} -- Creation
 
@@ -405,18 +406,6 @@ feature -- Operation
     end
 
 feature {NONE} -- Implementation
-
-    rand: STD_RAND is
-        -- Random number generator, used all over
-    local
-        today, epoch: TIME
-        valid: BOOLEAN
-    once
-        today.update
-        valid := epoch.set (1970, 1, 1, 0, 0, 0)
-            check valid end -- Because 1/1/1970 IS a valid date
-        !!Result.with_seed (epoch.elapsed_seconds (today).rounded)
-    end
 
     size: STRING
         -- "small", "medium", "large" or "huge"

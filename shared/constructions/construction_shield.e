@@ -3,8 +3,7 @@ class CONSTRUCTION_SHIELD
 
 inherit
     REPLACEABLE_CONSTRUCTION
-    BUILDABLE_CONSTRUCTION
-    redefine make end
+    redefine build, take_down end
     GETTEXT
 
 create
@@ -13,7 +12,7 @@ create
 feature -- Access
 
     shield_power: INTEGER
-        -- Not used for now
+        -- Bombing defense power of this shield.  Not used for now
 
 feature -- Operations
 
@@ -30,26 +29,13 @@ feature -- Operations
         if c.location.climate = c.location.climate_radiated then
             c.location.set_climate(c.location.climate_barren)
         end
-        c.constructions.add(Current, id)
+        Precursor(c)
     end
 
     take_down(c: like colony_type) is
     do
         c.location.set_climate(c.preclimate)
-        c.constructions.remove(id)
-    end
-
-    produce_fixed, produce_proportional, generate_money,
-    clean_up_pollution(c: like colony_type) is
-    do
-    end
-
-feature {NONE} -- Creation
-
-    make(new_name: STRING; new_id: INTEGER) is
-    do
-        Precursor(new_name, new_id)
-        make_replaceable
+        Precursor(c)
     end
 
 end -- class CONSTRUCTION_SHIELD
