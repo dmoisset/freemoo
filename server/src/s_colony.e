@@ -49,6 +49,7 @@ feature -- Service related
         s.add_integer(produced)
         s.add_boolean(has_bought)
         s.add_integer(population)
+        s.add_integer(terraformed)
         s.add_integer(populators.count)
         s.add_integer(constructions.count)
         from
@@ -153,6 +154,7 @@ feature {STORAGE} -- Saving
         a.add_last(["owner", owner])
         a.add_last(["location", location])
         a.add_last(["population", population.box])
+        a.add_last(["terraformed", terraformed.box])
         a.add_last(["preclimate", preclimate.box])
         a.add_last(["pregrav", pregrav.box])
         a.add_last(["extra_popgrowth", extra_population_growth.box])
@@ -243,6 +245,9 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("population") then
                 i ?= elems.item.second
                 saved_population := i.item
+            elseif elems.item.first.is_equal("terraformed") then
+                i ?= elems.item.second
+                terraformed := i.item
             elseif elems.item.first.is_equal("preclimate") then
                 i ?= elems.item.second
                 preclimate := i.item

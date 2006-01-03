@@ -560,6 +560,22 @@ feature {CONSTRUCTION} -- Special cases
     extra_max_population: INTEGER
         -- Increased maximum population for this colony
 
+    terraformed: INTEGER
+
+    terraform_to(new_climate: INTEGER) is
+    require
+        new_climate.in_range(location.climate_min, location.climate_max)
+    do
+        terraformed := terraformed + 1
+        location.set_climate(new_climate)
+        preclimate := new_climate
+            -- Once terraformed, loosing your radiation
+            -- shield won't revert the planet to radiated
+    ensure
+        terraformed = old terraformed + 1
+        location.climate = new_climate
+    end
+
     set_pregrav is
     do
         pregrav := location.gravity

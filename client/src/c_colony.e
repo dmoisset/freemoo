@@ -59,6 +59,8 @@ feature
         s.get_integer
         new_population := s.last_integer
         s.get_integer
+        terraformed := s.last_integer
+        s.get_integer
         pop_count := s.last_integer
         s.get_integer
         const_count := s.last_integer
@@ -81,7 +83,6 @@ feature
             new_populators.add(populator, populator.id)
             pop_count := pop_count - 1
         end
-
         population := new_population
         populators := new_populators
         from

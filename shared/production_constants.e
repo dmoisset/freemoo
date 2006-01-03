@@ -14,7 +14,7 @@ feature -- Constants
     product_hidroponic_farm, product_subterranean_farms,
     product_weather_controller, product_spy, product_colony_base,
     product_spaceport, product_stock_exchange,
-    product_gravity_generator: INTEGER is unique
+    product_gravity_generator, product_terraforming: INTEGER is unique
         -- Possible production_items
 
     product_min: INTEGER is
@@ -23,7 +23,7 @@ feature -- Constants
 
     product_max: INTEGER is
         -- Minimum valid for `producing'
-    do Result := product_gravity_generator end
+    do Result := product_terraforming end
 
     task_farming, task_industry, task_science: INTEGER is unique
         -- Possible tasks for population_units

@@ -135,6 +135,8 @@ feature -- Operations
             create {CONSTRUCTION_COLONY_BASE}last_built.make
         when product_gravity_generator then
             create {CONSTRUCTION_GRAVITY_GENERATOR}last_built.make
+        when product_terraforming then
+            create {CONSTRUCTION_TERRAFORMING}last_built.make
         end
     ensure
         last_built.id = id
