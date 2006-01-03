@@ -16,6 +16,8 @@ feature -- Access
 
     last_productive: BASIC_PRODUCTIVE_CONSTRUCTION
 
+    last_shield: CONSTRUCTION_SHIELD
+
     last_ship: SHIP_CONSTRUCTION
 
 feature -- Operations
@@ -137,6 +139,30 @@ feature -- Operations
             create {CONSTRUCTION_GRAVITY_GENERATOR}last_built.make
         when product_terraforming then
             create {CONSTRUCTION_TERRAFORMING}last_built.make
+        when product_radiation_shield then
+            create last_shield.make(l("Radiation Shield"), product_radiation_shield)
+            last_shield.set_cost(80)
+            last_shield.set_maintenance(1)
+            last_shield.set_shield_power(5)
+            last_shield.set_description("Reduces solar and cosmic bombardment so lifeforms can comfortably move about the surface. Radiated climates become Barren.  Reduces damage against a planet by 5 points.")
+            last_shield.add_replacement(product_flux_shield)
+            last_shield.add_replacement(product_barrier_shield)
+            last_built := last_shield
+        when product_flux_shield then
+            create last_shield.make(l("Planetary Flux Shield"), product_flux_shield)
+            last_shield.set_cost(200)
+            last_shield.set_maintenance(3)
+            last_shield.set_shield_power(10)
+            last_shield.set_description("Seals planet in an energy field. Converts Radiated climates into Barren. Reduces damage against the planet 10 points. It replaces any planetary radiation shield already built.")
+            last_shield.add_replacement(product_barrier_shield)
+            last_built := last_shield
+        when product_barrier_shield then
+            create last_shield.make(l("Planetary Barrier Shield"), product_barrier_shield)
+            last_shield.set_cost(500)
+            last_shield.set_maintenance(5)
+            last_shield.set_shield_power(20)
+            last_shield.set_description("Seals a planet in an energy field. Converts Radiated climates to Barren climates. Reduces damage against a planet by 20 points. Ground troops and biological weapons cannot pass.")
+            last_built := last_shield
         end
     ensure
         last_built.id = id

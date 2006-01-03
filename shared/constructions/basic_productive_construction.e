@@ -6,7 +6,7 @@ class BASIC_PRODUCTIVE_CONSTRUCTION
 --
 
 inherit
-    CONSTRUCTION
+    BUILDABLE_CONSTRUCTION
     redefine
         name
     end
@@ -22,16 +22,6 @@ feature -- Access
     can_be_built_on(c: like colony_type): BOOLEAN is
     do
         Result := not c.constructions.has(id)
-    end
-
-    cost(c: like colony_type): INTEGER is
-    do
-        Result := base_cost
-    end
-
-    maintenance(c: like colony_type): INTEGER is
-    do
-        Result := (base_maintenance * c.maintenance_factor).rounded
     end
 
 feature -- Operations
@@ -121,31 +111,7 @@ feature -- Configuration
         money_percentage = new_money
     end
 
-    set_cost(newcost: INTEGER) is
-    do
-        base_cost := newcost
-    ensure
-        base_cost = newcost
-    end
-
-    set_maintenance(newmaintenance: INTEGER) is
-    do
-        base_maintenance := newmaintenance
-    ensure
-        base_maintenance = newmaintenance
-    end
-
-feature {NONE} -- Creation
-
-    make(newname: STRING; newid: INTEGER) is
-    do
-        name := newname
-        id := newid
-    end
-
 feature {NONE} -- Implementation
-
-    base_maintenance, base_cost: INTEGER
 
     farming_proportional, farming_fixed,
     industry_proportional, industry_fixed,

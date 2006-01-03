@@ -353,15 +353,15 @@ feature -- Operations
     remove is
         -- Remove self from the game
     local
-        cit: ITERATOR[CONSTRUCTION]
+        c: CONSTRUCTION
     do
         from
-            cit := constructions.get_new_iterator_on_items
+        variant
+            constructions.count
         until
-            cit.is_off
+            constructions.is_empty
         loop
-            cit.item.take_down(Current)
-            cit.next
+            constructions.item(constructions.lower).take_down(Current)
         end
         location.set_colony (Void)
         owner.remove_colony(Current)
@@ -574,6 +574,11 @@ feature {CONSTRUCTION} -- Special cases
     ensure
         terraformed = old terraformed + 1
         location.climate = new_climate
+    end
+
+    set_preclimate is
+    do
+        preclimate := location.climate
     end
 
     set_pregrav is
