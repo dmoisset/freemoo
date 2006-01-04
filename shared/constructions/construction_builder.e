@@ -145,6 +145,12 @@ feature -- Operations
             create {CONSTRUCTION_GRAVITY_GENERATOR}last_built.make
         when product_terraforming then
             create {CONSTRUCTION_TERRAFORMING}last_built.make
+        when product_recyclotron then
+            create {CONSTRUCTION_RECYCLOTRON}last_built.make
+        when product_soil_enrichment then
+            create {CONSTRUCTION_SOIL_ENRICHMENT}last_built.make
+        when product_gaia_transform then
+            create {CONSTRUCTION_GAIA_TRANSFORM}last_built.make
         when product_radiation_shield then
             create last_shield.make(l("Radiation Shield"), product_radiation_shield)
             last_shield.set_cost(80)

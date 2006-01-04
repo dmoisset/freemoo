@@ -18,7 +18,8 @@ feature -- Constants
     product_flux_shield, product_barrier_shield, product_cloning_center,
     product_biospheres, product_starbase, product_battlestation,
     product_star_fortress, product_pollution_processor,
-    product_atmosphere_renewer, product_core_waste_dump: INTEGER is unique
+    product_atmosphere_renewer, product_core_waste_dump,
+    product_recyclotron, product_soil_enrichment, product_gaia_transform: INTEGER is unique
         -- Possible production_items
 
     product_min: INTEGER is
@@ -26,8 +27,8 @@ feature -- Constants
     do Result := product_none end
 
     product_max: INTEGER is
-        -- Minimum valid for `producing'
-    do Result := product_core_waste_dump end
+        -- Maximum valid for `producing'
+    do Result := product_gaia_transform end
 
     task_farming, task_industry, task_science: INTEGER is unique
         -- Possible tasks for population_units

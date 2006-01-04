@@ -106,6 +106,9 @@ feature -- Operations
     local
         r: RECTANGLE
     do
+        if star_window /= Void and then children.fast_has (star_window) then
+            star_window.remove
+        end
         r.set_with_size((width - star_window_width) // 2,
                         (height - star_window_height) // 2,
                         star_window_width, star_window_height)
