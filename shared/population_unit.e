@@ -105,6 +105,13 @@ feature -- Operation
         end
     end
 
+    pollute is
+    do
+        if not race.tolerant then
+            colony.industry.add(-(colony.per_populator_pollution), l("Pollution Penalty"))
+        end
+    end
+
     produce is
     do
         inspect

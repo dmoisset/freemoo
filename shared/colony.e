@@ -259,19 +259,23 @@ feature -- Operations
         industry.add(industry.total * owner.race.industry_multiplier * 0.01, l("Government Bonus"))
         science.add(science.total * owner.race.science_multiplier * 0.01, l("Government Bonus"))
         -- Leader Bonus
-        -- Pollution
-        if not owner.race.tolerant then
-            industry.add(-((industry.total.rounded // 2 - (location.size -
-                 location.plsize_min + 1)).max(0)), l("Pollution Penalty"))
-        -- Clean Up Pollution
-            from
-                const_it := constructions.get_new_iterator_on_items
-            until
-                const_it.is_off
-            loop
-                const_it.item.clean_up_pollution(Current)
-                const_it.next
-            end
+        -- Populators pollute
+        per_populator_pollution := ((industry.total.rounded // 2 -
+            (location.size - location.plsize_min + 1)).max(0) / populators.count).to_real
+        from
+            pop_it := populators.get_new_iterator_on_items
+        until pop_it.is_off loop
+            pop_it.item.pollute
+            pop_it.next
+        end
+        -- Buildings clean Up Pollution
+        from
+            const_it := constructions.get_new_iterator_on_items
+        until
+            const_it.is_off
+        loop
+            const_it.item.clean_up_pollution(Current)
+            const_it.next
         end
         -- Buildings fixed production and maintenance
         from
@@ -402,6 +406,8 @@ feature -- Operations
         shipyard = Void
     end
 
+feature {POPULATION_UNIT} -- Operations for populators
+
     consume_food(amount: REAL) is
         -- Increase food_consumption by `amount'
     do
@@ -417,6 +423,9 @@ feature -- Operations
     ensure
         industry_consumption = old industry_consumption + amount
     end
+
+    per_populator_pollution: REAL
+        -- Non-tolerant population units produce this much pollution every turn.
 
 feature {GALAXY} -- Scanning
 

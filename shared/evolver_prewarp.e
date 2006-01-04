@@ -56,7 +56,9 @@ feature {NONE} -- Auxiliar
                     product_radiation_shield, product_flux_shield,
                     product_barrier_shield, product_cloning_center,
                     product_starbase, product_battlestation,
-                    product_star_fortress>>
+                    product_star_fortress, product_robo_mining_plant,
+                    product_deep_core_mine, product_pollution_processor,
+                    product_atmosphere_renewer, product_core_waste_dump>>
     end
 
     starship: STARSHIP

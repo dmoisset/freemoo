@@ -2,6 +2,7 @@ dumb_client
 dumb_client.h
 dumb_client.id
 dumb_client[0-9].c
+dumb_client[1-9][0-9].c
 fm_client
 fm_client.h
 fm_client.id

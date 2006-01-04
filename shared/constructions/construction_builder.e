@@ -24,6 +24,8 @@ feature -- Access
 
     last_replaceable: REPLACEABLE_CONSTRUCTION
 
+    last_cleaner: CONSTRUCTION_DEPOLLUTER
+
 feature -- Operations
 
     construction_by_id(id: INTEGER) is
@@ -200,7 +202,30 @@ feature -- Operations
             last_replaceable.add_replaces(product_starbase)
             last_replaceable.add_replaces(product_battlestation)
             last_built := last_replaceable
---        when 
+        when product_pollution_processor then
+            create last_cleaner.make(l("Pollution Processor"), product_pollution_processor)
+            last_cleaner.set_description("Uses advanced chemicals to process factory waste. Only half of  the actual production of the planet used to calculate pollution.")
+            last_cleaner.set_cost(80)
+            last_cleaner.set_maintenance(1)
+            last_cleaner.add_replacement(product_core_waste_dump)
+            last_cleaner.set_cleansing_power(0.5)
+            last_built := last_cleaner
+        when product_atmosphere_renewer then
+            create last_cleaner.make(l("Atmosphere Renewer"), product_atmosphere_renewer)
+            last_cleaner.set_description("Eliminates many dangerous particles from the atmosphere of a planet. The amount of production is quartered before calculating pollution. Effects are cumulative with a pollution processor.")
+            last_cleaner.set_cost(150)
+            last_cleaner.set_maintenance(3)
+            last_cleaner.add_replacement(product_core_waste_dump)
+            last_cleaner.set_cleansing_power(0.25)
+            last_built := last_cleaner
+        when product_core_waste_dump then
+            create last_cleaner.make(l("Core Waste Dump"), product_core_waste_dump)
+            last_cleaner.set_description("Take man-made toxic/polluting agents and store them deep within the surface of a planet, far below surface water supplies. Planetary pollution is completely  eliminated.")
+            last_cleaner.set_cost(200)
+            last_cleaner.set_maintenance(8)
+            last_cleaner.add_replaces(product_pollution_processor)
+            last_cleaner.add_replaces(product_atmosphere_renewer)
+            last_built := last_cleaner
         end
     ensure
         last_built.id = id
