@@ -178,6 +178,12 @@ feature -- Operations
             last_persistent.set_cost(100)
             last_persistent.set_maintenance(2)
             last_built := last_persistent
+        when product_biospheres then
+            create last_persistent.make(l("Biospheres"), product_biospheres)
+            last_persistent.set_description("Enables a colony to better control environmental conditions, allowing  colonization of the more intolerable areas of the planet. Maximum planetary population is increased by +2 million.")
+            last_persistent.set_cost(60)
+            last_persistent.set_maintenance(1)
+            last_built := last_persistent
         when product_starbase then
             create last_replaceable.make(l("Star Base"), product_starbase)
             last_replaceable.set_description("Armed orbital platforms used to service military ships.  They are equipped with extensive weaponry, the best available scanner with a +2 scanning range bonus and a star dock capable of building ships larger than destroyers.")

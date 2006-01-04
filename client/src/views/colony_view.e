@@ -48,7 +48,7 @@ feature {NONE} -- Auxiliar
                 it.is_off
             loop
                 r := it.item.location
-                r.set_with_size((r.x * factor).rounded, r.y, r.width, r.height)
+                r.set_with_size((r.x * factor).floor, r.y, r.width, r.height)
                 it.item.move(r)
                 it.next
             end

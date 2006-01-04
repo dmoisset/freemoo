@@ -27,6 +27,8 @@ feature
         fuel_range := s.last_real
         s.get_boolean
         is_stealthy := s.last_boolean
+        --print("C_STARSHIP on_message: name:" + name + " fuel_range:" +
+        -- fuel_range.to_string + " is_stealthy:" + is_stealthy.to_string + "%N")
     end
 
     unserialize_from (s: UNSERIALIZER) is

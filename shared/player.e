@@ -117,23 +117,17 @@ feature -- Query
     -- Maximum population for a colony on `p', without considering colony's constructions
     require
         p /= Void
-    local
-        climate: INTEGER
     do
-        climate := p.climate
         -- Consider aquatic bonus
         if race.aquatic then
-            if climate = p.climate_tundra or climate = p.climate_swamp then
-                climate := p.climate_terran
-            elseif climate = p.climate_terran or climate = p.climate_ocean then
-                climate := p.climate_gaia
-            end
+            Result := p.aquatic_maxpop
+        else
+            Result := p.base_maxpop
         end
         -- Consider tolerant bonus
         if race.tolerant then
-            climate := climate.max(p.climate_terran)
+            Result := Result.max(p.tolerant_maxpop)
         end
-        Result := (p.planet_maxpop @ p.size) @ climate
         -- Consider subterranean bonus
         if race.subterranean then
             Result := Result + p.subterranean_maxpop_bonus

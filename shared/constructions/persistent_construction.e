@@ -6,12 +6,17 @@ class PERSISTENT_CONSTRUCTION
 
 inherit
     BUILDABLE_CONSTRUCTION
-    redefine build, take_down end
+    redefine build, take_down, can_be_built_on end
 
 create
     make
 
 feature
+
+    can_be_built_on(c: like colony_type): BOOLEAN is
+    do
+        Result := not c.constructions.has(id)
+    end
 
     build(c: like colony_type) is
     do

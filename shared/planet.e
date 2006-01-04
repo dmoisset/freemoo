@@ -142,7 +142,7 @@ feature -- Access
 
     name: STRING is
     do
-        Result := orbit_center.name + " " + roman @ orbit2planet_number    
+        Result := orbit_center.name + " " + roman @ orbit2planet_number
     end
 
     is_colonizable: BOOLEAN is
@@ -150,10 +150,38 @@ feature -- Access
         Result := type = type_planet and colony = Void
     end
 
+feature -- Maximum population
+
+    base_maxpop: INTEGER is
+    do
+        Result := (planet_maxpop @ 1).item(size, climate)
+    end
+
     subterranean_maxpop_bonus: INTEGER is
-        -- Extra maximum population a subterranean race can fit on this planet
+        -- Extra population a subterranean race can fit on this planet
     do
         Result := 2 * (size - (plsize_min + 1))
+    end
+
+    aquatic_maxpop: INTEGER is
+        -- Maximum population an aquatic race can fit on this planet
+    local
+        aquatic_sense: INTEGER
+    do
+        if climate = climate_tundra or climate = climate_swamp then
+            aquatic_sense := climate_terran
+        elseif climate = climate_terran or climate = climate_ocean then
+            aquatic_sense := climate_gaia
+        else
+            aquatic_sense := climate
+        end
+        Result := (planet_maxpop @ 1).item(size, aquatic_sense)
+    end
+
+    tolerant_maxpop: INTEGER is
+        -- Maximum population a tolerant race can fit on this planet
+    do
+        Result := (planet_maxpop @ 2).item(size, climate)
     end
 
 feature {STAR} -- To keep consistent orbits
@@ -166,9 +194,9 @@ feature {STAR} -- To keep consistent orbits
     ensure
         orbit = neworbit
     end
-    
+
 feature -- Factory methods
-    
+
     create_colony(p: PLAYER): like colony is
     require
         p /= Void
@@ -176,7 +204,7 @@ feature -- Factory methods
     do
         create Result.make(Current, p)
     end
-    
+
 feature {NONE} -- Internal for naming
 
     orbit2planet_number:INTEGER is
@@ -188,7 +216,7 @@ feature {NONE} -- Internal for naming
             i := i + 1
         end
     end
-   
+
     roman: ARRAY[STRING] is
     once
         Result := << "I", "II", "III", "IV", "V" >>

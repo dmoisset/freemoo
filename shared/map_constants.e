@@ -282,27 +282,50 @@ feature -- planetary Productions
         Result.lower = mnrl_min
     end
 
-    planet_maxpop: ARRAY[ARRAY[INTEGER]] is
+    planet_maxpop: ARRAY[ARRAY2[INTEGER]] is
+    -- An array that contains two matrices with
+    -- one element per planet size and per planet climate,
+    -- indicating maximum population for planets this size, this climate.
+    -- The first matrix is for non-tolerant races, the second one is
+    -- for tolerant races.
     local
         f: COMMENTED_TEXT_FILE
         i: INTEGER
+        model: ARRAY[ARRAY[INTEGER]]
     once
         pkg_system.open_file ("galaxy/planetary_maxpop")
         !!f.make (pkg_system.last_file_open)
-        create Result.make(plsize_min, plsize_max)
+        create Result.make(1, 2)
+        create model.make(plsize_min, plsize_max)
         from
             i := plsize_min
         until
             i > plsize_max
         loop
             f.read_nonempty_line
-            Result.put(str_array_to_int_array (f.last_line.split), i)
-            Result.item(i).reindex(climate_min)
+            model.put(str_array_to_int_array (f.last_line.split), i)
+            model.item(i).reindex(climate_min)
             i := i + 1
         end
+        Result.put(create{ARRAY2[INTEGER]}.from_model(model), 1)
+        create model.make(plsize_min, plsize_max)
+        from
+            i := plsize_min
+        until
+            i > plsize_max
+        loop
+            f.read_nonempty_line
+            model.put(str_array_to_int_array (f.last_line.split), i)
+            model.item(i).reindex(climate_min)
+            i := i + 1
+        end
+        Result.put(create{ARRAY2[INTEGER]}.from_model(model), 2)
     ensure
-        Result.lower = plsize_min
-        Result.first.lower = climate_min
+        Result.count = 2
+        Result.first.line_minimum = plsize_min
+        Result.first.column_minimum = climate_min
+        Result.last.line_minimum = plsize_min
+        Result.last.column_minimum = climate_min
     end
 
 

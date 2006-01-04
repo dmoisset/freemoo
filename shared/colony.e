@@ -109,7 +109,11 @@ feature -- Access
         Result := Result * (100 + owner.race.population_growth) // 100
         -- Consider Advances
         -- ... (Microbiotics, Universal Antidote)...
-        -- Consider constructions and events
+        -- Consider constructions
+        if constructions.has(product_cloning_center) then
+            Result := Result + 100
+        end
+        -- Consider events
         Result := Result + extra_population_growth
         -- Consider Housing Production
         if producing.id = product_housing then
@@ -120,44 +124,23 @@ feature -- Access
         -- Consider Leader Ability
         -- Consider Missing Food
         Result := Result - 50 * (food_starvation + industry_starvation)
+        -- Limit to colony's maximum population
+        Result := Result.min(maxpop * 1000 - population)
     end
 
     max_population: INTEGER is
         -- Colony's maximum population, in population units.
         -- Takes players maximum population for the planet and considers
         -- constructions and biodiversity.
-    local
-        aliens: REAL
-        subterranean: BOOLEAN
-        pop_it: ITERATOR[POPULATION_UNIT]
     do
         Result := owner.max_population_on(location)
+
         -- Consider constructions
-        Result := Result + extra_max_population
-        -- Consider biodiversity
-        subterranean := owner.race.subterranean
-        from
-            pop_it := populators.get_new_iterator_on_items
-        until
-            pop_it.is_off
-        loop
-            if pop_it.item.race.subterranean /= subterranean then
-                aliens := aliens + 1
-            end
-            pop_it.next
+        if constructions.has(product_biospheres) then
+            Result := Result + 2
         end
-        if populators.count > 0 then
-            -- This coming code breaks if populators.count = 0
-            -- It happens when a colony dies of starvation, on the client, just
-            -- before the colony is removed
-            if subterranean then
-                Result := Result - (location.subterranean_maxpop_bonus *
-                                    aliens / populators.count).ceiling
-            else
-                Result := Result + (location.subterranean_maxpop_bonus *
-                                    aliens / populators.count).floor
-            end
-        end
+        -- For if tolerant, aquatic, subterranean beasts have invaded our colony
+        Result := Result.max(populators.count)
     end
 
     populators: HASHED_DICTIONARY[like populator_type, INTEGER]

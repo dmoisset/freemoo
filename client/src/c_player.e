@@ -76,7 +76,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         planet: C_PLANET
         starship: C_STARSHIP
     do
-        !!s.start (msg)
+        create s.start (msg)
         s.get_string
         ruler_name := s.last_string
         s.get_integer
@@ -104,7 +104,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 knows_star.add (star)
                 if not old_knows.has (star) then
                     -- We do the above check to avoid network overhead
-                    -- Not doing iit implies we re-suscribe to the star service for
+                    -- Not doing it implies we re-suscribe to the star service for
                     -- ALL stars
                     star.subscribe (server, "star"+star.id.to_string)
                 else
@@ -164,14 +164,19 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             colony_count := colony_count - 1
         end
         from
+        variant
+            construction_count
         until construction_count = 0 loop
             s.get_integer
             product_id := s.last_integer + known_constructions.product_min
+            --print("C_PLAYER on_message: construction " + product_id.to_string + "%N")
+            if product_id > known_constructions.product_max then
+                create starship.make(Current)
+                starship.set_id(product_id - known_constructions.product_max)
+                starship.unserialize_completely_from(s)
+            end
             if not known_constructions.has(product_id) then
                 if product_id > known_constructions.product_max then
-                    create starship.make(Current)
-                    starship.set_id(product_id - known_constructions.product_max)
-                    starship.unserialize_completely_from(s)
                     known_constructions.add_starship_design(starship)
                 else
                     known_constructions.add_by_id(product_id)

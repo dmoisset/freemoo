@@ -58,7 +58,8 @@ feature {NONE} -- Auxiliar
                     product_starbase, product_battlestation,
                     product_star_fortress, product_robo_mining_plant,
                     product_deep_core_mine, product_pollution_processor,
-                    product_atmosphere_renewer, product_core_waste_dump>>
+                    product_atmosphere_renewer, product_core_waste_dump,
+                    product_biospheres>>
     end
 
     starship: STARSHIP
