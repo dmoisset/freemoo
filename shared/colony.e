@@ -28,8 +28,6 @@ feature {NONE} -- Creation
         create science.make
         create money.make
         create morale.make
-        morale.add(o.race.morale_bonus, l("Government Morale"))
-        -- .. Consider morale techs (Virtual Reality Network, Psionics)...
         create constructions.make
         create populators.make
         location := p
@@ -210,6 +208,7 @@ feature -- Operations
         industry.clear
         science.clear
         money.clear
+        recalculate_morale
         create census.make(task_farming, task_science)
         food_consumption := 0
         industry_consumption := 0
@@ -289,6 +288,35 @@ feature -- Operations
         end
     end
 
+    recalculate_morale is
+    local
+        it: ITERATOR[CONSTRUCTION]
+    do
+        morale.clear
+        -- Unification ignores all morale bonuses
+        if owner.race.government /= owner.race.government_unification then
+            -- Missing capitol
+            if not owner.has_capitol then
+                morale.add(-(owner.race.nocapitol_penalty), l("Missing Capitol"))
+            end
+            -- Missing barracks (removed later if there's a barrack among our constructions
+            morale.add(-(owner.race.nobarracks_penalty), l("No marine barracks"))
+            -- Consider buildings
+            from
+                it := constructions.get_new_iterator_on_items
+            until
+                it.is_off
+            loop
+                it.item.affect_morale(Current)
+                it.next
+            end
+            -- Consider government bonus (Imperium...)
+            -- .. Consider morale techs (Virtual Reality Network, Psionics)...
+            -- .. Consider biodiversity...
+            -- Consider leader bonus...
+        end
+    end
+
     new_turn is
         -- Update population, production, and build finished constructions.
     local
@@ -300,6 +328,10 @@ feature -- Operations
         if (food_starvation > 0 or industry_starvation > 0) and new_population > 1000 then
             owner.add_summary_message(create {TURN_SUMMARY_ITEM_STARVATION}.make(id,
                  food_starvation, industry_starvation))
+        end
+        if constructions.has(product_capitol) and new_population < 1000 then
+            -- The capital never starves to death!
+            new_population := 1000
         end
         from
             -- First create population_units and then add to maintain class

@@ -60,7 +60,10 @@ feature {NONE} -- Auxiliar
                     product_deep_core_mine, product_pollution_processor,
                     product_atmosphere_renewer, product_core_waste_dump,
                     product_biospheres, product_recyclotron,
-                    product_soil_enrichment, product_gaia_transform>>
+                    product_soil_enrichment, product_gaia_transform,
+                    product_capitol, product_marine_barracks,
+                    product_armor_barracks, product_holosimulator,
+                    product_pleasure_dome>>
     end
 
     starship: STARSHIP

@@ -19,7 +19,9 @@ feature -- Constants
     product_biospheres, product_starbase, product_battlestation,
     product_star_fortress, product_pollution_processor,
     product_atmosphere_renewer, product_core_waste_dump,
-    product_recyclotron, product_soil_enrichment, product_gaia_transform: INTEGER is unique
+    product_recyclotron, product_soil_enrichment, product_gaia_transform,
+    product_marine_barracks, product_armor_barracks, product_capitol,
+    product_holosimulator, product_pleasure_dome: INTEGER is unique
         -- Possible production_items
 
     product_min: INTEGER is
@@ -28,7 +30,7 @@ feature -- Constants
 
     product_max: INTEGER is
         -- Maximum valid for `producing'
-    do Result := product_gaia_transform end
+    do Result := product_pleasure_dome end
 
     task_farming, task_industry, task_science: INTEGER is unique
         -- Possible tasks for population_units

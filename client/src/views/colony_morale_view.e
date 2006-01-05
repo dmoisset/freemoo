@@ -4,6 +4,7 @@ class COLONY_MORALE_VIEW
 inherit
     COLONY_VIEW
     redefine handle_event end
+    GETTEXT
 
 create
     make
@@ -78,7 +79,7 @@ feature {NONE} -- Signal callbacks
                 if b.button = 1 and then colony /= Void then
                     ac := colony.morale
                     from
-                        msg := ""
+                        msg := l("Morale Report") + "%N%N"
                         it := ac.get_new_iterator_on_reasons
                     until
                         it.is_off

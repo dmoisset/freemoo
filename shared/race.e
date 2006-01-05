@@ -56,12 +56,24 @@ feature -- Access -- government dependant
         if government = government_feudal then Result := 1 end
     end
 
-    morale_bonus: INTEGER is
-        -- Percent morale bonus without marine barracks
+    nobarracks_penalty: INTEGER is
+        -- Percent morale penalty for colonies without marine barracks
     do
         if government = government_feudal or
            government = government_dictatorship then
-            Result := -20
+            Result := 20
+        end
+    end
+
+    nocapitol_penalty: INTEGER is
+        -- Percent morale penalty when capitol is lost
+    do
+        if government = government_feudal then
+            Result := 50
+        elseif government = government_dictatorship then
+            Result := 35
+        elseif government = government_democracy then
+            Result := 20
         end
     end
 

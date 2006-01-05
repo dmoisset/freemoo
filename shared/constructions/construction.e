@@ -46,6 +46,13 @@ feature -- Access
 
 feature -- Operations
 
+    affect_morale(c: like colony_type) is
+    require
+        c /= Void
+        is_buyable
+    do
+    end
+
     generate_money(c: like colony_type) is
         -- Generate money on `c'
     require

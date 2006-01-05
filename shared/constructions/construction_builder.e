@@ -26,6 +26,10 @@ feature -- Access
 
     last_cleaner: CONSTRUCTION_DEPOLLUTER
 
+    last_moralizer: CONSTRUCTION_MORALIZER
+
+    last_barracks: CONSTRUCTION_BARRACKS
+
 feature -- Operations
 
     construction_by_id(id: INTEGER) is
@@ -151,6 +155,8 @@ feature -- Operations
             create {CONSTRUCTION_SOIL_ENRICHMENT}last_built.make
         when product_gaia_transform then
             create {CONSTRUCTION_GAIA_TRANSFORM}last_built.make
+        when product_capitol then
+            create {CONSTRUCTION_CAPITOL}last_built.make
         when product_radiation_shield then
             create last_shield.make(l("Radiation Shield"), product_radiation_shield)
             last_shield.set_cost(80)
@@ -238,6 +244,32 @@ feature -- Operations
             last_cleaner.add_replaces(product_pollution_processor)
             last_cleaner.add_replaces(product_atmosphere_renewer)
             last_built := last_cleaner
+        when product_holosimulator then
+            create last_moralizer.make(l("Holosimulator"), product_holosimulator)
+            last_moralizer.set_description(l("Capable of creating realistic 3-D images from holographic projections. Increases a planet's morale by +20%%."))
+            last_moralizer.set_cost(120)
+            last_moralizer.set_maintenance(1)
+            last_moralizer.set_morale(20)
+            last_built := last_moralizer
+        when product_pleasure_dome then
+            create last_moralizer.make(l("Pleasure Dome"), product_pleasure_dome)
+            last_moralizer.set_description(l("The ultimate in virtual holographic entertainment, creating completely immersive entertainment environments. It increases morale by +30%% and is  cumulative with holo simulator."))
+            last_moralizer.set_cost(250)
+            last_moralizer.set_maintenance(3)
+            last_moralizer.set_morale(30)
+            last_built := last_moralizer
+        when product_marine_barracks then
+            create last_barracks.make(l("Marine Barracks"), product_marine_barracks)
+            last_barracks.set_description(l("Lets the colony train troops for ground invasion protection. Begins with 4 marine units, then trains 1 unit every 5 turns, up to the planet's maximum population. Eliminates morale penalties for dictatorships and feudal governments."))
+            last_barracks.set_cost(60)
+            last_barracks.set_maintenance(1)
+            last_built := last_barracks
+        when product_armor_barracks then
+            create last_barracks.make(l("Armor Barracks"), product_armor_barracks)
+            last_barracks.set_description(l("Creates tank battalions. It has 2 units when built, and adds 1 unit every 10 turns, up to half the planet's population. Eliminates the morale penalty for dictatorships and feudal governments."))
+            last_barracks.set_cost(150)
+            last_barracks.set_maintenance(2)
+            last_built := last_barracks
         end
     ensure
         last_built.id = id
