@@ -19,6 +19,7 @@ feature
         populators.set_colony(c)
         production.set_colony(c)
         producing.set_colony(c)
+        morale.set_colony(c)
         possible_constructions.set_colony(c)
     end
 
@@ -32,6 +33,11 @@ feature {NONE} -- Widgets
     new_population(where: RECTANGLE) is
     do
         !!population.make(Current, where)
+    end
+
+    new_morale(where: RECTANGLE) is
+    do
+        !!morale.make(Current, where)
     end
 
     new_populators(where: RECTANGLE) is

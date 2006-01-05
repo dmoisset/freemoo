@@ -61,7 +61,7 @@ PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
   Provided: Before game_status.started is set
   Description: Detailed player description
-  Format: "siiriiii" <<ruler_name, money, research, fuel_range, knows_stars,
+  Format: "siirbiiii" <<ruler_name, money, research, fuel_range, has_capitol, knows_stars,
                     visited_stars, colony_count, known_construction>>, 
                     followed by a sequence of
           "i" <<star_id>>

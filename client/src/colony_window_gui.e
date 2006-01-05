@@ -29,6 +29,9 @@ feature {NONE} -- Creation
         r.set_with_size(22, 215, 181, 250)
         new_possible_constructions (r)
 
+        r.set_with_size(358, 47, 138, 40)
+        new_morale(r)
+
         r.set_with_size(328, 78, 168, 100)
         new_populators(r)
 
@@ -53,6 +56,7 @@ feature {NONE} -- Widgets
     name: COLONY_NAME_VIEW
     system_view: COLONY_STAR_VIEW
     population: COLONY_POPULATION_VIEW
+    morale: COLONY_MORALE_VIEW
     populators: COLONY_POPULATORS_VIEW
     production: COLONY_PRODUCTION_VIEW
     producing: COLONY_PRODUCING_VIEW
@@ -60,6 +64,7 @@ feature {NONE} -- Widgets
     new_name (where: RECTANGLE) is deferred end
     new_population (where: RECTANGLE) is deferred end
     new_populators (where: RECTANGLE) is deferred end
+    new_morale (where: RECTANGLE) is deferred end
     new_production (where: RECTANGLE) is deferred end
     new_producing (where: RECTANGLE) is deferred end
     new_system_view (where: RECTANGLE) is deferred end

@@ -83,9 +83,10 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         money := s.last_integer
         s.get_integer
         research := s.last_integer
-        colonies_changed.emit(Current)
         s.get_real
         fuel_range := s.last_real
+        s.get_boolean
+        has_capitol := s.last_boolean
         s.get_integer
         knows_count := s.last_integer
         s.get_integer
@@ -184,6 +185,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             end
             construction_count := construction_count - 1
         end
+        colonies_changed.emit(Current)
     end
 
     decode_turn_summary_message(msg: STRING; provider: SERVICE_PROVIDER) is

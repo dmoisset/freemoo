@@ -51,6 +51,10 @@ feature -- Access
 
     research: INTEGER
 
+    has_capitol: BOOLEAN
+        -- True when this player has a capitol on some colony
+        -- (very bad if false...)
+
     race: RACE
         -- The race this player rules
 
@@ -225,6 +229,26 @@ feature -- Operations
         msg /= Void
     do
         turn_summary.add_last(msg)
+    end
+
+feature {CONSTRUCTION} -- Operations
+
+    capitol_destroyed is
+    require
+        has_capitol
+    do
+        has_capitol := False
+    ensure
+        not has_capitol
+    end
+
+    capitol_built is
+    require
+        not has_capitol
+    do
+        has_capitol := True
+    ensure
+        has_capitol
     end
 
 feature {MAP_GENERATOR, FLEET}

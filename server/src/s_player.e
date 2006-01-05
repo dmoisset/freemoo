@@ -10,7 +10,7 @@ inherit
         add_to_known_list, add_to_visited_list, colony_type,
         star_type, race, set_ruler_name, set_race, set_color, add_colony,
         remove_colony, known_constructions, update_money, update_research,
-        set_state
+        set_state, capitol_destroyed, capitol_built
     select id end
     STORABLE
     rename
@@ -142,14 +142,15 @@ feature -- Redefined features
     do
         -- Validate service_id
         if service_id.has_prefix("player") then
-            !!s.make
-                !!serv_id.copy(service_id)
+            create s.make
+            create serv_id.copy(service_id)
             serv_id.remove_prefix("player")
             if serv_id.is_integer and then serv_id.to_integer = id then
                 s.add_string(ruler_name)
                 s.add_integer(money)
                 s.add_integer(research)
                 s.add_real(fuel_range)
+                s.add_boolean(has_capitol)
                 s.add_integer (knows_star.count)
                 s.add_integer (has_visited_star.count)
                 s.add_integer (colonies.count)
@@ -261,6 +262,20 @@ feature {COLONY} -- Redefined features
         update_clients
     end
 
+feature {CONSTRUCTION} -- Operations
+
+    capitol_built is
+    do
+        Precursor
+        update_clients
+    end
+
+    capitol_destroyed is
+    do
+        Precursor
+        update_clients
+    end
+
 feature -- Operations
 
     copy(other: like Current) is
@@ -291,6 +306,8 @@ feature {STORAGE} -- Saving
         a.add_last(["state", state.box])
         a.add_last(["password", password])
         a.add_last(["race", race])
+        a.add_last(["fuel_range", fuel_range])
+        a.add_last(["has_capitol", has_capitol])
         add_to_fields(a, "colony", colonies.get_new_iterator_on_items)
         add_to_fields(a, "knows_star", knows_star.get_new_iterator)
         add_to_fields(a, "has_visited_star", has_visited_star.get_new_iterator)
@@ -366,7 +383,9 @@ feature {STORAGE} -- Retrieving
 
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        i: REFERENCE [INTEGER]
+        i: REFERENCE[INTEGER]
+        r: REFERENCE[REAL]
+        b: REFERENCE[BOOLEAN]
         colony: S_COLONY
         star: S_STAR
         design: S_STARSHIP
@@ -390,6 +409,12 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("color") then
                 i ?= elems.item.second
                 color := i.item
+            elseif elems.item.first.is_equal("fuel_range") then
+                r ?= elems.item.second
+                fuel_range := r.item
+            elseif elems.item.first.is_equal("has_capitol") then
+                b ?= elems.item.second
+                has_capitol := b.item
             elseif elems.item.first.is_equal("state") then
                 i ?= elems.item.second
                 state := i.item

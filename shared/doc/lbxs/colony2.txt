@@ -14,8 +14,8 @@
 0014: big radioactive barrel (10 pollution)
 0015: shadowed microscope (?)
 0016: shadowed pile of coins (?)
-0017: happy mask (+10 morale)
-0018: sad mask (-10 morale)
+0017: smile mask (+10 morale)
+0018: frown mask (-10 morale)
 0019: big radioactive barrel (again?)
 0020: Feudal government shield
 0021: Confederation government shield (Feudal++)
