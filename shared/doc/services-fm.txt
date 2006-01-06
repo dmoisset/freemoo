@@ -83,7 +83,8 @@ COLONY
           "ibiiii" <<produced, has_bought, population, terraformed,
                          populators_count, constructions_count>>,
              followed by a sequence of
-          "iibi" <<id, race_id, captive (not assimilated), task>> one per populator,
+          "iibiib" <<id, race_id, captive (not assimilated), task, single_task,
+                     is_android>> one per populator,
              followed by a sequence of
           "i" <<product_id>> one per construction.
 
@@ -159,6 +160,15 @@ DIALOGS
                   specific information
     - Subscription "ii" <<action, count>>, action=2, followed by count
       "iis" <<id, kind, info>>
+
+XENO_REPOSITORY
+  Name: "xeno_repository"
+  Provided: Before game_status.started is set
+  Description: gives enough information about races.  Eventually this service
+     will control how much you know about each race
+  Format: "iii" <<natives_id, androids_id, races_count>> followed
+        by a sequence of `races_count' "i" <<race_id>>
+
 
 SERVICE
   Name: "name"

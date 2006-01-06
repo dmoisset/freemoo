@@ -5,7 +5,7 @@ inherit
     PLAYER
     rename
         make as player_make
-    redefine colony_type, race end
+    redefine colony_type, race, known_constructions end
     TURN_SUMMARY_CONSTANTS
     SUBSCRIBER
     CLIENT
@@ -31,18 +31,17 @@ feature -- Operations
     unserialize_from (s: UNSERIALIZER) is
         -- Update from `s'.
     local
-        race_service: STRING
+        race_name: STRING
     do
         if race = Void then
             !!race.make
         end
-        s.get_string; set_ruler_name(s.last_string)
-        s.get_string; race.set_name(s.last_string)
-        s.get_integer; race.set_id(s.last_integer)
-        race_service := "race" + race.id.to_string
-        if server.has(race_service) and then not server.subscribed_to(race, race_service) then
-            race.subscribe(server, race_service)
-        end
+        s.get_string
+        set_ruler_name(s.last_string)
+        s.get_string
+        race_name := s.last_string
+        s.get_integer
+        race := server.xeno_repository.item(s.last_integer)
         s.get_integer; race.set_picture(s.last_integer)
         s.get_integer; set_color (s.last_integer)
         s.get_integer; set_state (s.last_integer)
@@ -255,6 +254,8 @@ feature -- Access
 
     connected: BOOLEAN
         -- Player has a connection to the server
+
+    known_constructions: C_CONSTRUCTION_REPO
 
 feature -- Anchors
 

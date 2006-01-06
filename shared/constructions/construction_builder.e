@@ -30,6 +30,8 @@ feature -- Access
 
     last_barracks: CONSTRUCTION_BARRACKS
 
+    last_android: CONSTRUCTION_ANDROID
+
 feature -- Operations
 
     construction_by_id(id: INTEGER) is
@@ -270,6 +272,21 @@ feature -- Operations
             last_barracks.set_cost(150)
             last_barracks.set_maintenance(2)
             last_built := last_barracks
+        when product_android_farmer then
+            create last_android.make(l("Android Farmer"), product_android_farmer)
+            last_android.set_description(l("Mechanical workers with a +3 food production bonus. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and generate no income."))
+            last_android.set_task(task_farming)
+            last_built := last_android
+        when product_android_worker then
+            create last_android.make(l("Android Worker"), product_android_worker)
+            last_android.set_description(l("Mechanical workers with a +3 production bonus. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and cannot generate income."))
+            last_android.set_task(task_industry)
+            last_built := last_android
+        when product_android_scientist then
+            create last_android.make(l("Android Scientist"), product_android_scientist)
+            last_android.set_description(l("Mechanical workers that generate 3 research points per turn. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and cannot generate income."))
+            last_android.set_task(task_science)
+            last_built := last_android
         end
     ensure
         last_built.id = id

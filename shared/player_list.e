@@ -55,34 +55,6 @@ feature -- Access
         Result.id = id
     end
 
-    has_race_with_id(id: INTEGER): BOOLEAN is
-    -- Have I got a player whose race's id is `id'?
-    local
-        player: ITERATOR[P]
-    do
-        from player := get_new_iterator until player.is_off or Result loop
-            Result := player.item.race /= Void and then player.item.race.id = id
-            player.next
-        end
-    end
-
-    item_with_race_id (id: INTEGER): P is
-    -- Returns a player whose race's id is `id'
-    require
-        has_race_with_id (id)
-    local
-        player: ITERATOR[P]
-    do
-        from player := get_new_iterator until
-            player.item.race /= Void and then player.item.race.id = id
-        loop
-            player.next
-        end
-        Result := player.item
-    ensure
-        Result.race.id = id
-    end
-
     count: INTEGER is
     do
         Result := items.count

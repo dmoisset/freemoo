@@ -98,6 +98,7 @@ feature {NONE} -- Internal
         cln: S_COLONY
         race: S_RACE
         pop: S_POPULATION_UNIT
+        repo: S_XENO_REPOSITORY
     do
         create gme.make_with_options(options)
         create ply.make("prototype", "")
@@ -107,8 +108,10 @@ feature {NONE} -- Internal
         create cln.make(pln, ply)
         create race.make
         create pop.make(race, cln)
+        create repo.make
         -- Register class prototypes
         st.register(gme)                                 -- S_GAME
+        st.register(gme.xeno_repository)                 -- S_XENO_REPOSITORY
         st.register(gme.galaxy)                          -- S_GALAXY
         st.register(gme.status)                          -- S_GAME_STATUS
         st.register(gme.players)                         -- S_PLAYER_LIST

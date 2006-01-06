@@ -8,7 +8,7 @@ class CONSTRUCTION_REPO
 inherit
     PRODUCTION_CONSTANTS
 
-creation
+create
     make
 
 feature {NONE} -- Creation

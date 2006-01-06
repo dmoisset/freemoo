@@ -203,6 +203,8 @@ feature -- Operations
     local
         pop_it: ITERATOR[POPULATION_UNIT]
         const_it: ITERATOR[CONSTRUCTION]
+        androids: ARRAY[INTEGER]
+        organic_factor: DOUBLE
     do
         farming.clear
         industry.clear
@@ -210,6 +212,7 @@ feature -- Operations
         money.clear
         recalculate_morale
         create census.make(task_farming, task_science)
+        create androids.make(task_farming, task_science)
         food_consumption := 0
         industry_consumption := 0
         -- Population Units (production and consumption)
@@ -219,6 +222,9 @@ feature -- Operations
             pop_it.is_off
         loop
             census.put((census @ pop_it.item.task) + 1, pop_it.item.task)
+            if pop_it.item.is_android then
+                androids.put((androids @ pop_it.item.task) + 1, pop_it.item.task)
+            end
             pop_it.item.produce
             pop_it.next
         end
@@ -232,9 +238,18 @@ feature -- Operations
             const_it.next
         end
         -- Morale Bonus
-        farming.add(farming.total * morale.total * 0.01, l("Morale Bonus"))
-        industry.add(industry.total * morale.total * 0.01, l("Morale Bonus"))
-        science.add(science.total * morale.total * 0.01, l("Morale Bonus"))
+        if census @ task_farming > 0 then
+            organic_factor := (census @ task_farming - androids @ task_farming) / (census @ task_farming)
+            farming.add((farming.total * morale.total * 0.01 * organic_factor).to_real, l("Morale Bonus"))
+        end
+        if census @ task_industry > 0 then
+            organic_factor := (census @ task_industry - androids @ task_industry) / (census @ task_industry)
+            industry.add((industry.total * morale.total * 0.01 * organic_factor).to_real, l("Morale Bonus"))
+        end
+        if census @ task_science > 0 then
+            organic_factor := (census @ task_science - androids @ task_science) / (census @ task_science)
+            science.add((science.total * morale.total * 0.01 * organic_factor).to_real, l("Morale Bonus"))
+        end
         money.add(money.total * morale.total * 0.01, l("Morale Bonus"))
         -- Government Bonus
         farming.add(farming.total * owner.race.food_multiplier * 0.01, l("Government Bonus"))
@@ -482,6 +497,7 @@ feature {CONSTRUCTION} -- Auxiliary for construction production
     census: ARRAY[INTEGER]
         -- Census of farmers, workers and scientists.  It's value is
         -- recalculated with `recalculate_production'.
+        -- Indeces are task_farming through task_science
 
     build_ship(sh: like shipyard) is
     require
@@ -493,7 +509,7 @@ feature {CONSTRUCTION} -- Auxiliary for construction production
         shipyard = sh
     end
 
-feature {EVOLVER} -- Auxiliary for evolving
+feature{EVOLVER} -- Auxiliary for evolving
 
     add_populator(task: INTEGER) is
     require
@@ -505,6 +521,19 @@ feature {EVOLVER} -- Auxiliary for evolving
         populators.add(pop, pop.id)
         population := population + 1000
         pop.set_task(task)
+    end
+
+feature -- Android construction, colonist transportation
+
+    receive(pop: like populator_type) is
+    require
+        pop /= Void
+        pop.fits_on(Current)
+    do
+        populators.add(pop, pop.id)
+        population := population + 1000
+    ensure
+        populators.has(pop.id)
     end
 
 feature -- Combat

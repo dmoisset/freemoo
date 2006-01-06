@@ -14,6 +14,7 @@ feature {NONE} -- Creation
         create status.make_with_options (options)
         create players.make
         create galaxy.make
+        create xeno_repository.make
         make_mapgenerator
         make_evolver
         make -- Dialog handler
@@ -73,6 +74,8 @@ feature -- Access
     galaxy: GALAXY
         -- Galaxy where the game is played
 
+    xeno_repository: XENO_REPOSITORY
+
     end_condition: BOOLEAN is
         -- has reached end condition?
     local
@@ -116,6 +119,7 @@ feature -- Operations
         players.has (player.name)
         not status.finished
     do
+        xeno_repository.generate_knowledge
         players.set_player_state (player, st_ready)
         if players.all_in_state (st_ready) and status.open_slots = 0 then
             -- Generate Galaxy

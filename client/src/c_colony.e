@@ -29,7 +29,7 @@ feature
         new_population: INTEGER
         populator: POPULATION_UNIT
         design: C_STARSHIP
-        builder: CONSTRUCTION_BUILDER
+        builder: C_CONSTRUCTION_BUILDER
     do
         create builder
         create s.start (msg)
@@ -72,7 +72,7 @@ feature
             s.get_integer
             pop_id := s.last_integer
             s.get_integer
-            race := server.player_list.item_with_race_id(s.last_integer).race
+            race := server.xeno_repository.item(s.last_integer)
             if populators.has(pop_id) and then (populators @ pop_id).race = race then
                 populator := populators @ pop_id
             else

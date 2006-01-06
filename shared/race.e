@@ -2,6 +2,7 @@ class RACE
 
 inherit
     UNIQUE_ID
+    PRODUCTION_CONSTANTS
 
 creation make
 
@@ -154,12 +155,10 @@ feature -- Access -- Special
         -- -2 for UP, -1 for poor, 0 for normal, +1 for rich, +2 for UR
         -- (easy to add to richness constants from MAP_CONSTANTS)
 
-    ancient_artifacts: BOOLEAN
-
-    aquatic, subterranean, cybernetic, lithovore, repulsive,
-    charismatic, uncreative, creative, tolerant, fantastic_trader,
-    telepathic, lucky, omniscient, stealthy, transdimensional,
-    warlord: BOOLEAN
+    ancient_artifacts, aquatic, subterranean, cybernetic, lithovore,
+    repulsive, charismatic, uncreative, creative, tolerant,
+    fantastic_trader, telepathic, lucky, omniscient, stealthy,
+    transdimensional, warlord: BOOLEAN
 
 feature -- Operations
 
@@ -366,12 +365,13 @@ feature {NONE} -- Creation
         make_unique_id
         government := government_dictatorship
         name := ""
+        homeworld_name := ""
     end
 
 invariant
     government.in_range (government_feudal, government_unification)
     ship_cost_bonus <= 3 -- Otherwise ships would have negative cost    
-    picture.in_range(0, 12)
+    picture.in_range(0, 14)
     not (creative and uncreative)
     not (charismatic and repulsive)
     not (lithovore and cybernetic)

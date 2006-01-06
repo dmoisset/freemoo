@@ -28,7 +28,10 @@ feature {STORAGE} -- Saving
         Result := (<<["race", race],
                      ["colony", colony],
                      ["turns_to_assimilation", turns_to_assimilation.box],
-                     ["task", (task - task_farming).box]>>).get_new_iterator
+                     ["task", (task - task_farming).box],
+                     ["single_task", (single_task - task_farming).box],
+                     ["is_android", is_android.box]>>).get_new_iterator
+
     end
 
     primary_keys: ITERATOR[TUPLE[STRING, ANY]] is
@@ -60,7 +63,9 @@ feature {STORAGE} -- Retrieving
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
         i: REFERENCE [INTEGER]
+        b: REFERENCE [BOOLEAN]
         savedtask: INTEGER
+        saved_single_task: INTEGER
     do
         from
         until elems.is_off loop
@@ -74,6 +79,12 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("task") then
                 i ?= elems.item.second
                 savedtask := i.item + task_farming
+            elseif elems.item.first.is_equal("single_task") then
+                i ?= elems.item.second
+                saved_single_task := i.item + task_farming
+            elseif elems.item.first.is_equal("is_android") then
+                b ?= elems.item.second
+                is_android := b.item
             else
                 print ("Bad element inside 'population_unit' tag: " + elems.item.first + "%N")
             end

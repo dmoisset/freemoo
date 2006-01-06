@@ -24,6 +24,7 @@ feature -- Creation
         if player_list = Void then !!player_list.make end
         if galaxy = Void then !!galaxy.make end
         create dialogs.make
+        create xeno_repository.make
     rescue
         if is_opening or not is_closed then
             close
@@ -288,6 +289,8 @@ feature -- Access (server attributes)
 
     dialogs: DIALOG_LISTENER
         -- Notifier of dialog status
+
+    xeno_repository: C_XENO_REPOSITORY
 
 feature -- Redefined features
 

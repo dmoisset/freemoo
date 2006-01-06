@@ -5,7 +5,8 @@ inherit
         redefine
             status, players, galaxy, add_player, init_game,
             fleet_type, star_type, planet_type, save,
-            add_dialog, remove_dialog, make_evolver, colonize_all
+            add_dialog, remove_dialog, make_evolver, colonize_all,
+            xeno_repository
         end
     SERVER_ACCESS
     STORABLE
@@ -17,7 +18,6 @@ creation
     make_with_options
 
 feature {NONE} -- Creation
-
 
     make_evolver is
     local
@@ -46,6 +46,8 @@ feature -- Access
         -- Players in the game
 
     galaxy: S_GALAXY
+
+    xeno_repository: S_XENO_REPOSITORY
 
 feature -- Operations
 
@@ -76,8 +78,8 @@ feature -- Operations
             server.register (galaxy, i.item.id.to_string+":enemy_colonies")
             server.register (galaxy, i.item.id.to_string+":new_fleets")
             server.register (Current, i.item.id.to_string+":dialogs")
-            server.register (i.item.race, "race" + i.item.race.id.to_string)
             server.register (i.item, "player"+i.item.id.to_string)
+            xeno_repository.add(i.item.race)
             i.next
         end
         -- Register stars
@@ -272,6 +274,7 @@ feature {STORAGE} -- Saving
         a.add_last(["status", status])
         a.add_last(["players", players])
         a.add_last(["galaxy", galaxy])
+        a.add_last(["xeno_repository", xeno_repository])
         Result := a.get_new_iterator
     end
 
@@ -283,6 +286,7 @@ feature {STORAGE} -- Saving
         a.add_last(status)
         a.add_last(players)
         a.add_last(galaxy)
+        a.add_last(xeno_repository)
         Result := a.get_new_iterator
     end
 
@@ -302,11 +306,13 @@ feature {STORAGE} -- Operations - Retrieving
                 players ?= elems.item.second
             elseif elems.item.first.is_equal("galaxy") then
                 galaxy ?= elems.item.second
+            elseif elems.item.first.is_equal("xeno_repository") then
+                xeno_repository ?= elems.item.second
             end
             elems.next
         end
-        if galaxy = Void or players = Void or status = Void then
-            print("game.e:  Called make_from_storage with nonsensical elems!")
+        if galaxy = Void or players = Void or status = Void or xeno_repository = Void then
+            print("s_game.e:  Called make_from_storage with nonsensical elems!")
         end
     end
 

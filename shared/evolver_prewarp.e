@@ -63,7 +63,8 @@ feature {NONE} -- Auxiliar
                     product_soil_enrichment, product_gaia_transform,
                     product_capitol, product_marine_barracks,
                     product_armor_barracks, product_holosimulator,
-                    product_pleasure_dome>>
+                    product_pleasure_dome, product_android_farmer,
+                    product_android_worker, product_android_scientist>>
     end
 
     starship: STARSHIP

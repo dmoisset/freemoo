@@ -156,7 +156,6 @@ feature {NONE} -- Operations: joining
     local
         ruler_name: STRING
         color: INTEGER
-        race: S_RACE
         it: ITERATOR[S_PLAYER]
         bad_setup: BOOLEAN
     do
@@ -170,8 +169,7 @@ feature {NONE} -- Operations: joining
             color := u.last_integer
             u.get_string
             ruler_name := u.last_string
-            !!race.make
-            race.unserialize_from(u)
+            player.race.unserialize_from(u)
             from
                 it := server.game.players.get_new_iterator
             until
@@ -179,8 +177,8 @@ feature {NONE} -- Operations: joining
             loop
                 if it.item.state >= st_ready and then
                      (it.item.ruler_name.is_equal(ruler_name) or
-                      it.item.race.picture = race.picture or
-                      it.item.race.name.is_equal(race.name) or
+                      it.item.race.picture = player.race.picture or
+                      it.item.race.name.is_equal(player.race.name) or
                       it.item.color = color) then
                     std_error.put_string(l("Client error?  Ruler name, picture, race name or color already taken.%N"))
                     bad_setup := True
@@ -190,7 +188,6 @@ feature {NONE} -- Operations: joining
             if not bad_setup then
                 player.set_ruler_name(ruler_name)
                 player.set_color(color)
-                player.set_race(race)
                 server.game.players.update_clients
                 server.game.set_player_ready (player)
             end

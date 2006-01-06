@@ -23,17 +23,21 @@ feature -- Access
 
     able_farmer: BOOLEAN is
     do
-        Result := colony.location.climate > colony.location.climate_barren
+        Result := single_task = task_farming or
+                  (single_task = task_none and then
+                    colony.location.climate > colony.location.climate_barren)
     end
 
     able_worker: BOOLEAN is
     do
-        Result := True
+        Result := single_task = task_industry or
+                  single_task = task_none
     end
 
     able_scientist: BOOLEAN is
     do
-        Result := True
+        Result := single_task = task_science or
+                  single_task = task_none
     end
 
     able(t: INTEGER): BOOLEAN is
@@ -51,6 +55,20 @@ feature -- Access
     do
         Result := production_factor_array.item(race.homeworld_gravity,
                                                colony.location.gravity)
+    end
+
+    single_task: INTEGER
+        -- Races that are only good at one thing (like natives)
+        -- indicate their task here
+
+    is_android: BOOLEAN
+        -- True for androids
+
+    fits_on(c: like colony): BOOLEAN is
+    do
+        -- FIXME!! This should check if this populator really fits on
+        -- the colony!
+        Result := True
     end
 
 feature {NONE} -- Auxiliar for `production_factor'
@@ -81,11 +99,17 @@ feature -- Operation
         item: REAL
         total: REAL
     do
-        colony.money.add(1, l("Taxes Collected"))
-        if race.money_bonus > 0 then
-            colony.money.add(race.money_bonus * 0.5, format(l("~1~ Bonus"), <<race.name>>))
-        elseif race.money_bonus < 0 then
-            colony.money.add(race.money_bonus * 0.5, format(l("~1~ Penalty"), <<race.name>>))
+        if not is_android then
+            colony.money.add(1, l("Taxes Collected"))
+            if race.money_bonus > 0 then
+                colony.money.add(race.money_bonus * 0.5, format(l("~1~ Bonus"), <<race.name>>))
+            elseif race.money_bonus < 0 then
+                colony.money.add(race.money_bonus * 0.5, format(l("~1~ Penalty"), <<race.name>>))
+            end
+            -- Fantastic traders
+            if race.fantastic_trader then
+                colony.money.add(total, l("Fantastic Traders"))
+            end
         end
         -- Surplus food
         item := ((colony.farming.total - colony.food_consumption).max(0) /
@@ -98,10 +122,6 @@ feature -- Operation
                     colony.populators.count / 2
             colony.money.add(item, l("Trade Goods"))
             total := total + item
-        end
-        -- Fantastic traders
-        if race.fantastic_trader then
-            colony.money.add(total, l("Fantastic Traders"))
         end
     end
 
@@ -142,7 +162,9 @@ feature -- Operation
             check unexpected_task: False end
         end
         -- Eat!
-        if race.cybernetic then
+        if is_android then
+            colony.consume_industry(1)
+        elseif race.cybernetic then
             colony.consume_food(0.5)
             colony.consume_industry(0.5)
         else
@@ -152,6 +174,7 @@ feature -- Operation
 
     set_task(t: INTEGER) is
     require
+        t.in_range(task_farming, task_science)
         t = task_farming implies able_farmer
         t = task_industry implies able_worker
         t = task_science implies able_scientist
@@ -159,6 +182,26 @@ feature -- Operation
         task := t
     ensure
         task = t
+    end
+
+    set_single_task(t: INTEGER) is
+    require
+        t.in_range(task_none, task_science)
+    do
+        single_task := t
+        if t.in_range(task_farming, task_science) then
+            task := t
+        end
+    ensure
+        single_task = t
+        t.in_range(task_farming, task_science) implies task = t
+    end
+
+    set_is_android(android: BOOLEAN) is
+    do
+        is_android := android
+    ensure
+        is_android = android
     end
 
 feature {NONE} -- Creation
@@ -175,13 +218,16 @@ feature {NONE} -- Creation
         if not able_farmer then
             task := task_industry
         end
+        single_task := task_none
     end
 
 feature -- Serialization
 
     serialize_on (s: SERIALIZER2) is
     do
-        s.add_tuple (<<id.box, race.id.box, turns_to_assimilation.to_boolean.box, (task - task_farming).box>>)
+        s.add_tuple (<<id.box, race.id.box, turns_to_assimilation.to_boolean.box,
+                     (task - task_farming).box, (single_task - task_farming).box,
+                     is_android.box>>)
     end
 
     unserialize_from (s: UNSERIALIZER) is
@@ -190,6 +236,10 @@ feature -- Serialization
         turns_to_assimilation := s.last_boolean.to_integer
         s.get_integer
         task := s.last_integer + task_farming
+        s.get_integer
+        single_task := s.last_integer + task_farming
+        s.get_boolean
+        is_android := s.last_boolean
     end
 
 invariant
@@ -199,4 +249,5 @@ invariant
     task = task_farming implies able_farmer
     task = task_industry implies able_worker
     task = task_science implies able_scientist
+    single_task.in_range(task_none, task_science)
 end -- class POPULATION_UNIT

@@ -107,14 +107,14 @@ feature {NONE} -- Images
         -- Container for race icons (li'l farmers, workers, scientists).
         -- Don't access directly; fetch images with `get_raceicon'.
     once
-        !!Result.make(0, 12, raceicon_farmer, raceicon_hostage)
+        !!Result.make(0, 14, raceicon_farmer, raceicon_hostage)
     end
 
     get_raceicon(picture, role: INTEGER): IMAGE is
         -- Gets a ship image from `raceicon_pics', checking first to see if 
         -- it has already been loaded.
     require
-        picture.in_range(0, 12)
+        picture.in_range(0, 14)
         role.in_range(raceicon_farmer, raceicon_hostage)
     local
         a: FMA_FRAMESET
