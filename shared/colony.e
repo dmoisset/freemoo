@@ -509,7 +509,7 @@ feature {CONSTRUCTION} -- Auxiliary for construction production
         shipyard = sh
     end
 
-feature{EVOLVER} -- Auxiliary for evolving
+feature -- Auxiliary for colony quick population
 
     add_populator(task: INTEGER) is
     require

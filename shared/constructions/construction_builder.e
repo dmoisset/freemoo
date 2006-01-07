@@ -44,9 +44,11 @@ feature -- Operations
             last_built := last_ship
         when product_housing then
             create last_ongoing.make(l("Housing"), product_housing)
+            last_ongoing.set_description(l("Housing converts the production of a colony into population growth."))
             last_built := last_ongoing
         when product_trade_goods then
             create last_ongoing.make(l("Trade Goods"), product_trade_goods)
+            last_ongoing.set_description(l("Trade Goods converts the production of a colony into BCs for the imperial treasury."))
             last_built := last_ongoing
         when product_automated_factory then
             create last_productive.make(l("Automated Factory"), product_automated_factory)

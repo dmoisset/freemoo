@@ -133,6 +133,51 @@ feature -- Operations on star system
         old special = stspecial_wormhole implies special = stspecial_nospecial
     end
 
+    planet_with_special: like planet_type is
+    require
+        special = stspecial_planetspecial
+    local
+        it: ITERATOR[like planet_type]
+    do
+        from
+            it := get_new_iterator_on_planets
+        until
+            it.is_off or Result /= Void
+        loop
+            if it.item /= Void and then it.item.special /= plspecial_nospecial then
+                Result := it.item
+            end
+            it.next
+        end
+    ensure
+        Result /= Void
+        Result.special /= plspecial_nospecial
+    end
+
+    collect_special(lucky_guy: like player_type) is
+    local
+        planet: like planet_type
+        constants: PRODUCTION_CONSTANTS
+        colony: COLONY
+    do
+        if special = stspecial_debris then
+            lucky_guy.update_money(50)
+            special := stspecial_nospecial
+        elseif special = stspecial_piratecache then
+            lucky_guy.update_money(100)
+            special := stspecial_nospecial
+        elseif special = stspecial_planetspecial and then
+                planet_with_special.special = plspecial_splinter then
+            create constants
+            planet := planet_with_special
+            colony := planet.create_colony(lucky_guy)
+            colony.add_populator(constants.task_farming)
+            colony.add_populator(constants.task_industry)
+            planet.set_special(plspecial_nospecial)
+            special := stspecial_nospecial
+        end
+    end
+
 feature -- Factory Methods
 
     create_planet: like planet_type is
@@ -199,6 +244,8 @@ feature {NONE} -- Internal
 
     planet_type: PLANET
         -- Anchor for type declarations.
+
+    player_type: PLAYER
 
 invariant
     valid_kind: kind.in_range (kind_min, kind_max)

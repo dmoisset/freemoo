@@ -56,7 +56,7 @@ feature {NONE} -- Creation
         special = newspecial
     end
 
-feature -- Operations
+feature -- Configuration
 
     set_size (newsize: INTEGER) is
     require
@@ -112,7 +112,7 @@ feature -- Operations
         special = newspecial
     end
 
-feature
+feature -- Operations
 
     set_colony (newcolony: like colony) is
     do

@@ -6,7 +6,7 @@ inherit
         copy, is_equal
     redefine
         set_planet, set_special, set_name, make, make_defaults,
-        planet_type
+        planet_type, player_type
     end
     STORABLE
     rename
@@ -207,7 +207,9 @@ feature {STORAGE} -- Retrieving
     end
 
 feature {NONE} -- Internal
-    
+
     planet_type: S_PLANET
+
+    player_type: S_PLAYER
 
 end -- class S_STAR

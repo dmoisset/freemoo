@@ -280,6 +280,7 @@ feature -- Operations
             enter_orbit (destination)
             owner.add_to_known_list (orbit_center)
             owner.add_to_visited_list (orbit_center)
+            orbit_center.collect_special(owner)
         end
     end
 

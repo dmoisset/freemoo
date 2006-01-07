@@ -207,8 +207,10 @@ feature -- Redefined features
 
     add_to_known_list (star: like star_type) is
     do
+        if not knows_star.has(star) then
+            add_summary_message(create {TURN_SUMMARY_ITEM_EXPLORED}.make(star))
+        end
         Precursor (star)
-        add_summary_message(create {TURN_SUMMARY_ITEM_EXPLORED}.make(star.id))
         update_clients
     end
 
@@ -249,6 +251,8 @@ feature {COLONY} -- Redefined features
         server.unregister("colony" + c.id.to_string)
         update_clients
     end
+
+feature -- Harvesting
 
     update_money(amount: INTEGER) is
     do
