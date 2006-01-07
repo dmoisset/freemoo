@@ -155,6 +155,8 @@ feature -- Operations
             create {CONSTRUCTION_GAIA_TRANSFORM}last_built.make
         when product_capitol then
             create {CONSTRUCTION_CAPITOL}last_built.make
+        when product_artificial_planet then
+            create {CONSTRUCTION_ARTIFICIAL_PLANET}last_built.make
         when product_radiation_shield then
             create last_shield.make(l("Radiation Shield"), product_radiation_shield)
             last_shield.set_cost(80)

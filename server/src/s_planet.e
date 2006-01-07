@@ -2,7 +2,8 @@ class S_PLANET
 
 inherit
     PLANET
-    redefine colony, orbit_center, create_colony, set_gravity, set_climate end
+    redefine colony, orbit_center, create_colony, set_gravity, set_climate,
+        set_special, set_mineral, set_type end
     STORABLE
     redefine dependents, primary_keys end
 
@@ -31,6 +32,24 @@ feature
     set_climate(new_grav: INTEGER) is
     do
         Precursor(new_grav)
+        orbit_center.update_clients
+    end
+
+    set_mineral(new_mnrl: INTEGER) is
+    do
+        Precursor(new_mnrl)
+        orbit_center.update_clients
+    end
+
+    set_special(new_special: INTEGER) is
+    do
+        Precursor(new_special)
+        orbit_center.update_clients
+    end
+
+    set_type(new_type: INTEGER) is
+    do
+        Precursor(new_type)
         orbit_center.update_clients
     end
 

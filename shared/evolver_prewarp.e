@@ -54,15 +54,19 @@ feature {NONE} -- Auxiliar
                     product_hidroponic_farm, product_subterranean_farms,
                     product_weather_controller, product_colony_base,
                     product_spaceport, product_stock_exchange,
-                    product_gravity_generator, product_terraforming, product_radiation_shield,
-                    product_flux_shield, product_barrier_shield, product_cloning_center,
-                    product_biospheres, product_starbase, product_battlestation,
-                    product_star_fortress, product_pollution_processor,
-                    product_atmosphere_renewer, product_core_waste_dump,
-                    product_recyclotron, product_soil_enrichment, product_gaia_transform,
-                    product_marine_barracks, product_armor_barracks, product_capitol,
-                    product_holosimulator, product_pleasure_dome, product_android_farmer,
-                    product_android_worker, product_android_scientist>>
+                    product_gravity_generator, product_terraforming,
+                    product_radiation_shield, product_flux_shield,
+                    product_barrier_shield, product_cloning_center,
+                    product_biospheres, product_starbase,
+                    product_battlestation, product_star_fortress,
+                    product_pollution_processor, product_atmosphere_renewer,
+                    product_core_waste_dump, product_recyclotron,
+                    product_soil_enrichment, product_gaia_transform,
+                    product_marine_barracks, product_armor_barracks,
+                    product_capitol, product_holosimulator,
+                    product_pleasure_dome, product_android_farmer,
+                    product_android_worker, product_android_scientist,
+                    product_artificial_planet>>
     end
 
     starship: STARSHIP
