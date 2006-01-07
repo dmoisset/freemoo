@@ -37,7 +37,6 @@ feature -- Operations
     construction_by_id(id: INTEGER) is
     require
         id.in_range(product_min, product_max)
-        id /= product_starship -- starships are added with a design
     do
         inspect id
         when product_colony_ship then
@@ -45,9 +44,6 @@ feature -- Operations
             last_built := last_ship
         when product_housing then
             create last_ongoing.make(l("Housing"), product_housing)
-            last_built := last_ongoing
-        when product_none then
-            create last_ongoing.make(l("Nothing"), product_none)
             last_built := last_ongoing
         when product_trade_goods then
             create last_ongoing.make(l("Trade Goods"), product_trade_goods)

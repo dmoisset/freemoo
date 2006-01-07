@@ -21,7 +21,7 @@ feature {NONE} -- Creation
         first_populator: like populator_type
     do
         make_unique_id
-        producing := o.known_constructions @ product_none
+        producing := o.known_constructions @ product_trade_goods
         create ship_factory
         create farming.make
         create industry.make
@@ -40,7 +40,7 @@ feature {NONE} -- Creation
     ensure
         location = p
         p.colony = Current
-        producing.id = product_none
+        producing.id = product_trade_goods
     end
 
 feature -- Access
@@ -371,7 +371,7 @@ feature -- Operations
                 producing.build(Current)
                 owner.add_summary_message(create {TURN_SUMMARY_ITEM_PRODUCED}.make(id,
                     producing.id, producing.name))
-                set_producing(product_none)
+                set_producing(product_trade_goods)
             end
         else
             produced := 0
@@ -644,8 +644,7 @@ invariant
     population // 1000 = populators.count
     populators /= Void
     producing /= Void
-    producing.id /= product_starship -- starship designs have id > product_max
-    producing.id >= product_none
+    producing.id >= product_min -- producing can have an id > product_max
     constructions /= Void
     location /= Void
     farming /= Void

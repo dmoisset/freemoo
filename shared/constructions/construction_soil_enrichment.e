@@ -26,6 +26,7 @@ feature {NONE} -- Creation
     do
         id := product_soil_enrichment
         name := l("Soil Enrichment")
+        base_cost := 120
         description := l("Using nano-machines, planetary soil can be molecularly enriched and fertilized, increasing the food a farmer can harvest by +1. Soil enrichment will not work in barren, radiated, and toxic planets.")
     end
 

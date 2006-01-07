@@ -17,7 +17,7 @@ feature {NONE} -- Creation
     do
         create constructions.make
         create builder
-        add_by_id(product_none)
+        add_by_id(product_trade_goods)
     end
 
 feature -- Access
@@ -57,7 +57,6 @@ feature -- Operations
     require
         not has(id)
         id.in_range(product_min, product_max)
-        id /= product_starship -- starships are added with a design
     do
         builder.construction_by_id(id)
         last_added := builder.last_built
@@ -81,6 +80,6 @@ feature {NONE} -- Anchors
 
 invariant
 
-    has(product_none)
+    has(product_trade_goods)
 
 end -- class CONSTRUCTION_REPO

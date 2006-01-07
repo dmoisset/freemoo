@@ -19,10 +19,10 @@ feature {NONE} -- Creation
         window_make(w, where)
         r.set_with_size(0, 0, location.width, 20)
         create name_label.make(Current, r, "")
-        r.set_with_size(90, location.height - 18, location.width - 90, 15)
+        r.set_with_size(60, location.height - 18, location.width - 60, 15)
         create missing_label.make(Current, r, "")
-        create shadow.make(Current, 2, location.height - 20, buy_imgs @ 1)
-        create buy_button.make(Current, 2, location.height - 20,
+        create shadow.make(Current, 2, location.height - 18, buy_imgs @ 1)
+        create buy_button.make(Current, 2, location.height - 18,
                             buy_imgs @ 0, buy_imgs @ 2, buy_imgs @ 3)
         buy_button.set_click_handler(agent buy)
         buy_button.hide
@@ -113,24 +113,6 @@ feature {NONE} -- Representation
         create Result.make(product_min, product_max)
     end
 
-    filenums: HASHED_DICTIONARY[INTEGER, INTEGER] is
-        -- Maps product_xxxx constants to file names in our data packages
-    do
-        create Result.make
-        Result.put(42, product_colony_ship)
-        Result.put(23, product_automated_factory)
-        Result.put(157, product_robo_mining_plant)
-        Result.put(50, product_deep_core_mine)
-        Result.put(19, product_astro_university)
-        Result.put(156, product_research_laboratory)
-        Result.put(137, product_supercomputer)
-        Result.put(22, product_autolab)
-        Result.put(77, product_galactic_cybernet)
-        Result.put(88, product_hidroponic_farm)
-        Result.put(179, product_subterranean_farms)
-        Result.put(199, product_weather_controller)
-    end
-
     get_img(id: INTEGER): IMAGE is
     require
         id >= product_min
@@ -146,15 +128,18 @@ feature {NONE} -- Representation
         elseif imgs @ id = Void then
             if id = product_trade_goods then -- Special case for trade goods
                 create a.make("client/colony-view/production/prod01.fma")
-                imgs.put(a.images @ 1, id)
-                Result := imgs @ id
-            elseif not filenums.has(id) then
-                Result := create {SDL_IMAGE}.make(0, 0)
+                Result := a.images @ 1
+            elseif id = product_android_farmer or id = product_android_worker or
+                 id = product_android_scientist then
+                create a.make("client/colony-view/populators/pop130.fma")
+                Result := a.images @ 1
+            elseif id = product_housing  or id = product_spy then
+                create {SDL_IMAGE}Result.make(0,0)
             else
-                create a.make ("client/techs/tech" + (filenums @ id).to_string + ".fma")
-                imgs.put(a.images @ 1, id)
-                Result := imgs @ id
+                create a.make ("client/techs/prod" + (id - product_min).to_string + ".fma")
+                Result := a.images @ 1
             end
+            imgs.put(Result, id)
         else
             Result := imgs @ id
         end

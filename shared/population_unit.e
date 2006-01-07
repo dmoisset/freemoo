@@ -151,9 +151,13 @@ feature -- Operation
                 colony.industry.add(race.industry_bonus, format(l("~1~ Bonus"), <<race.name>>))
             end
         when task_science then
-            colony.science.add(3, l("Produced by scientists"))
-            if race.science_bonus /= 0 then
-                colony.science.add(race.science_bonus, format(l("~1~ Bonus"), <<race.name>>))
+            if is_android then
+                colony.science.add(3, l("Android scientists"))
+            else
+                colony.science.add(3, l("Produced by scientists"))
+                if race.science_bonus /= 0 then
+                    colony.science.add(race.science_bonus, format(l("~1~ Bonus"), <<race.name>>))
+                end
             end
             if colony.location.special = colony.location.plspecial_artifacts then
                 colony.science.add(2, l("Ancient Artifacts"))

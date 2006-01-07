@@ -16,13 +16,18 @@ feature {NONE} -- Creation
     do
         my_connect_identifier := agent update_possible_constructions
         window_make(w, where)
-        r.set_with_size(width - 14, 2, 10, height - 4)
-        s.set_with_size(2, 2, width - 4, height - 4)
+        r.set_with_size(167, 2, 10, height - 4)
+        s.set_with_size(2, 2, 177, height - 4)
         create list.make(Current, s, r, create {SDL_SOLID_IMAGE}.make(0, 0, 0, 30, 150))
         list.set_button_images(imgs@0, imgs@1, imgs@2)
         list.set_up_images(up_imgs@0, up_imgs@1, up_imgs@2)
         list.set_down_images(down_imgs@0, down_imgs@1, down_imgs@2)
         list.set_click_handler(agent start_building)
+        list.set_on_enter_handler(agent show_description)
+        list.set_on_exit_handler(agent show_nothing)
+        r.set_with_size(190, 10, width - 190, 140)
+        create description_label.make(Current, r, "")
+        description_label.set_wordwrap(True)
     end
 
 feature {NONE} -- signal callbacks
@@ -45,6 +50,16 @@ feature {NONE} -- Callbacks
         if c.id /= colony.producing.id and not colony.has_bought then
             server.start_building(colony, c)
         end
+    end
+
+    show_description(c: CONSTRUCTION) is
+    do
+        description_label.set_text(c.description)
+    end
+
+    show_nothing(c: CONSTRUCTION) is
+    do
+        description_label.set_text("")
     end
 
 feature {NONE} -- Auxiliar
@@ -91,6 +106,8 @@ feature {NONE} -- Auxiliar
 feature {NONE} -- Widgets
 
     list: SCROLLED_LIST[CONSTRUCTION]
+
+    description_label: MULTILINE_LABEL
 
 feature {NONE} -- Auxiliar functions
 

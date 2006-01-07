@@ -120,6 +120,7 @@ feature {NONE} -- Creation
     do
         name := new_name
         id := new_id
+        description := ""
     ensure
         name = new_name
         id = new_id
@@ -131,5 +132,6 @@ feature {NONE} -- Anchors
 
 invariant
     name /= Void
+    description /= Void
     -- id.in_range(product_min, product_max) (not since ship_constructions...)
 end

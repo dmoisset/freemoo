@@ -259,6 +259,16 @@ feature -- Other Operations
         click_handler := handler
     end
 
+    set_on_enter_handler(handler: PROCEDURE[ANY, TUPLE[E]]) is
+    do
+        on_enter_handler := handler
+    end
+
+    set_on_exit_handler(handler: PROCEDURE[ANY, TUPLE[E]]) is
+    do
+        on_exit_handler := handler
+    end
+
 feature -- Operations on widgets
 
     set_button_images(i1, i2, i3: IMAGE) is
@@ -313,6 +323,10 @@ feature {NONE} -- Implementation
     b1, b2, b3: IMAGE
 
     click_handler: PROCEDURE[ANY, TUPLE[like item]]
+
+    on_enter_handler: PROCEDURE[ANY, TUPLE[like item]]
+
+    on_exit_handler: PROCEDURE[ANY, TUPLE[like item]]
 
     items: ARRAY[like item]
 
@@ -386,6 +400,8 @@ feature {NONE} -- Implementation
                     buttons.valid_index(j)
                 end
                 buttons.item(j).set_click_handler(agent handle_click(items @ i))
+                buttons.item(j).set_on_enter_handler(agent handle_on_enter(items @ i))
+                buttons.item(j).set_on_exit_handler(agent handle_on_exit(items @ i))
                 j := j + 1
                 i := i + 1
             end
@@ -424,6 +440,20 @@ feature {NONE} -- Implementation
     do
         if click_handler /= Void then
             click_handler.call([element])
+        end
+    end
+
+    handle_on_enter(element: like item) is
+    do
+        if on_enter_handler /= Void then
+            on_enter_handler.call([element])
+        end
+    end
+
+    handle_on_exit(element: like item) is
+    do
+        if on_exit_handler /= Void then
+            on_exit_handler.call([element])
         end
     end
 
