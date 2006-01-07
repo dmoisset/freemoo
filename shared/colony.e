@@ -284,6 +284,12 @@ feature -- Operations
             money.add(-(const_it.item.maintenance(Current) * maintenance_factor), l("Maintenance"))
             const_it.next
         end
+        -- Gold and Gem deposits specials
+        if location.special = location.plspecial_gold then
+            money.add(5, l("Gold Deposits"))
+        elseif location.special = location.plspecial_gems then
+            money.add(10, l("Gems Deposits"))
+        end
         -- Generate money in a second loop, so's that surplus industry
         -- and food are already known
         from
