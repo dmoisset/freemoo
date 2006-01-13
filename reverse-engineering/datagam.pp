@@ -1,5 +1,6 @@
 Program datagam;
 { Dumps MOO2 GAM files }
+{ Statistics on planetary characteristics, by star type}
 
 const
    maxstars=255;
@@ -11,7 +12,7 @@ const
    climate:Array[0..9] of String[15] = ('Toxic', 'Radiated', 'Barren', 'Desert', 
    'Tundra', 'Ocean', 'Swamp', 'Arid', 'Terran', 'Gaia');
    rich:Array[0..4] of String[15] = ('Ultra Poor', 'Poor', 'Abundant', 'Rich', 'Ultra Rich');
-   ptype: Array[0..3] of String[15] = ('Sun', 'Asteroid', 'Gas Giant', 'Planet');
+   ptype: Array[0..3] of String[15] = ('Empty orbit', 'Asteroid', 'Gas Giant', 'Planet');
    grav: Array[0..2] of String[10] = ('Low G', 'Normal G', 'High G');
    specials: Array[0..11] of String[20] = ('No Special', 'Stable Worm Hole',
    'Space Debris', 'Pirate Cache', 'Gold Deposits', 'Gem Deposits', 'Natives',
@@ -77,7 +78,7 @@ var
    stcount: Word;
    pcount: Word;
    stars: Array[0..maxstars] of Star;
-   stSizes: Array[0..2] of Word= (0,0,0);
+   stSizes: Array[0..2] of Word;
    planets: Array[0..maxplanets] of Planet;
    datii: array[0..5] of Data;
    i: Integer;
@@ -86,9 +87,9 @@ var
 Procedure ShowUsage;
 { Show program usage and exit }
 Begin
-   WriteLn ('DumpGAM 1.0 - (C) 2002 by Daniel F Moisset under the GPL');
+   WriteLn ('DataGAM 1.0 - (C) 2002 by Daniel F Moisset under the GPL');
    WriteLn;
-   WriteLn ('Usage: dumpgam filename');
+   WriteLn ('Usage: datagam filename');
    Halt (1)
 End;
 
@@ -114,6 +115,10 @@ Begin
       datii[j].stars := 0;
    end;
 
+   stsizes[0] := 0;
+   stsizes[1] := 0;
+   stsizes[2] := 0;
+
    for j := 1 to ParamCount do
    begin
       Assign (inf, ParamStr(j));
@@ -135,6 +140,7 @@ Begin
       end;
 
       for i := 0 to pcount-1 do
+         { We should check for homeworlds, too}
          if stars[planets[i].star].special = 0 then
          Begin
              datii[stars[planets[i].star].color].size[planets[i].size] :=

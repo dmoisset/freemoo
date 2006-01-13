@@ -8,7 +8,8 @@ inherit
         redefine
             owner, set_planet_to_colonize, colonize
         end
-creation
+
+create
     make
 
 feature {NONE} -- Creation
@@ -24,6 +25,7 @@ feature {NONE} -- Creation
         ship_type := ship_type_colony_ship
         can_colonize := True
         fuel_range := 1.5
+        size := ship_size_special
     end
 
 feature -- Access
@@ -48,5 +50,8 @@ feature -- Operations
         Precursor
         can_colonize := True
     end
+
+invariant
+    not_capturable: creator = owner
 
 end -- class COLONY_SHIP

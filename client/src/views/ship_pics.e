@@ -3,6 +3,7 @@ class SHIP_PICS
 
 inherit
     PLAYER_CONSTANTS
+    SHIP_CONSTANTS
 
 feature {NONE} -- Representation
 
@@ -32,7 +33,7 @@ feature -- Access
     require
         owner.in_range(min_color, max_color)
         creator.in_range(min_color, max_color)
-        size.in_range(1, 6)
+        size.in_range(ship_size_min, ship_size_max)
         pic.in_range(0, 7)
     local
         a: FMA_FRAMESET
@@ -41,7 +42,7 @@ feature -- Access
         ship_and_cursor: IMAGE_COMPOSITE
     do
         if ship_pics.item(owner, creator) = Void then
-            ship_pics.put(create {ARRAY2[ARRAY[IMAGE]]}.make(1, 6, 0, 7), owner, creator)
+            ship_pics.put(create {ARRAY2[ARRAY[IMAGE]]}.make(ship_size_min, ship_size_max, 0, 7), owner, creator)
         end
         if ship_pics.item(owner, creator).item(size, pic) = Void then
             !!imgs.make (1, 2)

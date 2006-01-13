@@ -1,5 +1,6 @@
-Program unlbx;
+Program dump_game;
 { Dumps MOO2 GAM files }
+{ Statistics about star colors }
 
 {$PACKRECORDS 1}
 
