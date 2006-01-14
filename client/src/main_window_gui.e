@@ -15,7 +15,7 @@ feature {NONE} -- Creation
     do
         Precursor (w, where)
 
-        r.set_with_size (21, 21, 508, 402)
+        r.set_with_size (20, 20, 508, 402)
         new_galaxy (r)
 
         !!a.make ("client/main-window/background.fma")
