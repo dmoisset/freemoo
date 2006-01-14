@@ -1,6 +1,6 @@
 class DUMB_CLIENT
     -- FreeMOO client for testing purposes (non-interactive)
-    -- Assumes that connections won't ail and things like that
+    -- Assumes that connections won't fail and things like that
 
 inherit
     CLIENT
@@ -23,12 +23,16 @@ feature
         i: INTEGER
     do
         pkg_system.make_with_config_file ("freemoo.conf")
-        !!options.make
+        create options.make
         -- Hardcoded defaults
         options.parse_add ("server=localhost")
         options.parse_add ("port=3002")
         options.parse_add ("name=dumb")
         options.parse_add ("password=*****")
+        options.parse_add ("racename=Dimwits")
+        options.parse_add ("racepicture=0")
+        options.parse_add ("rulername=The bad guy")
+        options.parse_add ("color=red")
         -- Parse command line
         from i := 1 until i > argument_count loop
             options.parse_add (argument (i))
@@ -131,10 +135,13 @@ feature
         race: RACE
     do
         print ("Starting game...%N")
-        !!race.make
-        race.set_homeworld_name("Never Never Land")
-        race.set_name("Dimwits")
-        server.set_ready("The Bad Gui", race, 0)
+        create race.make
+        race.set_homeworld_name ("Never Never Land")
+        race.set_name (options.string_options @ "racename")
+        race.set_picture (options.int_options @ "racepicture")
+        server.set_ready(options.string_options @ "rulername",
+            race,
+            options.enum_options @ "color")
         print ("Waiting for other players...%N")
         from until
             server.game_status.started
