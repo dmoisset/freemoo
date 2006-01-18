@@ -77,7 +77,6 @@ static void loadPixels_plain8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, 
 
 static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
-  int initial_pos;     /* Initial Position in RWOps */
   Uint8 tplhdr[4],     /* Fixed header for each tuple */
     tpllist[256];      /* Non-repeated pixels buffer */
   Uint32 tcount,       /* Tuple count */
@@ -97,7 +96,6 @@ static void loadPixels_rle8 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, IN
 
   SDL_RWread(src, &tcount, 4, 1);
     
-  initial_pos = SDL_RWtell(src);
   /* filefing points to beginning of tuple */
   for (tlfing = 0; tlfing < tcount; tlfing++){
     SDL_RWread(src, tplhdr, 1, 3);
@@ -173,92 +171,69 @@ static void loadPixels_plain16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette,
 
 static void loadPixels_rle16 (SDL_RWops *src, SDL_Surface *s, Uint32 *palette, INTEGER w, INTEGER h)
 {
-  int initial_pos;                /* Initial Position in RWOps */
-  Uint8 *filebuffer;              /* Input file buffer */
-  Uint32 tlfing,                  /* Tuple List cursor */
-    filefing = 4,                 /* Finger to position inside Input file */
-    imgfing = 0,                  /* Pixel offset in image */
-    offset = 0,                   /* Offset within s->pixels */
-    scanline = 0,                 /* Offset within s->pixels to previous beginning of scanline */
-    tcount,                       /* Tuple count */
-    tupfing;                      /* Finger to follow Tuple */
-  
-  initial_pos = SDL_RWtell(src);
-  
-  filebuffer = (Uint8*) malloc (sizeof(Uint8) * 3 * w * h);
+    Uint32
+        tcount = 0,      /* Tuple count */
+        offset = 0,      /* Offset inside framebuffer */
+        scanline = 0,    /* Offset of the first pixel in the current line */
+        pixelcount = 0;  /* Pixels stored in the image */
+    Uint8
+        tplhdr[4],       /* Fixed header for each tuple */
+        ualpha[256];     /* Non-repeated (uncompressed) alpha buffer */
+    Uint16
+        upixels[256];    /* Non-repeated (uncompressed) pixels buffer */
 
-  SDL_RWread(src, filebuffer, 1, 3*w*h);
+    Uint32 i = 0, j = 0;
 
-  tcount = ((Uint32*)filebuffer)[0];
+#define NEXT_PIXEL16 \
+            pixelcount++; \
+            if (pixelcount % w) \
+                offset += 3; \
+            else { \
+                offset = scanline + s -> pitch ; \
+                scanline = offset; \
+            }
 
-  /* filefing points to beginning of ps */
-  for (tlfing = tcount; tlfing; tlfing--) {
-    /* Repeat n times */
-    for (tupfing = filebuffer[filefing]; tupfing; tupfing--) {
-      ((Uint8*)s->pixels)[offset + 1] = filebuffer[filefing + 2];
-      ((Uint8*)s->pixels)[offset + 2] = filebuffer[filefing + 3];
-      imgfing++;
-      if (imgfing % w)
-	offset += 3;
-      else {
-	offset = scanline + s -> pitch;
-	scanline = offset;
-      }
+    /* Get pixel data */
+    SDL_RWread (src, &tcount, 4, 1);
+    for (i = tcount; i > 0; i--) {
+        SDL_RWread (src, tplhdr, 1, 4);
+
+        /* Repeat the repeated pixel n times */
+        for (j = tplhdr[0]; j > 0; j--) {
+            ((Uint8*)(s->pixels))[offset+1] = tplhdr[2] ;
+            ((Uint8*)(s->pixels))[offset+2] = tplhdr[3] ;
+            NEXT_PIXEL16
+        }
+
+        /* Read uncompressed pixels*/
+        SDL_RWread (src, upixels, 2, tplhdr[1]) ;
+        for (j=0; j < tplhdr[1]; j++) {
+            ((Uint8*)(s->pixels))[offset+1] = upixels[j] & 0xff ;
+            ((Uint8*)(s->pixels))[offset+2] = upixels[j] >> 8 ;
+            NEXT_PIXEL16
+        }
     }
-    /* filefing now points at beginning of xs */
-    filefing += 4;
-    for (tupfing = filebuffer[filefing - 3]; tupfing; tupfing--) {
-      ((Uint8*)s->pixels)[offset + 1]= filebuffer[filefing];
-      ((Uint8*)s->pixels)[offset + 2] = filebuffer[filefing + 1];
-      imgfing++;
-      if (imgfing % w)
-	offset += 3;
-      else {
-	offset = scanline + s -> pitch;
-	scanline = offset;
-      }
-      filefing+=2;
-    }
-    /* filefing now points to beginning of next ps */
-  }
 
-  tcount = ((Uint32*)(filebuffer + filefing))[0];
-  filefing += 4;
-  imgfing = 0;
-  offset = 0;
-  scanline = 0;
+    /* Get alpha data */
+    SDL_RWread (src, &tcount, 4, 1);
+    offset = scanline = pixelcount = 0 ;
 
-  /* filefing points to beginning of alpha ps */
-  for (tlfing = tcount; tlfing; tlfing--) {
-    /* Repeat n times */
-    for (tupfing = filebuffer[filefing]; tupfing; tupfing--) {
-      ((Uint8*)s->pixels)[offset] = filebuffer[filefing + 2];
-      imgfing++;
-      if (imgfing % w)
-	offset += 3;
-      else {
-	offset = scanline + s -> pitch;
-	scanline = offset;
-      }
-    }
-    /* filefing now points at beginning of xs */
-    filefing += 3;
-    for (tupfing = filebuffer[filefing - 2]; tupfing; tupfing--) {
-      ((Uint8*)s->pixels)[offset] = filebuffer[filefing];
-      imgfing++;
-      if (imgfing % w)
-	offset += 3;
-      else {
-	offset = scanline + s -> pitch;
-	scanline = offset;
-      }
-      filefing++;
-    }
-    /* filefing now points to beginning of next ps */
-  }
-  SDL_RWseek(src, initial_pos + filefing, SEEK_SET);
-  free (filebuffer);
+    for (i = tcount; i > 0; i--) {
+        SDL_RWread (src, tplhdr, 1, 3);
 
+        /* Repeat the repeated alpha n times */
+        for (j = tplhdr[0]; j > 0; j--) {
+            ((Uint8*)(s->pixels))[offset] = tplhdr[2] ;
+            NEXT_PIXEL16
+        }
+
+        /* Read uncompressed pixels*/
+        SDL_RWread (src, ualpha, 1, tplhdr[1]) ;
+        for (j=0; j < tplhdr[1]; j++) {
+            ((Uint8*)(s->pixels))[offset] = ualpha[j];
+            NEXT_PIXEL16
+        }
+    }
 }
 
 /* Public Interface for loading FMI images */
