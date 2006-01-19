@@ -49,7 +49,10 @@ feature {NONE} -- Creation template
         end
         start
     rescue
-        if p.pkg_system.last_file_open.is_connected then
+        if
+            p.pkg_system.last_file_open /= Void and then
+            p.pkg_system.last_file_open.is_connected
+        then
             p.pkg_system.last_file_open.disconnect
         end
         if not fma.is_null then
