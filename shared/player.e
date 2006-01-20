@@ -20,6 +20,7 @@ feature {NONE} -- Creation
         ruler_name := ""
     ensure
         state = st_setup
+        money = 0
     end
 
 feature -- Access

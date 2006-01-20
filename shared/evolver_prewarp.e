@@ -23,13 +23,14 @@ feature -- Operations
     do
         from until players.is_off loop
             p := players.item
-            -- Initial technology
+            -- Initial technology and money
             from
                 tech := granted_technologies.get_new_iterator
             until tech.is_off loop
                 p.known_constructions.add_by_id(tech.item)
                 tech.next
             end
+            p.update_money (50)
             -- Create colony and populators (4 farmers, 2 workers, 2 scientist)
             c := p.colonies.item(p.colonies.lower)
             c.add_populator(task_farming)

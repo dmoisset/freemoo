@@ -71,7 +71,7 @@ feature -- Operations
     do
         builder.construction_from_design(design)
         last_added := builder.last_built
-        constructions.add(builder.last_ship, builder.last_ship.id)
+        constructions.add(builder.last_built, builder.last_built.id)
     end
 
 feature {NONE} -- Anchors
