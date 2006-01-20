@@ -198,8 +198,8 @@ feature -- Operations
             last_persistent.set_cost(60)
             last_persistent.set_maintenance(1)
             last_built := last_persistent
-        when product_starbase then
-            create last_replaceable.make(l("Star Base"), product_starbase)
+        when product_star_base then
+            create last_replaceable.make(l("Star Base"), product_star_base)
             last_replaceable.set_description("Armed orbital platforms used to service military ships.  They are equipped with extensive weaponry, the best available scanner with a +2 scanning range bonus and a star dock capable of building ships larger than destroyers.")
             last_replaceable.set_cost(400)
             last_replaceable.set_maintenance(2)
@@ -211,7 +211,7 @@ feature -- Operations
             last_replaceable.set_description("Heavily armed star base, with +4 parsec scanning range bonus. Adds +10%% to the offense of ships in combat around it. Replaces a star base.")
             last_replaceable.set_cost(1000)
             last_replaceable.set_maintenance(3)
-            last_replaceable.add_replaces(product_starbase)
+            last_replaceable.add_replaces(product_star_base)
             last_replaceable.add_replacement(product_star_fortress)
             last_built := last_replaceable
         when product_star_fortress then
@@ -219,7 +219,7 @@ feature -- Operations
             last_replaceable.set_description("A large military orbital platform. Has a +6 parsec scan range bonus and adds +20%% to both the offense and defense of all ships in combat around it. Replaces battlestations and star bases.")
             last_replaceable.set_cost(2500)
             last_replaceable.set_maintenance(4)
-            last_replaceable.add_replaces(product_starbase)
+            last_replaceable.add_replaces(product_star_base)
             last_replaceable.add_replaces(product_battlestation)
             last_built := last_replaceable
         when product_pollution_processor then

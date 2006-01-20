@@ -23,19 +23,32 @@ feature -- Operations
     do
         from until players.is_off loop
             p := players.item
-            c := p.colonies.item(p.colonies.lower)
-            c.add_populator(task_farming)
-            c.add_populator(task_industry)
-            c.add_populator(task_industry)
+            -- Initial technology
             from
                 tech := granted_technologies.get_new_iterator
             until tech.is_off loop
                 p.known_constructions.add_by_id(tech.item)
                 tech.next
             end
+            -- Create colony and populators (4 farmers, 2 workers, 2 scientist)
+            c := p.colonies.item(p.colonies.lower)
+            c.add_populator(task_farming)
+            c.add_populator(task_farming)
+            c.add_populator(task_farming)
+            c.add_populator(task_farming)
+            c.add_populator(task_industry)
+            -- There is already a worker, by default
+            c.add_populator(task_science)
+            c.add_populator(task_science);
+            -- Basic buildings
+            (p.known_constructions @ product_capitol).build (c);
+            (p.known_constructions @ product_marine_barracks).build (c);
+            (p.known_constructions @ product_star_base).build (c);
+            -- Basic starship design
             create starship.make(p)
             starship.set_name("Scout")
             p.known_constructions.add_starship_design(starship)
+            -- Initially building scout
             c.set_producing(p.known_constructions.last_added.id)
             players.next
         end
@@ -57,7 +70,7 @@ feature {NONE} -- Auxiliar
                     product_gravity_generator, product_terraforming,
                     product_radiation_shield, product_flux_shield,
                     product_barrier_shield, product_cloning_center,
-                    product_biospheres, product_starbase,
+                    product_biospheres, product_star_base,
                     product_battlestation, product_star_fortress,
                     product_pollution_processor, product_atmosphere_renewer,
                     product_core_waste_dump, product_recyclotron,
