@@ -1,0 +1,15 @@
+#id cost maintenance basef basei bases propf propi props money
+  3   60           1     0     5     0     0     1     0     0 autofactory
+  4  150           2     0    10     0     0     2     0     0 robominers
+  5  250           3     0    15     0     0     3     0     0 deepcore
+  6  200           4     0     0     0     1     1     1     0 university
+  7   60           1     0     0     5     0     0     1     0 lab
+  8  150           2     0     0    10     0     0     2     0 supercomputer
+  9  200           3     0     0    30     0     0     0     0 autolab
+ 10  250           3     0     0    15     0     0     3     0 cybernet
+ 11   60           2     2     0     0     0     0     0     0 hidroponics
+ 12  150           4     4     0     0     0     0     0     0 subterranean
+ 13  200           3     0     0     0     2     0     0     0 weather
+ 16   80           1     0     0     0     0     0     0    50 spaceport
+ 17  150           2     0     0     0     0     0     0   100 stock
+*

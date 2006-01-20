@@ -7,6 +7,7 @@ class CONSTRUCTION_BUILDER
 inherit
     PRODUCTION_CONSTANTS
     GETTEXT
+    PKG_USER
 
 feature -- Access
 
@@ -20,7 +21,7 @@ feature -- Operations
     require
         id.in_range(product_min, product_max)
     do
-        if cache.has (id) then
+        if cache.valid_index (id) and then cache @ id /= Void then
             last_built := cache @ id
         else
             inspect
@@ -36,99 +37,6 @@ feature -- Operations
                 create last_ongoing.make(l("Trade Goods"), product_trade_goods)
                 last_ongoing.set_description(l("Trade Goods converts the production of a colony into BCs for the imperial treasury."))
                 last_built := last_ongoing
-            when product_automated_factory then
-                create last_productive.make(l("Automated Factory"), product_automated_factory)
-                last_productive.set_cost(60)
-                last_productive.set_maintenance(1)
-                last_productive.set_industry(1, 5)
-                last_productive.set_description("Aid industry workers in their building of finished products. Generates 5  production and increases the production each worker generates by +1.")
-                last_built := last_productive
-            when product_robo_mining_plant then
-                create last_productive.make(l("Robo Mining Plant"), product_robo_mining_plant)
-                last_productive.set_cost(150)
-                last_productive.set_maintenance(2)
-                last_productive.set_industry(2, 10)
-                last_productive.set_description("Automate many difficult tasks, increasing the productivity of industrial workers. Generates 10 production and increases the production each worker  produces by +2.")
-                last_built := last_productive
-            when product_deep_core_mine then
-                create last_productive.make(l("Deep Core Mine"), product_deep_core_mine)
-                last_productive.set_cost(250)
-                last_productive.set_maintenance(3)
-                last_productive.set_industry(3, 15)
-                last_productive.set_description("Allows miners to build stable tunnels deep into a planet. Generates 15  production and increases the productivity of each worker by +3 production each.")
-                last_built := last_productive
-            when product_astro_university then
-                create last_productive.make(l("Astro University"), product_astro_university)
-                last_productive.set_cost(200)
-                last_productive.set_maintenance(4)
-                last_productive.set_farming(1, 0)
-                last_productive.set_industry(1, 0)
-                last_productive.set_science(1, 0)
-                last_productive.set_description("Using the most advanced teaching methods available, the efficiency of farmers, workers, and scientists is increased. Each receives a +1 bonus.")
-                last_built := last_productive
-            when product_research_laboratory then
-                create last_productive.make(l("Research Laboratory"), product_research_laboratory)
-                last_productive.set_cost(60)
-                last_productive.set_maintenance(1)
-                last_productive.set_science(1, 5)
-                last_productive.set_description("Houses state-of-the-art computer equipment, creating a superior research environment. Generates 5 research points and increases the research each  scientist produces by +1.")
-                last_built := last_productive
-            when product_supercomputer then
-                create last_productive.make(l("Planetary Supercomputer"), product_supercomputer)
-                last_productive.set_cost(150)
-                last_productive.set_maintenance(2)
-                last_productive.set_science(2, 10)
-                last_productive.set_description("Supplies researchers with a vast amount of information. Generates 10 research  points and increases the research each scientist produces by +2.")
-                last_built := last_productive
-            when product_autolab then
-                create last_productive.make(l("Autolab"), product_autolab)
-                last_productive.set_cost(200)
-                last_productive.set_maintenance(3)
-                last_productive.set_science(0, 30)
-                last_productive.set_description("A completely automated research facility. Generates 30 research points.")
-                last_built := last_productive
-            when product_galactic_cybernet then
-                create last_productive.make(l("Galactic Cybernet"), product_galactic_cybernet)
-                last_productive.set_cost(250)
-                last_productive.set_maintenance(3)
-                last_productive.set_science(3, 15)
-                last_productive.set_description("Nearly instantaneous galaxy-wide communications, allowing quick exchange of information and ideas. The cybernet generates 15 research points and each scientist generates +3 research each.")
-                last_built := last_productive
-            when product_hidroponic_farm then
-                create last_productive.make(l("Hidroponic Farm"), product_hidroponic_farm)
-                last_productive.set_cost(60)
-                last_productive.set_maintenance(2)
-                last_productive.set_farming(0, 2)
-                last_productive.set_description("An automated, sealed environment in which food can be grown, even on lifeless worlds. It increases the food output of a world by +2 food.")
-                last_built := last_productive
-            when product_subterranean_farms then
-                create last_productive.make(l("Subterranean Farms"), product_subterranean_farms)
-                last_productive.set_cost(150)
-                last_productive.set_maintenance(4)
-                last_productive.set_farming(0, 4)
-                last_productive.set_description("An underground cavern system of automated farms. Increases the food output of a planet by +4.")
-                last_built := last_productive
-            when product_weather_controller then
-                create last_productive.make(l("Weather Controller"), product_weather_controller)
-                last_productive.set_cost(200)
-                last_productive.set_maintenance(3)
-                last_productive.set_farming(2, 0)
-                last_productive.set_description("Modifies a planet's weather patterns to create a more stable farming environment. Food production is increased by +2 per farmer.")
-                last_built := last_productive
-            when product_spaceport then
-                create last_productive.make(l("Spaceport"), product_spaceport)
-                last_productive.set_cost(80)
-                last_productive.set_maintenance(1)
-                last_productive.set_money(50)
-                last_productive.set_description("Site for commercial transactions, increasing the money generation of a colony by +50%%.")
-                last_built := last_productive
-            when product_stock_exchange then
-                create last_productive.make(l("Planetary Stock Exchange"), product_stock_exchange)
-                last_productive.set_cost(150)
-                last_productive.set_maintenance(2)
-                last_productive.set_money(100)
-                last_productive.set_description("Increases the revenues earned on a planet by +100%%.")
-                last_built := last_productive
             when product_colony_base then
                 create {CONSTRUCTION_COLONY_BASE}last_built.make
             when product_gravity_generator then
@@ -274,7 +182,7 @@ feature -- Operations
                 last_android.set_task(task_science)
                 last_built := last_android
             end
-            cache.put (last_built, last_built.id)
+            cache.force (last_built, last_built.id)
         end
     ensure
         last_built.id = id
@@ -292,8 +200,6 @@ feature {NONE} -- Internal
 
     last_ongoing: ONGOING_CONSTRUCTION
 
-    last_productive: BASIC_PRODUCTIVE_CONSTRUCTION
-
     last_shield: CONSTRUCTION_SHIELD
 
     last_ship: SHIP_CONSTRUCTION
@@ -310,10 +216,66 @@ feature {NONE} -- Internal
 
     last_android: CONSTRUCTION_ANDROID
 
-    cache: HASHED_DICTIONARY [CONSTRUCTION, INTEGER] is
+    cache: ARRAY [CONSTRUCTION] is
     once
-        create Result.make
+        create Result.make (1, 0)
+        load_productive_constructions 
     end
+
+    load_productive_constructions is
+    local
+        c: BASIC_PRODUCTIVE_CONSTRUCTION
+        f: COMMENTED_TEXT_FILE
+        w: ARRAY [STRING]
+        id: INTEGER
+    do
+        pkg_system.open_file ("colony/productive_buildings")
+        create f.make (pkg_system.last_file_open)
+        from
+            f.read_nonempty_line
+        until f.last_line.first = '*' loop
+            w := f.last_line.split
+            id := w.item (1).to_integer
+            create c.make (construction_info.item(id).first, id+product_min)
+            c.set_description (construction_info.item(id).second)
+            c.set_cost (w.item (2).to_integer)
+            c.set_maintenance (w.item (3).to_integer)
+            c.set_farming (w.item (7).to_integer, w.item (4).to_integer)
+            c.set_industry (w.item (8).to_integer, w.item (5).to_integer)
+            c.set_science (w.item (9).to_integer, w.item (6).to_integer)
+            c.set_money (w.item (10).to_integer)
+            cache.force (c, id+product_min)
+            f.read_nonempty_line
+        end
+    end
+
+    construction_info: ARRAY [TUPLE [STRING, STRING]] is
+        -- name/description, by id-product_min
+    local
+        f: COMMENTED_TEXT_FILE
+        id, p, q: INTEGER
+        name, description: STRING
+        
+    once
+        create Result.make (1, 0)
+        pkg_system.open_file ("colony/buildings")
+        create f.make (pkg_system.last_file_open)
+        from
+            f.read_nonempty_line
+        until f.last_line.first = '*' loop
+            p := f.last_line.index_of ('|', 1)
+            id := f.last_line.substring (1, p-1).to_integer
+            q := f.last_line.index_of ('|', p+1)
+            name := f.last_line.substring (p+1, q-1)
+            p := f.last_line.count
+            description := f.last_line.substring (q+1, p)
+        
+            Result.force ([name, description], id)
+            f.read_nonempty_line
+        end
+        
+    end
+
 
 feature {NONE} -- Anchors
 

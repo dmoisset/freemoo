@@ -1,0 +1,44 @@
+0|Colony Ship|Capable of creating a colony in a distant star system. Will not engage in combat and will be destroyed when attacked if not escorted by a military ship.
+1|Housing|Housing converts the production of a colony into population growth.
+2|Trade Goods|Trade Goods converts the production of a colony into BCs for the imperial treasury.
+3|Automated Factory|Aid industry workers in their building of finished products. Generates 5  production and increases the production each worker generates by +1.
+4|Robo Mining Plant|Automate many difficult tasks, increasing the productivity of industrial workers. Generates 10 production and increases the production each worker  produces by +2.
+5|Deep Core Mine|Allows miners to build stable tunnels deep into a planet. Generates 15  production and increases the productivity of each worker by +3 production each.
+6|Astro University|Using the most advanced teaching methods available, the efficiency of farmers, workers, and scientists is increased. Each receives a +1 bonus.
+7|Research Laboratory|Houses state-of-the-art computer equipment, creating a superior research environment. Generates 5 research points and increases the research each  scientist produces by +1.
+8|Planetary Supercomputer|Supplies researchers with a vast amount of information. Generates 10 research  points and increases the research each scientist produces by +2.
+9|Autolab|A completely automated research facility. Generates 30 research points.
+10|Galactic Cybernet|Nearly instantaneous galaxy-wide communications, allowing quick exchange of information and ideas. The cybernet generates 15 research points and each scientist generates +3 research each.
+11|Hidroponic Farm|An automated, sealed environment in which food can be grown, even on lifeless worlds. It increases the food output of a world by +2 food.
+12|Subteranean Farms|An underground cavern system of automated farms. Increases the food output of a planet by +4.
+13|Weather Controller|Modifies a planet's weather patterns to create a more stable farming environment. Food production is increased by +2 per farmer.
+14|Spy|Trains a number of spies that you can either use as defensive agents or active spies to steal technology or sabotage enemy installations.
+15|Colony Base|Creates a colony on another planet inside the same star system as the building colony.
+16|Spaceport|Site for commercial transactions, increasing the money generation of a colony by +50%.
+17|Planetary Stock Exchange|Increases the revenues earned on a planet by +100%.
+18|Gravity Generator|Creates artificial gravity to normalize a planet to standard gravity limits. Gravity generators eliminate the negative effects of low and heavy gravity fields.
+19|Terraforming|Makes a planet more hospitable. Barren becomes desert or tundra, deserts become arid, tundras become swamp, oceans, swamps and arid become terran. Each use on  a planet increases cost by 250 production.
+20|Radiation Shield|Reduces solar and cosmic bombardment so lifeforms can comfortably move about the surface. Radiated climates become Barren.  Reduces damage against a planet by 5 points.
+21|Planetary Flux Shield|Seals planet in an energy field. Converts Radiated climates into Barren. Reduces damage against the planet 10 points. It replaces any planetary radiation shield already built.
+22|Planetary Barrier Shield|Seals a planet in an energy field. Converts Radiated climates to Barren climates. Reduces damage against a planet by 20 points. Ground troops and biological weapons cannot pass.
+23|Cloning Center|Allows doctors to replace failing or damaged organs, increasing the population growth by +100K each turn as long as the current population is below the planetary maximum.
+24|Biospheres|Enables a colony to better control environmental conditions, allowing colonization of the more intolerable areas of the planet. Maximum planetary population is increased by +2 million.
+25|Star Base|Armed orbital platforms used to service military ships.  They are equipped with extensive weaponry, the best available scanner with a +2 scanning range bonus and a star dock capable of building ships larger than destroyers.
+26|Battlestation|Heavily armed star base, with +4 parsec scanning range bonus. Adds +10% to the offense of ships in combat around it. Replaces a star base.
+27|Star Fortress|A large military orbital platform. Has a +6 parsec scan range bonus and adds +20% to both the offense and defense of all ships in combat around it. Replaces battlestations and star bases.
+28|Pollution processor|Uses advanced chemicals to process factory waste. Only half of  the actual production of the planet used to calculate pollution.
+29|Atmosphere Renewer|Eliminates many dangerous particles from the atmosphere of a planet. The amount of production is quartered before calculating pollution. Effects are cumulative with a pollution processor.
+30|Core Waste Dump|Take man-made toxic/polluting agents and store them deep within the surface of a planet, far below surface water supplies. Planetary pollution is completely  eliminated.
+31|Recyclotron|Allows scrap material reuse, reducing construction costs. Every unit of population generates +1 production. This increase does not count toward the planetary pollution level.
+32|Soil Enrichment|Using nano-machines, planetary soil can be molecularly enriched and fertilized, increasing the food a farmer can harvest by +1. Soil enrichment will not work in barren, radiated, and toxic planets.
+33|Gaia Transformation|Creates an environment suited to both plant and animal growth by introducing genetically-engineered microorganisms into the world. Can only be applied to terran environments.
+34|Marine Barracks|Lets the colony train troops for ground invasion protection. Begins with 4 marine units, then trains 1 unit every 5 turns, up to the planet's maximum population. Eliminates morale penalties for dictatorships and feudal governments.
+35|Armor Barracks|Creates tank battalions. It has 2 units when built, and adds 1 unit every 10 turns, up to half the planet's population. Eliminates the morale penalty for dictatorships and feudal governments.
+36|Capitol|The heart of your empire's government, the capitol is required to maintain proper order. Losing the colony that has the capitol building will have severe effects,  depending on your type of government. It can be rebuilt if destroyed,  but otherwise can not be built.
+37|Holosimulator|Capable of creating realistic 3-D images from holographic projections. Increases a planet's morale by +20%.
+38|Pleasure Dome|The ultimate in virtual holographic entertainment, creating completely immersive entertainment environments. It increases morale by +30% and is  cumulative with holo simulator.
+39|Android Farmer|Mechanical workers with a +3 food production bonus. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and generate no income.
+40|Android Worker|Mechanical workers with a +3 production bonus. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and cannot generate income.
+41|Android Scientist|Mechanical workers that generate 3 research points per turn. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and cannot generate income.
+42|Artificial Planet|A colony that has an asteroid field or gas giant within its star system can create a complete artificial planet capable of supporting life.
+*
