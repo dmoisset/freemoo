@@ -9,9 +9,12 @@ LIBS2=-leifinet
 SOURCEFILES=src/*.e ../shared/*.e src/screens/*.e src/widgets/*.e \
             src/views/*.e src/C/*.c ../shared/constructions/*.e
 
+include ../config
+export SEDIR:=$(shell echo $(SEDIR))
+
 all: $(TARGET) $(TARGET2)
 
-$(TARGET): $(SOURCEFILES) $(CLIBS)
+$(TARGET): $(SOURCEFILES) $(CLIBS) ../config
 	compile -o $(TARGET) $(TARGET) $(EIFFLAGS) $(LIBS)
 
 $(TARGET2): $(SOURCEFILES)

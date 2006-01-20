@@ -1,8 +1,8 @@
 ./src
 ../shared/
 ../shared/constructions/
-${SmartEiffelDirectory}/lib_netservices/
-${SmartEiffelDirectory}/lib_utils/
-${SmartEiffelDirectory}/lib_eifinet/
-${SmartEiffelDirectory}/lib_storage/
-${SmartEiffelDirectory}/lib_xml_parser/
+${SEDIR}/lib_netservices/
+${SEDIR}/lib_utils/
+${SEDIR}/lib_eifinet/
+${SEDIR}/lib_storage/
+${SEDIR}/lib_xml_parser/

@@ -1,8 +1,10 @@
-CC=gcc-2.95
 TARGET=server
 SOURCEFILES=src/*.e ../shared/*.e ../shared/constructions/*.e
 EIFFLAGS=-case_insensitive -high_memory_compiler
 LIBS=-leifinet
+
+include ../config
+export SEDIR:=$(shell echo $(SEDIR))
 
 all: $(TARGET)
 
