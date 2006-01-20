@@ -145,6 +145,7 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         loop
             if fleet_it.item.owner = server.player then
                 new_fleets.add(fleet_it.item, fleet_it.item.id)
+                std_error.put_string ("Warning: own fleet received throuygh scanner%N")
             end
             fleet_it.next
         end
