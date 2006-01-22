@@ -2,9 +2,9 @@ class C_STARSHIP
 
 inherit
     C_SHIP
-    redefine unserialize_from, on_message, make end
+        redefine unserialize_from, on_message end
     STARSHIP
-    redefine make end
+        undefine make end
 
 creation make
 
@@ -15,7 +15,7 @@ feature
     local
         s: UNSERIALIZER
     do
-        !!s.start (msg)
+        create s.start (msg)
         unserialize_completely_from(s)
     end
 
@@ -25,10 +25,6 @@ feature
         name := s.last_string
         s.get_real
         fuel_range := s.last_real
-        s.get_boolean
-        is_stealthy := s.last_boolean
-        --print("C_STARSHIP on_message: name:" + name + " fuel_range:" +
-        -- fuel_range.to_string + " is_stealthy:" + is_stealthy.to_string + "%N")
     end
 
     unserialize_from (s: UNSERIALIZER) is
@@ -38,14 +34,6 @@ feature
         size := s.last_integer
         s.get_integer
         picture := s.last_integer
-    end
-
-feature {NONE} -- Creation
-
-    make(p: like creator) is
-    do
-        Precursor{C_SHIP}(p)
-        set_starship_attributes
     end
 
 end -- class C_STARSHIP

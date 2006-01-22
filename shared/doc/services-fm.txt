@@ -45,7 +45,7 @@ FLEET
           "ii<msg>" <<id, ship_type, ...>> for each ship of the fleet.
             <msg> depends of the type of the ship:
                 starships: "iii" <<creator_id, size, picture>>
-                colony ships: "ib" <<creator_id, can_colonize>>
+                colony ships: "i" <<creator_id>>
   `orbiting' and `destination may be -1, which means "none".
 
 SHIP
@@ -53,9 +53,9 @@ SHIP
   Provided: Before reporting ship on fleet.
   Description: Full ship description.
   Format: Format depends of the type of ship.
-                starships: "srb" <<name, fuel_range, is_stealthy>>
-                colony ships: "bbii" <<is_stealthy, can_colonize, star_to_colonize, orbit_to_colonize>>
-                                 (if star_to_colonize = -1 then will_colonize is Void)
+                starships: "sr" <<name, fuel_range>>
+                colony ships: "ii" <<star_to_colonize, orbit_to_colonize>>
+                                 (if star_to_colonize = -1 then will not colonize)
 
 PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 

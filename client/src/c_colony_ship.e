@@ -2,9 +2,9 @@ class C_COLONY_SHIP
 
 inherit
     COLONY_SHIP
-    redefine make, planet_to_colonize, owner end
+        redefine make, planet_to_colonize, owner end
     C_SHIP
-    redefine make, on_message, unserialize_from, owner end
+        redefine make, on_message, unserialize_from, owner end
 
 creation make
 
@@ -26,11 +26,7 @@ feature -- Redefined features
         s: UNSERIALIZER
         star: C_STAR
     do
-        !!s.start (msg)
-        s.get_boolean
-        is_stealthy := s.last_boolean
-        s.get_boolean
-        can_colonize := s.last_boolean
+        create s.start (msg)
         s.get_integer
         if s.last_integer = -1 then
             s.get_integer
@@ -47,8 +43,6 @@ feature -- Redefined features
     do
         s.get_integer
         creator := server.player_list.item_id(s.last_integer)
-        s.get_boolean
-        can_colonize := s.last_boolean
     end
 
 feature -- Access

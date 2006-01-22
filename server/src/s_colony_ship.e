@@ -41,8 +41,7 @@ feature
     local
         s: SERIALIZER2
     do
-        !!s.make
-        s.add_tuple(<<is_stealthy.box, can_colonize.box>>)
+        create s.make
         if planet_to_colonize /= Void then
             s.add_tuple(<<planet_to_colonize.orbit_center.id.box,
                 planet_to_colonize.orbit.box>>)
@@ -80,7 +79,6 @@ feature -- Saving
     do
         Result := Precursor
         Result.add_last(["planet_to_colonize", planet_to_colonize])
-        Result.add_last(["can_colonize", can_colonize.box])
     end
 
     dependents: ITERATOR[STORABLE] is
@@ -88,10 +86,7 @@ feature -- Saving
         Result := (<<creator, owner, planet_to_colonize>>).get_new_iterator
     end
 
-
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
-    local
-        b: REFERENCE [BOOLEAN]
     do
         from
         until elems.is_off loop
@@ -99,11 +94,6 @@ feature -- Saving
             if not elems.is_off then
                 if elems.item.first.is_equal("planet_to_colonize") then
                     planet_to_colonize ?= elems.item.second
-                end
-                if elems.item.first.is_equal("can_colonize") then
-                    b ?= elems.item.second
-                    can_colonize := b.item
-                    has_colonization_orders := not can_colonize
                 end
             end
             elems.next

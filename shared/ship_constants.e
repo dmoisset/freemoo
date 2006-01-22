@@ -15,7 +15,7 @@ feature
     ship_size_min: INTEGER is do Result := ship_size_frigate end
     ship_size_max: INTEGER is do Result := ship_size_special end
 
-    ship_type_starship: INTEGER is unique
+    ship_type_starship,
     ship_type_colony_ship: INTEGER is unique
         -- Allowed types for ships.
     

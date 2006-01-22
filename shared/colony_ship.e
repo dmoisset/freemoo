@@ -6,7 +6,7 @@ inherit
         redefine owner, make end
     COLONIZER
         redefine
-            owner, set_planet_to_colonize, colonize
+            owner
         end
 
 create
@@ -22,8 +22,6 @@ feature {NONE} -- Creation
 
     set_colony_ship_attributes is
     do
-        ship_type := ship_type_colony_ship
-        can_colonize := True
         fuel_range := 1.5
         size := ship_size_special
     end
@@ -37,19 +35,14 @@ feature -- Access
         Result := Current
     end
 
-feature -- Operations
+    can_attack: BOOLEAN is False
 
-    set_planet_to_colonize(p: like planet_to_colonize) is
+    can_colonize: BOOLEAN is
     do
-        Precursor(p)
-        can_colonize := planet_to_colonize = Void
+        Result := planet_to_colonize = Void
     end
 
-    colonize is
-    do
-        Precursor
-        can_colonize := True
-    end
+    ship_type: INTEGER is do Result := ship_type_colony_ship end
 
 invariant
     not_capturable: creator = owner

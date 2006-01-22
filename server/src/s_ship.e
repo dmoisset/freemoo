@@ -43,12 +43,8 @@ feature -- Operations
     subscription_message (service_id: STRING): STRING is
     require
         service_id.is_equal("ship" + id.to_string)
-    local
-        s: SERIALIZER2
     do
-        !!s.make
-        s.add_boolean(is_stealthy)
-        Result := s.serialized_form
+        create Result.make (0)
     end
 
 
@@ -61,7 +57,6 @@ feature {STORAGE} -- Saving
                    ["owner", owner],
                    ["size", size.box],
                    ["picture", picture.box],
-                   ["is_stealthy", is_stealthy.box]
                    >>
     end
 
@@ -111,7 +106,6 @@ feature {STORAGE} -- Retrieving
 
     make_from_storage (elems: ITERATOR [TUPLE [STRING, ANY]]) is
     local
-        b: REFERENCE [BOOLEAN]
         i: REFERENCE [INTEGER]
         unknown_tag: BOOLEAN
     do
@@ -127,9 +121,6 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("picture") then
                 i ?= elems.item.second
                 picture := i.item
-            elseif elems.item.first.is_equal("is_stealthy") then
-                b ?= elems.item.second
-                is_stealthy := b.item
             else
                 unknown_tag := true
             end

@@ -34,8 +34,10 @@ feature -- Access
     picture: INTEGER
         -- icon for ship
 
-    ship_type: INTEGER
+    ship_type: INTEGER is
         -- An Identifier for different type of ships.
+    deferred
+    end
 
     as_colony_ship: COLONY_SHIP is
     require
@@ -74,13 +76,21 @@ feature -- Operations
 
 feature -- Modifiers
 
-    is_stealthy: BOOLEAN
+    is_stealthy: BOOLEAN is
+    do
+        Result := owner.race.stealthy
+        -- Also consider stealth technology here
+    end
 
-    can_colonize: BOOLEAN
-        -- True for colony ships
+    can_colonize: BOOLEAN is
+        -- True for colony ships with no given colonize orders
+    deferred
+    end
 
-    can_attack: BOOLEAN
+    can_attack: BOOLEAN is
         -- True for non-support ships
+    deferred
+    end
 
     fuel_range: REAL
         -- Relative to players base fuel range:

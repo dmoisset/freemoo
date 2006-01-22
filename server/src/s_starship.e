@@ -4,20 +4,21 @@ inherit
     S_SHIP
     redefine
         creator, primary_keys_array, set_primary_keys, make_from_storage,
-        serialize_on, subscription_message, make, get_class
+        serialize_on, subscription_message, get_class
     end
     STARSHIP
     undefine
-        set_size, set_picture
-    redefine creator, make end
+        set_size, set_picture, make
+    redefine creator end
 
 creation
     make, from_design
 
-feature
+feature -- Access
+
     creator: S_PLAYER
 
-feature
+feature -- Serialization
 
     serialize_on(s: SERIALIZER2) is
     do
@@ -29,7 +30,7 @@ feature
         -- Adds private information to the serialized, for SHIPn service
         -- Or transmitting starship blueprints.
     do
-        s.add_tuple(<<name, fuel_range.box, is_stealthy.box>>)
+        s.add_tuple(<<name, fuel_range.box>>)
     end
 
     subscription_message (service_id: STRING): STRING is
@@ -41,7 +42,7 @@ feature
         Result := s.serialized_form
     end
 
-feature
+feature -- Storage
 
     get_class: STRING is "STARSHIP"
 
@@ -77,14 +78,6 @@ feature
                 elems.next
             end
         end
-    end
-
-feature {NONE} -- Creation
-
-    make (p: like creator) is
-    do
-        Precursor{S_SHIP}(p)
-        set_starship_attributes
     end
 
 end -- class S_STARSHIP

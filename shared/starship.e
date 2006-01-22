@@ -3,7 +3,6 @@ class STARSHIP
 
 inherit
     SHIP
-    redefine make end
 
 creation
     make, from_design
@@ -18,6 +17,12 @@ feature -- Access
         -- (see invariant below)
     end
 
+    can_attack: BOOLEAN is True
+
+    can_colonize: BOOLEAN is False
+
+    ship_type: INTEGER is do Result := ship_type_starship end
+
 feature -- Operations
 
     set_name(new_name: STRING) is
@@ -29,18 +34,6 @@ feature -- Operations
 
 feature {NONE} -- Creation
 
-    make(p: like creator) is
-    do
-        Precursor(p)
-        set_starship_attributes
-    end
-
-    set_starship_attributes is
-    do
-        can_attack := True
-        ship_type := ship_type_starship
-    end
-
     from_design(design: like Current) is
     do
         name := design.name
@@ -50,7 +43,6 @@ feature {NONE} -- Creation
         picture := design.picture
         fuel_range := design.fuel_range
         make_unique_id
-        set_starship_attributes
     end
 
 invariant
