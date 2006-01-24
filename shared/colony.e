@@ -626,7 +626,7 @@ feature {CONSTRUCTION} -- Special cases
         terraformed := terraformed + 1
         location.set_climate(new_climate)
         preclimate := new_climate
-            -- Once terraformed, loosing your radiation
+            -- Once terraformed, losing your radiation
             -- shield won't revert the planet to radiated
     ensure
         terraformed = old terraformed + 1
