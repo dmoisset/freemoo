@@ -52,7 +52,7 @@ feature {NONE} -- Creation
     do
         id := product_colony_base
         name := l("Colony Base")
-        description := l("Creates a colony on another planet inside the same star system as the building colony.")
+        description := no_description
     end
 
 end -- class CONSTRUCTION_COLONY_BASE

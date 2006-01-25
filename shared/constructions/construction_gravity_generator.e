@@ -53,7 +53,7 @@ feature {NONE} -- Creation
     do
         id := product_gravity_generator
         name := l("Planetary Gravity Generator")
-        description := l("Creates artificial gravity to normalize a planet to standard gravity limits. Gravity generators eliminate the negative effects of low and heavy gravity fields.")
+        description := no_description
     end
 
 end -- class CONSTRUCTION_GRAVITY_GENERATOR

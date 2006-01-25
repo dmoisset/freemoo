@@ -40,7 +40,7 @@ feature {NONE} -- Creation
         id := product_capitol
         name := l("Capitol")
         base_cost := 500
-        description := l("The heart of your empire's government, the capitol is required to maintain proper order. Losing the colony that has the capitol building will have severe effects,  depending on your type of government. It can be rebuilt if destroyed,  but otherwise can not be built.")
+        description := no_description
     end
 
 end -- class CONSTRUCTION_CAPITOL

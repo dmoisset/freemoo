@@ -120,11 +120,13 @@ feature {NONE} -- Creation
     do
         name := new_name
         id := new_id
-        description := ""
+        description := no_description
     ensure
         name = new_name
         id = new_id
     end
+
+    no_description: STRING is ""
 
 feature {NONE} -- Anchors
 

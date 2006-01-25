@@ -28,7 +28,7 @@ feature {NONE} -- Creation
         name := l("Soil Enrichment")
         base_cost := 120
         farming_proportional := 1
-        description := l("Using nano-machines, planetary soil can be molecularly enriched and fertilized, increasing the food a farmer can harvest by +1. Soil enrichment will not work in barren, radiated, and toxic planets.")
+        description := no_description
     end
 
 end -- class CONSTRUCTION_SOIL_ENRICHMENT

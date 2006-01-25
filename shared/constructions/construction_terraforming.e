@@ -39,7 +39,7 @@ feature {NONE} -- Creation
     do
         name := l("Terraforming")
         id := product_terraforming
-        description := l("Makes a planet more hospitable. Barren becomes desert or tundra, deserts become arid, tundras become swamp, oceans, swamps and arid become terran. Each use on  a planet increases cost by 250 production.")
+        description := no_description
     end
 
 feature {NONE} -- Auxiliar

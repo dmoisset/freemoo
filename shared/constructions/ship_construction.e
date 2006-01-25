@@ -58,13 +58,13 @@ feature {NONE} -- Creation
     do
         id := product_colony_ship
         name := l("Colony Ship")
-        description := l("Capable of creating a colony in a distant star system. Will not engage in combat and will be destroyed when attacked if not escorted by a military ship.")
         create ship_factory
+        description := no_description
     end
 
     make_starship(new_design: like design) is
     do
-        description := ""
+        description := no_description
         id := product_max + new_design.id
         name := new_design.name
         design := new_design

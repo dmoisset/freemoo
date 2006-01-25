@@ -72,7 +72,7 @@ feature {NONE} -- Creation
     do
         id := product_artificial_planet
         name := l("Artificial Planet")
-        description := l("A colony that has an asteroid field or gas giant within its star system can create a complete artificial planet capable of supporting life.")
+        description := no_description
     end
 
 

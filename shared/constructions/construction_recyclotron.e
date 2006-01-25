@@ -27,7 +27,7 @@ feature {NONE} -- Creation
     do
         name := l("Recyclotron")
         id := product_recyclotron
-        description := l("Allows scrap material reuse, reducing construction costs. Every unit of population generates +1 production. This increase does not count toward the planetary pollution level.")
+        description := no_description
     end
 
 end -- class CONSTRUCTION_RECYCLOTRON

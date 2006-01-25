@@ -35,6 +35,7 @@ feature {NONE} -- Creation
     do
         id := product_gaia_transform
         name := l("Gaia Transformation")
-        description := l("Creates an environment suited to both plant and animal growth by introducing genetically-engineered microorganisms into the world. Can only be applied to terran environments.")
+        description := no_description
     end
+
 end -- class CONSTRUCTION_GAIA_TRANSFORM
