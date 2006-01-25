@@ -2,38 +2,31 @@ class S_COLONY_SHIP
 
 inherit
     S_SHIP
-    redefine
-        creator, make, get_class, make_from_storage, fields_array,
-        dependents, subscription_message, serialize_on, owner
-    end
+        redefine
+            creator, get_class, make_from_storage, fields_array,
+            dependents, subscription_message, serialize_on, owner
+        end
     S_COLONIZER
-    redefine
-        owner, planet_to_colonize, set_planet_to_colonize, colonize
-    end
+        redefine
+            owner, planet_to_colonize, set_planet_to_colonize, colonize
+        end
     COLONY_SHIP
-    undefine
-        set_size, set_picture
-    redefine
-        creator, make, planet_to_colonize, set_planet_to_colonize, owner,
-        colonize
-    end
+        undefine
+            set_picture
+        redefine
+            creator, planet_to_colonize, set_planet_to_colonize, owner,
+            colonize
+        end
     SERVER_ACCESS
 
-creation make
+creation
+    make
 
 feature
 
     owner: like creator
 
     creator: S_PLAYER
-
-feature {NONE} -- Creation
-
-    make(p: like creator) is
-    do
-        Precursor{S_SHIP}(p)
-        set_colony_ship_attributes
-    end
 
 feature
 

@@ -53,7 +53,7 @@ SHIP
   Provided: Before reporting ship on fleet.
   Description: Full ship description.
   Format: Format depends of the type of ship.
-                starships: "sr" <<name, fuel_range>>
+                starships: "s" <<name>>
                 colony ships: "ii" <<star_to_colonize, orbit_to_colonize>>
                                  (if star_to_colonize = -1 then will not colonize)
 

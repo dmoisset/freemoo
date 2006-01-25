@@ -3,7 +3,7 @@ class COLONY_SHIP
 
 inherit
     SHIP
-        redefine owner, make end
+        redefine owner end
     COLONIZER
         redefine
             owner
@@ -11,20 +11,6 @@ inherit
 
 create
     make
-
-feature {NONE} -- Creation
-
-    make(p: like creator) is
-    do
-        Precursor(p)
-        set_colony_ship_attributes
-    end
-
-    set_colony_ship_attributes is
-    do
-        fuel_range := 1.5
-        size := ship_size_special
-    end
 
 feature -- Access
 
@@ -43,6 +29,10 @@ feature -- Access
     end
 
     ship_type: INTEGER is do Result := ship_type_colony_ship end
+
+    fuel_range: REAL is 1.5
+
+    size: INTEGER is do Result := ship_size_special end
 
 invariant
     not_capturable: creator = owner

@@ -1,28 +1,20 @@
-class S_SHIP
+deferred class S_SHIP
 
 inherit
     SHIP
-    redefine creator, set_size, set_picture end
+        redefine creator, set_picture end
     STORABLE
-    rename
-        hash_code as id
-    redefine
-        dependents, primary_keys
-    end
+        rename
+            hash_code as id
+        redefine
+            dependents, primary_keys
+        end
     SERVICE
-    redefine subscription_message end
-
-creation make
+        redefine subscription_message end
 
 feature
 
     creator: S_PLAYER
-
-    set_size (s: INTEGER) is
-    do
-        Precursor(s)
-        update_clients
-    end
 
     set_picture(p: INTEGER) is
     do
@@ -55,7 +47,6 @@ feature {STORAGE} -- Saving
     do
         Result :=<<["creator", creator],
                    ["owner", owner],
-                   ["size", size.box],
                    ["picture", picture.box],
                    >>
     end
@@ -115,9 +106,6 @@ feature {STORAGE} -- Retrieving
                 creator ?= elems.item.second
             elseif elems.item.first.is_equal("owner") then
                 owner ?= elems.item.second
-            elseif elems.item.first.is_equal("size") then
-                i ?= elems.item.second
-                size := i.item
             elseif elems.item.first.is_equal("picture") then
                 i ?= elems.item.second
                 picture := i.item

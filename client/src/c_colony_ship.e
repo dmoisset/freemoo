@@ -2,19 +2,14 @@ class C_COLONY_SHIP
 
 inherit
     COLONY_SHIP
-        redefine make, planet_to_colonize, owner end
+        undefine
+            make
+        redefine planet_to_colonize, owner end
     C_SHIP
-        redefine make, on_message, unserialize_from, owner end
+        redefine on_message, owner end
 
-creation make
-
-feature {NONE} -- Creation
-
-    make(p: like creator) is
-    do
-        Precursor{C_SHIP}(p)
-        set_colony_ship_attributes
-    end
+create
+    make
 
 feature -- Redefined features
 
@@ -37,12 +32,6 @@ feature -- Redefined features
             s.get_integer
             planet_to_colonize := star.planet_at(s.last_integer)
         end
-    end
-
-    unserialize_from (s: UNSERIALIZER) is
-    do
-        s.get_integer
-        creator := server.player_list.item_id(s.last_integer)
     end
 
 feature -- Access

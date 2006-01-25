@@ -3,6 +3,7 @@ class STARSHIP
 
 inherit
     SHIP
+        redefine make end
 
 creation
     make, from_design
@@ -23,6 +24,10 @@ feature -- Access
 
     ship_type: INTEGER is do Result := ship_type_starship end
 
+    fuel_range: REAL is 1.0
+    
+    size: INTEGER
+
 feature -- Operations
 
     set_name(new_name: STRING) is
@@ -30,6 +35,15 @@ feature -- Operations
         name := new_name
     ensure
         name = new_name
+    end
+
+    set_size (s: INTEGER) is
+    require
+        s.in_range(ship_size_min, ship_size_max)
+    do
+        size := s
+    ensure
+        size = s
     end
 
 feature {NONE} -- Creation
@@ -41,8 +55,13 @@ feature {NONE} -- Creation
         owner := design.owner
         size := design.size
         picture := design.picture
-        fuel_range := design.fuel_range
         make_unique_id
+    end
+
+    make (p: like creator) is
+    do
+        Precursor (p)
+        size := 1
     end
 
 invariant

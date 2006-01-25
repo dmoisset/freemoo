@@ -2,11 +2,15 @@ class C_STARSHIP
 
 inherit
     C_SHIP
-        redefine unserialize_from, on_message end
+        undefine
+            make
+        redefine
+            unserialize_from, on_message
+        end
     STARSHIP
-        undefine make end
 
-creation make
+create
+    make
 
 feature
 
@@ -23,8 +27,6 @@ feature
     do
         s.get_string
         name := s.last_string
-        s.get_real
-        fuel_range := s.last_real
     end
 
     unserialize_from (s: UNSERIALIZER) is

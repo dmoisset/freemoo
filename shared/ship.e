@@ -9,14 +9,13 @@ inherit
 
 feature {NONE} -- Creation
 
-    make(p: like creator) is
-    require p /= Void
+    make (p: like creator) is
+    require
+        p /= Void
     do
         creator := p
         owner := p
-        size := 1
         picture := 0
-        fuel_range := 1.0
         make_unique_id
     end
 
@@ -28,8 +27,10 @@ feature -- Access
     owner: like creator
         -- Player that controls Current
 
-    size: INTEGER
+    size: INTEGER is
         -- Ship size.  Use commodity ship_size* values
+    deferred
+    end
 
     picture: INTEGER
         -- icon for ship
@@ -50,15 +51,6 @@ feature -- Access
     end
 
 feature -- Operations
-
-    set_size (s: INTEGER) is
-    require
-        s.in_range(ship_size_min, ship_size_max)
-    do
-        size := s
-    ensure
-        size = s
-    end
 
     set_picture (p: INTEGER) is
     do
@@ -92,10 +84,12 @@ feature -- Modifiers
     deferred
     end
 
-    fuel_range: REAL
+    fuel_range: REAL is
         -- Relative to players base fuel range:
         --   1 for normal ships
         --   1.5 for extra fuel tanks or colony ships
+    deferred
+    end
 
 invariant
     size.in_range(ship_size_min, ship_size_max)
