@@ -1,0 +1,341 @@
+*** category_construction: ***
+* 50|True|Engineering
+0|Colony Base|Creates a colony on another planet inside the same star system as the building colony.
+1|Star Base|Armed orbital platforms used to service military ships.  They are equipped with extensive weaponry, the best available scanner with a +2 scanning range bonus and a star dock capable of building ships larger than destroyers.
+2|Marine Barracks|Lets the colony train troops for ground invasion protection. Begins with 4 marine units, then trains 1 unit every 5 turns, up to the planet's maximum population. Eliminates morale penalties for dictatorships and feudal governments.
+
+* 80|False|Advanced Engineering
+3|Anti-Missile Rockets|Can only target missiles. They have a maximum range of 15 squares and will fire defensively against approaching missiles if not yet fired in that turn. The  chance to score a hit is 85% minus 5% per square distance.
+4|Fighter Bays|Allows a ship to carry a group of 4 short-range fighters. They carry one beam  weapon of the best type that can have the point defense modification, and can  fire it 4 times before returning to the launching ship.
+5|Reinforced Hull|Triples the structural integrity of a ship and provides more protection for the ship's drive system, tripling the amount of damage required to destroy it.
+
+* 150|False|Advanced Construction
+6|Automated Factories|Aid industry workers in their building of finished products. Generates 5  production and increases the production each worker generates by +1.
+7|Planetary Missile Base|Contains 300 space units of your best missiles, with unlimited ammo.
+8|Heavy Armor|Heavy armor negates armor piercing effects and reinforces the armor of a ship, tripling the amount of damage the armor can absorb.
+
+* 250|False|Capsule Construction
+9|Battle Pods|Battle Pods increase the available space on a ship by 50%.
+10|Troop Pods|Troop pods house additional detachments of space marines, doubling the number of marines on board a ship. The additional marines can defend the ship or board enemy ships.
+11|Survival Pods|Provide suspended animation facilities for legendary officers if their ship is destroyed. At least one friendly ship must survive the combat to rescue any  surviving officers.
+
+* 400|False|Astro Engineering
+12|Spaceport|Site for commercial transactions, increasing the money generation of a colony by +50%.
+13|Armor Barracks|Creates tank battalions. It has 2 units when built, and adds 1 unit every 10 turns, up to half the planet's population. Eliminates the morale penalty for dictatorships and feudal governments.
+14|Fighter Garrison|Planetary base that houses 10-interceptors.  Fighter garrisons are equipped  with 6-bomber, or 4-heavy fighter squadrons when the appropriate technology becomes available. New fighters become available every 10 combat turns.
+
+* 650|False|Robotics
+15|Robo-Miners|Automate many difficult tasks, increasing the productivity of industrial workers. Generates 10 production and increases the production each worker  produces by +2.
+16|Battlestation|Heavily armed star base, with +4 parsec scanning range bonus. Adds +10% to the offense of ships in combat around it. Replaces a star base.
+17|Powered Armor|Provides troops with superior power and mobility by mechanically magnifying their natural strength. Powered armor equipped troops have a +10 bonus to their combat rating and take +1 hits to kill.
+
+* 900|False|Servo Mechanics
+18|Advanced Damage Control|Completely repairs ships between battles. Automatically included on all ships once the technology is researched.
+19|Fast Missile Racks|Allow a ship to fire two volleys of missiles in one turn. Will only fire one per turn after that, unless the ship takes one full turn without firing missiles to reload.
+20|Assault Shuttles|Squadron of 4 shuttles used to move 1 unit of marines each from the launching ship  onto enemy ships. They take 3 hits to destroy, modified by your best armor, and move at a speed of 6.
+
+* 1150|False|Astro Construction
+21|Titan Construction|The titan class of starship is gigantic in proportion to other ships, and requires advanced engineering techniques to both construct and integrate ship systems.
+22|Ground Batteries|Ground installation that contains 300 space units of heavy mount and point defense  versions of the best available beam weapons.
+23|Battleoids|Giant robot fighting vehicles superior in power and mobility to conventional tanks. They have a +10 bonus to their combat rating and take 3 hits to destroy.
+
+* 1500|False|Advanced Manufacturing
+24|Recyclotron|Allows scrap material reuse, reducing construction costs. Every unit of population generates +1 production. This increase does not count toward the planetary pollution level.
+25|Automated Repair Unit|Repairs a ship during combat, restoring 20% of the armor or structure and 10% of the ship's internal systems each turn during combat. After combat, the ship is completely repaired.
+26|Planet Construction|A colony that has an asteroid field or gas giant within its star system can create a complete artificial planet capable of supporting life.
+
+* 2000|False|Advanced Robotics
+27|Robotic Factory|Builds mechanical workers that add production dependent on a colony's mineral resources 5, 8, 10, 15 or 20.
+28|Bomber Bays|Short range ships carrying a bomb that can be dropped on a planet or detonated on a ship. They carry one bomb each of the best type available. They move in groups of 4 at a speed of 10.
+
+* 3500|False|Tectonic Engineering
+29|Deep Core Mining|Allows miners to build stable tunnels deep into a planet. Generates 15  production and increases the productivity of each worker by +3 production each.
+30|Core Waste Dumps|Take man-made toxic/polluting agents and store them deep within the surface of a planet, far below surface water supplies. Planetary pollution is completely  eliminated.
+
+* 6000|False|Superscalar Construction
+31|Star Fortress|A large military orbital platform. Has a +6 parsec scan range bonus and adds +20% to both the offense and defense of all ships in combat around it. Replaces battlestations and star bases.
+32|Advanced City Planning|Pre-planned, organized colony design techniques. The improvements in organization increase the maximum population that can live on all planets owned by the empire by +5 million colonists.
+33|Heavy Fighter Bays|Allow ships to carry heavy fighters equipped with 2 of the best point defense  beam weapons and 2 of the best bombs available. They have 5 hits, modified by your best armor, and move at speed 12.
+
+* 7500|False|Planetoid Construction
+34|Doom Star Construction|Mobile planetoid bases. They are the largest ships that can be built.
+35|Artemis System Net|Network of mines. Ships have a chance of damage based on size: frigate-20%, destroyer-30%, cruiser-40%, battleship-50%, titan-80%, doomstar-100%. Damage is 100-500 points less shields.
+
+*** category_power: ***
+* 50|True|Nuclear Fission
+36|Nuclear Drive|Capable of moving a ship 2 parsecs per turn. This is the first ship drive that makes interstellar travel possible.
+37|Nuclear Bomb|A high-yield orbital bombardment device engineered to destroy ground forces and colony installations, inflicting 3-12 points of damage.
+38|Freighters|A group of ships to transport food or colonists as needed between worlds. Each fleet contains 5 freighters. The fleet can transport 5 food units or one population unit per turn.
+
+* 80|True|Cold Fusion
+39|Colony Ship|Capable of creating a colony in a distant star system. Will not engage in combat and will be destroyed when attacked if not escorted by a military ship.
+40|Outpost Ship|Capable of creating an outpost on any uninhabited planet. Outposts function like a colony, except no population units may be moved there. Outpost ships are unarmed and will be destroyed if not escorted by military ships.
+41|Transport|Troop carrier for landing 4 marine units on a planet. They do not engage in combat and will be destroyed when attacked if not escorted by military ships. Once used, they are dismantled. Can only be built on planets with marine barracks.
+
+* 250|False|Advanced Fusion
+42|Fusion Drive|Capable of faster than light travel, moving a ship 3 parsecs a turn. All ship  drives are automatically upgraded when this technology is discovered.
+43|Fusion Bomb|A high-yield orbital bombardment device engineered to destroy ground forces and colony installations, inflicting 4-24 points of damage.
+44|Augmented Engines|Increases ship's combat speed by +5.
+
+* 900|False|Ion Fission
+45|Ion Drive|Capable of moving a ship 4 parsecs a turn. All ship drives are automatically  upgraded when this technology is discovered.
+46|Ion Pulse Cannon|Fires a particle wave that overloads ships' systems and inflicts 2-10 points of damage, bypassing all armor and structure. Completely ineffective against  monsters and Antaran ships. Modifications: autofire, and continuous.
+47|Shield Capacitors|Increases the recharge rate of ship shields by +70% of their maximum strength.
+
+* 2000|False|Anti-Matter Fission
+48|Antimatter Drive|Capable of moving a ship 5 parsecs a turn. All ship drives are automatically upgraded when this technology is discovered.
+49|Anti-Matter Torpedoes|These torpedoes are balls of antimatter that explode on contact. They travel at a speed of 20 and inflict 25 points of damage and fire every other turn.  Modifications: overloaded, enveloping and ECCM.
+50|Antimatter Bomb|A high-yield orbital bombardment device engineered to destroy ground forces and colony installations, inflicting 5-40 points of damage per bomb.
+
+* 2750|False|Matter Energy Conversion
+51|Transporters|Allow a ship to move marines to an enemy ship at a range of 12 squares, as long as the shield facing the ship is down. Can also be used to drop bombs on planets up to 12 squares away.
+52|Food Replicators|Alter the molecular structure of inorganic material to create edible food. Having a facility in a colony allows you to convert 2 units of production (energy) into 1 unit of food, as needed by the colony.
+
+* 3500|False|High Energy Distribution
+53|High Energy Focus|Allows a ship to channel the fire of its energy weapons more efficiently, increasing damage by +50% over base regardless of range. It does not improve the chances of hitting distant targets.
+54|Energy Absorber|One quarter of all damage inflicted on a ship is instead stored in the  energy absorber.  The ship must fire this stored energy at an enemy ship in the next turn or it is lost.
+55|Megafluxers|Conduct and magnify energy transmission in less space, giving a ship more space for equipment. Increases the amount of equipment it can carry by +25%. Megafluxers  are used automatically on all ships once acquired.
+
+* 4500|False|Hyper Dimensional Fission
+56|Proton Torpedoes|Energy projectiles traveling at trans-warp speed, striking their target the turn they are fired. They inflict 40 points of damage. Can be fired every other turn, with a max range of 24 squares. Modifications: overloaded, enveloping, ECCM.
+57|Hyper Drive|Capable of moving a ship 6 parsecs a turn. All ship drives are automatically  upgraded when this technology is discovered.
+58|Hyper-X Capacitors|Allow ship beam weapons to fire twice in a turn. After firing twice, one turn must be spent without firing beam weapons; otherwise the weapons can only fire once per turn.
+
+* 10000|False|Interphased Fission
+59|Interphased Drive|Capable of moving a ship 7 parsecs a turn. All ship drives are automatically  upgraded when this technology is discovered.
+60|Plasma Torpedoes|Plasma warhead capable of 120 points of damage. Travels with a combat speed of 24, losing 5 points of strength for each square traveled and firing every other turn.  Modifications: overloaded, enveloping, ECCM, no range dissipation.
+61|Neutronium Bomb|A high-yield orbital bombardment device engineered to destroy ground forces and colony installations, inflicting 10-60 points of damage.
+
+*** category_chemistry: ***
+* 50|True|Chemistry
+62|Nuclear Missile|Carries a high-yield nuclear warhead that inflicts 8 points of damage.  Modifications: MIRV, emissions guidance, fast, heavily armored and ECCM.
+63|Standard Fuel Cells|Supplies sufficient energy to propel a ship 4 parsecs before refueling.
+64|Extended Fuel Tanks|Increase the overall range of a ship by +50%, but at the cost of a considerable amount of space.
+65|Titanium Armor|The standard armor of ships.
+
+
+* 250|False|Advanced Metallurgy
+66|Deuterium Fuel Cells|Supplies sufficient energy to propel a ship up to 6 parsecs before refueling.
+67|Tritanium Armor|Ships with this armor have twice the base structure and armor points. The hit points of fighters are multiplied by 1.5. Adds +10 to ground troop combat strengths.
+
+* 650|False|Advanced Chemistry
+68|Merculite Missile|Carries a powerful, chemically-based explosive warhead capable of delivering 14 points of damage. Modifications: MIRV, emissions guidance, fast, armored, and ECCM.
+69|Pollution Control Facility|Uses advanced chemicals to process factory waste. Only half of  the actual production of the planet used to calculate pollution.
+
+* 1150|False|Mollecular Compression
+70|Pulson Missile|Carries a powerful high-energy pulse capable of delivering 20 points of damage.  Modifications: MIRV, emissions guidance, fast, armored, and ECCM.
+71|Atmospheric Renewer|Eliminates many dangerous particles from the atmosphere of a planet. The amount of production is quartered before calculating pollution. Effects are cumulative with a pollution processor.
+72|Irridium Fuel Cells|Supplies sufficient energy to propel a ship 9 parsecs before refueling.
+
+* 2000|False|Nano Technology
+73|Nano Disassemblers|Microscopic nano-machines capable of breaking down environmental contaminants. Doubles the number of production units a planet can produce before any pollution is created.
+74|Microlite Construction|Uses microscopic nano-machines to construct buildings and ships with less metal, but with the same strength and durability. Increases productivity of all workers by +1 production.
+75|Zortrium Armor|Ships with this armor have 4 times the base structure and armor points. The hit points of fighters are multiplied by 2. Adds +15 to ground troop combat strengths.
+
+* 4500|False|Molecular Manipulation
+76|Zeon Missile|Carries a powerful explosive warhead capable of delivering 30 points of damage.  Modifications: MIRV, emissions guidance, fast traveling, armored and ECCM.
+77|Neutronium Armor|Ships with this armor have 6 times the base structure and armor points. The hit points of fighters are multiplied by 5. Adds +20 to ground troop combat strengths.
+78|Urridium Fuel Cells|Supply sufficient energy to propel a ship 12 parsecs before refueling.
+
+* 10000|False|Molecular Control
+79|Thorium Fuel Cells|Advanced fuel system that self-regenerates, providing all ships with an unlimited fuel supply and range.
+80|Adamantium Armor|Ships with this armor have 8 times the base structure and armor points. The hit points of fighters are multiplied by 4. Adds +25 to ground troop combat strengths.
+
+*** category_sociology: ***
+* 150|False|Military Tactics
+81|Space Academy|Trains ship crews, adding 1 to their starting level. Ships stationed in the system gain 2 experience each turn.
+
+* 650|False|Xeno Relations
+82|Xeno Psychology|Focuses on the motivations of other races in an attempt to form deals that are more appealing. The effect is to permanently add +30 diplomatic points to every deal offered to your opponents.
+83|Alien Management Center|Provides better control of occupied alien populations: aliens work harder, assimilate into your empire twice as fast, and are half as likely to revolt.
+
+* 1150|False|Macro Economics
+84|Planetary Stock Exchange|Increases the revenues earned on a planet by +100%.
+
+* 2000|False|Teaching Methods
+85|Astro University|Using the most advanced teaching methods available, the efficiency of farmers, workers, and scientists is increased. Each receives a +1 bonus.
+
+* 4500|False|Advanced Governments
+
+* 6000|False|Galactic Economics
+87|Galactic Currency Exchange|Eliminates the need for hard currency, replacing it with instantaneous electronic exchanges. Increases the money generated by all colonies by +50%.
+
+*** category_computers: ***
+* 50|True|Electronics
+88|Electronic Computer|Directs starship weapons' fire and is automatically equipped on all ships, increasing chance to hit by +25%. This bonus is lost if the computer is damaged or destroyed.
+
+* 150|False|Optronics
+89|Research Laboratory|Houses state-of-the-art computer equipment, creating a superior research environment. Generates 5 research points and increases the research each  scientist produces by +1.
+90|Optronic Computer|Directs all starship weapons fire, adding +50 to the chance to hit. Bonus is lost if the computer is destroyed.
+91|Dauntless Guidance System|Provides friend-or-foe recognition guidance to missiles and torpedoes. They will retarget the nearest enemy ship if their first target is destroyed.
+
+* 400|False|Artificial Intelligence
+92|Neural Scanner|With improved data processing methods, the pathways of the brain can be mapped and analyzed. Provides a near perfect lie detector used by spies to elicit information, adding +10 to all spy rolls.
+93|Scout Lab|A computer assisted laboratory that generates an amount of research dependent on ship size: 1, 2, 4, 8, 16, or 32. Also adds +10 per size class to the attack roll of all ships in a fleet fighting space monsters or Antarans.
+94|Security Stations|Automatically controls and monitors vital sections of ship, attacking intruders with computer-controlled weapons. Adds +20 to the combat rolls of marines when defending against enemy boarders.
+
+* 900|False|Positronics
+95|Positronic Computer|Directs all ship beam weapons fire, adding a +75% chance to hit.  If the computer is damaged or destroyed, the ship loses the attack bonus.
+96|Planetary Supercomputer|Supplies researchers with a vast amount of information. Generates 10 research  points and increases the research each scientist produces by +2.
+97|Holo Simulator|Capable of creating realistic 3-D images from holographic projections. Increases a planet's morale by +20%.
+
+* 1500|False|Artificial Consciousness
+98|Emissions Guidance System|Tracks the warp signature of a vehicle. If the missile penetrates the shields, all damage is applied to the ship's drive, bypassing any armor. Requires 4 times the space and costs 4 times more than regular missiles.
+99|Rangemaster Unit|Corrects for long-range targeting inaccuracies, the actual range is  divided by three for purposes of to-hit bonuses only.
+100|Cyber-Security Link|Provides a direct mental link to computers, allowing spies to circumvent many automated security systems. Adds +10 to all spy rolls.
+
+* 2750|False|Cybertronics
+101|Cybertronic Computer|Learns and adapts using a neural net similar to the biological brain. Equipped on all ships, it adds +100% chance to hit with beam weapons.  Attack bonuses are eliminated if the computer is damaged or destroyed.
+102|Autolab|A completely automated research facility. Generates 30 research points.
+103|Structural Analyzer|Links to ship's weapons array to more accurately choose target's weak armor points. All damage that penetrates the target's shields is doubled.
+
+* 3500|False|Cybertechnics
+104|Android Farmers|Mechanical workers with a +3 food production bonus. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and generate no income.
+105|Android Workers|Mechanical workers with a +3 production bonus. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and cannot generate income.
+106|Android Scientists|Mechanical workers that generate 3 research points per turn. Require 1 production unit per turn instead of food. They are unaffected by morale, receive no racial bonuses, and cannot generate income.
+
+* 4500|False|Galactic Networking
+107|Virtual Reality Network|Creates a galaxy wide cyberspace connection which individuals can tap into to experience alternate realities. Increases morale +20% throughout your entire empire.
+108|Galactic Cybernet|Nearly instantaneous galaxy-wide communications, allowing quick exchange of information and ideas. The cybernet generates 15 research points and each scientist generates +3 research each.
+
+* 6000|False|Moleculartronics
+109|Pleasure Dome|The ultimate in virtual holographic entertainment, creating completely immersive entertainment environments. It increases morale by +30% and is  cumulative with holo simulator.
+110|Moleculartronic Computer|Directs all starship weapon fire, adding +125% to the chance to hit. If the computer is destroyed, the ship loses the bonus.
+111|Achilles Targeting Unit|Triples the chance of striking an enemy's weapon and shield systems and completely  bypasses the target ship's armor.
+
+*** category_biology: ***
+* 80|False|Astro Biology
+112|Hydroponic Farms|An automated, sealed environment in which food can be grown, even on lifeless worlds. It increases the food output of a world by +2 food.
+113|Biospheres|Enables a colony to better control environmental conditions, allowing  colonization of the more intolerable areas of the planet. Maximum planetary population is increased by +2 million.
+
+* 400|False|Advanced Biology
+114|Cloning Center|Allows doctors to replace failing or damaged organs, increasing the population growth by +100K each turn as long as the current population is below the planetary maximum.
+115|Soil Enrichment|Using nano-machines, planetary soil can be molecularly enriched and fertilized, increasing the food a farmer can harvest by +1. Soil enrichment will not work in barren, radiated, and toxic planets.
+116|Death Spores|Engineered viruses that attack organic lifeforms. Introduced by orbital bombardment, each launch has a 10% chance to kill one million colonists. Use of biological  weapons incurs a major diplomatic penalty with all other races.
+
+* 900|False|Genetic Engineering
+117|Telepathic Training|Develops the talents of naturally telepathic members of your race. Enables you to form a more effective police force with an ability to get at the truth in a new way. Adds +5% to all spying rolls.
+118|Microbiotics|Microorganisms used to create drugs. Increases the population growth rate of all planets by +25% and halves the percentage chance for death spores and bio-terminators to kill colonists.
+
+* 1150|False|Genetic Mutations
+119|Terraforming|Makes a planet more hospitable. Barren becomes desert or tundra, deserts become arid, tundras become swamp, oceans, swamps and arid become terran. Each use on a planet increases cost by 250 production.
+
+* 1500|False|Macro Genetics
+120|Subterranean Farms|An underground cavern system of automated farms. Increases the food output of a planet by +4.
+121|Weather Control System|Modifies a planet's weather patterns to create a more stable farming environment. Food production is increased by +2 per farmer.
+
+* 2750|False|Evolutionary Genetics
+122|Psionics|Allows you to create psychic beings of immense power. Spying bonuses are raised by +10. Morale on all planets is increased by 10% for dictatorships and imperium government.
+123|Heightened Intelligence|Through genetic engineering, the average intelligence of the entire race is substantially improved, increasing the research of all scientists by +1.
+
+* 4500|False|Artificial Life
+124|Bio-Terminator|The most advanced biochemical weapon ever devised, with a 20% chance of killing one million colonists. Use of biological weapons incurs a major diplomatic penalty with all other races.
+125|Universal Antidote|Increases the population growth rate of all colonies by +50% and quarters the chance for death spores and bio-terminators to kill a population.  Not cumulative with microbiotics.
+
+* 7500|False|Trans Genetics
+126|Biomorphic Fungi|Edible plants that grow anywhere, increasing the food output of all planets by +1 food per farmer, including worlds with 0 food output.
+127|Gaia Transformation|Creates an environment suited to both plant and animal growth by introducing genetically-engineered microorganisms into the world. Can only be applied to terran environments.
+128|Evolutionary Mutation|Allows you to mutate your race, altering their abilities. When evolutionary mutation is researched, you may choose 4 additional points of race development picks, to either remove disadvantages or increase advantages.
+
+*** category_physics: ***
+* 50|True|Physics
+129|Laser Cannon|Highly focused, coherent beams of light which deliver 1-4 points of damage. Modifications: autofire, armor piercing, heavy mount, continuous, point defense, no range dissipation.
+130|Laser Rifle|A hand-held weapon that increases the combat rating of militia, troops, and armor by +5. The bonus is not cumulative with other rifles.
+131|Space Scanner|Detects enemy ships. Base detection range is 1 parsec. Ships in transit can  be detected 1 parsec further per size class of ship.
+
+* 150|False|Fusion Physics
+132|Fusion Beam|Projects a tetrium stream of charged particles, inflicting 2-6 points of damage Modifications: heavy mount, continuous, point defense, enveloping.
+133|Fusion Rifle|A powerful hand-held rifle that increases the combat rating of militia, troops, and armor by +10. The bonus is not cumulative with other rifles.
+
+* 250|False|Tachyon Physics
+134|Tachyon Communications|Integrated into star bases, battlestations and star fortresses. Emits  signals which penetrate hyperspace. Ships within 3 parsecs can receive your orders.  Increases the command points of these bases by +1.
+135|Tachyon Scanner|Detect enemy ships. Has a base detection range of 3 parsecs. Ships in transit  can be detected 1 parsec further per size class of ship. Tachyon scanners reduce enemy ship's missile evasion by -20.
+136|Battle Scanner|Increases a ship's chance to hit with beam weapons by +50%. Adds +2 parsecs to galactic scanning range.
+
+* 900|False|Neutrino Physics
+137|Neutron Blaster|Fires an intense beam of lethal radiation. Inflicts 3-12 points of damage to shields. Any damage that penetrates the shields kills 1 marine unit for every 5 points of internal damage. Modifications: heavy mount, continuous.
+138|Neutron Scanner|Detects enemy ships. Has a base detection range of 5 parsecs. Ships in transit can be detected at 1 parsec per size class of ship greater range. Neutron scanners  reduce enemy ship's missile evasion by -40.
+
+* 1150|False|Artificial Gravity
+139|Tractor Beam|It requires 1 tractor beam per size class of target ship to completely stop  the target. Ships not held completely lose a portion of movement. Motionless  ships can be boarded and are easy targets to hit.
+140|Graviton Beam|Gravitic waves that tear a target apart. Inflicts 3-15 points of damage. Any damage penetrating the ship's shields inflicts extra structural damage. Modifications: heavy mount, continuous.
+141|Planetary Gravity Generator|Creates artificial gravity to normalize a planet to standard gravity limits. Gravity generators eliminate the negative effects of low and heavy gravity fields.
+
+* 1500|False|Subspace Physics
+142|Subspace Communications|Allows you to issue orders to any ship within 6 squares of a star system with a starbase, battlestation, or star fortress. Increases the command points given by a base by +2 points.
+143|Jump Gate|Forms a controlled wormhole between two points, increasing the speed of ships moving through it by 3 parsecs a turn. Once discovered, all colonies will automatically be equipped with one.
+
+* 2000|False|Multi-Phased Physics
+144|Phasor|Fires a trans-warp beam of phased energy that actually exists in several dimensions simultaneously, inflicting 5-20 points of damage. Modifications: autofire, continuous, heavy mount, point defense, shield piercing.
+145|Phasor Rifle|A hand held rifle that can almost disintegrate an opponent with one blast, increasing the combat rating of militia, troops and armor by +20. The bonus is not cumulative with other rifles.
+146|Multi-Phased Shields|Allow ships to rapidly change the frequency of their shields, increasing the maximum strength by +50%.
+
+* 3500|False|Plasma Physics
+147|Plasma Cannon|Fires a blast of plasma energy inflicting 6-30 points of damage to all 4 shields of  the target. Only focuses well over a short range, doubling all range penalties.  Modifications: heavy mount, and continuous fire.
+148|Plasma Rifle|The most powerful held weapon, increasing the combat rating of militia, troops, and armor by +30. The bonus is not cumulative with other rifle bonuses.
+149|Plasma Web|An energy web that envelopes a target within a 15 square range. Inflicts 5-25  points of damage per turn. This damage persists, dissipating at a rate of  5 points per turn.
+
+* 4500|False|Multidimensional Physics
+150|Disrupter Cannon|Fires intense bolts of energy that inflict 40 points of damage. Damage from  disrupter bolts is not reduced by range. Modifications: autofire, heavy mount.
+151|Dimensional Portal|Allows ships to cross into the dimension of the Antaran home world. To use it, select a fleet in the same system as the portal and press the 'Attack Antarans' button on the fleet pop-up.
+
+* 6000|False|Hyper Dimensional Physics
+152|Hyperspace Communications|Allow you to communicate with any ship already in hyperspace so you can change its destination. Increases the command points of star bases, battle stations and star fortresses by +3 points.
+153|Sensors|Detects enemy ships. Has a base detection range of 8 parsecs.  Ships in transit can be detected 1 parsec further per size class of ship. Sensors reduce enemy  ship's missile evasion by -70.
+154|Mauler Device|Fires a bolt of pure energy that always hits. Inflicts 100 points of damage, but with double the range penalties for dissipation. Modifications: heavy mount.
+
+* 15000|False|Temporal Physics
+155|Time Warp Facilitator|Allows a ship to shift in and out of the time-space continuum, enabling it to take an additional turn at the end of every combat turn.
+156|Stellar Converter|A plasma cannon that can be mounted on a ship or a planet. Automatically inflicts 400 hits to all shields of any ship, regardless of range and defense. Completely destroys a planet when used for orbital bombardment.
+157|Star Gate|Allows instantaneous movement between any of your colonies. All colonies are automatically equipped with one once the technology is researched.
+
+*** category_force_fields: ***
+* 250|False|Advanced Magnetism
+158|Class I Shield|Protects ships from physical and energy attacks. Absorbs up to 5 times the ship's size in damage before failing, with each attack reduced by 1 point of damage.  Regenerates 30% per combat turn.
+159|Mass Driver|A rail gun firing a hyper-velocity projectile. Inflicts 6 points of damage. Damage is not reduced by range. Modifications: autofire, armor piercing, heavy mount, point defense.
+160|ECM Jammer|Creates a magnetic pulse jamming both weapon tracking systems and missile guidance units, adding +70% to the ship's missile evasion.
+
+* 650|False|Gravitic Fields
+161|Anti-Grav Harness|Allows ground troops and armor to fly, increasing their mobility and defense. Adds +10 to their ground combat rating.
+162|Inertial Stabilizer|Creates a partial warp field that can operate in normal space. It vastly  improves the ship's mobility and makes it considerably harder to target, adding +50 to ship's beam defense and halving movement cost for turning.
+163|Gyro Destabilizer|Creates a sudden rift in a ship's subspace field. Weakens the inertial controls of the ship, spinning it in random directions, inflicting 1-4 points of structural damage times the ship's size class. Range is 15 squares.
+
+* 900|False|Magneto Gravity
+164|Class III Shield|Protects ships from physical and energy attacks. Absorbs up to 15 times the ship's size in damage before failing, with each attack reduced by 3 points of damage. Regenerates 30% per combat turn.
+165|Planetary Radiation Shield|Reduces solar and cosmic bombardment so lifeforms can comfortably move about the surface. Radiated climates become Barren.  Reduces damage against a planet by 5 points.
+166|Warp Dissipator|Creates a large radius field about a ship that prevents any ship from entering into hyperspace. Enemy ships cannot retreat while the dissipator is functioning.
+
+* 1500|False|Electromagnetic Refraction
+167|Stealth Field|Reduces the gravitic emissions from FTL drives. Ships equipped with stealth fields can not be detected at any range on the main screen.
+168|Personal Shield|Deflects physical and energy attacks, increasing the combat rating of militia, troops and armor by +20.
+169|Stealth Suit|Renders a person virtually invisible, blending the wearer into the background. Adds +10 all spy rolls.
+
+* 2000|False|Warp Fields
+170|Pulsar|When fired, causes violent vibrations in ships, missiles and fighters adjacent to the equipped ships. Inflicts 2-24 points of damage per size class of the ship damaged.
+171|Warp Interdictor|Creates a warp destabilizing field around the star system in which it is built. Generates a field 2 parsecs in radius about the system that slows all enemy movement to 1 parsec per turn.
+172|Lightning Field|Surrounds a ship in a powerful energized field capable of overloading the targeting system of any missile, torpedo or fighter. Has a 50% chance of destroying these weapons before they damage the ship.
+
+* 2750|False|Subspace Fields
+173|Class V Shield|Protects ships from physical and energy attacks. Absorbs up to 25 times the ship's size in damage before failing, with each attack reduced by 5 points of damage. Regenerates 30% per combat turn.
+174|Multi-Wave ECM Jammer|Jamming frequencies across the entire spectrum this device adds +100 to the ships missile evasion rating.
+175|Gauss Cannon|An extremely powerful linear accelerator which inflicts 18 points of damage regardless of range. Modifications: autofire, armor piercing, heavy mount.
+
+* 3500|False|Distortion Fields
+176|Cloaking Device|Completely hides a ship from long range scans. In combat, it adds +80 to the ship's beam defense and missiles have a 50% chance to miss as long as the ship does not attack. Must wait one turn without firing to recloak.
+177|Stasis Field|Places target in suspended animation. It cannot fire, recharge weapons, cloak or be attacked. Field has a 3-square range and will hold the  target ship until the stasis field is turned off or destroyed.
+178|Hard Shields|Reduces the damage of any attack by an additional 3 points. Allows operation of all shields in a nebula and prevents the use of enemy transporters even after  shields have been dropped. Immune to shield-piercing weapons.
+
+* 4500|False|Quantum Fields
+179|Class VII Shield|Protects ships from physical and energy attacks. Absorbs up to 35 times the ship's size in damage before failing with each attack reduced by 7 points of damage. Regenerates 30% per combat turn.
+180|Planetary Flux Shield|Seals planet in an energy field. Converts Radiated climates into Barren. Reduces damage against the planet 10 points. It replaces any planetary radiation shield already built.
+181|Wide Area Jammer|Adds +130 to a ship's missile evasion rating, adds +70 to the missile evasion of other ships in the fleet. The fleet's bonus is not  cumulative with any missile evasion bonus given by other jammers. Only the best  bonus will apply.
+
+* 7500|False|Transwarp Fields
+182|Displacement Device|All weapons targeted against an equipped ship have a 30% chance of missing completely, regardless of any other considerations.
+183|Subspace Teleporter|Allows a ship to execute a hyperspace jump of up to 20 squares. The jump does not change the ship's direction; it must rotate normally to change facing.
+184|Inertial Nullifier|Creates a warp field that can operate in normal space. Increases ship mobility and makes it harder to target. Adds +100 to the ship's beam defense, and allows it to change direction without movement cost.
+
+* 15000|False|Temporal Fields
+185|Class X Shield|Protects ships from physical and energy attacks. Absorbs up to 50 times the ship's size in damage before failing, with each attack reduced by 10 points of damage. Regenerates 30% per combat turn.
+186|Planetary Barrier Shield|Seals a planet in an energy field. Converts Radiated climates to Barren climates. Reduces damage against a planet by 20 points. Ground troops and biological weapons cannot pass.
+187|Phasing Cloak|Allows a ship to temporarily enter another dimension instead of just visually disappearing. While cloaked, the ship cannot be detected or attacked. Can only function for 10 turns, after which it will act like an ordinary cloaking device.

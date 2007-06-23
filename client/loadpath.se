@@ -5,6 +5,7 @@
 ../
 ../shared/
 ../shared/constructions/
+../shared/technology/
 ${SEDIR}/lib_ews/
 ${SEDIR}/lib_ews/events
 ${SEDIR}/lib_ews/widgets

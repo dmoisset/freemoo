@@ -67,12 +67,12 @@ feature {NONE} -- Creation
         r.set_with_size (155, 0, 74, 55)
         right_buttons.add_click_handler (r, agent info, a.images @ 2)
 
-        -- No more buttons
+        -- No more buttons.  Informational views now:
         r.set_with_size (549, 27, 63, 13)
         new_date (r)
         r.set_with_size (549, 90, 63, 28)
         new_money (r)
-        r.set_with_size (549, 390, 63, 28)
+        r.set_with_size (548, 346, 64, 72)
         new_research (r)
         r.set_with_size (73, 5, 11*8, 14)
         new_player_status (r)

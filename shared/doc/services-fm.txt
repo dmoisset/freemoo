@@ -61,9 +61,9 @@ PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
   Provided: Before game_status.started is set
   Description: Detailed player description
-  Format: "siirbiiii" <<ruler_name, money, research, fuel_range, has_capitol, knows_stars,
+  Format: "siirbiiiii" <<ruler_name, money, research, fuel_range, has_capitol, knows_stars,
                     visited_stars, colony_count, known_construction>>, 
-                    followed by a sequence of
+                 followed by a sequence of
           "i" <<star_id>>
                  (this is the known_star list), followed by a sequence of
           "i" <<star_id>>
@@ -169,6 +169,21 @@ XENO_REPOSITORY
      will control how much you know about each race
   Format: "iii" <<natives_id, androids_id, races_count>> followed
         by a sequence of `races_count' "i" <<race_id>>
+
+RESEARCH
+  Name: "n:research"  (n is a digit sequence = player id)
+  Provided: Before game_status.started is set
+  Description: This service lists technologies known by the player, which fields
+     have been researched in each category, and provides
+     information about which technology is being researched at the moment.
+  Format: "iiiiiiiiii"
+     <<current_research_tech_id, next_construction_field, next_power_field,
+       next_chemistry_field, next_sociology_field, next_computers_field,
+       next_biology_field, next_physics_field, next_force_fields_field,
+       known_tech_count>>
+              followed by a sequence of
+     "i", <<technology_id>>, one for each known tech.  Current_research_tech_id
+              can be -1 if no technology is being currently researched.
 
 
 SERVICE

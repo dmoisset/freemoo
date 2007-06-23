@@ -1,6 +1,6 @@
 TARGET=server
-SOURCEFILES=src/*.e ../shared/*.e ../shared/constructions/*.e
-EIFFLAGS=-case_insensitive -high_memory_compiler
+SOURCEFILES=src/*.e ../shared/*.e ../shared/constructions/*.e ../shared/technology/*.e
+EIFFLAGS=-high_memory_compiler
 LIBS=-leifinet
 
 include ../config

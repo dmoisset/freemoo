@@ -209,6 +209,9 @@ feature {NONE} -- Internal
             if colony_window = Void then
                 !!colony_window.make (Current, display.dimensions)
             end
+            if research_window = Void then
+                !!research_window.make (Current, display.dimensions)
+            end
             if main_window = Void then
                 !!main_window.make (Current, display.dimensions)
             end
@@ -236,6 +239,7 @@ feature -- Window swapping
     goto_main_window is
     do
         colony_window.hide
+        research_window.hide
         main_window.bring_to_front
         main_window.show
     end
@@ -245,9 +249,21 @@ feature -- Window swapping
         c /= Void
     do
         main_window.hide
+        research_window.hide
         colony_window.bring_to_front
         colony_window.set_colony(c)
         colony_window.show
+    end
+
+    goto_research_window is
+        -- bring up the technology selection window.  This is only callable from
+        -- the main window, so I assume we're there
+    do
+        colony_window.hide
+        main_window.hide
+        research_window.bring_to_front
+        research_window.show
+        research_window.grab
     end
 
 feature {NONE} -- Dialogs 
@@ -259,6 +275,8 @@ feature {NONE} -- Dialogs
     main_window: MAIN_WINDOW
 
     colony_window: COLONY_WINDOW
+
+    research_window: RESEARCH_SELECTION_WINDOW
 
     end_window: END_WINDOW
 

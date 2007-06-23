@@ -10,7 +10,7 @@ inherit
         add_to_known_list, add_to_visited_list, colony_type,
         star_type, race, set_ruler_name, set_race, set_color, add_colony,
         remove_colony, known_constructions, update_money, update_research,
-        set_state, capitol_destroyed, capitol_built
+        set_state, capitol_destroyed, capitol_built, knowledge
     select id end
     STORABLE
     rename
@@ -39,6 +39,8 @@ feature -- Redefined Features
     race: S_RACE
 
     known_constructions: S_CONSTRUCTION_REPO
+
+    knowledge: S_KNOWLEDGE_BASE
 
 feature {NONE} -- Creation
 
@@ -312,6 +314,7 @@ feature {STORAGE} -- Saving
         a.add_last(["race", race])
         a.add_last(["fuel_range", fuel_range.box])
         a.add_last(["has_capitol", has_capitol.box])
+        a.add_last(["knowledge", knowledge])
         add_to_fields(a, "colony", colonies.get_new_iterator_on_items)
         add_to_fields(a, "knows_star", knows_star.get_new_iterator)
         add_to_fields(a, "has_visited_star", has_visited_star.get_new_iterator)
@@ -346,7 +349,8 @@ feature {STORAGE} -- Saving
         starship: S_SHIP_CONSTRUCTION
     do
         create a.make(1, 0)
-        a.add_last(race)
+        a.add_last (race)
+        a.add_last (knowledge)
         add_dependents_to(a, colonies.get_new_iterator_on_items)
         knows_star.do_all(agent a.add_last)
         has_visited_star.do_all(agent a.add_last)
@@ -424,6 +428,8 @@ feature {STORAGE} -- Retrieving
                 state := i.item
             elseif elems.item.first.is_equal("race") then
                 race ?= elems.item.second
+            elseif elems.item.first.is_equal("knowledge") then
+                knowledge ?= elems.item.second
             elseif elems.item.first.has_prefix("colony") then
                 colony ?= elems.item.second
                 add_colony (colony)

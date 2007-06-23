@@ -5,7 +5,7 @@ inherit
     PLAYER
     rename
         make as player_make
-    redefine colony_type, race, known_constructions end
+    redefine colony_type, race, known_constructions, knowledge end
     TURN_SUMMARY_CONSTANTS
     SUBSCRIBER
     CLIENT
@@ -262,5 +262,7 @@ feature -- Anchors
     race: C_RACE
 
     colony_type: C_COLONY
+
+    knowledge: C_KNOWLEDGE_BASE
 
 end -- class C_PLAYER

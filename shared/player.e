@@ -16,6 +16,7 @@ feature {NONE} -- Creation
         create knows_star.make
         create has_visited_star.make
         create known_constructions.make
+        create knowledge.make
         create turn_summary.make(1, 0)
         ruler_name := ""
     ensure
@@ -58,6 +59,9 @@ feature -- Access
 
     race: RACE
         -- The race this player rules
+
+    knowledge: KNOWLEDGE_BASE
+        -- This player's knowledge base.
 
     iterator_on_turn_summary: ITERATOR[TURN_SUMMARY_ITEM] is
         -- Get a new iterator on this turn's events

@@ -15,6 +15,7 @@ feature {NONE} -- Creation
         create players.make
         create galaxy.make
         create xeno_repository.make
+        create tech_tree.make
         make_mapgenerator
         make_evolver
         make -- Dialog handler
@@ -75,6 +76,9 @@ feature -- Access
         -- Galaxy where the game is played
 
     xeno_repository: XENO_REPOSITORY
+
+    tech_tree: TECHNOLOGY_TREE
+        -- Complete graph of available technologies
 
     end_condition: BOOLEAN is
         -- has reached end condition?
@@ -340,6 +344,8 @@ feature {NONE} -- Internal
     do
         -- Colonization
         colonize_all
+        -- Research
+        check_all_research
         -- Generate data for new turn
         galaxy.generate_scans (players.get_new_iterator)
         galaxy.generate_colony_knowledge(players.get_new_iterator)
@@ -396,6 +402,22 @@ feature {NONE} -- Internal
     colonize_all is
         -- Colonization
     do
+    end
+
+    check_all_research is
+    local
+        it: ITERATOR[PLAYER]
+    do
+        from
+            it := players.get_new_iterator
+        until
+            it.is_off
+        loop
+            if True then
+--                crash
+            end
+            it.next
+        end
     end
 
     move_fleets is

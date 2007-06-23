@@ -14,16 +14,23 @@ feature {NONE} -- Creation
     make(w: WINDOW; where: RECTANGLE; p: C_PLAYER) is
     local
         r: RECTANGLE
+        y_pos: INTEGER
     do
         window_make(w, where)
         player := p
-        r.set_with_size(0, 0, location.width, row_height)
+        y_pos := (height - 2 * row_height) // 2
+        r.set_with_size(0, y_pos, location.width, row_height)
         create turns.make(Current, r, "")
         turns.set_font (outlined_font)
-        r.set_with_size(0, row_height, location.width, row_height)
+
+        y_pos := y_pos + row_height
+        r.set_with_size(0, y_pos, location.width, row_height)
         create delta.make(Current, r, "")
         delta.set_font (outlined_font)
         p.colonies_changed.connect(agent update)
+        r.set_with_size(0, 0, width, height)
+        create show_dialog_button.make (Current, r)
+        show_dialog_button.set_click_handler (agent show_selection_dialog)
         update
     end
 
@@ -43,11 +50,23 @@ feature -- Operations
         delta.set_text(player.research_variation.to_string + " RP")
     end
 
+feature -- Callbacks
+
+    show_selection_dialog is
+    local
+        connect_window: CONNECTION_WINDOW
+    do
+        connect_window ?= parent.parent
+        connect_window.goto_research_window
+    end
+
 feature {NONE} -- Representation
 
     player: C_PLAYER
 
     turns, delta: LABEL
+
+    show_dialog_button: BUTTON
 
     row_height: INTEGER is 14
 

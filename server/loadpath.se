@@ -1,6 +1,7 @@
 ./src
 ../shared/
 ../shared/constructions/
+../shared/technology/
 ${SEDIR}/lib_netservices/
 ${SEDIR}/lib_utils/
 ${SEDIR}/lib_eifinet/
