@@ -1,4 +1,4 @@
-EIFFLAGS=-case_insensitive
+EIFFLAGS=
 TARGET=fm_client
 SmartEiffelDirectory=$(shell dirname $(shell dirname $(SmartEiffel)))
 CLIBS=src/C/net_thread.o src/C/img_loader.o

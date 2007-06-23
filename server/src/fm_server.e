@@ -9,6 +9,7 @@ inherit
     GETTEXT
     STRING_FORMATTER
     PKG_USER
+    ARGUMENTS
 
 creation make
 

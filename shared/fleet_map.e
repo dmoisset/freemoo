@@ -154,7 +154,7 @@ feature {NONE} -- Auxiliar
     fleet_ungrouping (f, g: FLEET): BOOLEAN is
     do
         if f.owner.id < g.owner.id then
-            Result := true
+            Result := True
         elseif f.owner.id = g.owner.id then
             if f.destination = Void then
                 Result := g.destination /= Void
@@ -178,7 +178,7 @@ feature {NONE} -- Representation
 
     fleets: HASHED_DICTIONARY [like last_fleet, INTEGER]
         -- All fleets in space
-    
+
 feature {NONE} -- Anchors
 
     ship_type: SHIP

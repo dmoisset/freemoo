@@ -36,7 +36,7 @@ feature
     do
         x := c.location.size - c.location.plsize_min + 1
         pollution := -(c.industry.get_amount_due_to(l("Pollution Penalty")))
-        cleaned := ((pollution + x) * (1 - cleansing_power)).min(pollution)
+        cleaned := ((pollution + x.to_real) * (1 - cleansing_power)).min(pollution)
         c.industry.add(cleaned, l("Pollution Penalty"))
     end
 

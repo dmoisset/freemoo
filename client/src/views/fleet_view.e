@@ -107,7 +107,7 @@ feature {NONE} -- Creation
             create bt.make(Current, hpos, vpos, cursor @ 1, cursor @ 1, cursor @ 2,
                       cursor @ 2, cursor @ 2, cursor @ 1)
             toggles.put(bt, skip)
-            bt.set_active(true)
+            bt.set_active(True)
             hpos := hpos + 58
             if hpos > 150 then
                 hpos := 14
@@ -355,7 +355,7 @@ feature {NONE} -- Internal features
                 i1 := get_ship_pic(fleet.owner.color,
                                    ship.creator.color,
                                    ship.size,
-                                   ship.picture, false)
+                                   ship.picture, False)
                 toggles.item(i).set_normal_image(i1)
                 toggles.item(i).set_prelight_image(i1)
                 toggles.item(i).set_pressed_active_image(i1)
@@ -363,7 +363,7 @@ feature {NONE} -- Internal features
                     i2 := get_ship_pic(fleet.owner.color,
                                        ship.creator.color,
                                        ship.size,
-                                       ship.picture, true)
+                                       ship.picture, True)
                     toggles.item(i).set_pressed_image(i2)
                     toggles.item(i).set_normal_active_image(i2)
                     toggles.item(i).set_prelight_active_image(i2)

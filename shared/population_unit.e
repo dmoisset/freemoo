@@ -102,9 +102,9 @@ feature -- Operation
         if not is_android then
             colony.money.add(1, l("Taxes Collected"))
             if race.money_bonus > 0 then
-                colony.money.add(race.money_bonus * 0.5, format(l("~1~ Bonus"), <<race.name>>))
+                colony.money.add(race.money_bonus.to_real * 0.5, format(l("~1~ Bonus"), <<race.name>>))
             elseif race.money_bonus < 0 then
-                colony.money.add(race.money_bonus * 0.5, format(l("~1~ Penalty"), <<race.name>>))
+                colony.money.add(race.money_bonus.to_real * 0.5, format(l("~1~ Penalty"), <<race.name>>))
             end
             -- Fantastic traders
             if race.fantastic_trader then
@@ -113,13 +113,13 @@ feature -- Operation
         end
         -- Surplus food
         item := ((colony.farming.total - colony.food_consumption).max(0) /
-                    colony.populators.count) / 2
+                    colony.populators.count.to_real) / 2
         colony.money.add(item, l("Food Surplus"))
         total := item
         -- Trade goods
         if colony.producing.id = product_trade_goods then
             item := (colony.industry.total - colony.industry_consumption).max(0) /
-                    colony.populators.count / 2
+                    colony.populators.count.to_real / 2
             colony.money.add(item, l("Trade Goods"))
             total := total + item
         end
@@ -138,17 +138,19 @@ feature -- Operation
             task
         when task_farming then
             colony.farming.add(((colony.location.planet_farming @
-                    colony.location.climate) * production_factor).rounded,
+                    colony.location.climate).to_real * production_factor).rounded.to_real,
                     l("Produced by farmers"))
             if race.farming_bonus /= 0 then
-                colony.farming.add(race.farming_bonus, format(l("~1~ Bonus"), <<race.name>>))
+                colony.farming.add(race.farming_bonus.to_real,
+                                   format(l("~1~ Bonus"), <<race.name>>))
             end
         when task_industry then
             colony.industry.add(((colony.location.planet_industry @
-                    colony.location.mineral) * production_factor).rounded,
+                    colony.location.mineral).to_real * production_factor).rounded.to_real,
                     l("Produced by workers"))
             if race.industry_bonus /= 0 then
-                colony.industry.add(race.industry_bonus, format(l("~1~ Bonus"), <<race.name>>))
+                colony.industry.add(race.industry_bonus.to_real,
+                                    format(l("~1~ Bonus"), <<race.name>>))
             end
         when task_science then
             if is_android then
@@ -156,7 +158,8 @@ feature -- Operation
             else
                 colony.science.add(3, l("Produced by scientists"))
                 if race.science_bonus /= 0 then
-                    colony.science.add(race.science_bonus, format(l("~1~ Bonus"), <<race.name>>))
+                    colony.science.add(race.science_bonus.to_real,
+                                       format(l("~1~ Bonus"), <<race.name>>))
                 end
             end
             if colony.location.special = colony.location.plspecial_artifacts then

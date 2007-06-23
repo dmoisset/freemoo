@@ -10,6 +10,7 @@ inherit
     PLAYER_CONSTANTS
     DIALOG_KINDS
     PKG_USER
+    ARGUMENTS
 
 creation make
 
@@ -154,7 +155,7 @@ feature
         server.subscribe_init
         server.dialogs.on_dialog_addition.connect (agent new_dialog)
         print ("Playing now%N")
-        from until false loop
+        from until False loop
             server.get_data (-1)
             if server.player.state = st_playing_turn then
                 print ("Moving fleets%N")

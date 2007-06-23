@@ -35,17 +35,17 @@ feature -- Access
         from
             alienfleet := fleets.get_new_iterator_on_items
         until alienfleet.is_off loop
-            ships_detected := false
+            ships_detected := False
             if alienfleet.item.owner /= player then
                 from alienship := alienfleet.item.get_new_iterator
                 until alienship.is_off loop
-                    detected := false
+                    detected := False
                     from ownfleet := fleets.get_new_iterator_on_items
                     until ownfleet.is_off or detected loop
                         if ownfleet.item.owner = player and then ownfleet.item.scan(alienfleet.item, alienship.item) then
-                            detected := true
+                            detected := True
                             if not ships_detected then
-                                ships_detected := true
+                                ships_detected := True
                                 !!fleet.make
                                 fleet.copy_from(alienfleet.item)
                             end
@@ -56,9 +56,9 @@ feature -- Access
                     from owncolony := player.colonies.get_new_iterator_on_items
                     until owncolony.is_off or detected loop
                         if owncolony.item.scan(alienfleet.item, alienship.item) then
-                            detected := true
+                            detected := True
                             if not ships_detected then
-                                ships_detected := true
+                                ships_detected := True
                                 !!fleet.make
                                 fleet.copy_from(alienfleet.item)
                             end

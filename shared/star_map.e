@@ -32,7 +32,7 @@ feature -- Access -- star list
         from
             curs := stars.get_new_iterator_on_items
         until
-            curs.is_off or dist < threshold
+            curs.is_off or dist < threshold.to_real
         loop
             if not exclude.has (curs.item) and (curs.item |-| c) <= dist then
                 dist := curs.item |-| c
@@ -74,13 +74,13 @@ feature -- Access -- star list
     do
         Result := stars.get_new_iterator_on_items
     end
-    
+
     has_star (sid: INTEGER): BOOLEAN is
         -- Is there a star with id `sid'?
     do
         Result := stars.has (sid)
     end
-    
+
     star_with_id (sid: INTEGER): like last_star is
         -- Star with id `sid'
     require

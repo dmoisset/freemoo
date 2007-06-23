@@ -17,7 +17,7 @@ feature {NONE} -- Creation
     do
         p.pkg_system.open_file (filename)
         if p.pkg_system.last_file_open /= Void then
-            make_from_surface (FMI_Load (p.pkg_system.last_file_open.to_external))
+            make_from_surface (fmi_load (p.pkg_system.last_file_open.to_external))
             p.pkg_system.last_file_open.disconnect
         else
             print ("Can't find font file: '")
@@ -27,12 +27,12 @@ feature {NONE} -- Creation
         !!chr_areas.make (33, 128)
         parse
         remove_alpha
-        spacing := (relative_spacing * height).rounded
+        spacing := (relative_spacing * height.to_real).rounded
     end
 
 feature {NONE} -- External
 
-    FMI_Load (p: POINTER): POINTER is
+    fmi_load (p: POINTER): POINTER is
     require
         not p.is_null
     external "C use %"src/C/img_loader.h%""

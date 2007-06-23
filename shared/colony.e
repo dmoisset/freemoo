@@ -23,10 +23,10 @@ feature {NONE} -- Creation
         make_unique_id
         producing := o.known_constructions @ product_trade_goods
         create ship_factory
-        create farming.make
-        create industry.make
-        create science.make
-        create money.make
+        create farming.with_threshold (0.001)
+        create industry.with_threshold (0.001)
+        create science.with_threshold (0.001)
+        create money.with_threshold (0.001)
         create morale.make
         create constructions.make
         create populators.make
@@ -181,7 +181,7 @@ feature -- Access
         -- Only makes sense after recalculate_production
     do
         if not owner.race.lithovore then
-            Result := (food_consumption - farming.total.rounded).ceiling.max(0)
+            Result := (food_consumption - farming.total.rounded.to_real).ceiling.max(0)
         end
     end
 
@@ -189,7 +189,7 @@ feature -- Access
         -- Only makes sense after recalculate_production
     do
         if not owner.race.lithovore then
-            Result := (industry_consumption - industry.total.rounded).floor.max(0)
+            Result := (industry_consumption - industry.total.rounded.to_real).floor.max(0)
         end
     end
 
@@ -240,21 +240,27 @@ feature -- Operations
         -- Morale Bonus
         if census @ task_farming > 0 then
             organic_factor := (census @ task_farming - androids @ task_farming) / (census @ task_farming)
-            farming.add((farming.total * morale.total * 0.01 * organic_factor).to_real, l("Morale Bonus"))
+            farming.add((farming.total * morale.total.to_real *
+                             0.01 * organic_factor).to_real, l("Morale Bonus"))
         end
         if census @ task_industry > 0 then
             organic_factor := (census @ task_industry - androids @ task_industry) / (census @ task_industry)
-            industry.add((industry.total * morale.total * 0.01 * organic_factor).to_real, l("Morale Bonus"))
+            industry.add((industry.total * morale.total.to_real *
+                             0.01 * organic_factor).to_real, l("Morale Bonus"))
         end
         if census @ task_science > 0 then
             organic_factor := (census @ task_science - androids @ task_science) / (census @ task_science)
-            science.add((science.total * morale.total * 0.01 * organic_factor).to_real, l("Morale Bonus"))
+            science.add((science.total * morale.total.to_real *
+                              0.01 * organic_factor).to_real, l("Morale Bonus"))
         end
-        money.add(money.total * morale.total * 0.01, l("Morale Bonus"))
+        money.add(money.total * morale.total.to_real * 0.01, l("Morale Bonus"))
         -- Government Bonus
-        farming.add(farming.total * owner.race.food_multiplier * 0.01, l("Government Bonus"))
-        industry.add(industry.total * owner.race.industry_multiplier * 0.01, l("Government Bonus"))
-        science.add(science.total * owner.race.science_multiplier * 0.01, l("Government Bonus"))
+        farming.add(farming.total * owner.race.food_multiplier.to_real *
+                                                    0.01, l("Government Bonus"))
+        industry.add(industry.total * owner.race.industry_multiplier.to_real *
+                                                    0.01, l("Government Bonus"))
+        science.add(science.total * owner.race.science_multiplier.to_real *
+                                                    0.01, l("Government Bonus"))
         -- Leader Bonus
         -- Populators pollute
         per_populator_pollution := ((industry.total.rounded // 2 -
@@ -281,7 +287,8 @@ feature -- Operations
             const_it.is_off
         loop
             const_it.item.produce_fixed(Current)
-            money.add(-(const_it.item.maintenance(Current) * maintenance_factor), l("Maintenance"))
+            money.add(-(const_it.item.maintenance(Current).to_real *
+                                      maintenance_factor), l("Maintenance"))
             const_it.next
         end
         -- Gold and Gem deposits specials
@@ -466,7 +473,7 @@ feature {POPULATION_UNIT} -- Operations for populators
 feature {GALAXY} -- Scanning
 
     scan(alienfleet: FLEET; alienship: like shipyard): BOOLEAN is
-        -- Returns true if this colony picks up `alienship' with it's 
+        -- Returns True if this colony picks up `alienship' with it's 
         -- scanners.  `alienship' is part of `alienfleet'
     require
         alienfleet.has_ship(alienship.id)
@@ -476,10 +483,10 @@ feature {GALAXY} -- Scanning
         end
 
         if owner.race.omniscient then
-            Result := true
+            Result := True
         else
-            if location.orbit_center |-| alienfleet < scanner_range + alienship.size - alienship.ship_size_frigate then
-                Result := true
+            if location.orbit_center |-| alienfleet < (scanner_range + alienship.size - alienship.ship_size_frigate).to_real then
+                Result := True
             end
         end
     end

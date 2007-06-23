@@ -24,7 +24,7 @@ feature -- Creation and configuration
         if f.is_connected then
             !!p.make (30)
             from until f.end_of_input loop
-                p.clear
+                p.clear_count
                 f.read_line_in (p)
                 p.right_adjust
                 if not p.is_equal ("") then

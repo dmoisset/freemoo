@@ -1,7 +1,7 @@
 class EXPLAINED_ACCUMULATOR[E->NUMERIC]
     -- An accumulator in which every subtotal has a reason
 
-creation make
+creation make, with_threshold
 
 feature -- Access
 
@@ -37,8 +37,10 @@ feature -- Operations
         end
         total := total + amount
     ensure
-        (old get_amount_due_to(reason) + amount - get_amount_due_to(reason)).abs < 0.001
-        (total - (old total + amount)).abs < 0.001 -- I really, really hate this hack
+        (old get_amount_due_to(reason) + amount - get_amount_due_to(reason)) >= -(threshold)
+        (old get_amount_due_to(reason) + amount - get_amount_due_to(reason)) <= (threshold)
+        (total - (old total + amount)) >= -(threshold)
+        (total - (old total + amount)) <= (threshold) -- I really, really hate this hack
     end
 
     eliminate(reason: STRING) is
@@ -67,9 +69,17 @@ feature {NONE} -- Creation
         create subtotals.make
     end
 
+    with_threshold (new_threshold: E) is
+    do
+        threshold := new_threshold
+        make
+    end
+
 feature {NONE} -- Implementation
 
     subtotals: HASHED_DICTIONARY[E, STRING]
+
+    threshold: E
 
 invariant
     subtotals /= Void

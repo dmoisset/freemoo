@@ -248,7 +248,7 @@ feature -- Operations
         elseif key.is_equal("picture") and then value.is_integer then
             picture := value.to_integer
         else
-            check invalid_option: false end
+            check invalid_option: False end
         end
     end
 

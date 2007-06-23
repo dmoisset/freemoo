@@ -24,7 +24,7 @@ feature -- Access
 feature -- Constants
 
     traj_type_normal, traj_type_select_ok, traj_type_unreachable,
-    traj_type_enemy, traj_type_wormhole: INTEGER is UNIQUE;
+    traj_type_enemy, traj_type_wormhole: INTEGER is unique;
         -- Types of trajectory, determines color and dash type (use with set_type)
 
     traj_type_max: INTEGER is
@@ -56,7 +56,7 @@ feature -- Operations
         -- Avoid 0 width or height windows:
         if xx1 = xx2 then xx1 := xx2 + 1 end
         if yy1 = yy2 then yy1 := yy2 + 1 end
-        
+
         showx := xx1.min(xx2)
         showy := yy1.min(yy2)
         if xx2 > xx1 then

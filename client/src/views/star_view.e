@@ -196,7 +196,7 @@ feature {NONE} -- Signal handlers
         --Show info for an unexplored system
             r.set_with_size (58, 95, 240, 130)
             !!msg_label.make (Current, r, starmsgs @ star.kind)
-            msg_label.set_justify(false)
+            msg_label.set_justify(False)
             msg_label.set_h_alignment (0.5)
             removable_children.add_last(msg_label)
         end
@@ -283,14 +283,14 @@ feature -- Redefined features
         if not event.handled then
             m ?= event
             if m /= Void then
-                angle := ((m.y - 136.5) * 1.88).atan2(m.x - 173.5)
+                angle := ((m.y.to_real - 136.5) * 1.88).atan2(m.x.to_real - 173.5)
                 from
                     ip := star.get_new_iterator_on_planets
                     a := False
                     i := 0
                 until ip.is_off or a loop
                     if ip.item /= Void and then ip.item.type = type_asteroids then
-                        y := br * (bi + i + 1)
+                        y := br * (bi + i.to_real + 1)
                         x := y * xm
                         y := cy + angle.sin * y
                         x := cx + angle.cos * x
@@ -487,10 +487,10 @@ feature {NONE} -- Internal
     local
         x, y: DOUBLE
     do
-        y := br * (bi + p.orbit)
+        y := br * (bi + p.orbit.to_real)
         x := y * xm
-        y := cy - (p.orbit + di * status.date).sin * y
-        x := cx + (p.orbit + di * status.date).cos * x
+        y := cy - (p.orbit.to_real + di * status.date.to_real).sin * y
+        x := cx + (p.orbit.to_real + di * status.date.to_real).cos * x
         Result := [x.rounded, y.rounded]
     end
 

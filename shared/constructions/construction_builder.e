@@ -200,7 +200,7 @@ feature {NONE} -- Internal
     cache: ARRAY [CONSTRUCTION] is
     once
         create Result.make (1, 0)
-        load_productive_constructions 
+        load_productive_constructions
     end
 
     load_productive_constructions is
@@ -236,7 +236,7 @@ feature {NONE} -- Internal
         f: COMMENTED_TEXT_FILE
         id, p, q: INTEGER
         name, description: STRING
-        
+
     once
         create Result.make (1, 0)
         pkg_system.open_file ("colony/buildings")
@@ -250,11 +250,11 @@ feature {NONE} -- Internal
             name := f.last_line.substring (p+1, q-1)
             p := f.last_line.count
             description := f.last_line.substring (q+1, p)
-        
+
             Result.force ([name, description], id)
             f.read_nonempty_line
         end
-        
+
     end
 
 

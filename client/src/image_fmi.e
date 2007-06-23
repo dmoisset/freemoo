@@ -20,7 +20,7 @@ feature {NONE} -- Creation
         if not tried then
             p.pkg_system.open_file (path)
             if p.pkg_system.last_file_open /= Void then
-                make_from_surface (FMI_Load (p.pkg_system.last_file_open.to_external))
+                make_from_surface (fmi_load (p.pkg_system.last_file_open.to_external))
                 p.pkg_system.last_file_open.disconnect
             end
         else
@@ -39,7 +39,7 @@ feature {NONE} -- Creation
 
 feature {NONE} -- External
 
-    FMI_Load (p: POINTER): POINTER is
+    fmi_load (p: POINTER): POINTER is
     require
         not p.is_null
     external "C use %"src/C/img_loader.h%""

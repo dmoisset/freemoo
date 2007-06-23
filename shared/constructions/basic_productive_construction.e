@@ -28,21 +28,21 @@ feature -- Operations
     generate_money(c: like colony_type) is
     do
         c.money.add(((c.money.total - c.money.get_amount_due_to(l("Maintenance")))
-                     * money_percentage) / 100, name)
+                     * money_percentage.to_real) / 100, name)
     end
 
     produce_proportional(c: like colony_type) is
     do
-        c.farming.add(farming_proportional * (c.census @ task_farming), name)
-        c.industry.add(industry_proportional * (c.census @ task_industry), name)
-        c.science.add(science_proportional * (c.census @ task_science), name)
+        c.farming.add((farming_proportional * (c.census @ task_farming)).to_real, name)
+        c.industry.add((industry_proportional * (c.census @ task_industry)).to_real, name)
+        c.science.add((science_proportional * (c.census @ task_science)).to_real, name)
     end
 
     produce_fixed(c: like colony_type) is
     do
-        c.farming.add(farming_fixed, name)
-        c.industry.add(industry_fixed, name)
-        c.science.add(science_fixed, name)
+        c.farming.add(farming_fixed.to_real, name)
+        c.industry.add(industry_fixed.to_real, name)
+        c.science.add(science_fixed.to_real, name)
     end
 
     clean_up_pollution(c: like colony_type) is

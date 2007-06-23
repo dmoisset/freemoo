@@ -490,10 +490,10 @@ feature {GALAXY} -- Scanning
         end
 
         if owner.race.omniscient then
-            Result := true
+            Result := True
         else
-            if Current |-| alienfleet < scanner_range + alienship.size - alienship.ship_size_frigate then
-                Result := true
+            if Current |-| alienfleet < (scanner_range + alienship.size - alienship.ship_size_frigate).to_real then
+                Result := True
             end
         end
     end

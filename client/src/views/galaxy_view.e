@@ -68,13 +68,13 @@ feature -- Operations
         get_limits
         -- Note: This assumes projections w/o rotations
         if limit_x > 0 and limit_y > 0 and projs.valid_index (zoom) then
-            current_projection.translate (-x, -y)
+            current_projection.translate (-x.to_real, -y.to_real)
             posx := -current_projection.dx / limit_x
             posy := -current_projection.dy / limit_y
             zoom := value
             get_limits
             current_projection.set_translation (-posx*limit_x, -posy*limit_y)
-            current_projection.translate (x, y)
+            current_projection.translate (x.to_real, y.to_real)
             normalize_position
             dirty := True
             refresh
@@ -423,7 +423,7 @@ feature {NONE} -- Event handlers
         -- Scroll to set center on `x', `y'
     do
         cancel_trajectory_selection
-        current_projection.translate (width // 2 - x, height // 2 - y)
+        current_projection.translate ((width // 2 - x).to_real, (height // 2 - y).to_real)
         normalize_position
         refresh
         dirty := True
@@ -433,8 +433,8 @@ feature {NONE} -- Event handlers
         -- Put scroll inside limits
     do
         current_projection.set_translation (
-            current_projection.dx.min (gborder).max (width - limit_x - gborder),
-            current_projection.dy.min (gborder).max (height - limit_y - gborder))
+            current_projection.dx.min (gborder.to_real).max ((width - gborder).to_real - limit_x),
+            current_projection.dy.min (gborder.to_real).max ((height - gborder).to_real - limit_y))
     end
 
     check_fleet_trajectory (x, y: INTEGER) is
@@ -684,7 +684,7 @@ feature {NONE} -- Internal configuration and constants
         !!projs.make(0, 3)
         !!p.make_identity
         p.project (galaxy.limit)
-        !!p.make_simple ((width-2*gborder).to_real/p.x, (height-2*gborder).to_real/p.y, gborder, gborder)
+        !!p.make_simple ((width-2*gborder).to_real/p.x, (height-2*gborder).to_real/p.y, gborder.to_real, gborder.to_real)
         projs.put(p, 0)
         p := p.twin
         p.scale ((6/4).to_real, (6/4).to_real)

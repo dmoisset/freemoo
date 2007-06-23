@@ -25,7 +25,7 @@ feature -- Operations
         if stream.end_of_input then
             last_line := Void
         else
-            last_line.clear
+            last_line.clear_count
             stream.read_line_in (last_line)
             c := last_line.first_index_of ('#')
             if c/=0 then

@@ -23,10 +23,10 @@ feature {NONE} -- Creation template
             p.pkg_system.open_file (path)
             if p.pkg_system.last_file_open /= Void then
                 fma := load_anim (p.pkg_system.last_file_open.to_external)
-                count := FMA_count (fma)
-                imgs := imgs.from_pointer (FMA_items (fma))
-                lx := lx.from_pointer (FMA_x (fma))
-                ly := ly.from_pointer (FMA_y (fma))
+                count := fma_count (fma)
+                imgs := imgs.from_pointer (fma_items (fma))
+                lx := lx.from_pointer (fma_x (fma))
+                ly := ly.from_pointer (fma_y (fma))
                 init_representation (count)
                 from i := 0 until i = count loop
                     !!s.make_from_surface (imgs.item (i))
@@ -35,8 +35,8 @@ feature {NONE} -- Creation template
                     add_frame (i, s, lx.item (i), ly.item (i))
                     i := i + 1
                 end
-                loop_frame := FMA_loopstart (fma)
-                free_FMA (fma)
+                loop_frame := fma_loopstart (fma)
+                free_fma (fma)
                 p.pkg_system.last_file_open.disconnect
             end
         else
@@ -56,7 +56,7 @@ feature {NONE} -- Creation template
             p.pkg_system.last_file_open.disconnect
         end
         if not fma.is_null then
-            free_FMA (fma)
+            free_fma (fma)
             fma := default_pointer
         end
         if not tried then
@@ -96,37 +96,37 @@ feature {NONE} -- External
         not Result.is_null
     end
 
-    free_FMA (a: POINTER) is
+    free_fma (a: POINTER) is
         -- Deallocates a FMA_t *
     external "C use %"src/C/img_loader.h%""
     alias "free_FMA"
     end
 
-    FMA_count (a: POINTER): INTEGER is
+    fma_count (a: POINTER): INTEGER is
     external "[
                 C struct FMA_t get count use "src/C/img_loader.h"
              ]"
     end
 
-    FMA_loopstart (a: POINTER): INTEGER is
+    fma_loopstart (a: POINTER): INTEGER is
     external "[
                 C struct FMA_t get loopstart use "src/C/img_loader.h"
              ]"
     end
 
-    FMA_items (a: POINTER): POINTER is
+    fma_items (a: POINTER): POINTER is
     external "[
                 C struct FMA_t get items use "src/C/img_loader.h"
              ]"
     end
 
-    FMA_x (a: POINTER): POINTER is
+    fma_x (a: POINTER): POINTER is
     external "[
                 C struct FMA_t get x use "src/C/img_loader.h"
              ]"
     end
 
-    FMA_y (a: POINTER): POINTER is
+    fma_y (a: POINTER): POINTER is
     external "[
                 C struct FMA_t get y use "src/C/img_loader.h"
              ]"

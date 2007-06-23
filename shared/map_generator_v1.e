@@ -99,19 +99,19 @@ feature {NONE} -- Position Generation
         farthest: REAL
         empty: BOOLEAN
     do
-        Result := true
+        Result := True
         farthest := maxdelta + 1
         empty := here.is_off
         from until here.is_off or not Result
         loop
             if (this |-| here.item) < mindelta then
-                Result := false
+                Result := False
             end
             farthest := farthest.min (this |-| here.item)
             here.next
         end
         if farthest > maxdelta and not empty then
-            Result := false
+            Result := False
         end
     ensure
 -- Invalidated because here is modified
@@ -321,7 +321,7 @@ feature {NONE} -- Planet Generation
         hmworld: PLANET
         newcol: COLONY
     do
-        step := perimeter / players.count
+        step := perimeter / players.count.to_real
         rand.next
         offset := rand.last_real * step
         i := players.get_new_iterator
@@ -329,7 +329,7 @@ feature {NONE} -- Planet Generation
             done := 0
             i.start
         until i.is_off loop
-            hmworldpos := walk_point (step * done + offset)
+            hmworldpos := walk_point (step * done.to_real + offset)
             hmworld_system := galaxy.closest_star_to (hmworldpos, dont_touch)
             hmworld := create_default_homeworld(hmworld_system)
             hmworld.set_size(plsize_medium + i.item.race.homeworld_size)

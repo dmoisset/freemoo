@@ -110,7 +110,7 @@ feature {STORAGE} -- Retrieving
                 i ?= elems.item.second
                 picture := i.item
             else
-                unknown_tag := true
+                unknown_tag := True
             end
             if not unknown_tag then
                 elems.next

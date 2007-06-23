@@ -18,7 +18,7 @@ feature
         -- Though our production is proportional to `c''s population,
         -- we produce here to avoid pollution.
     do
-        c.industry.add(c.census @ task_industry, name)
+        c.industry.add((c.census @ task_industry).to_real, name)
     end
 
 feature {NONE} -- Creation
