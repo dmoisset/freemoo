@@ -1,7 +1,10 @@
+ifndef SmartEiffelDirectory
 SmartEiffelDirectory=$(shell dirname $(shell dirname $(SmartEiffel)))
+endif
+
 TARGET=fma_viewer
 SOURCEFILES=*.e ../../client/src/*anim*.e
-EIFFLAGS=-case_insensitive -high_memory_compiler
+EIFFLAGS=-high_memory_compiler
 LIBS=-lSDL_image `sdl-config --cflags --libs` -I../../client\
      $(SmartEiffelDirectory)/lib_ews/driver-sdl/C/driver-sdl.o ../../client/src/C/img_loader.o
 

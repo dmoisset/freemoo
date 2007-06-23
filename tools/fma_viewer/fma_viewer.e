@@ -2,6 +2,7 @@ class FMA_VIEWER
 
 inherit
     PKG_USER
+    ARGUMENTS
 
 creation make
 
