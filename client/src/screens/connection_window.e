@@ -259,6 +259,7 @@ feature -- Window swapping
         -- bring up the technology selection window.  This is only callable from
         -- the main window, so I assume we're there
     do
+        research_window.update
         colony_window.hide
         main_window.hide
         research_window.bring_to_front

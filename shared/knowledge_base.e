@@ -14,7 +14,7 @@ feature -- Access
         Result := known_technologies.fast_has (tech)
     end
 
-    iterator_on_known_techs: ITERATOR[INTEGER] is
+    iterator_on_known_techs: ITERATOR[TECHNOLOGY] is
     do
         Result := known_technologies.get_new_iterator
     end
@@ -33,11 +33,11 @@ feature -- Operations
 
     add_tech (new_tech: TECHNOLOGY) is
     require
-        not has (new_tech)
+        not knows (new_tech)
     do
         known_technologies.add_last (new_tech)
     ensure
-        has (new_tech)
+        knows (new_tech)
     end
 
     set_current_research (new_tech: TECHNOLOGY) is
@@ -49,9 +49,9 @@ feature -- Operations
 
     set_next_field (new_field: TECH_FIELD) is
     do
-        next_fields.put (new_field, new_field.category)
+        next_fields.put (new_field, new_field.category.id)
     ensure
-        next_field (new_field.category) = new_field
+        next_field (new_field.category.id) = new_field
     end
 
 feature {} -- Creation
@@ -60,7 +60,7 @@ feature {} -- Creation
     local
         cat: INTEGER
     do
-        create next_fields.make (0, 7)
+        create next_fields.make (category_construction, category_force_fields)
         from
             cat := category_construction
         until

@@ -1,6 +1,9 @@
 EIFFLAGS=
 TARGET=fm_client
+ifndef SmartEiffelDirectory
 SmartEiffelDirectory=$(shell dirname $(shell dirname $(SmartEiffel)))
+endif
+
 CLIBS=src/C/net_thread.o src/C/img_loader.o
 LIBS=`sdl-config --cflags --libs` $(CLIBS)\
      -lews-SDL -leifinet

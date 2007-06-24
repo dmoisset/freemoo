@@ -3,7 +3,6 @@ deferred class RESEARCH_SELECTION_WINDOW_GUI
 inherit
     WINDOW
     redefine make, handle_event end
-    GETTEXT
     TECHNOLOGY_CONSTANTS
     KEYBOARD_CONSTANTS
 
@@ -15,23 +14,47 @@ feature {NONE} -- Creation
         a: FMA_FRAMESET
         r: RECTANGLE
         button: BUTTON_IMAGE
-        i: INTEGER
+        i, j: INTEGER
+        normal, prelight, pressed: IMAGE_FMI
+        label: LABEL
     do
         Precursor (w, where)
         create a.make ("client/research-selection/background.fma")
         left := (width - a.images.item(1).width) // 2
         create background.make (Current, left, 0, a.images @ 1)
         create category_buttons.make (category_construction, category_force_fields)
+        create normal.make_from_file ("client/research-selection-window/button_normal.fmi")
+        create prelight.make_from_file ("client/research-selection-window/button_prelight.fmi")
+        create pressed.make_from_file ("client/research-selection-window/button_pressed.fmi")
+        create tech_buttons.make (category_construction, category_force_fields)
+        create tech_labels.make (category_construction, category_force_fields)
         from
             i := category_construction
         until
             i > category_force_fields
         loop
+            tech_buttons.put (create{ARRAY[BUTTON]}.make (1, 4), i)
+            tech_labels.put (create{ARRAY[LABEL]}.make (1, 4), i)
             create a.make ("client/research-selection/category" + i.to_string + ".fma")
             create button.make (Current, left + 21 + (227 * (i \\ 2)),
                                 30 + (i // 2) * 105 + 2 * (i // 6),
-                                a.images @ 1,
-                                a.images @ 1, a.images @ 2)
+                                a.images @ 1, a.images @ 1, a.images @ 2)
+            from
+                j := 1
+            until
+                j > 4
+            loop
+                r.set_with_size (left + 15 + (227 * (i \\ 2)),
+                                 30 + (i // 2) * 105 + 2 * (i // 6) + 20 * j,
+                                 216, 17)
+                create label.make (Current, r, "")
+                tech_labels.item (i).put (label, j)
+                create button.make (Current, left + 15 + (227 * (i \\ 2)),
+                                    30 + (i // 2) * 105 + 2 * (i // 6) + 20 * j,
+                                    normal, prelight, pressed)
+                tech_buttons.item (i).put (button, j)
+                j := j + 1
+            end
             i := i + 1
         end
     end
@@ -41,14 +64,8 @@ feature {NONE} -- Widgets
     background: WINDOW_IMAGE
     category_buttons: ARRAY [BUTTON_IMAGE]
 
-    new_name (where: RECTANGLE) is deferred end
-    new_population (where: RECTANGLE) is deferred end
-    new_populators (where: RECTANGLE) is deferred end
-    new_morale (where: RECTANGLE) is deferred end
-    new_production (where: RECTANGLE) is deferred end
-    new_producing (where: RECTANGLE) is deferred end
-    new_system_view (where: RECTANGLE) is deferred end
-    new_possible_constructions (where: RECTANGLE) is deferred end
+    tech_buttons: ARRAY [ARRAY [BUTTON]]
+    tech_labels: ARRAY [ARRAY [LABEL]]
 
 feature {NONE} -- Callbacks
 

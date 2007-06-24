@@ -13,11 +13,11 @@ feature
     research(p: PLAYER) is
     require
         p /= Void
-        not p.tech.has(id)
+        not p.knowledge.knows(Current)
     do
-        p.tech.add(id)
+        p.knowledge.add_tech(Current)
     ensure
-        p.tech.has(id)
+        p.knowledge.knows(Current)
     end
 
     chance_of_researching_at(rp: INTEGER): REAL is

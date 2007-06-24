@@ -2,74 +2,48 @@ class RESEARCH_SELECTION_WINDOW
 
 inherit
     RESEARCH_SELECTION_WINDOW_GUI
+    CLIENT
 
 creation
     make
 
-feature
-
-    set_colony(c: C_COLONY) is
-    require
-        c /= Void
-    do
-        c.recalculate_production
-        name.set_colony(c)
-        system_view.set_colony(c)
-        population.set_colony(c)
-        populators.set_colony(c)
-        production.set_colony(c)
-        producing.set_colony(c)
-        morale.set_colony(c)
-        possible_constructions.set_colony(c)
-    end
-
-feature {NONE} -- Widgets
-
-    new_name(where: RECTANGLE) is
-    do
-        !!name.make(Current, where)
-    end
-
-    new_population(where: RECTANGLE) is
-    do
-        !!population.make(Current, where)
-    end
-
-    new_morale(where: RECTANGLE) is
-    do
-        !!morale.make(Current, where)
-    end
-
-    new_populators(where: RECTANGLE) is
-    do
-        !!populators.make(Current, where)
-    end
-
-    new_production(where: RECTANGLE) is
-    do
-        !!production.make(Current, where)
-    end
-
-    new_producing(where: RECTANGLE) is
-    do
-        !!producing.make(Current, where)
-    end
-
-    new_possible_constructions(where: RECTANGLE) is
-    do
-        !!possible_constructions.make(Current, where)
-    end
-
-    new_system_view(where: RECTANGLE) is
-    do
-        !!system_view.make(Current, where)
-        system_view.set_manage_colony_callback(agent set_colony)
-    end
-
 feature -- Operations
 
-    show_detailed_production(accumulator: EXPLAINED_ACCUMULATOR[REAL]) is
-    do
-    end
+    update is
+        local
+            cat: INTEGER
+            next_field: TECH_FIELD
+            tech: ITERATOR [TECHNOLOGY]
+            i: INTEGER
+        do
+            from
+                cat := category_construction
+            until
+                cat > category_force_fields
+            loop
+                next_field := server.player.knowledge.next_field (cat)
+                from
+                    i := 1
+                    tech := next_field.get_new_iterator
+                until
+                    i > 4 and tech.is_off
+                loop
+                    if i > 4 then
+                        print ("Gak!  " + tech.item.name + " doesn't fit!%N")
+                    else
+                        if tech.is_off then
+                            tech_labels.item (cat).item (i).set_text ("")
+                            tech_buttons.item (cat).item (i).hide
+                        else
+                            tech_labels.item (cat).item (i).set_text (tech.item.name)
+                            tech_buttons.item (cat).item (i).show
+                            tech.next
+                        end
+                        i := i + 1
+                    end
+                end
+                cat := cat + 1
+            end
+        end
 
 end -- class RESEARCH_SELECTION_WINDOW
