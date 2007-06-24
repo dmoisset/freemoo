@@ -15,7 +15,7 @@ feature {NONE} -- Creation
         r: RECTANGLE
         button: BUTTON_IMAGE
         i, j: INTEGER
-        normal, prelight, pressed: IMAGE_FMI
+        normal, prelight, pressed, highlight: IMAGE_FMI
         label: LABEL
     do
         Precursor (w, where)
@@ -26,8 +26,10 @@ feature {NONE} -- Creation
         create normal.make_from_file ("client/research-selection-window/button_normal.fmi")
         create prelight.make_from_file ("client/research-selection-window/button_prelight.fmi")
         create pressed.make_from_file ("client/research-selection-window/button_pressed.fmi")
+        create highlight.make_from_file ("client/research-selection-window/selected_highlight.fmi")
         create tech_buttons.make (category_construction, category_force_fields)
         create tech_labels.make (category_construction, category_force_fields)
+        create selected_highlight.make (Current, 0, 0, highlight)
         from
             i := category_construction
         until
@@ -66,6 +68,8 @@ feature {NONE} -- Widgets
 
     tech_buttons: ARRAY [ARRAY [BUTTON]]
     tech_labels: ARRAY [ARRAY [LABEL]]
+
+    selected_highlight: WINDOW_IMAGE
 
 feature {NONE} -- Callbacks
 

@@ -2,10 +2,19 @@ class C_KNOWLEDGE_BASE
 
 inherit
     KNOWLEDGE_BASE
+        redefine make, set_current_tech end
     SUBSCRIBER
 
 creation
     make
+
+feature {NONE} -- Creation
+
+    make is
+    do
+        create current_tech_changed.make
+        Precursor
+    end
 
 feature
 
@@ -18,9 +27,9 @@ feature
         create s.start (msg)
         s.get_integer
         if s.last_integer = -1 then
-            current_research := Void
+            current_tech := Void
         else
-            current_research := tech_tree.tech (s.last_integer)
+            current_tech := tech_tree.tech (s.last_integer)
         end
         from
             cat := category_construction
@@ -42,5 +51,19 @@ feature
             add_tech (tech_tree.tech (s.last_integer))
             count := count - 1
         end
+        current_tech_changed.emit (Current)
     end
+
+feature -- Signals
+
+    current_tech_changed: SIGNAL_1[C_KNOWLEDGE_BASE]
+
+feature -- Operations
+
+    set_current_tech (new_tech: TECHNOLOGY) is
+    do
+        Precursor (new_tech)
+        current_tech_changed.emit (Current)
+    end
+
 end -- class C_KNOWLEDGE_BASE
