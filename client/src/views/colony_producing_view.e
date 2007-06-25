@@ -1,4 +1,6 @@
 class COLONY_PRODUCING_VIEW
+    -- This view shows the construction that the player is currently building
+    -- at a colony, and allows to request to buy any remaining production.
 
 inherit
     COLONY_VIEW

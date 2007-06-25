@@ -29,7 +29,7 @@ feature
         if s.last_integer = -1 then
             current_tech := Void
         else
-            current_tech := tech_tree.tech (s.last_integer)
+            current_tech := tech_tree.tech (s.last_integer + tech_min.item(category_construction))
         end
         from
             cat := category_construction
@@ -37,7 +37,7 @@ feature
             cat > category_force_fields
         loop
             s.get_integer
-            set_next_field (tech_tree.field (s.last_integer))
+            set_next_field (tech_tree.field (s.last_integer + field_min.item(category_construction)))
             cat := cat + 1
         end
         s.get_integer
@@ -48,7 +48,7 @@ feature
             count = 0
         loop
             s.get_integer
-            add_tech (tech_tree.tech (s.last_integer))
+            add_tech (tech_tree.tech (s.last_integer + tech_min.item(category_construction)))
             count := count - 1
         end
         current_tech_changed.emit (Current)

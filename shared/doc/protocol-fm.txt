@@ -18,6 +18,7 @@ CLIENT MESSAGES
 50: Colony set task
 51: Colony set production
 52: Colony buy
+53: Set current research
 
   * Join
 
@@ -185,6 +186,16 @@ CLIENT MESSAGES
   production.  Colony shouldn't have already bought this turn, and 
   accumulated production should be less than what's required to build
   current production.
+
+  * Set current research
+
+  offset(bytes) name        type    Notes
+  0             msgtype     INTEGER 53
+  4             tech_id     INTEGER id for the tech the player wants to research
+
+  Set the current technology being researched.  The technology requested should
+  be between the player's technologies available for research.  This is checked
+  against the player's knowledge base's next fields.
 
 SERVER MESSAGES
 

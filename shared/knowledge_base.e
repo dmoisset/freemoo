@@ -31,6 +31,36 @@ feature -- Access
 
 feature -- Operations
 
+    dump is
+    local
+        it: ITERATOR[TECHNOLOGY]
+        tf: ITERATOR[TECH_FIELD]
+    do
+        print ("Known Technologies:%N")
+        from
+            it := known_technologies.get_new_iterator
+        until
+            it.is_off
+        loop
+            print ("   " + it.item.name + " (" + it.item.id.out + ") Field: " + it.item.field.name + " (" + it.item.field.id.out + ") cat: " + it.item.field.category.id.out + "%N")
+            it.next
+        end
+        print ("Next fields:%N")
+        from
+            tf := next_fields.get_new_iterator
+        until
+            tf.is_off
+        loop
+            print ("    " + tf.item.category.id.out + ": " + tf.item.name + "%N")
+            tf.next
+        end
+        if current_tech /= Void then
+            print ("Current research: " + current_tech.name + "%N")
+        else
+            print ("Current research: None%N")
+        end
+    end
+
     add_tech (new_tech: TECHNOLOGY) is
     require
         not knows (new_tech)
@@ -40,7 +70,7 @@ feature -- Operations
         knows (new_tech)
     end
 
-    set_current_research (new_tech: TECHNOLOGY) is
+    set_current_tech (new_tech: TECHNOLOGY) is
     do
         current_tech := new_tech
     ensure

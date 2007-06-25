@@ -121,7 +121,7 @@ feature {NONE} -- Creation
                     f.last_line = Void or else f.last_line.has_prefix ("*")
                 loop
                     p := f.last_line.index_of ('|', 1)
-                    tid := f.last_line.substring (1, p - 1).to_integer
+                    tid := f.last_line.substring (1, p - 1).to_integer + tech_min.item (category_construction)
                     q := f.last_line.index_of ('|', p + 1)
                     name := f.last_line.substring (p + 1, q - 1)
                     description := f.last_line.substring (q + 1, f.last_line.count)
@@ -130,7 +130,6 @@ feature {NONE} -- Creation
                     a_tech := tech_builder.last_tech
                     a_tech.set_name (name)
                     a_tech.set_description (description)
-                    print ("Adding tech " + tid.out + ": " + name + " - " + description + "%N")
                     a_field.add_tech (a_tech)
 
                     f.read_nonempty_line

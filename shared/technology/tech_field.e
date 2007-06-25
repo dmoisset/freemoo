@@ -9,11 +9,18 @@ inherit
 creation
     make
 
-feature
+feature -- Access
 
     id: INTEGER
 
     cost: INTEGER
+
+    chance_of_researching_at(rp: INTEGER): REAL is
+        -- What chance is there of researching this technology field
+        -- By investing `rp' research points?
+    do
+        
+    end
 
     name: STRING
 

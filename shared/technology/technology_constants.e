@@ -1,6 +1,6 @@
 class TECHNOLOGY_CONSTANTS
 
-feature -- Constants
+feature -- Constants (These have to remain visible to be used in preconditions)
 
     category_construction: INTEGER is 0
     category_power: INTEGER is 1

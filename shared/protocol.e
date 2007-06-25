@@ -19,6 +19,8 @@ feature -- Constants
     msgtype_startbuilding: INTEGER is 51
     msgtype_buy: INTEGER is 52
 
+    msgtype_set_current_tech: INTEGER is 53
+
     msgtype_join_accept: INTEGER is 32
     msgtype_join_reject: INTEGER is 33
 

@@ -1,5 +1,6 @@
 class COLONY_PRODUCTION_VIEW
-    -- Shows a colony's production, with detailed description and everything
+    -- Shows a colony's production (how many farmers, workers and scientists it
+    -- has), with detailed description and everything
 
 inherit
     COLONY_VIEW

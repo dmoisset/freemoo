@@ -3,7 +3,7 @@ class S_KNOWLEDGE_BASE
 inherit
     KNOWLEDGE_BASE
     redefine
-        add_tech, set_current_research, set_next_field
+        add_tech, set_current_tech, set_next_field
     end
     SERVICE
     redefine subscription_message end
@@ -21,7 +21,7 @@ feature
         update_clients
     end
 
-    set_current_research (new_tech: TECHNOLOGY) is
+    set_current_tech (new_tech: TECHNOLOGY) is
     do
         Precursor (new_tech)
         update_clients
@@ -63,14 +63,14 @@ feature
         if current_tech = Void then
             s.add_integer (-1)
         else
-            s.add_integer (current_tech.id)
+            s.add_integer (current_tech.id - tech_min.item (category_construction))
         end
         from
             cat := category_construction
         until
             cat > category_force_fields
         loop
-            s.add_integer (next_field (cat).id)
+            s.add_integer (next_field (cat).id - field_min.item (category_construction))
             cat := cat + 1
         end
         s.add_integer (known_technologies.count)
@@ -79,7 +79,7 @@ feature
         until
             it.is_off
         loop
-            s.add_integer (it.item.id)
+            s.add_integer (it.item.id - tech_min.item (category_construction))
             it.next
         end
         Result := s.serialized_form
@@ -107,7 +107,7 @@ feature -- Storing
         until
             it.is_off
         loop
-            a.add_last (["known" + index.to_string, it.item.id.box])
+            a.add_last (["known" + index.to_string, (it.item.id - tech_min.item(category_construction)).box])
             index := index + 1
             it.next
         end
@@ -116,12 +116,12 @@ feature -- Storing
         until
             index > category_force_fields
         loop
-            a.add_last (["next_field" + index.to_string, next_field (index).id.box])
+            a.add_last (["next_field" + index.to_string, (next_field (index).id - field_min.item (category_construction)).box])
             index := index + 1
         end
         index := -1
         if current_tech /= Void then
-            index := current_tech.id
+            index := current_tech.id - tech_min.item (category_construction)
         end
         a.add_last (["current_tech", index.box])
         Result := a.get_new_iterator
@@ -141,13 +141,13 @@ feature -- Storing
         until elems.is_off loop
             if elems.item.first.is_equal("current_tech") then
                 i ?= elems.item.second
-                current_tech := tech_tree.tech (i.item)
+                current_tech := tech_tree.tech (i.item + tech_min.item(category_construction))
             elseif elems.item.first.has_prefix("known") then
                 i ?= elems.item.second
-                known_technologies.add_last (tech_tree.tech (i.item))
+                known_technologies.add_last (tech_tree.tech (i.item + tech_min.item(category_construction)))
             elseif elems.item.first.has_prefix("next_field") then
                 i ?= elems.item.second
-                new_field := tech_tree.field (i.item)
+                new_field := tech_tree.field (i.item + field_min.item(category_construction))
                 next_fields.put (new_field, new_field.category.id)
             else
                 print ("Bad element inside 'knowledge_base' tag: " + elems.item.first + "%N")

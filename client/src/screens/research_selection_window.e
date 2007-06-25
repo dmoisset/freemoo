@@ -64,7 +64,8 @@ feature {NONE} -- Callbacks
 
     set_tech (tech: TECHNOLOGY) is
     do
-        server.player.knowledge.set_current_tech (tech)
+        server.player.knowledge.set_current_tech (tech) -- Update local state for fast user feedback
+        server.set_current_tech (tech) -- Dispatch request to server
         close
     end
 

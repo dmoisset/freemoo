@@ -10,6 +10,8 @@ inherit
     GETTEXT
     STRING_FORMATTER
     PLAYER_CONSTANTS
+    TECHNOLOGY_TREE_ACCESS
+    TECHNOLOGY_CONSTANTS
 
 creation
     make
@@ -68,6 +70,8 @@ feature -- Redefined features
             startbuilding(u)
         when msgtype_buy then
             buy_production(u)
+        when msgtype_set_current_tech then
+            set_current_tech(u)
         else
             Precursor (ptype)
         end
@@ -361,6 +365,25 @@ feature {NONE} -- Operations
             print ("buy_producing: No production missing to buy")
         else
             colony.buy
+        end
+    end
+
+    set_current_tech(u: UNSERIALIZER) is
+    local
+        tech_id: INTEGER
+        tech: TECHNOLOGY
+    do
+        u.get_integer
+        tech_id := u.last_integer + tech_min.item (category_construction)
+        if not is_valid_tech_id(tech_id) then
+            print ("set_current_tech: Invalid tech id%N")
+        else
+            tech := tech_tree.tech (tech_id)
+            if not player.knowledge.next_field (tech.field.category.id).has (tech.id) then
+                print ("set_current_tech: Tech not available to be researched%N")
+            else
+                player.knowledge.set_current_tech (tech)
+            end
         end
     end
 

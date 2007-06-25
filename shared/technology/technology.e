@@ -1,5 +1,8 @@
 class TECHNOLOGY
 
+inherit
+    TECHNOLOGY_CONSTANTS
+
 feature
 
     id: INTEGER
@@ -18,13 +21,6 @@ feature
         p.knowledge.add_tech(Current)
     ensure
         p.knowledge.knows(Current)
-    end
-
-    chance_of_researching_at(rp: INTEGER): REAL is
-        -- What chance is there of researching this technology
-        -- By investing `rp' research points?
-    do
-        
     end
 
 feature {TECHNOLOGY_TREE} -- Setters
@@ -51,5 +47,9 @@ feature {TECH_FIELD}
     ensure
         field = new_field
     end
+
+invariant
+
+    is_valid_tech_id (id)
 
 end -- class TECHNOLOGY

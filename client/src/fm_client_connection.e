@@ -9,6 +9,7 @@ inherit
     end
     PROTOCOL
     PLAYER_CONSTANTS
+    TECHNOLOGY_CONSTANTS
     GETTEXT
 
 creation
@@ -103,6 +104,7 @@ feature -- Operations -- Login commands
         subscribe (dialogs, player.id.to_string+":dialogs")
         subscribe (player, "player"+player.id.to_string)
         subscribe (player, player.color.to_string + ":turn_summary")
+        subscribe (player.knowledge, player.id.to_string + ":research")
     end
 
 feature -- Operations -- Game commands
@@ -129,6 +131,7 @@ feature -- Operations -- Game commands
         !!s.make
 -- FIXME: uncomment when anthony finishis changes about save
 --        send_package (msgtype_save, s.serialized_form)
+-- (anthony, 24/07/007): explain or uncomment.  What was I going do here?
     end
 
     move_fleet (f: FLEET; dest: STAR; ships: SET [SHIP]) is
@@ -197,6 +200,19 @@ feature -- Operations -- Game commands
         create s.make
         s.add_tuple(<<c.id.box>>)
         send_package(msgtype_buy, s.serialized_form)
+    end
+
+    set_current_tech(t: TECHNOLOGY) is
+    require
+        t /= Void
+        player.knowledge.next_field (t.field.category.id).has (t.id)
+    local
+        s: SERIALIZER2
+    do
+        create s.make
+        print ("Sending tech " + t.name + " (" + t.field.name + "): " + t.id.out + " - " + tech_min.item(category_construction).out + " = " + (t.id - tech_min.item(category_construction)).out + "%N")
+        s.add_tuple(<<(t.id - tech_min.item(category_construction)).box>>)
+        send_package(msgtype_set_current_tech, s.serialized_form)
     end
 
     colonize(f: FLEET) is
