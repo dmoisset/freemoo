@@ -3,6 +3,8 @@ class EVOLVER_PREWARP
 inherit
     EVOLVER
     PRODUCTION_CONSTANTS
+    TECHNOLOGY_CONSTANTS
+    TECHNOLOGY_TREE_ACCESS
 
 creation make
 
@@ -20,6 +22,7 @@ feature -- Operations
         p: like player_type
         c: COLONY
         tech: ITERATOR[INTEGER]
+        cat: INTEGER
     do
         from until players.is_off loop
             p := players.item
@@ -29,6 +32,20 @@ feature -- Operations
             until tech.is_off loop
                 p.known_constructions.add_by_id(tech.item)
                 tech.next
+            end
+            from
+                tech := granted_techs.get_new_iterator
+            until tech.is_off loop
+                tech_tree.tech (tech.item).research (p)
+                tech.next
+            end
+            from
+                cat := category_construction
+            until
+                cat > category_force_fields
+            loop
+                p.knowledge.set_next_field (tech_tree.field (next_fields@cat))
+                cat := cat + 1
             end
             p.update_money (50)
             -- Create colony and populators (4 farmers, 2 workers, 2 scientist)
@@ -60,9 +77,28 @@ feature {NONE} -- Auxiliar
 
     granted_constructions: ARRAY[INTEGER] is
     do
-        Result := <<product_housing, product_colony_base,
-                    product_star_base, product_marine_barracks,
-                    product_capitol>> -- Still missing spies!
+        Result := <<product_housing, product_capitol>> -- Still missing spies!
+    end
+
+    granted_techs: ARRAY[INTEGER] is
+    do
+        Result := <<tech_colony_base, tech_star_base, tech_marine_barracks>>
+    end
+
+    next_fields: ARRAY[INTEGER] is
+    do
+        Result := <<field_advanced_engineering,
+                    field_nuclear_fission,
+                    field_chemistry,
+                    field_military_tactics,
+                    field_electronics,
+                    field_astro_biology,
+                    field_physics,
+                    field_advanced_magnetism>>
+        Result.reindex (category_construction)
+    ensure
+        Result.lower = category_construction
+        Result.upper = category_force_fields
     end
 
     starship: STARSHIP

@@ -31,7 +31,13 @@ feature -- Access
 
     item, infix "@"(id: INTEGER): like last_added is
     do
+        if not has(id) then
+            add_by_id (id)
+            print ("Construction repo:  Requesting " + constructions.at (id).name + ", we don't have it yet.%N")
+        end
         Result := constructions @ id
+    ensure
+        has(id)
     end
 
     get_new_iterator: ITERATOR[like last_added] is

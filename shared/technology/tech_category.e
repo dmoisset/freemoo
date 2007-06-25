@@ -60,6 +60,17 @@ feature
         Result := field_order.item (order)
     end
 
+    field_after (t: TECHNOLOGY): like field is
+        -- Returns the field that comes after a certain tech id
+        -- (to know what field you should research after researching a tech)
+    require
+        has_tech (t.id)
+    do
+        Result := field_by_order (field_order.fast_index_of (t.field) + 1)
+    ensure
+        has_field (Result.id)
+    end
+
     tech (tech_id: INTEGER): TECHNOLOGY is
     require
         has_tech (tech_id)

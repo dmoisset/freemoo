@@ -103,6 +103,7 @@ feature -- Operations -- Login commands
         subscribe (galaxy, player.id.to_string+":enemy_colonies")
         subscribe (dialogs, player.id.to_string+":dialogs")
         subscribe (player, "player"+player.id.to_string)
+        subscribe (player.known_constructions, player.id.to_string + ":constructions")
         subscribe (player, player.color.to_string + ":turn_summary")
         subscribe (player.knowledge, player.id.to_string + ":research")
     end

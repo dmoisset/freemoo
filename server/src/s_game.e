@@ -79,6 +79,7 @@ feature -- Operations
             server.register (galaxy, i.item.id.to_string+":new_fleets")
             server.register (Current, i.item.id.to_string+":dialogs")
             server.register (i.item, "player"+i.item.id.to_string)
+            server.register (i.item.known_constructions, i.item.id.to_string+":constructions")
             server.register (i.item.knowledge, i.item.id.to_string+":research")
             xeno_repository.add(i.item.race)
             i.next

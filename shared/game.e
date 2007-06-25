@@ -407,14 +407,21 @@ feature {NONE} -- Internal
     check_all_research is
     local
         it: ITERATOR[PLAYER]
+        k: KNOWLEDGE_BASE
     do
         from
             it := players.get_new_iterator
         until
             it.is_off
         loop
-            if True then
---                crash
+            k := it.item.knowledge
+            if k.current_tech /= Void and then it.item.research > k.current_tech.field.cost then
+                print ("Really researching!%N")
+                it.item.update_research (-it.item.research)
+                it.item.add_summary_message (create {TURN_SUMMARY_ITEM_RESEARCH}.make (k.current_tech))
+                k.current_tech.research (it.item)
+                k.set_next_field (k.current_tech.field.category.field_after (k.current_tech))
+                k.set_current_tech (Void)
             end
             it.next
         end

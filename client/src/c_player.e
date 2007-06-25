@@ -65,15 +65,13 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
     decode_player_message(msg: STRING; provider: SERVICE_PROVIDER) is
     local
         s: UNSERIALIZER
-        knows_count, visited_count, colony_count, construction_count,
-        product_id: INTEGER
+        knows_count, visited_count, colony_count: INTEGER
         orbit: INTEGER
         star: C_STAR
         old_knows: like knows_star
         old_colonies: like colonies
         colony: C_COLONY
         planet: C_PLANET
-        starship: C_STARSHIP
     do
         create s.start (msg)
         s.get_string
@@ -92,8 +90,6 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         visited_count := s.last_integer
         s.get_integer
         colony_count := s.last_integer
-        s.get_integer
-        construction_count := s.last_integer
         from
             old_knows := clone (knows_star)
             knows_star.clear
@@ -163,27 +159,6 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
             end
             colony_count := colony_count - 1
         end
-        from
-        variant
-            construction_count
-        until construction_count = 0 loop
-            s.get_integer
-            product_id := s.last_integer + known_constructions.product_min
-            --print("C_PLAYER on_message: construction " + product_id.to_string + "%N")
-            if product_id > known_constructions.product_max then
-                create starship.make(Current)
-                starship.set_id(product_id - known_constructions.product_max)
-                starship.unserialize_completely_from(s)
-            end
-            if not known_constructions.has(product_id) then
-                if product_id > known_constructions.product_max then
-                    known_constructions.add_starship_design(starship)
-                else
-                    known_constructions.add_by_id(product_id)
-                end
-            end
-            construction_count := construction_count - 1
-        end
         colonies_changed.emit(Current)
     end
 
@@ -209,6 +184,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
                 create {C_TURN_SUMMARY_ITEM_PRODUCED}event.unserialize_from(u)
             when event_starvation then
                 create {C_TURN_SUMMARY_ITEM_STARVATION}event.unserialize_from(u)
+            when event_researched then
+                create {C_TURN_SUMMARY_ITEM_RESEARCH}event.unserialize_from(u)
             else
                 check unexpected_event_kind: False end
             end

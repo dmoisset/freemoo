@@ -61,14 +61,22 @@ PLAYER
   Name: "player"+id (id is a digit sequence = player.id) 
   Provided: Before game_status.started is set
   Description: Detailed player description
+  Handled by: PLAYER
   Format: "siirbiiiii" <<ruler_name, money, research, fuel_range, has_capitol, knows_stars,
-                    visited_stars, colony_count, known_construction>>, 
+                    visited_stars, colony_count>>, 
                  followed by a sequence of
           "i" <<star_id>>
                  (this is the known_star list), followed by a sequence of
           "i" <<star_id>>
                  (this is the visited_star list), followed by a sequence of
           "iii" <<star_id, orbit, colony_id>>, followed by a sequence of
+
+KNOWN_CONSTRUCTIONS
+  Name: id+":constructions" (id is a digit sequence = player.id)
+  Provided: Before game_status.started is set
+  Description: Detailed player description
+  Handled by: CONSTRUCTION_REPO
+  Format: "i" <<Amount of known constructions>>, followed by a sequence of
           "i" <<product_id>>.  If at any point a product_id is greater than
                 product_max, it's followed by a starship design, given by
                 a message like provided by the Ship service.

@@ -136,11 +136,9 @@ feature -- Redefined features
     subscription_message (service_id: STRING): STRING is
     local
         serv_id: STRING
-        starship: S_SHIP_CONSTRUCTION
         s: SERIALIZER2
         star_it: ITERATOR [like star_type]
         col_it: ITERATOR [COLONY]
-        const_it: ITERATOR[CONSTRUCTION]
     do
         -- Validate service_id
         if service_id.has_prefix("player") then
@@ -156,7 +154,6 @@ feature -- Redefined features
                 s.add_integer (knows_star.count)
                 s.add_integer (has_visited_star.count)
                 s.add_integer (colonies.count)
-                s.add_integer (known_constructions.count)
                 star_it := knows_star.get_new_iterator
                 from star_it.start until star_it.is_off loop
                     s.add_integer (star_it.item.id)
@@ -173,16 +170,6 @@ feature -- Redefined features
                     s.add_integer (col_it.item.location.orbit)
                     s.add_integer (col_it.item.id)
                     col_it.next
-                end
-                const_it := known_constructions.get_new_iterator
-                from const_it.start until const_it.is_off loop
-                    s.add_integer(const_it.item.id - product_min)
-                    if const_it.item.id > product_max then
-                        starship ?= const_it.item
-                        check starship /= Void end
-                        starship.design.serialize_completely_on(s)
-                    end
-                    const_it.next
                 end
             end
             Result := s.serialized_form

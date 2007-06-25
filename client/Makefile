@@ -10,7 +10,8 @@ LIBS=`sdl-config --cflags --libs` $(CLIBS)\
 TARGET2=dumb_client
 LIBS2=-leifinet
 SOURCEFILES=src/*.e ../shared/*.e src/screens/*.e src/widgets/*.e \
-            src/views/*.e src/C/*.c ../shared/constructions/*.e
+            src/views/*.e src/C/*.c ../shared/constructions/*.e \
+            ../shared/technology/*.e
 
 include ../config
 export SEDIR:=$(shell echo $(SEDIR))
