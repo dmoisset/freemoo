@@ -1,4 +1,4 @@
-class TECHNOLOGY
+deferred class TECHNOLOGY
 
 inherit
     TECHNOLOGY_CONSTANTS

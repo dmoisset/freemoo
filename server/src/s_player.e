@@ -7,7 +7,7 @@ inherit
     undefine
         copy, is_equal
     redefine
-        add_to_known_list, add_to_visited_list, colony_type,
+        add_to_known_list, add_to_visited_list, colony_type, starship_type,
         star_type, race, set_ruler_name, set_race, set_color, add_colony,
         remove_colony, known_constructions, update_money, update_research,
         set_state, set_fuel_range, set_drive_speed, capitol_destroyed, capitol_built, knowledge
@@ -35,6 +35,8 @@ feature -- Redefined Features
     colony_type: S_COLONY
 
     star_type: S_STAR
+
+    starship_type: S_STARSHIP
 
     race: S_RACE
 

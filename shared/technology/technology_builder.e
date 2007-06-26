@@ -17,12 +17,26 @@ feature
         -- Builds a technology with the given id.  If we don't know how to
         -- build this technology, we return a dummy technology that doesn't
         -- do anything when researched (for not-yet-implemented techs)
+        --
+        -- This *doesn't* fill in name and description, that is done in
+        -- TECHNOLOGY_TREE with the tech we return
     local
         construction: TECHNOLOGY_CONSTRUCTION
+        fuel_range: TECHNOLOGY_FUEL_RANGE
+        drive_speed: TECHNOLOGY_DRIVE_SPEED
     do
-        if construction_map.has(id) then
-            create construction.make (id, construction_map.at(id))
+        -- Construction technologies
+        if construction_map.has (id) then
+            create construction.make (id, construction_map.at (id))
             last_tech := construction
+        -- Fuel range technologies
+        elseif fuelrange_map.has (id) then
+            create fuel_range.make (id, fuelrange_map.at (id))
+            last_tech := fuel_range
+        -- Drive speed technologies
+        elseif drivespeed_map.has (id) then
+            create drive_speed.make (id, drivespeed_map.at (id))
+            last_tech := drive_speed
         else
             -- Other techs here...
             create {TECHNOLOGY_DUMMY}last_tech.make (id)
@@ -79,6 +93,27 @@ feature
         Result.put(product_radiation_shield, tech_radiation_shield)
         Result.put(product_flux_shield, tech_flux_shield)
         Result.put(product_barrier_shield, tech_barrier_shield)
+    end
+
+    fuelrange_map: HASHED_DICTIONARY [REAL, INTEGER] is
+    once
+        create Result.make
+        Result.put (4.0, tech_standard_fuel_cells)
+        Result.put (6.0, tech_deuterium_fuel_cells)
+        Result.put (9.0, tech_irridium_fuel_cells)
+        Result.put (12.0, tech_urridium_fuel_cells)
+        Result.put (9999999.9, tech_thorium_fuel_cells) -- Infinity!
+    end
+
+    drivespeed_map: HASHED_DICTIONARY [REAL, INTEGER] is
+    once
+        create Result.make
+        Result.put (2.0, tech_nuclear_drive)
+        Result.put (3.0, tech_fusion_drive)
+        Result.put (4.0, tech_ion_drive)
+        Result.put (5.0, tech_anti_matter_drive)
+        Result.put (6.0, tech_hyper_drive)
+        Result.put (7.0, tech_interphased_drive)
     end
 
 end -- class TECHNOLOGY_BUILDER

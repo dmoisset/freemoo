@@ -3,6 +3,7 @@ class PLAYER
 inherit
     PLAYER_CONSTANTS
     UNIQUE_ID
+    SHIP_CONSTANTS
 
 feature {NONE} -- Creation
 
@@ -176,6 +177,16 @@ feature {PLAYER_LIST} -- Operations
         ruler_name = new_ruler_name
     end
 
+    set_race(new_race: like race) is
+    require
+        new_race /= Void
+    do
+        race := new_race
+    ensure
+        race = new_race
+    end
+feature {PLAYER_LIST, TECHNOLOGY} -- Operations
+
     set_fuel_range (new_range: REAL) is
     require
         new_range > 0
@@ -192,15 +203,6 @@ feature {PLAYER_LIST} -- Operations
         drive_speed := new_speed
     ensure
         drive_speed = new_speed
-    end
-
-    set_race(new_race: like race) is
-    require
-        new_race /= Void
-    do
-        race := new_race
-    ensure
-        race = new_race
     end
 
 feature {COLONY} -- Operations
@@ -247,6 +249,52 @@ feature -- Operations
         turn_summary.add_last(msg)
     end
 
+    check_basic_ship_tech is
+    local
+--        it: ITERATOR[TECHNOLOGY]
+--        armor_tech: TECHNOLOGY_ARMOR
+        size: INTEGER
+        has_armor: BOOLEAN
+        starship: like starship_type
+    do
+        if fuel_range > 0 and drive_speed > 0 then
+--            from
+--                it := knowledge.iterator_on_known_techs
+--            until
+--                it.is_off or has_armor
+--            loop
+--                armor_tech ?= it.item
+--                has_armor := armor_tech /= Void
+--                it.next
+--            end
+            has_armor := True
+            if has_armor then
+                from
+                    size := ship_size_frigate
+                until
+                    size > ship_size_battleship
+                loop
+                    create starship.make (Current)
+                    starship.set_name (ship_names @ size)
+                    starship.set_size (size)
+                    known_constructions.add_starship_design (starship)
+                    size := size + 1
+                end
+            end
+        end
+    end
+
+feature {NONE} -- Auxiliar
+
+    ship_names: ARRAY[STRING] is
+    once
+        Result := <<"Scout", "Sparrow", "Squid", "Shredder", "Siegemaster", "Sorrowbringer">>
+        Result.reindex (ship_size_frigate)
+    ensure
+        Result.lower = ship_size_frigate
+        Result.upper = ship_size_doomstar
+    end
+
 feature {CONSTRUCTION} -- Operations
 
     capitol_destroyed is
@@ -290,6 +338,8 @@ feature -- Anchors
     colony_type: COLONY
 
     star_type: STAR
+
+    starship_type: STARSHIP
 
 invariant
     race /= Void

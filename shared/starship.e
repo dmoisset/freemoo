@@ -25,7 +25,7 @@ feature -- Access
     ship_type: INTEGER is do Result := ship_type_starship end
 
     fuel_range: REAL is 1.0
-    
+
     size: INTEGER
 
 feature -- Operations

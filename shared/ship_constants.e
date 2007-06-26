@@ -18,7 +18,7 @@ feature
     ship_type_starship,
     ship_type_colony_ship: INTEGER is unique
         -- Allowed types for ships.
-    
+
     ship_type_min: INTEGER is do Result := ship_type_starship end
     ship_type_max: INTEGER is do Result := ship_type_colony_ship end
 

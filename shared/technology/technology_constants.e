@@ -136,7 +136,7 @@ feature {} -- Constants
     tech_nuclear_missile, tech_standard_fuel_cells, tech_extended_fuel_tank, tech_titanium_armor,
     tech_deuterium_fuel_cells, tech_tritanium_armor,
     tech_merculite_missile, tech_pollution_processor,
-    tech_pulson_missile, tech_atmosphere_renewer, tech_iridium_fuel_cells,
+    tech_pulson_missile, tech_atmosphere_renewer, tech_irridium_fuel_cells,
     tech_nano_disassemblers, tech_microlite_construction, tech_zortrium_armor,
     tech_zeon_missile, tech_neutronium_armor, tech_urridium_fuel_cells,
     tech_thorium_fuel_cells, tech_adamantium_armor,

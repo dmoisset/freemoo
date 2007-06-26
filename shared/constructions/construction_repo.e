@@ -78,6 +78,8 @@ feature -- Operations
         builder.construction_from_design(design)
         last_added := builder.last_built
         constructions.add(builder.last_built, builder.last_built.id)
+    ensure
+        has(design.id + product_max)
     end
 
 feature {NONE} -- Anchors
