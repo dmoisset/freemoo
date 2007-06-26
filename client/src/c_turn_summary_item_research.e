@@ -13,7 +13,7 @@ feature
     get_message: STRING is
     do
         Result := "Your scientists have completed their research in " +
-                  tech_tree.tech(tech_id).name + "%N"
+                  tech_tree.tech(tech_id).field.name + "%N"
     end
 
 end -- class C_TURN_SUMMARY_ITEM_RESEARCH

@@ -33,7 +33,6 @@ feature
     do
         -- Check to avoid updates on initialization
         if registry /= Void and then service_id /= Void then
-            print ("In S_CONSTRUCTION_REPO.update_clients: sending message!%N")
             send_message (service_id, subscription_message (service_id))
         end
     end

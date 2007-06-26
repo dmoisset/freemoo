@@ -408,6 +408,7 @@ feature {NONE} -- Internal
     local
         it: ITERATOR[PLAYER]
         k: KNOWLEDGE_BASE
+        tech_it: ITERATOR[TECHNOLOGY]
     do
         from
             it := players.get_new_iterator
@@ -416,10 +417,20 @@ feature {NONE} -- Internal
         loop
             k := it.item.knowledge
             if k.current_tech /= Void and then it.item.research > k.current_tech.field.cost then
-                print ("Really researching!%N")
                 it.item.update_research (-it.item.research)
                 it.item.add_summary_message (create {TURN_SUMMARY_ITEM_RESEARCH}.make (k.current_tech))
-                k.current_tech.research (it.item)
+                if k.current_tech.field.is_general or it.item.race.creative then
+                    from
+                        tech_it := k.current_tech.field.get_new_iterator
+                    until
+                        tech_it.is_off
+                    loop
+                        tech_it.item.research (it.item)
+                        tech_it.next
+                    end
+                else
+                    k.current_tech.research (it.item)
+                end
                 k.set_next_field (k.current_tech.field.category.field_after (k.current_tech))
                 k.set_current_tech (Void)
             end

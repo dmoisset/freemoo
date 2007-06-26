@@ -13,7 +13,7 @@ feature {NONE} -- Creation
     local
         a: FMA_FRAMESET
         r: RECTANGLE
-        button: BUTTON_IMAGE
+        button: BUTTON_IMAGE_GROUPABLE
         i, j: INTEGER
         normal, prelight, pressed, highlight: IMAGE_FMI
         label: LABEL
@@ -29,14 +29,24 @@ feature {NONE} -- Creation
         create highlight.make_from_file ("client/research-selection-window/selected_highlight.fmi")
         create tech_buttons.make (category_construction, category_force_fields)
         create tech_labels.make (category_construction, category_force_fields)
-        create selected_highlight.make (Current, 0, 0, highlight)
+        create tech_groups.make (category_construction, category_force_fields)
+        create selected_highlight.make (1, 4)
+        from
+            i := 1
+        until
+            i > 4
+        loop
+            selected_highlight.put (create {WINDOW_IMAGE}.make (Current, 0, 0, highlight), i)
+            i := i + 1
+        end
         from
             i := category_construction
         until
             i > category_force_fields
         loop
-            tech_buttons.put (create{ARRAY[BUTTON]}.make (1, 4), i)
+            tech_buttons.put (create{ARRAY[BUTTON_IMAGE_GROUPABLE]}.make (1, 4), i)
             tech_labels.put (create{ARRAY[LABEL]}.make (1, 4), i)
+            tech_groups.put (create{BUTTON_GROUP}.make, i)
             create a.make ("client/research-selection/category" + i.to_string + ".fma")
             create button.make (Current, left + 21 + (227 * (i \\ 2)),
                                 30 + (i // 2) * 105 + 2 * (i // 6),
@@ -66,10 +76,11 @@ feature {NONE} -- Widgets
     background: WINDOW_IMAGE
     category_buttons: ARRAY [BUTTON_IMAGE]
 
-    tech_buttons: ARRAY [ARRAY [BUTTON]]
+    tech_buttons: ARRAY [ARRAY [BUTTON_IMAGE_GROUPABLE]]
     tech_labels: ARRAY [ARRAY [LABEL]]
+    tech_groups: ARRAY [BUTTON_GROUP]
 
-    selected_highlight: WINDOW_IMAGE
+    selected_highlight: ARRAY [WINDOW_IMAGE]
 
 feature {NONE} -- Callbacks
 

@@ -15,9 +15,11 @@ feature -- Operations
         next_field: TECH_FIELD
         tech: ITERATOR [TECHNOLOGY]
         i: INTEGER
-        some_tech_selected: BOOLEAN
         r: RECTANGLE
+        curr: TECHNOLOGY
     do
+        tech_groups.do_all (agent {BUTTON_GROUP}.clear)
+        selected_highlight.do_all (agent {WINDOW_IMAGE}.hide)
         from
             cat := category_construction
         until
@@ -37,13 +39,19 @@ feature -- Operations
                         tech_labels.item (cat).item (i).set_text ("")
                         tech_buttons.item (cat).item (i).hide
                     else
-                        if server.player.knowledge.current_tech = tech.item then
-                            r.set_with_size (left + 15 + (227 * (cat \\ 2)),
-                                                30 + (cat // 2) * 105 + 2 * (cat // 6) + 20 * i,
-                                                216, 17)
-                            selected_highlight.move (r)
-                            selected_highlight.show
-                            some_tech_selected := True
+                        if server.player.knowledge.current_tech /= Void then
+                            curr := server.player.knowledge.current_tech
+                            if curr = tech.item or (curr.field = tech.item.field and
+                               (curr.field.is_general or server.player.race.creative)) then
+                                r.set_with_size (left + 15 + (227 * (cat \\ 2)),
+                                             30 + (cat // 2) * 105 + 2 * (cat // 6) + 20 * i,
+                                             216, 17)
+                                selected_highlight.item(i).move (r)
+                                selected_highlight.item(i).show
+                            end
+                        end
+                        if next_field.is_general or server.player.race.creative then
+                            tech_groups.item (cat).add_button (tech_buttons.item (cat).item (i))
                         end
                         tech_labels.item (cat).item (i).set_text (tech.item.name)
                         tech_buttons.item (cat).item (i).show
@@ -54,9 +62,6 @@ feature -- Operations
                 end
             end
             cat := cat + 1
-        end
-        if not some_tech_selected then
-            selected_highlight.hide
         end
     end
 

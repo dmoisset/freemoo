@@ -211,7 +211,6 @@ feature -- Operations -- Game commands
         s: SERIALIZER2
     do
         create s.make
-        print ("Sending tech " + t.name + " (" + t.field.name + "): " + t.id.out + " - " + tech_min.item(category_construction).out + " = " + (t.id - tech_min.item(category_construction)).out + "%N")
         s.add_tuple(<<(t.id - tech_min.item(category_construction)).box>>)
         send_package(msgtype_set_current_tech, s.serialized_form)
     end
