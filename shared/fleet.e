@@ -321,7 +321,7 @@ feature -- Operations
     recalculate_current_speed is
         -- Very dumb for now.
     do
-        current_speed := 1.0
+        current_speed := owner.drive_speed
     ensure
         current_speed > 0
     end

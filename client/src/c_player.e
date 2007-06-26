@@ -82,6 +82,8 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         research := s.last_integer
         s.get_real
         fuel_range := s.last_real
+        s.get_real
+        drive_speed := s.last_real
         s.get_boolean
         has_capitol := s.last_boolean
         s.get_integer

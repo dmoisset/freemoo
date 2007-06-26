@@ -10,7 +10,6 @@ feature {NONE} -- Creation
     do
         set_state (st_setup)
         set_color (min_color)
-        fuel_range := 4.0
         create race.make
         create colonies.make
         create knows_star.make
@@ -46,6 +45,9 @@ feature -- Access
 
     fuel_range: REAL
         -- Distance our ships can travel from our colonies
+
+    drive_speed: REAL
+        -- Speed our ships travel at (interstellar parsecs per turn, not combat speed)
 
     ruler_name: STRING
 
@@ -181,6 +183,15 @@ feature {PLAYER_LIST} -- Operations
         fuel_range := new_range
     ensure
         fuel_range = new_range
+    end
+
+    set_drive_speed (new_speed: REAL) is
+    require
+        new_speed > 0
+    do
+        drive_speed := new_speed
+    ensure
+        drive_speed = new_speed
     end
 
     set_race(new_race: like race) is

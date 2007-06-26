@@ -62,7 +62,7 @@ PLAYER
   Provided: Before game_status.started is set
   Description: Detailed player description
   Handled by: PLAYER
-  Format: "siirbiiiii" <<ruler_name, money, research, fuel_range, has_capitol, knows_stars,
+  Format: "siirrbiiiii" <<ruler_name, money, research, fuel_range, drive_speed, has_capitol, knows_stars,
                     visited_stars, colony_count>>, 
                  followed by a sequence of
           "i" <<star_id>>

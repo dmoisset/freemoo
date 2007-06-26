@@ -10,7 +10,7 @@ inherit
         add_to_known_list, add_to_visited_list, colony_type,
         star_type, race, set_ruler_name, set_race, set_color, add_colony,
         remove_colony, known_constructions, update_money, update_research,
-        set_state, capitol_destroyed, capitol_built, knowledge
+        set_state, set_fuel_range, set_drive_speed, capitol_destroyed, capitol_built, knowledge
     select id end
     STORABLE
     rename
@@ -150,6 +150,7 @@ feature -- Redefined features
                 s.add_integer(money)
                 s.add_integer(research)
                 s.add_real(fuel_range)
+                s.add_real(drive_speed)
                 s.add_boolean(has_capitol)
                 s.add_integer (knows_star.count)
                 s.add_integer (has_visited_star.count)
@@ -218,6 +219,18 @@ feature {PLAYER_LIST} -- Operations
             send_turn_summary
         end
         state := new_state
+    end
+
+    set_fuel_range (new_range: REAL) is
+    do
+        Precursor (new_range)
+        update_clients
+    end
+
+    set_drive_speed (new_speed: REAL) is
+    do
+        Precursor (new_speed)
+        update_clients
     end
 
 feature {COLONY} -- Redefined features
@@ -300,6 +313,7 @@ feature {STORAGE} -- Saving
         a.add_last(["password", password])
         a.add_last(["race", race])
         a.add_last(["fuel_range", fuel_range.box])
+        a.add_last(["drive_speed", drive_speed.box])
         a.add_last(["has_capitol", has_capitol.box])
         a.add_last(["knowledge", knowledge])
         add_to_fields(a, "colony", colonies.get_new_iterator_on_items)
@@ -407,6 +421,9 @@ feature {STORAGE} -- Retrieving
             elseif elems.item.first.is_equal("fuel_range") then
                 r ?= elems.item.second
                 fuel_range := r.item
+            elseif elems.item.first.is_equal("drive_speed") then
+                r ?= elems.item.second
+                drive_speed := r.item
             elseif elems.item.first.is_equal("has_capitol") then
                 b ?= elems.item.second
                 has_capitol := b.item
