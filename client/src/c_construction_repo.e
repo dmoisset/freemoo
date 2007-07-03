@@ -35,6 +35,8 @@ feature
             if product_id > product_max then
                 create starship.make(server.player)
                 starship.set_id(product_id - product_max)
+                s.get_integer
+                starship.set_size (s.last_integer)
                 starship.unserialize_completely_from(s)
             end
             if not has(product_id) then

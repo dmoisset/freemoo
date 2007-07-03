@@ -30,7 +30,6 @@ feature -- Access
         ships_detected, detected: BOOLEAN
         fleet: like last_fleet
     do
-        --		print("Scanner for player " + player.id.to_string)
         !!Result.with_capacity(0,1)
         from
             alienfleet := fleets.get_new_iterator_on_items
@@ -74,9 +73,8 @@ feature -- Access
             end
             alienfleet.next
         end
-        --		print(" picks up " + Result.count.to_string + " alien fleets%N")
     end
-    
+
     calculate_enemy_colony_knowledge(player: PLAYER): HASHED_SET[COLONY] is
         -- All enemy colonies known by `player'
     local

@@ -55,6 +55,7 @@ feature
                 if const_it.item.id > product_max then
                     starship ?= const_it.item
                     check starship /= Void end
+                    s.add_integer (starship.design.size)
                     starship.design.serialize_completely_on(s)
                 end
                 const_it.next

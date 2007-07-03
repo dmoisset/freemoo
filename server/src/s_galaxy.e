@@ -26,9 +26,9 @@ feature -- Redefined features
 
     subscription_message (service_id: STRING): STRING is
         -- `service_id' can be "galaxy" for getting public information
-        -- about whereabouts of stars, or "<n>:scanner", where <n> is
+        -- about whereabouts of stars, "<n>:scanner", where <n> is
         -- the `id' of a player, to get scaner information for
-        -- that player.
+        -- that player, "<n>:new_fleets", or "<n>:enemy_colonies"
     require
         service_id /= Void
     local

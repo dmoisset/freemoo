@@ -17,6 +17,7 @@ PLAYERS LIST
   Provided: immediatly after the connection or after "game_status"
             until connection close
   Description: list of players logged in, and basic status info on each.
+  Handled by: PLAYER_LIST
   Format: "i" <<count>>, followed by sequence of
           "isssiiiib", <<id, name, ruler_name, race_name, race_id, race_picture, color, state, connected>>
 
@@ -24,6 +25,7 @@ GALAXY
   Name: "galaxy"
   Provided: Before game_status.started is set
   Description: Global galaxy map (star positions and colors)
+  Handled by: GALAXY
   Format: "rri" <<limit.x, limit.y, star_count>>, then many
           "iiirr" <<id, kind, size, x, y>>, one for each star
 
@@ -31,6 +33,7 @@ STAR
   Name: "star"+id (id is a digit sequence = star_id) 
   Provided: Before adding star id to player's set of known star ids
   Description: Full star description (star name, planet info)
+  Handled by: STAR
   Format: "sii" <<name, wormhole_id, planets.count>>, followed by a sequence of
           "iiiiiii" <<orbit, size, climate, minerals, gravity, type, special>>
           wormhole can be -1.  This means 'no wormhole'
@@ -39,6 +42,7 @@ FLEET
   Name: "fleet"+id (id is a digit sequence = fleet_id) 
   Provided: Before reporting fleet on scanner or new_fleets.
   Description: Abridged fleet description.
+  Handled by: FLEET
   Format: "iiiibirr" <<owner_id, eta, orbiting, destination,
                        has_colonization_orders, ships_count, x, y>>,
           followed by a sequence of
@@ -52,6 +56,7 @@ SHIP
   Name: "ship"+id (id is a digit sequence = ship_id)
   Provided: Before reporting ship on fleet.
   Description: Full ship description.
+  Handled by: SHIP
   Format: Format depends of the type of ship.
                 starships: "s" <<name>>
                 colony ships: "ii" <<star_to_colonize, orbit_to_colonize>>
@@ -78,13 +83,15 @@ KNOWN_CONSTRUCTIONS
   Handled by: CONSTRUCTION_REPO
   Format: "i" <<Amount of known constructions>>, followed by a sequence of
           "i" <<product_id>>.  If at any point a product_id is greater than
-                product_max, it's followed by a starship design, given by
+                product_max, it's followed by
+          "i" <<size>>, and then a detailed starship design, given by
                 a message like provided by the Ship service.
 
 COLONY
   Name: "colony"+id (id is a digit sequesnce = colony.id)
   Provided: Before reporting colony on player.
   Description: Detailed colony description.
+  Handled by: COLONY
   Format: "i" <<producing>> if producing is greater than product_max, then
           this is followed by a complete starship design description, like is
           described in the SHIPn service.  Then comes
@@ -100,6 +107,7 @@ RACE
   Name: "race"+id (id is a digit sequence = race.id)
   Provided: Before game_status.started is set
   Description: Detailed description of the player's race.
+  Handled by: RACE
   Format: "ssiiiiiiiiiiiiiibbbbbbbbbbbbbbbbb" <<name, homeworld_name, picture,
           population_growth, farming_bonus, industry_bonus,
           science_bonus, money_bonus, ship_defense_bonus,
@@ -115,6 +123,7 @@ SCANNER
   Provided: Before game_status.started is set
   Description: List of detected fleets for player n, not including fleets
                 owned by n.
+  Handled by: GALAXY
   Format: "i" <<count>>, followed by a sequence of
           "iiiirr" <<owner, eta, destination, ships.count, x, y>>, and
           "i<msg>" <<ship_type, ...>> for each ship of the fleet.
@@ -129,6 +138,7 @@ ENEMY COLONIES
   Name: n + ":enemy_colonies" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
   Descriptions: List of known enemy colonies for player n.
+  Handled by: GALAXY
   Format: "i" <<count>>, followed by a sequence of
           "iii" <<star_id, orbit, owner_id>>, one for each enemy colony.
 
@@ -136,6 +146,7 @@ TURN SUMMARY
   Name: n+":turn_summary" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
   Description: Events for this turn, for player n.
+  Handled by: PLAYER
   Format: "i" <<count>>, followed by a sequence of
           "i" <<kind>>, followed by a kind-dependent format per event:
           event_explored: "isii" <<id, name, star_special, planet_special>>
@@ -148,6 +159,7 @@ NEW FLEETS
   Name: n+":new_fleets" (n is a digit sequence = player id)
   Provided: Before game_status.started is set
   Description: List of id's of new fleets to add.
+  Handled by: GALAXY
   Subscription message: full list of fleet ids, same format
   Format: "i" <<count>>, followed by a sequence of
           "i" <<id>>, id of fleet
@@ -175,6 +187,7 @@ XENO_REPOSITORY
   Provided: Before game_status.started is set
   Description: gives enough information about races.  Eventually this service
      will control how much you know about each race
+  Handled by: XENO_REPOSITORY
   Format: "iii" <<natives_id, androids_id, races_count>> followed
         by a sequence of `races_count' "i" <<race_id>>
 
@@ -184,6 +197,7 @@ RESEARCH
   Description: This service lists technologies known by the player, which fields
      have been researched in each category, and provides
      information about which technology is being researched at the moment.
+  Handled by: KNOWLEDGE_BASE
   Format: "iiiiiiiiii"
      <<current_research_tech_id, next_construction_field, next_power_field,
        next_chemistry_field, next_sociology_field, next_computers_field,
@@ -198,6 +212,7 @@ SERVICE
   Name: "name"
   Provided: 
   Description:
+  Handled by:
   Subscription message: (if different from update)
   Format:
 

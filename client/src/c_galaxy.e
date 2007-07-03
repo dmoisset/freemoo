@@ -140,16 +140,17 @@ feature {SERVICE_PROVIDER} -- Subscriber callback
         s.get_integer
         count := s.last_integer
         !!new_fleets.make
+        -- Add in our own fleets first
         from fleet_it := fleets.get_new_iterator_on_items
         until fleet_it.is_off
         loop
             if fleet_it.item.owner = server.player then
                 new_fleets.add(fleet_it.item, fleet_it.item.id)
-                std_error.put_string ("Warning: own fleet received throuygh scanner%N")
             end
             fleet_it.next
         end
 
+        -- Then add in alien fleets we've scanned
         from until count = 0 loop
             !!fleet.make
             s.get_integer
