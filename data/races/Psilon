@@ -19,6 +19,7 @@ science_bonus=2
 homeworld_gravity=-1
 homeworld_size=1
 creative
+ancient_artifacts
 government=dictatorship
 .
 9
