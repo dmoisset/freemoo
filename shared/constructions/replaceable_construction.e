@@ -5,7 +5,7 @@ class REPLACEABLE_CONSTRUCTION
 
 inherit
     PERSISTENT_CONSTRUCTION
-        redefine can_be_built_on, cost, make end
+        redefine can_be_built_on, cost, make, build end
 
 create make
 
@@ -26,6 +26,22 @@ feature -- Operations
         end
     end
 
+    build(c: like colony_type) is
+    local
+        it: ITERATOR[INTEGER]
+    do
+        from
+            it := replaces.get_new_iterator
+        until
+            it.is_off
+        loop
+            if c.constructions.has(it.item) then
+                c.constructions.at (it.item).take_down(c)
+            end
+            it.next
+        end
+        Precursor (c)
+    end
 
     cost(c: like colony_type): INTEGER is
     local
@@ -39,7 +55,7 @@ feature -- Operations
             it.is_off
         loop
             if c.constructions.has(it.item) then
-                replace ?= c.constructions.item(it.item)
+                replace ?= c.constructions.at (it.item)
                 check replace /= Void end
                 Result := Result - replace.base_cost
             end

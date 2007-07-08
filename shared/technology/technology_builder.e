@@ -67,6 +67,7 @@ feature
 --        Result.put(product_freighters, tech_freighters)
 --        Result.put(product_outpost_ship, tech_outpost_ship)
 --        Result.put(product_transport_ship, tech_transport_ship)
+        Result.put(product_pollution_processor, tech_pollution_processor)
         Result.put(product_atmosphere_renewer, tech_atmosphere_renewer)
 --        Result.put(product_space_academy, tech_space_academy)
 --        Result.put(product_alien_cont_center, tech_alien_cont_center)
