@@ -1,9 +1,9 @@
 .
 ../../shared
 ../../client/src
-${SmartEiffelDirectory}/lib_utils/
-${SmartEiffelDirectory}/lib_ews/
-${SmartEiffelDirectory}/lib_ews/events
-${SmartEiffelDirectory}/lib_ews/windows
-${SmartEiffelDirectory}/lib_ews/animations
-${SmartEiffelDirectory}/lib_ews/driver-sdl
+${SEDIR}/lib_utils/
+${SEDIR}/lib_ews/
+${SEDIR}/lib_ews/events
+${SEDIR}/lib_ews/windows
+${SEDIR}/lib_ews/animations
+${SEDIR}/lib_ews/driver-sdl
