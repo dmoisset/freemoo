@@ -101,8 +101,8 @@ feature -- Access
         maxpop: INTEGER
     do
         maxpop := max_population
-        Result := ((2000 * (maxpop - populators.count)) /
-                            (populators.count * maxpop)).sqrt.rounded
+        Result := ((2000 * populators.count * (maxpop - populators.count))
+                                             / maxpop).sqrt.rounded
         -- Consider racial modifiers
         Result := Result * (100 + owner.race.population_growth) // 100
         -- Consider Advances
