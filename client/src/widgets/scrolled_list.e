@@ -347,7 +347,7 @@ feature {NONE} -- Implementation
         else
             page_size := 1000
         end
-        if page_size >= items.count then
+        if page_size + 1 >= items.count then
             scrollbar.hide
         else
             scrollbar.set_limits(items.lower, items.upper, page_size)

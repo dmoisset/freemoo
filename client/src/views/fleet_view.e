@@ -121,7 +121,7 @@ feature {NONE} -- Creation
         create scrollbar.make(Current, r, create {SDL_SOLID_IMAGE}.make(0, 0, 30, 30, 250))
         scrollbar.set_first_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 1, scrollbar_img @ 2)
         scrollbar.set_second_button_images(create {SDL_SOLID_IMAGE}.make(0, 0, 0, 0, 0), scrollbar_img @ 4, scrollbar_img @ 5)
-        scrollbar.set_limits(0, (fleet.ship_count - 1) // 3 + 1, 0)
+        scrollbar.set_limits(0, (fleet.ship_count - 1) // 3 + 1, 1)
         scrollbar.set_increments(1, 3)
         r.set_with_size(2, 28, 9, 100)
         scrollbar.set_trough(r)
@@ -486,7 +486,7 @@ feature {NONE} -- Signal Handler
         end
 
         scrollbar.set_value(0);
-        scrollbar.set_limits(0, (ships.count - 1) // 3 + 1, ((ships.count - 1) // 3 + 1).min(3));
+        scrollbar.set_limits(0, ships.count // 3, (ships.count // 3).min(3));
 
         update_window_size
         select_none
