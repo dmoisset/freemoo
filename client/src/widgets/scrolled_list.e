@@ -347,7 +347,7 @@ feature {NONE} -- Implementation
         else
             page_size := 1000
         end
-        if page_size + 1 >= items.count then
+        if page_size >= items.count then
             scrollbar.hide
         else
             scrollbar.set_limits(items.lower, items.upper, page_size)
@@ -366,7 +366,7 @@ feature {NONE} -- Implementation
         if b1 /= Void and b2 /= Void and b3 /= Void then
             if scrollbar.visible then
                 start := scrollbar.value
-                stop := scrollbar.value + scrollbar.page_size
+                stop := scrollbar.value + scrollbar.page_size - 1
             else
                 start := items.lower
                 stop := items.upper
