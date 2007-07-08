@@ -26,6 +26,8 @@ feature -- Access
     can_colonize: BOOLEAN is
     do
         Result := planet_to_colonize = Void
+    ensure
+        Result = (planet_to_colonize = Void)
     end
 
     ship_type: INTEGER is do Result := ship_type_colony_ship end

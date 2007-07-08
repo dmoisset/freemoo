@@ -61,7 +61,7 @@ feature -- Redefined features
 
     serialize_on (s: SERIALIZER2) is
     do
-        s.add_tuple(<<creator.id.box, can_colonize.box>>)
+        s.add_tuple(<<creator.id.box>>)
     end
 
 feature -- Saving
@@ -93,6 +93,4 @@ feature -- Saving
         end
     end
 
-invariant
-    can_colonize = (planet_to_colonize = Void)
 end -- class S_COLONY_SHIP
