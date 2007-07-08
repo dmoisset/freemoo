@@ -47,13 +47,13 @@ if [ -f "$(dirname $SmartEiffel 2>/dev/null)/../lib/kernel/general.e" ]; then
     SEDIR=$(dirname $SmartEiffel)
     SEDIR="$(dirname $SEDIR)"
     echo "$SEDIR"
-elif [ -f "$HOME/.serc" ]; then
-    SEDIR="$(grep -m1 '^bin: ' ~/.serc)"
+elif [ -f "$HOME/.serc12" ]; then
+    SEDIR="$(grep -m1 '^bin: ' ~/.serc12)"
     SEDIR="${SEDIR:5}"
     SEDIR="$(dirname $SEDIR)"
     echo "$SEDIR"
-elif [ -f "/etc/serc" ]; then
-    SEDIR="$(grep -m1 '^bin: ' /etc/serc)"
+elif [ -f "/etc/serc12" ]; then
+    SEDIR="$(grep -m1 '^bin: ' /etc/serc12)"
     SEDIR="${SEDIR:5}"
     SEDIR="$(dirname $SEDIR)"
     echo "$SEDIR"
