@@ -141,7 +141,11 @@ feature -- Storing
         until elems.is_off loop
             if elems.item.first.is_equal("current_tech") then
                 i ?= elems.item.second
-                current_tech := tech_tree.tech (i.item + tech_min.item(category_construction))
+                if i.item >= 0 then
+                    current_tech := tech_tree.tech (i.item + tech_min.item(category_construction))
+                else
+                    current_tech := Void
+                end
             elseif elems.item.first.has_prefix("known") then
                 i ?= elems.item.second
                 known_technologies.add_last (tech_tree.tech (i.item + tech_min.item(category_construction)))

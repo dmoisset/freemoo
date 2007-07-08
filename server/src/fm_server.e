@@ -100,6 +100,7 @@ feature {NONE} -- Internal
         race: S_RACE
         pop: S_POPULATION_UNIT
         repo: S_XENO_REPOSITORY
+        know: S_KNOWLEDGE_BASE
     do
         create gme.make_with_options(options)
         create ply.make("prototype", "")
@@ -110,6 +111,7 @@ feature {NONE} -- Internal
         create race.make
         create pop.make(race, cln)
         create repo.make
+        create know.make
         -- Register class prototypes
         st.register(gme)                                 -- S_GAME
         st.register(gme.xeno_repository)                 -- S_XENO_REPOSITORY
@@ -117,6 +119,7 @@ feature {NONE} -- Internal
         st.register(gme.status)                          -- S_GAME_STATUS
         st.register(gme.players)                         -- S_PLAYER_LIST
         st.register(ply)                                 -- S_PLAYER
+        st.register(know)                                -- S_KNOWLEDGE_BASE
         st.register(gme.galaxy.limit)                    -- COORDS
         st.register(str)                                 -- S_STAR
         st.register(create {S_FLEET}.make)               -- S_FLEET
