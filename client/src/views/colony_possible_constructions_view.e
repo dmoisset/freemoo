@@ -128,10 +128,15 @@ feature {NONE} -- Images
         a: FMA_FRAMESET
     once
         create Result.make(0, 2)
-        create a.make("client/turnsum/up.fma")
+        create a.make("client/turn-summary/up.fma")
         Result.put(a.images @ 1, 0)
-        Result.put(a.images @ 1, 1)
-        Result.put(a.images @ 2, 2)
+        if a.images.count = 3 then
+            Result.put(a.images @ 2, 1)
+            Result.put(a.images @ 3, 2)
+        else
+            Result.put(a.images @ 1, 1)
+            Result.put(a.images @ 2, 2)
+        end        
     end
 
     down_imgs: ARRAY[IMAGE] is
@@ -139,10 +144,15 @@ feature {NONE} -- Images
         a: FMA_FRAMESET
     once
         create Result.make(0, 2)
-        create a.make("client/turnsum/down.fma")
+        create a.make("client/turn-summary/down.fma")
         Result.put(a.images @ 1, 0)
-        Result.put(a.images @ 1, 1)
-        Result.put(a.images @ 2, 2)
+        if a.images.count = 3 then
+            Result.put(a.images @ 2, 1)
+            Result.put(a.images @ 3, 2)
+        else
+            Result.put(a.images @ 1, 1)
+            Result.put(a.images @ 2, 2)
+        end        
     end
 
 end -- class COLONY_POSSIBLE_CONSTRUCTIONS_VIEW

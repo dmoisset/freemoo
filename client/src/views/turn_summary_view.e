@@ -20,7 +20,7 @@ feature {NONE} -- Creation
         player := new_player
 
         -- Background
-        create a.make ("client/turnsum/bg.fma")
+        create a.make ("client/turn-summary/bg.fma")
         r.set_with_size((w.width - a.images.item(1).width) // 2,
                         (w.height - a.images.item(1).height) // 2,
                          a.images.item(1).width, a.images.item(1).height)
@@ -28,7 +28,7 @@ feature {NONE} -- Creation
         create background.make (Current, 0, 0, a.images @ 1)
 
         -- Close Button
-        create a.make ("client/turnsum/close.fma")
+        create a.make ("client/turn-summary/close.fma")
         create close_button.make (Current, 158, 323,
                         a.images @ 1, a.images @ 1, a.images @ 2)
         close_button.set_click_handler (agent close)
