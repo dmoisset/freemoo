@@ -4,7 +4,7 @@ inherit
     COLONY
     redefine
         owner, location, shipyard, ship_factory, set_id,
-        new_turn, set_producing, set_task, populator_type, buy,
+        new_turn, set_producing, set_task, populator_type, xeno_repository, buy,
         planet_to_colonize
     end
     S_COLONIZER
@@ -84,6 +84,8 @@ feature -- Redefined features
     populator_type: S_POPULATION_UNIT
 
     ship_factory: S_SHIP_FACTORY
+
+    xeno_repository: S_XENO_REPOSITORY
 
     new_turn is
     do

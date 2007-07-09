@@ -2,7 +2,7 @@ class C_COLONY
 
 inherit
     COLONY
-    redefine make, set_task, remove, location end
+    redefine make, set_task, remove, location, xeno_repository end
     SUBSCRIBER
     CLIENT
 
@@ -124,6 +124,8 @@ feature
 feature -- Redefined features
 
     location: C_PLANET
+
+    xeno_repository: C_XENO_REPOSITORY
 
 feature -- Signals
 

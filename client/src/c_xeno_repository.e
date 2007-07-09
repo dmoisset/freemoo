@@ -6,29 +6,16 @@ inherit
     CLIENT
     SUBSCRIBER
 
-create
-    make
-
 feature
 
     on_message (msg: STRING; provider: SERVICE_PROVIDER; service: STRING) is
         -- Action when `msg' arrives from `provider''s `service'
     local
         s: UNSERIALIZER
-        race_count, race_id: INTEGER
+        race_count: INTEGER
         new_race: C_RACE
     do
         create s.start (msg)
-        s.get_integer
-        check natives /= Void implies natives.id = s.last_integer end
-        if natives = Void then
-            natives := item(s.last_integer)
-        end
-        s.get_integer
-        check androids /= Void implies androids.id = s.last_integer end
-        if androids = Void then
-            androids := item(s.last_integer)
-        end
         s.get_integer
         race_count := s.last_integer
         from
@@ -39,7 +26,7 @@ feature
         loop
             s.get_integer
             new_race := item(s.last_integer)
-            pop_count := pop_count - 1
+            race_count := race_count - 1
         end
     end
 

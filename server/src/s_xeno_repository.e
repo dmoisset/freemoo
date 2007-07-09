@@ -9,9 +9,6 @@ inherit
     SERVICE
         redefine subscription_message end
 
-create
-    make
-
 feature -- Hashing
 
     hash_code: INTEGER is
@@ -22,13 +19,14 @@ feature -- Hashing
 feature
 
     subscription_message (service_id: STRING): STRING is
+        -- Send message describing known races.  For now, just send everything
+        -- to everybody!
     local
         s: SERIALIZER2
         race_it: ITERATOR[S_RACE]
     do
         create s.make
-        s.add_integer(natives.id)
-        s.add_integer(androids.id)
+        s.add_integer (races.count)
         from
             race_it := races.get_new_iterator_on_items
         until
@@ -75,8 +73,6 @@ feature {STORAGE} -- Saving
         a: ARRAY[TUPLE[STRING, ANY]]
     do
         create a.make(1, 0)
-        a.add_last(["natives", natives])
-        a.add_last(["androids", androids])
         add_to_fields(a, "race", races.get_new_iterator_on_items)
         Result := a.get_new_iterator
     end
@@ -86,8 +82,6 @@ feature {STORAGE} -- Saving
         a: ARRAY[STORABLE]
     do
         create a.make(1, 0)
-        a.add_last(natives)
-        a.add_last(androids)
         add_dependents_to(a, races.get_new_iterator_on_items)
         Result := a.get_new_iterator
     end
@@ -104,11 +98,7 @@ feature {STORAGE} -- Operations - Retrieving
     do
         from
         until elems.is_off loop
-            if elems.item.first.is_equal("natives") then
-                natives ?= elems.item.second
-            elseif elems.item.first.is_equal("androids") then
-                androids ?= elems.item.second
-            elseif elems.item.first.has_prefix("race") then
+            if elems.item.first.has_prefix("race") then
                 race ?= elems.item.second
                 check not races.has(race.id) end
                 add (race)
@@ -116,10 +106,6 @@ feature {STORAGE} -- Operations - Retrieving
                 print ("Bad child '" + elems.item.first + "' inside 'XENO_REPOSITORY' tag%N")
             end
             elems.next
-        end
-        if natives = Void or androids = Void then
-            print("S_XENO_REPOSITORY make_from_storage: Androids or natives missing!%N")
-            check False end
         end
     end
 

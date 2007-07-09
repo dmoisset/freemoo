@@ -81,6 +81,7 @@ feature -- Operations
             server.register (i.item, "player"+i.item.id.to_string)
             server.register (i.item.known_constructions, i.item.id.to_string+":constructions")
             server.register (i.item.knowledge, i.item.id.to_string+":research")
+            server.register (xeno_repository, i.item.id.to_string + ":xeno_repository")
             xeno_repository.add(i.item.race)
             i.next
         end

@@ -1,16 +1,16 @@
 class XENO_REPOSITORY
+    -- Kind of a singleton class to access races.
+    -- Our internal data structure is a once method,
+    -- so if you modify this instance all other xeno_repositories
+    -- are updated.
 
 inherit
     GETTEXT
 
-create
-    make, make_with_knowledge
-
 feature
 
-    natives, androids: like race_type
-
-    item(id: INTEGER):  like race_type is
+    item (id: INTEGER):  like race_type is
+        -- Retrieve a spescific race with it's id.
     do
         if races.has(id) then
             Result := races@id
@@ -23,6 +23,23 @@ feature
         Result.id = id
     end
 
+    by_name (name: STRING): like race_type is
+        -- Search for a spescific race by name.  Use 'item' if you can.
+    local
+        it: ITERATOR [like race_type]
+    do
+        from
+            it := races.get_new_iterator_on_items
+        until
+            it.is_off or Result /= Void
+        loop
+            if it.item.name.is_equal (name) then
+                Result := it.item
+            end
+            it.next
+        end
+    end
+
     add(race: like race_type) is
     do
         if not races.has(race.id) then
@@ -30,16 +47,11 @@ feature
         end
     end
 
-feature {NONE} -- Creation
-
-    make is
-    do
-        create races.make
-    end
-
-feature -- Operations
+feature {GAME} -- Operations
 
     generate_knowledge is
+    local
+        natives, androids: like race_type
     do
         create natives.make
         natives.set_picture(14)
@@ -58,7 +70,10 @@ feature -- Operations
 
 feature {NONE} -- Representation
 
-    races: HASHED_DICTIONARY[like race_type, INTEGER]
+    races: HASHED_DICTIONARY[like race_type, INTEGER] is
+    once
+        create Result.make
+    end
 
 feature {NONE} -- Anchors
 

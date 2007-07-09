@@ -18,8 +18,8 @@ feature
 
     build (c: like colony_type) is
     do
-        check xeno_repository.androids /= Void end
-        create populator.make(xeno_repository.androids, c)
+        check c.xeno_repository.by_name("Androids") /= Void end
+        create populator.make(c.xeno_repository.by_name ("Androids"), c)
         populator.set_is_android(True)
         populator.set_single_task(task)
         if populator.fits_on(c) then
@@ -47,9 +47,6 @@ feature {NONE} -- Implementation
 
     task: INTEGER
 
-    xeno_repository: XENO_REPOSITORY is
-    do
-    end
 
 feature {NONE} -- Anchors
 

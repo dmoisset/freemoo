@@ -188,7 +188,7 @@ XENO_REPOSITORY
   Description: gives enough information about races.  Eventually this service
      will control how much you know about each race
   Handled by: XENO_REPOSITORY
-  Format: "iii" <<natives_id, androids_id, races_count>> followed
+  Format: "i" <<races_count>> followed
         by a sequence of `races_count' "i" <<race_id>>
 
 RESEARCH

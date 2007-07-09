@@ -25,7 +25,7 @@ feature -- Creation
         if player_list = Void then !!player_list.make end
         if galaxy = Void then !!galaxy.make end
         create dialogs.make
-        create xeno_repository.make
+        create xeno_repository
     rescue
         if is_opening or not is_closed then
             close
@@ -106,6 +106,7 @@ feature -- Operations -- Login commands
         subscribe (player.known_constructions, player.id.to_string + ":constructions")
         subscribe (player, player.color.to_string + ":turn_summary")
         subscribe (player.knowledge, player.id.to_string + ":research")
+        subscribe (xeno_repository, player.id.to_string + ":xeno_repository")
     end
 
 feature -- Operations -- Game commands

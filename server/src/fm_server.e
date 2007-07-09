@@ -110,7 +110,7 @@ feature {NONE} -- Internal
         create cln.make(pln, ply)
         create race.make
         create pop.make(race, cln)
-        create repo.make
+        create repo
         create know.make
         -- Register class prototypes
         st.register(gme)                                 -- S_GAME

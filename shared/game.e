@@ -14,7 +14,7 @@ feature {NONE} -- Creation
         create status.make_with_options (options)
         create players.make
         create galaxy.make
-        create xeno_repository.make
+        create xeno_repository
         create tech_tree.make
         make_mapgenerator
         make_evolver

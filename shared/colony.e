@@ -18,11 +18,13 @@ feature {NONE} -- Creation
         p /= Void
         o /= Void
     local
-        first_populator: like populator_type
+        first_populator, native: like populator_type
+        i: INTEGER
     do
         make_unique_id
         producing := o.known_constructions @ product_trade_goods
         create ship_factory
+        create xeno_repository
         create farming.with_threshold (0.001)
         create industry.with_threshold (0.001)
         create science.with_threshold (0.001)
@@ -37,6 +39,19 @@ feature {NONE} -- Creation
         create first_populator.make(o.race, Current)
         populators.add(first_populator, first_populator.id)
         population := 1000
+        if location.special = location.plspecial_natives then
+            from
+                i := 1
+            until
+                i > 3
+            loop
+                create native.make(xeno_repository.by_name ("Natives"), Current)
+                native.set_single_task (native.task_farming)
+                populators.add(native, native.id)
+                population := population + 1000
+                i := i + 1
+            end
+        end
     ensure
         location = p
         p.colony = Current
@@ -94,6 +109,8 @@ feature -- Access
 
     population: INTEGER
         -- Colony's population in Kinhabitants (thousandths of population units)
+
+    xeno_repository: XENO_REPOSITORY
 
     population_growth: INTEGER is
         -- Population growth per turn, in KInhabitants
