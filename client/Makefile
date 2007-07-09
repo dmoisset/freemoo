@@ -6,7 +6,7 @@ endif
 
 CLIBS=src/C/net_thread.o src/C/img_loader.o
 LIBS=`sdl-config --cflags --libs` $(CLIBS)\
-     -lews-SDL -leifinet
+     -lews-SDL -leifinet -lSDL_ttf
 TARGET2=dumb_client
 LIBS2=-leifinet
 SOURCEFILES=src/*.e ../shared/*.e src/screens/*.e src/widgets/*.e \
