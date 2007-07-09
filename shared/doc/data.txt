@@ -35,3 +35,5 @@ client/xxx-window/background.png: text over original background
 client/connect-window/connect-button-x.png: image for buttons (x=[upd], up, prelight, down)
 client/galaxy-view/background.fma: starry background for galaxy-view
 client/galaxy-view/starxx.fma: stars
+client/turn-summary/up.fma: scrollbar up arrow
+client/turn-summary/up.fma: scrollbar down arrow
