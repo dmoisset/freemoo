@@ -2,20 +2,25 @@ ifndef SmartEiffelDirectory
 SmartEiffelDirectory=$(shell dirname $(shell dirname $(SmartEiffel)))
 endif
 
-TARGET=template_maker
+TARGET1=template_maker
+TARGET2=model_maker
 SOURCEFILES=*.e ../../client/src/*anim*.e
 EIFFLAGS=-high_memory_compiler
 LIBS=-lSDL_image -lSDL_ttf `sdl-config --cflags --libs` -I../../client\
      $(SmartEiffelDirectory)/lib_ews/driver-sdl/C/driver-sdl.o ../../client/src/C/img_loader.o
 
-all: $(TARGET)
+all: $(TARGET1) $(TARGET2)
 
-$(TARGET): $(SOURCEFILES)
-	compile $(TARGET) -o $(TARGET) $(EIFFLAGS) $(LIBS)
+template: $(TARGET1)
 
-check: $(SOURCEFILES)
-	compile_to_c $(TARGET) $(EIFFLAGS) $(LIBS)
+model: $(TARGET2)
+
+$(TARGET1): $(SOURCEFILES)
+	compile $(TARGET1) -o $(TARGET1) $(EIFFLAGS) $(LIBS)
+
+$(TARGET2): $(SOURCEFILES)
+	compile $(TARGET2) -o $(TARGET2) $(EIFFLAGS) $(LIBS)
 
 clean:
-	rm -f $(TARGET)
-	clean $(TARGET)
+	rm -f $(TARGET1) $(TARGET2)
+	clean $(TARGET1) $(TARGET2)

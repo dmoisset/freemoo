@@ -8,6 +8,7 @@ feature -- Concrete features
 
 	do_initial_stuff is
 		do
+			create_directory (datadir + "/" + srcdir)
 			create packfile.connect_to (datadir + "/" + packfilename)
 			packfile.put_string ("#!/bin/bash%N")
 			packfile.put_string ("mkdir " + packeddir + "%N")
@@ -20,6 +21,7 @@ feature -- Concrete features
 
 	do_stuff_with_folder (prefixdir, foldername: STRING) is
 		do
+			create_directory (datadir + "/" + srcdir + "/" + prefixdir + "/" + foldername)
 			packfile.put_string ("mkdir " + packeddir + "/" + prefixdir + "/" + foldername + "%N")
 		end
 
@@ -78,6 +80,8 @@ feature -- Auxiliar
 feature -- Constants
 
 	packeddir: STRING is "packed"
+
+	srcdir: STRING is "src"
 
 	packfilename: STRING is "template.pack.sh"
 

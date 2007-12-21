@@ -27,7 +27,6 @@ feature {} -- Creation
 			create indir.scan (argument (1))
 			if indir.last_scan_status then
 				create_directory (datadir)
-				create_directory (datadir + "/" + srcdir)
 				create logfile.connect_to (datadir + "/" + logfilename)
 				do_initial_stuff
 				scan (indir, "")
@@ -95,7 +94,6 @@ feature -- Auxiliar
 						logfile.put_string (msg)
 						print (msg)
 					elseif subdir.last_scan_status then
-						create_directory (datadir + "/" + srcdir + "/" + outdir + "/" + dir.item (i))
 						do_stuff_with_folder (outdir, dir.item (i))
 						scan (subdir, outdir + "/" + dir.item (i))
 					elseif dir.item (i).has_suffix (".fma") then
@@ -119,8 +117,6 @@ feature -- Auxiliar
 feature -- Constants
 
 	datadir: STRING is "data"
-
-	srcdir: STRING is "src"
 
 	logfilename: STRING is "template.log"
 
