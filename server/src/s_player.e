@@ -11,7 +11,7 @@ inherit
         star_type, race, set_ruler_name, set_race, set_color, add_colony,
         remove_colony, known_constructions, update_money, update_research,
         set_state, set_fuel_range, set_drive_speed, capitol_destroyed, capitol_built, knowledge
-    select id end
+    end
     STORABLE
     rename
         hash_code as id

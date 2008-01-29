@@ -6,7 +6,6 @@ root
 
 default
     assertion            (require)
-    case_insensitive     (yes)
     high_memory_compiler (yes)
 
 cluster
@@ -25,6 +24,10 @@ cluster
         default assertion (all) end
     -- FreeMOO classes
     FREEMOO_SHARED: "../shared"
+        default assertion (all) end
+    FREEMOO_SHARED_TECH: "../shared/technology"
+        default assertion (all) end
+    FREEMOO_SHARED_CONST: "../shared/constructions"
         default assertion (all) end
 
     -- Networking and utilities libs

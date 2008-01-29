@@ -53,6 +53,8 @@ feature -- Redefined features
             i.next
         end
         Result := s.serialized_form
+    ensure
+        Result /= Void
     end
 
     set_destination (dest: like destination) is
@@ -98,7 +100,7 @@ feature -- Redefined features
         old_msg := subscription_message("fleet" + id.to_string)
         Precursor
         new_msg := subscription_message("fleet" + id.to_string)
-        if not equal (old_msg, new_msg) and then registry /= Void then
+        if not old_msg.is_equal (new_msg) and then registry /= Void then
             send_message("fleet" + id.to_string, new_msg)
         end
     end
