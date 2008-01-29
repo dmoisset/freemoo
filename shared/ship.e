@@ -4,7 +4,6 @@ deferred class SHIP
 inherit
     SHIP_CONSTANTS
     UNIQUE_ID
-    select id end
 
 
 feature {NONE} -- Creation

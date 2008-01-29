@@ -3,7 +3,6 @@ class STAR
 
 inherit
     UNIQUE_ID
-    select id end
     POSITIONAL
     MAP_CONSTANTS
 
